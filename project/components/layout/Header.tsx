@@ -128,9 +128,14 @@ export default function Header() {
               {/* User Account */}
               <div className="relative">
                 {state.isAuthenticated ? (
-                  <Link href="/painel" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
+                  <Link 
+                    href={state.user?.isSeller ? '/vendedor/painel' : '/painel'} 
+                    className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors"
+                  >
                     <User size={20} />
-                    <span className="hidden sm:inline">Minha Conta</span>
+                    <span className="hidden sm:inline">
+                      {state.user?.isSeller ? 'Painel Vendedor' : 'Minha Conta'}
+                    </span>
                   </Link>
                 ) : (
                   <Link href="/entrar" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">

@@ -36,15 +36,25 @@ export default function CreateAccountPage() {
       return;
     }
 
-    // Mock user creation
+    // Mock user creation - always creates a regular user (not seller)
     const mockUser = {
-      id: '2',
+      id: 'user2',
       firstName: 'Novo',
       lastName: 'Usuário',
       email: formData.email,
       phone: '',
       isSeller: false,
-      profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
+      profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      billingAddress: {
+        firstName: 'Novo',
+        lastName: 'Usuário',
+        address: '',
+        country: 'Brasil',
+        state: '',
+        zipCode: '',
+        email: formData.email,
+        phone: ''
+      }
     };
 
     dispatch({ type: 'SET_USER', payload: mockUser });

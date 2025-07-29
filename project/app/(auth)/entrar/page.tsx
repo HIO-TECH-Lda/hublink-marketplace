@@ -20,27 +20,67 @@ export default function SignInPage() {
     password: '',
     rememberMe: false
   });
+  const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     
-    // Mock user login
+    // Validate mock credentials
+    const isValidEmail = formData.email === 'cliente@exemplo.com' || formData.email === 'vendedor@exemplo.com';
+    const isValidPassword = formData.password === 'qualquer coisa';
+    
+    if (!isValidEmail || !isValidPassword) {
+      setError('Email ou senha incorretos. Use as credenciais de demonstração.');
+      return;
+    }
+
+    // Create mock user based on email
+    const isSeller = formData.email === 'vendedor@exemplo.com';
+    
     const mockUser = {
-      id: '1',
-      firstName: 'João',
-      lastName: 'Silva',
+      id: isSeller ? 'seller1' : 'user1',
+      firstName: isSeller ? 'Maria' : 'João',
+      lastName: isSeller ? 'Santos' : 'Silva',
       email: formData.email,
       phone: '(11) 99999-9999',
-      isSeller: formData.email.includes('vendedor'), // Simple check for demo
-      sellerId: formData.email.includes('vendedor') ? 'seller1' : undefined,
-      profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
+      isSeller: isSeller,
+      sellerId: isSeller ? 'seller1' : undefined,
+      profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      billingAddress: {
+        firstName: isSeller ? 'Maria' : 'João',
+        lastName: isSeller ? 'Santos' : 'Silva',
+        address: 'Rua das Flores, 123',
+        country: 'Brasil',
+        state: 'SP',
+        zipCode: '01234-567',
+        email: formData.email,
+        phone: '(11) 99999-9999'
+      },
+      ...(isSeller && {
+        storeSettings: {
+          storeName: 'Fazenda Verde',
+          storeDescription: 'Produtos orgânicos frescos direto da fazenda',
+          storeEmail: 'vendedor@exemplo.com',
+          storePhone: '(11) 99999-9999',
+          bankName: 'Banco do Brasil',
+          accountNumber: '12345-6',
+          agencyNumber: '0001',
+          pixKey: 'vendedor@exemplo.com',
+          paymentMethod: 'PIX'
+        }
+      })
     };
 
     dispatch({ type: 'SET_USER', payload: mockUser });
     dispatch({ type: 'SET_AUTHENTICATED', payload: true });
     
-    // Redirect to dashboard
-    router.push('/painel');
+    // Redirect based on user type
+    if (isSeller) {
+      router.push('/vendedor/painel');
+    } else {
+      router.push('/painel');
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,6 +89,17 @@ export default function SignInPage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    // Clear error when user starts typing
+    if (error) setError('');
+  };
+
+  const handleDemoLogin = (email: string) => {
+    setFormData({
+      email: email,
+      password: 'qualquer coisa',
+      rememberMe: false
+    });
+    setError('');
   };
 
   return (
@@ -106,6 +157,13 @@ export default function SignInPage() {
               </div>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+
             {/* Remember Me and Forgot Password */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -147,11 +205,33 @@ export default function SignInPage() {
 
           {/* Demo Accounts */}
           <div className="mt-8 p-4 bg-gray-1 rounded-lg">
-            <p className="text-sm text-gray-6 mb-2 font-medium">Contas de demonstração:</p>
-            <div className="space-y-1 text-xs text-gray-7">
-              <p><strong>Cliente:</strong> cliente@exemplo.com</p>
-              <p><strong>Vendedor:</strong> vendedor@exemplo.com</p>
-              <p><strong>Senha:</strong> qualquer coisa</p>
+            <p className="text-sm text-gray-6 mb-3 font-medium">Contas de demonstração:</p>
+            <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDemoLogin('cliente@exemplo.com')}
+                  className="flex-1 text-xs"
+                >
+                  Login Cliente
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDemoLogin('vendedor@exemplo.com')}
+                  className="flex-1 text-xs"
+                >
+                  Login Vendedor
+                </Button>
+              </div>
+              <div className="text-xs text-gray-7 space-y-1">
+                <p><strong>Cliente:</strong> cliente@exemplo.com</p>
+                <p><strong>Vendedor:</strong> vendedor@exemplo.com</p>
+                <p><strong>Senha:</strong> qualquer coisa</p>
+              </div>
             </div>
           </div>
         </div>

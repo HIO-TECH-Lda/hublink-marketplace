@@ -126,7 +126,7 @@ export default function UserDashboardPage() {
                 </Link>
                 {state.user.isSeller && (
                   <Link
-                    href="/painel-vendedor"
+                    href="/vendedor/painel"
                     className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-sm sm:text-base"
                   >
                     <Package size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />

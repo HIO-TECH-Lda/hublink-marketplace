@@ -78,7 +78,7 @@ export default function SellerDashboardPage() {
             <div className="bg-white rounded-lg shadow-sm p-6">
               <nav className="space-y-2">
                 <Link
-                  href="/painel-vendedor"
+                  href="/vendedor/painel"
                   className="flex items-center space-x-3 px-3 py-2 text-primary bg-primary/10 rounded-lg font-medium"
                 >
                   <Package size={18} />
