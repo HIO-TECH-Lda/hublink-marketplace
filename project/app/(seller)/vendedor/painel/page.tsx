@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import SellerSidebar from '../../components/SellerSidebar';
 
 export default function SellerDashboardPage() {
   const { state, dispatch } = useMarketplace();
@@ -72,48 +73,10 @@ export default function SellerDashboardPage() {
           </Link>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Navigation Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <nav className="space-y-2">
-                <Link
-                  href="/vendedor/painel"
-                  className="flex items-center space-x-3 px-3 py-2 text-primary bg-primary/10 rounded-lg font-medium"
-                >
-                  <Package size={18} />
-                  <span>Painel</span>
-                </Link>
-                <Link
-                  href="/vendedor/produtos"
-                  className="flex items-center space-x-3 px-3 py-2 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                >
-                  <Package size={18} />
-                  <span>Meus Produtos</span>
-                </Link>
-                <Link
-                  href="/vendedor/pedidos"
-                  className="flex items-center space-x-3 px-3 py-2 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                >
-                  <ShoppingBag size={18} />
-                  <span>Meus Pedidos</span>
-                </Link>
-                <Link
-                  href="/vendedor/repasses"
-                  className="flex items-center space-x-3 px-3 py-2 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                >
-                  <DollarSign size={18} />
-                  <span>Repasses</span>
-                </Link>
-                <Link
-                  href="/vendedor/configuracoes"
-                  className="flex items-center space-x-3 px-3 py-2 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                >
-                  <Package size={18} />
-                  <span>Configurações</span>
-                </Link>
-              </nav>
-            </div>
+            <SellerSidebar />
           </div>
 
           {/* Main Content */}

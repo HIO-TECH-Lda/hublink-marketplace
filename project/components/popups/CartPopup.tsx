@@ -4,9 +4,11 @@ import React from 'react';
 import { X, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useRouter } from 'next/navigation';
 
 export default function CartPopup() {
   const { state, dispatch } = useMarketplace();
+  const router = useRouter();
 
   if (!state.showCartPopup) return null;
 
@@ -24,6 +26,16 @@ export default function CartPopup() {
 
   const handleRemoveItem = (productId: string) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+  };
+
+  const handleCheckout = () => {
+    dispatch({ type: 'HIDE_CART_POPUP' });
+    router.push('/checkout');
+  };
+
+  const handleGoToCart = () => {
+    dispatch({ type: 'HIDE_CART_POPUP' });
+    router.push('/carrinho');
   };
 
   const subtotal = state.cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
@@ -117,13 +129,16 @@ export default function CartPopup() {
 
             {/* Action Buttons */}
             <div className="space-y-2">
-              <Button className="w-full bg-primary hover:bg-primary-hard text-white">
+              <Button 
+                onClick={handleCheckout}
+                className="w-full bg-primary hover:bg-primary-hard text-white"
+              >
                 Finalizar Compra
               </Button>
               <Button 
                 variant="outline" 
                 className="w-full border-primary text-primary hover:bg-primary hover:text-white"
-                onClick={handleClose}
+                onClick={handleGoToCart}
               >
                 Ir para o Carrinho
               </Button>

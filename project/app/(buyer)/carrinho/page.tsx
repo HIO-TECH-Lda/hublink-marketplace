@@ -14,6 +14,24 @@ export default function ShoppingCartPage() {
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
 
+  if (!state.isAuthenticated || !state.user) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
+          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
+          <Link href="/entrar">
+            <Button className="bg-primary hover:bg-primary-hard text-white">
+              Fazer Login
+            </Button>
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   const subtotal = state.cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   const shipping = subtotal >= 50 ? 0 : 10; // Free shipping over R$ 50
   const discount = appliedCoupon ? subtotal * 0.1 : 0; // 10% discount for demo
@@ -77,15 +95,11 @@ export default function ShoppingCartPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <span className="text-primary"> Carrinho de Compras</span>
+          <Link href="/painel" className="hover:text-primary"> Meu Painel</Link> / 
+          <span className="text-primary">Carrinho de Compras</span>
         </nav>
 
-        {/* Back Button */}
-        <Link href="/loja" className="inline-flex items-center text-gray-6 hover:text-primary mb-6">
-          <ArrowLeft size={16} className="mr-2" />
-          Voltar à Loja
-        </Link>
-
+        {/* Main Content */}
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2">
@@ -281,6 +295,7 @@ export default function ShoppingCartPage() {
             </div>
           </div>
         </div>
+
       </div>
 
       <Footer />

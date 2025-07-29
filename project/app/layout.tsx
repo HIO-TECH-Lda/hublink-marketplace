@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { MarketplaceProvider } from '@/contexts/MarketplaceContext';
+import CartPopup from '@/components/popups/CartPopup';
 
 export const metadata: Metadata = {
   title: 'Ecobazar - Marketplace de Alimentos Orgânicos',
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body>
         <MarketplaceProvider>
           {children}
+          <CartPopup />
         </MarketplaceProvider>
       </body>
     </html>

@@ -1,9 +1,14 @@
 'use client';
 
+import React from 'react';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { ArrowLeft, Package, Truck, CheckCircle, Clock, MapPin, User, Phone, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import { Button } from '@/components/ui/button';
+import BuyerSidebar from '../../components/BuyerSidebar';
 
 export default function OrderDetailsPage() {
   const { state } = useMarketplace();
@@ -11,24 +16,43 @@ export default function OrderDetailsPage() {
   const params = useParams();
   const orderId = params.id as string;
 
+  if (!state.isAuthenticated || !state.user) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
+          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
+          <Link href="/entrar">
+            <Button className="bg-primary hover:bg-primary-hard text-white">
+              Fazer Login
+            </Button>
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   // Find the specific order
   const order = orders.find((order: any) => order.id === orderId);
 
   if (!order) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
           <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Pedido não encontrado</h1>
-          <p className="text-gray-600 mb-6">O pedido que você está procurando não existe.</p>
-          <Link 
-            href="/historico-pedidos" 
-            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar ao Histórico
+          <h1 className="text-2xl font-bold text-gray-9 mb-2">Pedido não encontrado</h1>
+          <p className="text-gray-6 mb-6">O pedido que você está procurando não existe.</p>
+          <Link href="/historico-pedidos">
+            <Button className="bg-primary hover:bg-primary-hard text-white">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar ao Histórico
+            </Button>
           </Link>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -93,36 +117,32 @@ export default function OrderDetailsPage() {
   const currentStep = getStatusStep(order.status);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
+    <div className="min-h-screen bg-gray-1">
+      <Header />
+
+      <div className="container py-8 px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav className="text-sm text-gray-6 mb-6">
+          <Link href="/" className="hover:text-primary">Início</Link> / 
+          <Link href="/painel" className="hover:text-primary"> Meu Painel</Link> / 
+          <Link href="/historico-pedidos" className="hover:text-primary"> Histórico de Pedidos</Link> / 
+          <span className="text-primary">Pedido #{order.id}</span>
+        </nav>
+
+        {/* Page Header */}
         <div className="mb-8">
-          <Link 
-            href="/historico-pedidos" 
-            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 mb-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar ao Histórico
-          </Link>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Pedido #{order.id}</h1>
-              <p className="text-gray-600 mt-2">
-                Realizado em {new Date(order.date).toLocaleDateString('pt-BR')} • {order.items.length} {order.items.length === 1 ? 'item' : 'itens'}
-              </p>
-            </div>
-            <div className="text-right">
-              <p className="text-2xl font-bold text-gray-900">R$ {order.total.toFixed(2)}</p>
-              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
-                {getStatusText(order.status)}
-              </span>
-            </div>
-          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Detalhes do Pedido #{order.id}</h1>
+          <p className="text-gray-6">Acompanhe o status e detalhes do seu pedido</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Navigation Sidebar */}
+          <div className="lg:col-span-1">
+            <BuyerSidebar />
+          </div>
+
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-3 space-y-8">
             {/* Order Timeline */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-6">Status do Pedido</h2>
@@ -267,6 +287,7 @@ export default function OrderDetailsPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 } 
