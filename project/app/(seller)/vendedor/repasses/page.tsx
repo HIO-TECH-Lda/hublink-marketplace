@@ -1,17 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
-import { ArrowLeft, DollarSign, Calendar, CheckCircle, Clock, AlertCircle, TrendingUp } from 'lucide-react';
+import { ArrowLeft, DollarSign, Calendar, CheckCircle, Clock, AlertCircle, TrendingUp, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import SellerSidebar from '../../components/SellerSidebar';
 
 export default function PayoutsPage() {
   const { state } = useMarketplace();
   const { payouts, user } = state;
+  const [showPayoutModal, setShowPayoutModal] = useState(false);
+  const [payoutAmount, setPayoutAmount] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('PIX');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!state.isAuthenticated || !state.user || !state.user.isSeller) {
     return (
@@ -32,7 +37,7 @@ export default function PayoutsPage() {
   }
 
   // Filter payouts for the current seller
-  const sellerPayouts = payouts.filter((payout: any) => payout.sellerId === user?.sellerId);
+  const sellerPayouts = payouts;
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -86,6 +91,33 @@ export default function PayoutsPage() {
   // Calculate total earned
   const totalEarned = sellerPayouts.reduce((total: number, payout: any) => total + payout.amount, 0);
 
+  const handlePayoutRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Show success message
+      alert('Solicitação de repasse enviada com sucesso!');
+      setShowPayoutModal(false);
+      setPayoutAmount('');
+      setPaymentMethod('PIX');
+    } catch (error) {
+      console.error('Error requesting payout:', error);
+      alert('Erro ao solicitar repasse. Tente novamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowPayoutModal(false);
+    setPayoutAmount('');
+    setPaymentMethod('PIX');
+  };
+
   return (
     <div className="min-h-screen bg-gray-1">
       <Header />
@@ -97,12 +129,6 @@ export default function PayoutsPage() {
           <Link href="/vendedor/painel" className="hover:text-primary"> Painel do Vendedor</Link> / 
           <span className="text-primary">Repasses</span>
         </nav>
-
-        {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Repasses</h1>
-          <p className="text-gray-6">Acompanhe seus ganhos e repasses financeiros</p>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Navigation Sidebar */}
@@ -153,8 +179,15 @@ export default function PayoutsPage() {
 
             {/* Payouts Table */}
             <div className="bg-white rounded-lg shadow-sm">
-              <div className="px-6 py-4 border-b border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-lg font-semibold text-gray-900">Histórico de Repasses</h2>
+                <Button 
+                  onClick={() => setShowPayoutModal(true)} 
+                  className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Solicitar Repasse
+                </Button>
               </div>
               
               {sellerPayouts.length === 0 ? (
@@ -288,6 +321,81 @@ export default function PayoutsPage() {
         </div>
       </div>
       <Footer />
+
+      {/* Payout Request Modal */}
+      {showPayoutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50 p-4">
+          <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-auto max-h-[90vh] overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">Solicitar Repasse</h3>
+              <button 
+                onClick={handleCloseModal} 
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+              <form onSubmit={handlePayoutRequest} className="space-y-6">
+                <div>
+                  <label htmlFor="payoutAmount" className="block text-sm font-medium text-gray-700 mb-2">
+                    Valor do Repasse (R$)
+                  </label>
+                  <Input
+                    type="number"
+                    id="payoutAmount"
+                    value={payoutAmount}
+                    onChange={(e) => setPayoutAmount(e.target.value)}
+                    placeholder="0,00"
+                    min="0"
+                    step="0.01"
+                    required
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700 mb-2">
+                    Método de Pagamento
+                  </label>
+                  <select
+                    id="paymentMethod"
+                    value={paymentMethod}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
+                  >
+                    <option value="PIX">PIX</option>
+                    <option value="Banco">Transferência Bancária</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50">
+              <Button
+                type="button"
+                onClick={handleCloseModal}
+                variant="outline"
+                className="px-4 py-2 text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handlePayoutRequest}
+                disabled={isSubmitting}
+                className="px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? 'Enviando...' : 'Solicitar Repasse'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

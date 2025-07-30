@@ -65,25 +65,6 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
         </div>
       </div>
 
-      {/* Quick Stats */}
-      <div className="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-2">
-        <h4 className="font-medium text-gray-9 text-sm sm:text-base mb-3">Resumo</h4>
-        <div className="space-y-2 text-xs sm:text-sm text-gray-6">
-          <div className="flex justify-between">
-            <span>Pedidos:</span>
-            <span className="font-medium text-gray-9">{state.orders.length}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Lista de Desejos:</span>
-            <span className="font-medium text-gray-9">{state.wishlist.length}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Carrinho:</span>
-            <span className="font-medium text-gray-9">{state.cart.length}</span>
-          </div>
-        </div>
-      </div>
-
       {/* Navigation Menu */}
       <nav className="space-y-1 sm:space-y-2">
         {navigationItems.map((item) => {

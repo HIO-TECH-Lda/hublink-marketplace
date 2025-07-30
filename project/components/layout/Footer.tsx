@@ -72,10 +72,10 @@ export default function Footer() {
               <h4 className="font-semibold text-lg mb-6">Links Rápidos</h4>
               <ul className="space-y-3">
                 <li><Link href="/sobre" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Sobre Nós</Link></li>
-                <li><Link href="/loja" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Nossa Loja</Link></li>
+                <li><Link href="/loja" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Nossa Banca</Link></li>
                 <li><Link href="/contato" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Contato</Link></li>
                 <li><Link href="/blog" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Blog</Link></li>
-                <li><Link href="/faqs" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">FAQs</Link></li>
+                <li><Link href="/faq" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">FAQs</Link></li>
               </ul>
             </div>
 
@@ -95,11 +95,11 @@ export default function Footer() {
             <div>
               <h4 className="font-semibold text-lg mb-6">Ajuda & Suporte</h4>
               <ul className="space-y-3">
-                <li><Link href="#" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Central de Ajuda</Link></li>
-                <li><Link href="#" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Política de Privacidade</Link></li>
-                <li><Link href="#" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Termos de Uso</Link></li>
-                <li><Link href="#" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Trocas e Devoluções</Link></li>
-                <li><Link href="#" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Seja um Vendedor</Link></li>
+                <li><Link href="/ajuda" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Central de Ajuda</Link></li>
+                <li><Link href="/privacidade" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Política de Privacidade</Link></li>
+                <li><Link href="/termos" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Termos de Uso</Link></li>
+                <li><Link href="/trocas-devolucoes" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Trocas e Devoluções</Link></li>
+                <li><Link href="/seja-vendedor" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Seja um Vendedor</Link></li>
               </ul>
             </div>
           </div>

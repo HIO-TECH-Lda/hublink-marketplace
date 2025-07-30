@@ -144,220 +144,285 @@ type MarketplaceAction =
   | { type: 'DELETE_PRODUCT'; payload: string }
   | { type: 'SET_CURRENT_PAGE'; payload: string };
 
-const MarketplaceContext = createContext<{
-  state: MarketplaceState;
-  dispatch: React.Dispatch<MarketplaceAction>;
-} | null>(null);
-
+// Mock data
 const mockProducts: Product[] = [
   {
     id: '1',
-    name: 'Repolho Chinês Orgânico',
-    price: 12.99,
-    originalPrice: 15.99,
-    image: 'https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg',
-    images: [
-      'https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg',
-      'https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg',
-      'https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg'
-    ],
-    description: 'Repolho chinês orgânico fresquinho, cultivado sem agrotóxicos. Rico em vitaminas e minerais essenciais para uma alimentação saudável.',
-    category: 'Verduras',
-    brand: 'Orgânicos da Terra',
+    name: 'Tomates Orgânicos',
+    price: 8.50,
+    originalPrice: 10.00,
+    image: 'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
+    description: 'Tomates orgânicos frescos e saborosos, cultivados sem agrotóxicos.',
+    category: 'Legumes',
+    brand: 'Fazenda Verde',
     rating: 4.5,
-    reviews: 28,
+    reviews: 12,
     inStock: true,
     sellerId: 'seller1',
     sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg',
-    tags: ['orgânico', 'fresco', 'local'],
-    sku: 'VEG001',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    tags: ['orgânico', 'fresco', 'sem agrotóxicos'],
+    sku: 'TOM-ORG-001',
     weight: '500g',
-    color: 'Verde claro',
+    color: 'Vermelho',
     stockStatus: 'Em estoque',
-    type: 'Vegetal'
+    type: 'Orgânico',
+    images: [
+      'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
+      'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg'
+    ]
   },
   {
     id: '2',
-    name: 'Tomates Orgânicos',
-    price: 8.50,
-    image: 'https://images.pexels.com/photos/533280/pexels-photo-533280.jpeg',
-    images: [
-      'https://images.pexels.com/photos/533280/pexels-photo-533280.jpeg',
-      'https://images.pexels.com/photos/533280/pexels-photo-533280.jpeg'
-    ],
-    description: 'Tomates orgânicos maduros e suculentos, perfeitos para saladas e molhos.',
+    name: 'Repolho Chinês Orgânico',
+    price: 12.99,
+    originalPrice: 15.99,
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    description: 'Repolho chinês orgânico, rico em vitaminas e minerais.',
     category: 'Legumes',
-    brand: 'Orgânicos da Terra',
-    rating: 4.7,
-    reviews: 42,
+    brand: 'Fazenda Verde',
+    rating: 4.2,
+    reviews: 8,
     inStock: true,
     sellerId: 'seller1',
     sellerName: 'Fazenda Verde',
-    tags: ['orgânico', 'fresco'],
-    sku: 'VEG002',
-    weight: '1kg',
-    color: 'Vermelho',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    tags: ['orgânico', 'vitaminas', 'minerais'],
+    sku: 'REP-CHI-001',
+    weight: '300g',
+    color: 'Verde',
     stockStatus: 'Em estoque',
-    type: 'Legume'
+    type: 'Orgânico',
+    images: [
+      'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg'
+    ]
   },
   {
     id: '3',
     name: 'Cenouras Orgânicas',
     price: 6.99,
     originalPrice: 8.99,
-    image: 'https://images.pexels.com/photos/1458622/pexels-photo-1458622.jpeg',
-    images: [
-      'https://images.pexels.com/photos/1458622/pexels-photo-1458622.jpeg',
-      'https://images.pexels.com/photos/1458622/pexels-photo-1458622.jpeg'
-    ],
-    description: 'Cenouras orgânicas doces e crocantes, ideais para sucos e saladas.',
+    image: 'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg',
+    description: 'Cenouras orgânicas frescas, ricas em betacaroteno.',
     category: 'Legumes',
-    brand: 'Horta Natural',
-    rating: 4.3,
-    reviews: 31,
+    brand: 'Horta do Vale',
+    rating: 4.7,
+    reviews: 15,
     inStock: true,
     sellerId: 'seller2',
     sellerName: 'Horta do Vale',
-    tags: ['orgânico', 'doce'],
-    sku: 'VEG003',
-    weight: '750g',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
+    tags: ['orgânico', 'betacaroteno', 'vitamina A'],
+    sku: 'CEN-ORG-001',
+    weight: '400g',
     color: 'Laranja',
     stockStatus: 'Em estoque',
-    type: 'Legume'
+    type: 'Orgânico',
+    images: [
+      'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg'
+    ]
   },
   {
     id: '4',
-    name: 'Alface Orgânica',
-    price: 4.99,
-    image: 'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
-    images: [
-      'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
-      'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg'
-    ],
-    description: 'Alface orgânica crocante e fresca, cultivada com carinho e sem agrotóxicos.',
+    name: 'Alface Crespa Orgânica',
+    price: 4.50,
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    description: 'Alface crespa orgânica, fresca e crocante.',
     category: 'Verduras',
-    brand: 'Verde Natural',
-    rating: 4.6,
-    reviews: 19,
+    brand: 'Fazenda Verde',
+    rating: 4.3,
+    reviews: 9,
     inStock: true,
-    sellerId: 'seller2',
-    sellerName: 'Horta do Vale',
-    tags: ['orgânico', 'crocante'],
-    sku: 'VEG004',
-    weight: '300g',
+    sellerId: 'seller1',
+    sellerName: 'Fazenda Verde',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    tags: ['orgânico', 'fresco', 'verde'],
+    sku: 'ALC-CRE-001',
+    weight: '200g',
     color: 'Verde',
     stockStatus: 'Em estoque',
-    type: 'Verdura'
+    type: 'Orgânico'
   },
   {
     id: '5',
-    name: 'Maçãs Orgânicas',
+    name: 'Maçãs Fuji Orgânicas',
     price: 9.99,
     originalPrice: 12.99,
     image: 'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg',
-    images: [
-      'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg',
-      'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg'
-    ],
-    description: 'Maçãs orgânicas doces e suculentas, perfeitas para lanches saudáveis.',
+    description: 'Maçãs Fuji orgânicas, doces e suculentas.',
     category: 'Frutas',
     brand: 'Pomar Orgânico',
-    rating: 4.8,
-    reviews: 56,
+    rating: 4.6,
+    reviews: 18,
     inStock: true,
     sellerId: 'seller3',
-    sellerName: 'Pomar da Serra',
-    tags: ['orgânico', 'doce', 'fruta'],
-    sku: 'FRU001',
+    sellerName: 'Pomar Orgânico',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
+    tags: ['orgânico', 'doce', 'suculenta'],
+    sku: 'MAC-FUJ-001',
     weight: '1kg',
     color: 'Vermelho',
     stockStatus: 'Em estoque',
-    type: 'Fruta'
+    type: 'Orgânico'
   },
   {
     id: '6',
-    name: 'Bananas Orgânicas',
+    name: 'Bananas Prata Orgânicas',
     price: 7.50,
     image: 'https://images.pexels.com/photos/47305/bananas-banana-bunch-fruit-yellow-47305.jpeg',
-    images: [
-      'https://images.pexels.com/photos/47305/bananas-banana-bunch-fruit-yellow-47305.jpeg',
-      'https://images.pexels.com/photos/47305/bananas-banana-bunch-fruit-yellow-47305.jpeg'
-    ],
-    description: 'Bananas orgânicas maduras e doces, ricas em potássio e energia.',
+    description: 'Bananas prata orgânicas, ricas em potássio.',
     category: 'Frutas',
-    brand: 'Frutas Naturais',
+    brand: 'Fazenda Verde',
     rating: 4.4,
-    reviews: 38,
+    reviews: 11,
     inStock: true,
-    sellerId: 'seller3',
-    sellerName: 'Pomar da Serra',
-    tags: ['orgânico', 'doce', 'energético'],
-    sku: 'FRU002',
-    weight: '1.2kg',
+    sellerId: 'seller1',
+    sellerName: 'Fazenda Verde',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    tags: ['orgânico', 'potássio', 'energia'],
+    sku: 'BAN-PRA-001',
+    weight: '1kg',
     color: 'Amarelo',
     stockStatus: 'Em estoque',
-    type: 'Fruta'
+    type: 'Orgânico'
   },
   {
     id: '7',
-    name: 'Arroz Integral Orgânico',
-    price: 15.99,
-    originalPrice: 19.99,
-    image: 'https://images.pexels.com/photos/4110225/pexels-photo-4110225.jpeg',
-    images: [
-      'https://images.pexels.com/photos/4110225/pexels-photo-4110225.jpeg',
-      'https://images.pexels.com/photos/4110225/pexels-photo-4110225.jpeg'
-    ],
-    description: 'Arroz integral orgânico rico em fibras e nutrientes essenciais.',
-    category: 'Grãos',
-    brand: 'Grãos Naturais',
-    rating: 4.6,
-    reviews: 24,
+    name: 'Cebolas Roxas Orgânicas',
+    price: 5.99,
+    image: 'https://images.pexels.com/photos/144206/pexels-photo-144206.jpeg',
+    description: 'Cebolas roxas orgânicas, saborosas e nutritivas.',
+    category: 'Legumes',
+    brand: 'Horta do Vale',
+    rating: 4.1,
+    reviews: 7,
     inStock: true,
-    sellerId: 'seller4',
-    sellerName: 'Grãos do Vale',
-    tags: ['orgânico', 'integral', 'fibras'],
-    sku: 'GRA001',
-    weight: '1kg',
-    color: 'Marrom',
+    sellerId: 'seller2',
+    sellerName: 'Horta do Vale',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
+    tags: ['orgânico', 'saborosa', 'nutritiva'],
+    sku: 'CEB-ROX-001',
+    weight: '500g',
+    color: 'Roxo',
     stockStatus: 'Em estoque',
-    type: 'Grão'
+    type: 'Orgânico'
   },
   {
     id: '8',
-    name: 'Quinoa Orgânica',
-    price: 22.99,
-    image: 'https://images.pexels.com/photos/4110225/pexels-photo-4110225.jpeg',
-    images: [
-      'https://images.pexels.com/photos/4110225/pexels-photo-4110225.jpeg',
-      'https://images.pexels.com/photos/4110225/pexels-photo-4110225.jpeg'
-    ],
-    description: 'Quinoa orgânica rica em proteínas e aminoácidos essenciais.',
-    category: 'Grãos',
-    brand: 'Grãos Naturais',
-    rating: 4.9,
-    reviews: 67,
+    name: 'Batatas Doces Orgânicas',
+    price: 8.99,
+    image: 'https://images.pexels.com/photos/2286776/pexels-photo-2286776.jpeg',
+    description: 'Batatas doces orgânicas, ricas em fibras e vitaminas.',
+    category: 'Legumes',
+    brand: 'Fazenda Verde',
+    rating: 4.8,
+    reviews: 14,
     inStock: true,
-    sellerId: 'seller4',
-    sellerName: 'Grãos do Vale',
-    tags: ['orgânico', 'proteína', 'superalimento'],
-    sku: 'GRA002',
-    weight: '500g',
-    color: 'Bege',
+    sellerId: 'seller1',
+    sellerName: 'Fazenda Verde',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    tags: ['orgânico', 'fibras', 'vitaminas'],
+    sku: 'BAT-DOC-001',
+    weight: '1kg',
+    color: 'Laranja',
     stockStatus: 'Em estoque',
-    type: 'Grão'
+    type: 'Orgânico'
+  },
+  {
+    id: '9',
+    name: 'Espinafre Orgânico',
+    price: 6.50,
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    description: 'Espinafre orgânico, rico em ferro e vitaminas.',
+    category: 'Verduras',
+    brand: 'Horta do Vale',
+    rating: 4.2,
+    reviews: 6,
+    inStock: true,
+    sellerId: 'seller2',
+    sellerName: 'Horta do Vale',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
+    tags: ['orgânico', 'ferro', 'vitaminas'],
+    sku: 'ESP-ORG-001',
+    weight: '250g',
+    color: 'Verde',
+    stockStatus: 'Em estoque',
+    type: 'Orgânico'
+  },
+  {
+    id: '10',
+    name: 'Laranjas Bahia Orgânicas',
+    price: 11.99,
+    originalPrice: 14.99,
+    image: 'https://images.pexels.com/photos/42059/citrus-diet-food-fresh-42059.jpeg',
+    description: 'Laranjas Bahia orgânicas, suculentas e ricas em vitamina C.',
+    category: 'Frutas',
+    brand: 'Pomar Orgânico',
+    rating: 4.7,
+    reviews: 16,
+    inStock: true,
+    sellerId: 'seller3',
+    sellerName: 'Pomar Orgânico',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
+    tags: ['orgânico', 'vitamina C', 'suculenta'],
+    sku: 'LAR-BAH-001',
+    weight: '1kg',
+    color: 'Laranja',
+    stockStatus: 'Em estoque',
+    type: 'Orgânico'
+  },
+  {
+    id: '11',
+    name: 'Brócolis Orgânicos',
+    price: 9.50,
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    description: 'Brócolis orgânicos, ricos em antioxidantes.',
+    category: 'Verduras',
+    brand: 'Fazenda Verde',
+    rating: 4.4,
+    reviews: 10,
+    inStock: true,
+    sellerId: 'seller1',
+    sellerName: 'Fazenda Verde',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    tags: ['orgânico', 'antioxidantes', 'nutritivo'],
+    sku: 'BRO-ORG-001',
+    weight: '400g',
+    color: 'Verde',
+    stockStatus: 'Em estoque',
+    type: 'Orgânico'
+  },
+  {
+    id: '12',
+    name: 'Uvas Verdes Orgânicas',
+    price: 13.99,
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    description: 'Uvas verdes orgânicas, doces e refrescantes.',
+    category: 'Frutas',
+    brand: 'Pomar Orgânico',
+    rating: 4.6,
+    reviews: 13,
+    inStock: true,
+    sellerId: 'seller3',
+    sellerName: 'Pomar Orgânico',
+    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
+    tags: ['orgânico', 'doce', 'refrescante'],
+    sku: 'UVA-VER-001',
+    weight: '500g',
+    color: 'Verde',
+    stockStatus: 'Em estoque',
+    type: 'Orgânico'
   }
 ];
 
 const mockBlogPosts: BlogPost[] = [
   {
     id: '1',
-    title: 'Benefícios dos Alimentos Orgânicos para a Saúde',
-    excerpt: 'Descubra como os alimentos orgânicos podem transformar sua saúde e bem-estar com nutrientes mais potentes e livres de agrotóxicos.',
-    content: 'Os alimentos orgânicos são cultivados sem o uso de pesticidas sintéticos, fertilizantes químicos ou organismos geneticamente modificados...',
-    image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg',
-    date: '15 de Janeiro, 2024',
+    title: 'Os Benefícios dos Alimentos Orgânicos',
+    excerpt: 'Descubra por que escolher alimentos orgânicos pode fazer toda a diferença na sua saúde e no meio ambiente.',
+    content: 'Conteúdo completo sobre os benefícios dos alimentos orgânicos...',
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    date: '2024-01-15',
     author: 'Dr. Maria Silva',
     category: 'Saúde',
     tags: ['orgânico', 'saúde', 'nutrição']
@@ -365,10 +430,10 @@ const mockBlogPosts: BlogPost[] = [
   {
     id: '2',
     title: 'Como Cultivar sua Própria Horta Orgânica',
-    excerpt: 'Aprenda técnicas simples para cultivar alimentos orgânicos em casa, mesmo em espaços pequenos.',
-    content: 'Cultivar sua própria horta orgânica é uma experiência gratificante que conecta você com a natureza...',
-    image: 'https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg',
-    date: '12 de Janeiro, 2024',
+    excerpt: 'Aprenda técnicas simples para começar sua própria horta orgânica em casa.',
+    content: 'Guia completo para cultivar horta orgânica...',
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    date: '2024-01-10',
     author: 'João Santos',
     category: 'Cultivo',
     tags: ['horta', 'cultivo', 'orgânico']
@@ -376,13 +441,46 @@ const mockBlogPosts: BlogPost[] = [
   {
     id: '3',
     title: 'Receitas Saudáveis com Produtos Orgânicos',
-    excerpt: 'Inspire-se com receitas deliciosas e nutritivas usando apenas ingredientes orgânicos frescos.',
-    content: 'Cozinhar com ingredientes orgânicos frescos não só é mais saudável, mas também mais saboroso...',
-    image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg',
-    date: '10 de Janeiro, 2024',
-    author: 'Chef Ana Costa',
+    excerpt: 'Receitas deliciosas e nutritivas usando apenas ingredientes orgânicos.',
+    content: 'Coleção de receitas saudáveis...',
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    date: '2024-01-05',
+    author: 'Ana Costa',
     category: 'Receitas',
-    tags: ['receitas', 'orgânico', 'culinária']
+    tags: ['receitas', 'saudável', 'orgânico']
+  },
+  {
+    id: '4',
+    title: 'O Impacto Ambiental da Agricultura Orgânica',
+    excerpt: 'Entenda como a agricultura orgânica contribui para a preservação do meio ambiente.',
+    content: 'Análise do impacto ambiental...',
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    date: '2023-12-28',
+    author: 'Carlos Oliveira',
+    category: 'Meio Ambiente',
+    tags: ['meio ambiente', 'sustentabilidade', 'orgânico']
+  },
+  {
+    id: '5',
+    title: 'Dicas para Escolher os Melhores Produtos Orgânicos',
+    excerpt: 'Saiba como identificar e escolher produtos orgânicos de qualidade.',
+    content: 'Guia para escolher produtos orgânicos...',
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    date: '2023-12-20',
+    author: 'Lucia Ferreira',
+    category: 'Dicas',
+    tags: ['dicas', 'qualidade', 'orgânico']
+  },
+  {
+    id: '6',
+    title: 'A Importância da Estação dos Alimentos',
+    excerpt: 'Descubra por que consumir alimentos da estação é melhor para sua saúde e para o planeta.',
+    content: 'Sobre a importância da sazonalidade...',
+    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    date: '2023-12-15',
+    author: 'Pedro Lima',
+    category: 'Saúde',
+    tags: ['estação', 'sazonalidade', 'saúde']
   }
 ];
 
@@ -394,8 +492,8 @@ const mockReviews: Review[] = [
     userName: 'Maria Silva',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 5,
-    comment: 'Excelente qualidade! O repolho chinês chegou muito fresco e saboroso. Recomendo muito!',
-    date: '10 de Janeiro, 2024'
+    comment: 'Tomates deliciosos! Muito frescos e saborosos.',
+    date: '2024-01-10'
   },
   {
     id: '2',
@@ -404,8 +502,8 @@ const mockReviews: Review[] = [
     userName: 'João Santos',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 4,
-    comment: 'Produto de boa qualidade, chegou bem embalado. Só não dei 5 estrelas porque demorou um pouco para chegar.',
-    date: '8 de Janeiro, 2024'
+    comment: 'Ótima qualidade, recomendo!',
+    date: '2024-01-08'
   },
   {
     id: '3',
@@ -414,45 +512,501 @@ const mockReviews: Review[] = [
     userName: 'Ana Costa',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 5,
-    comment: 'Tomates deliciosos! Muito maduros e saborosos. Com certeza vou comprar novamente.',
-    date: '12 de Janeiro, 2024'
+    comment: 'Repolho muito fresco e saboroso.',
+    date: '2024-01-12'
+  },
+  {
+    id: '4',
+    productId: '3',
+    userId: 'user4',
+    userName: 'Carlos Oliveira',
+    userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+    rating: 4,
+    comment: 'Cenouras orgânicas de excelente qualidade.',
+    date: '2024-01-09'
+  },
+  {
+    id: '5',
+    productId: '5',
+    userId: 'user5',
+    userName: 'Lucia Ferreira',
+    userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+    rating: 5,
+    comment: 'Maçãs Fuji são as melhores que já provei!',
+    date: '2024-01-11'
+  },
+  {
+    id: '6',
+    productId: '8',
+    userId: 'user6',
+    userName: 'Pedro Lima',
+    userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+    rating: 4,
+    comment: 'Batatas doces muito saborosas.',
+    date: '2024-01-07'
+  },
+  {
+    id: '7',
+    productId: '10',
+    userId: 'user7',
+    userName: 'Fernanda Costa',
+    userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+    rating: 5,
+    comment: 'Laranjas suculentas e doces!',
+    date: '2024-01-13'
+  },
+  {
+    id: '8',
+    productId: '12',
+    userId: 'user8',
+    userName: 'Roberto Silva',
+    userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+    rating: 4,
+    comment: 'Uvas verdes muito refrescantes.',
+    date: '2024-01-06'
   }
 ];
 
 const mockPayouts: Payout[] = [
   {
-    id: 'PAY001',
-    date: '15 de Janeiro, 2024',
+    id: '1',
+    date: '2024-01-15',
     period: '01-15 Jan 2024',
-    amount: 1250.50,
+    amount: 1250.75,
     status: 'completed'
   },
   {
-    id: 'PAY002',
-    date: '01 de Janeiro, 2024',
+    id: '2',
+    date: '2024-01-01',
     period: '16-31 Dez 2023',
-    amount: 980.75,
+    amount: 980.50,
     status: 'completed'
   },
   {
-    id: 'PAY003',
-    date: '15 de Dezembro, 2023',
+    id: '3',
+    date: '2023-12-15',
     period: '01-15 Dez 2023',
     amount: 1450.25,
     status: 'completed'
+  },
+  {
+    id: '4',
+    date: '2023-12-01',
+    period: '16-30 Nov 2023',
+    amount: 1120.80,
+    status: 'completed'
+  },
+  {
+    id: '5',
+    date: '2023-11-15',
+    period: '01-15 Nov 2023',
+    amount: 890.30,
+    status: 'completed'
+  },
+  {
+    id: '6',
+    date: '2023-11-01',
+    period: '16-31 Out 2023',
+    amount: 1340.60,
+    status: 'completed'
+  },
+  {
+    id: '7',
+    date: '2023-10-15',
+    period: '01-15 Out 2023',
+    amount: 1670.90,
+    status: 'completed'
+  },
+  {
+    id: '8',
+    date: '2023-10-01',
+    period: '16-30 Set 2023',
+    amount: 920.45,
+    status: 'completed'
+  },
+  {
+    id: '9',
+    date: '2023-09-15',
+    period: '01-15 Set 2023',
+    amount: 1580.20,
+    status: 'completed'
+  },
+  {
+    id: '10',
+    date: '2023-09-01',
+    period: '16-31 Ago 2023',
+    amount: 1100.75,
+    status: 'completed'
+  },
+  {
+    id: '11',
+    date: '2024-01-30',
+    period: '16-30 Jan 2024',
+    amount: 1850.40,
+    status: 'pending'
+  },
+  {
+    id: '12',
+    date: '2023-08-15',
+    period: '01-15 Ago 2023',
+    amount: 750.25,
+    status: 'failed'
   }
 ];
 
+const mockOrders: Order[] = [
+  {
+    id: 'ORD-001',
+    date: '2024-01-20',
+    total: 45.50,
+    status: 'delivered',
+    userId: 'user1',
+    items: [
+      {
+        product: {
+          id: '1',
+          name: 'Tomates Orgânicos',
+          price: 8.50,
+          originalPrice: 10.00,
+          image: 'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
+          description: 'Tomates orgânicos frescos e saborosos',
+          category: 'Legumes',
+          brand: 'Fazenda Verde',
+          rating: 4.5,
+          reviews: 128,
+          inStock: true,
+          sellerId: 'seller1',
+          sellerName: 'Fazenda Verde',
+          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
+          tags: ['orgânico', 'fresco', 'local'],
+          sku: 'TOM-ORG-001',
+          weight: '500g',
+          color: 'Vermelho',
+          stockStatus: 'Em estoque',
+          type: 'Legume'
+        },
+        quantity: 2
+      },
+      {
+        product: {
+          id: '2',
+          name: 'Repolho Chinês Orgânico',
+          price: 12.99,
+          originalPrice: 15.99,
+          image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+          description: 'Repolho chinês orgânico crocante',
+          category: 'Legumes',
+          brand: 'Fazenda Verde',
+          rating: 4.2,
+          reviews: 89,
+          inStock: true,
+          sellerId: 'seller1',
+          sellerName: 'Fazenda Verde',
+          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
+          tags: ['orgânico', 'crocante', 'fresco'],
+          sku: 'REP-CHI-001',
+          weight: '800g',
+          color: 'Verde',
+          stockStatus: 'Em estoque',
+          type: 'Legume'
+        },
+        quantity: 1
+      }
+    ],
+    billingAddress: {
+      firstName: 'João',
+      lastName: 'Silva',
+      address: 'Rua das Flores, 123',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01234-567',
+      email: 'joao@exemplo.com',
+      phone: '(11) 99999-9999'
+    },
+    paymentMethod: 'PIX',
+    shippingAddress: {
+      firstName: 'João',
+      lastName: 'Silva',
+      address: 'Rua das Flores, 123',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01234-567'
+    },
+    orderNotes: 'Entregar após 18h'
+  },
+  {
+    id: 'ORD-002',
+    date: '2024-01-18',
+    total: 32.97,
+    status: 'processing',
+    userId: 'user2',
+    items: [
+      {
+        product: {
+          id: '3',
+          name: 'Cenouras Orgânicas',
+          price: 6.99,
+          originalPrice: 8.99,
+          image: 'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg',
+          description: 'Cenouras orgânicas doces e nutritivas',
+          category: 'Legumes',
+          brand: 'Fazenda Verde',
+          rating: 4.7,
+          reviews: 156,
+          inStock: true,
+          sellerId: 'seller1',
+          sellerName: 'Fazenda Verde',
+          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
+          tags: ['orgânico', 'doce', 'nutritivo'],
+          sku: 'CEN-ORG-001',
+          weight: '1kg',
+          color: 'Laranja',
+          stockStatus: 'Em estoque',
+          type: 'Legume'
+        },
+        quantity: 3
+      },
+      {
+        product: {
+          id: '4',
+          name: 'Alface Crespa Orgânica',
+          price: 4.99,
+          originalPrice: 6.99,
+          image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+          description: 'Alface crespa orgânica fresca',
+          category: 'Verduras',
+          brand: 'Fazenda Verde',
+          rating: 4.3,
+          reviews: 92,
+          inStock: true,
+          sellerId: 'seller1',
+          sellerName: 'Fazenda Verde',
+          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
+          tags: ['orgânico', 'fresco', 'crocante'],
+          sku: 'ALC-CRE-001',
+          weight: '300g',
+          color: 'Verde',
+          stockStatus: 'Em estoque',
+          type: 'Verdura'
+        },
+        quantity: 2
+      }
+    ],
+    billingAddress: {
+      firstName: 'Maria',
+      lastName: 'Santos',
+      address: 'Av. Paulista, 1000',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01310-100',
+      email: 'maria@exemplo.com',
+      phone: '(11) 88888-8888'
+    },
+    paymentMethod: 'Cartão de Crédito',
+    shippingAddress: {
+      firstName: 'Maria',
+      lastName: 'Santos',
+      address: 'Av. Paulista, 1000',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01310-100'
+    }
+  },
+  {
+    id: 'ORD-003',
+    date: '2024-01-15',
+    total: 28.50,
+    status: 'shipped',
+    userId: 'user3',
+    items: [
+      {
+        product: {
+          id: '5',
+          name: 'Uvas Verdes Orgânicas',
+          price: 14.25,
+          originalPrice: 18.00,
+          image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+          description: 'Uvas verdes orgânicas doces',
+          category: 'Frutas',
+          brand: 'Fazenda Verde',
+          rating: 4.6,
+          reviews: 203,
+          inStock: true,
+          sellerId: 'seller1',
+          sellerName: 'Fazenda Verde',
+          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
+          tags: ['orgânico', 'doce', 'refrescante'],
+          sku: 'UVA-VER-001',
+          weight: '500g',
+          color: 'Verde',
+          stockStatus: 'Em estoque',
+          type: 'Fruta'
+        },
+        quantity: 2
+      }
+    ],
+    billingAddress: {
+      firstName: 'Pedro',
+      lastName: 'Oliveira',
+      address: 'Rua Augusta, 500',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01212-000',
+      email: 'pedro@exemplo.com',
+      phone: '(11) 77777-7777'
+    },
+    paymentMethod: 'PIX',
+    shippingAddress: {
+      firstName: 'Pedro',
+      lastName: 'Oliveira',
+      address: 'Rua Augusta, 500',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01212-000'
+    }
+  },
+  {
+    id: 'ORD-004',
+    date: '2024-01-12',
+    total: 67.45,
+    status: 'pending',
+    userId: 'user4',
+    items: [
+      {
+        product: {
+          id: '1',
+          name: 'Tomates Orgânicos',
+          price: 8.50,
+          originalPrice: 10.00,
+          image: 'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
+          description: 'Tomates orgânicos frescos e saborosos',
+          category: 'Legumes',
+          brand: 'Fazenda Verde',
+          rating: 4.5,
+          reviews: 128,
+          inStock: true,
+          sellerId: 'seller1',
+          sellerName: 'Fazenda Verde',
+          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
+          tags: ['orgânico', 'fresco', 'local'],
+          sku: 'TOM-ORG-001',
+          weight: '500g',
+          color: 'Vermelho',
+          stockStatus: 'Em estoque',
+          type: 'Legume'
+        },
+        quantity: 3
+      },
+      {
+        product: {
+          id: '2',
+          name: 'Repolho Chinês Orgânico',
+          price: 12.99,
+          originalPrice: 15.99,
+          image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+          description: 'Repolho chinês orgânico crocante',
+          category: 'Legumes',
+          brand: 'Fazenda Verde',
+          rating: 4.2,
+          reviews: 89,
+          inStock: true,
+          sellerId: 'seller1',
+          sellerName: 'Fazenda Verde',
+          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
+          tags: ['orgânico', 'crocante', 'fresco'],
+          sku: 'REP-CHI-001',
+          weight: '800g',
+          color: 'Verde',
+          stockStatus: 'Em estoque',
+          type: 'Legume'
+        },
+        quantity: 2
+      },
+      {
+        product: {
+          id: '3',
+          name: 'Cenouras Orgânicas',
+          price: 6.99,
+          originalPrice: 8.99,
+          image: 'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg',
+          description: 'Cenouras orgânicas doces e nutritivas',
+          category: 'Legumes',
+          brand: 'Fazenda Verde',
+          rating: 4.7,
+          reviews: 156,
+          inStock: true,
+          sellerId: 'seller1',
+          sellerName: 'Fazenda Verde',
+          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
+          tags: ['orgânico', 'doce', 'nutritivo'],
+          sku: 'CEN-ORG-001',
+          weight: '1kg',
+          color: 'Laranja',
+          stockStatus: 'Em estoque',
+          type: 'Legume'
+        },
+        quantity: 1
+      }
+    ],
+    billingAddress: {
+      firstName: 'Ana',
+      lastName: 'Costa',
+      address: 'Rua Oscar Freire, 200',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01226-010',
+      email: 'ana@exemplo.com',
+      phone: '(11) 66666-6666'
+    },
+    paymentMethod: 'Cartão de Crédito',
+    shippingAddress: {
+      firstName: 'Ana',
+      lastName: 'Costa',
+      address: 'Rua Oscar Freire, 200',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01226-010'
+    }
+  }
+];
+
+// Helper functions for localStorage
+const loadFromStorage = (key: string, defaultValue: any) => {
+  if (typeof window === 'undefined') return defaultValue;
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.error(`Error loading ${key} from localStorage:`, error);
+    return defaultValue;
+  }
+};
+
+const saveToStorage = (key: string, value: any) => {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Error saving ${key} to localStorage:`, error);
+  }
+};
+
+// Load persisted data
+const persistedCart = loadFromStorage('ecobazar_cart', []);
+const persistedWishlist = loadFromStorage('ecobazar_wishlist', []);
+const persistedUser = loadFromStorage('ecobazar_user', null);
+const persistedAuth = loadFromStorage('ecobazar_authenticated', false);
+
 const initialState: MarketplaceState = {
   products: mockProducts,
-  cart: [],
-  wishlist: [],
-  user: null,
-  orders: [],
+  cart: persistedCart,
+  wishlist: persistedWishlist,
+  user: persistedUser,
+  orders: mockOrders,
   payouts: mockPayouts,
   blogPosts: mockBlogPosts,
   reviews: mockReviews,
-  isAuthenticated: false,
+  isAuthenticated: persistedAuth,
   showNewsletterPopup: true,
   showCartPopup: false,
   quickViewProduct: null,
@@ -460,11 +1014,13 @@ const initialState: MarketplaceState = {
 };
 
 function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction): MarketplaceState {
+  let newState: MarketplaceState;
+
   switch (action.type) {
     case 'ADD_TO_CART':
       const existingItem = state.cart.find(item => item.product.id === action.payload.product.id);
       if (existingItem) {
-        return {
+        newState = {
           ...state,
           cart: state.cart.map(item =>
             item.product.id === action.payload.product.id
@@ -472,20 +1028,25 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
               : item
           ),
         };
+      } else {
+        newState = {
+          ...state,
+          cart: [...state.cart, { product: action.payload.product, quantity: action.payload.quantity }],
+        };
       }
-      return {
-        ...state,
-        cart: [...state.cart, { product: action.payload.product, quantity: action.payload.quantity }],
-      };
+      saveToStorage('ecobazar_cart', newState.cart);
+      return newState;
 
     case 'REMOVE_FROM_CART':
-      return {
+      newState = {
         ...state,
         cart: state.cart.filter(item => item.product.id !== action.payload),
       };
+      saveToStorage('ecobazar_cart', newState.cart);
+      return newState;
 
     case 'UPDATE_CART_QUANTITY':
-      return {
+      newState = {
         ...state,
         cart: state.cart.map(item =>
           item.product.id === action.payload.productId
@@ -493,39 +1054,51 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
             : item
         ),
       };
+      saveToStorage('ecobazar_cart', newState.cart);
+      return newState;
 
     case 'CLEAR_CART':
-      return {
+      newState = {
         ...state,
         cart: [],
       };
+      saveToStorage('ecobazar_cart', newState.cart);
+      return newState;
 
     case 'ADD_TO_WISHLIST':
       if (state.wishlist.find(item => item.id === action.payload.id)) {
         return state;
       }
-      return {
+      newState = {
         ...state,
         wishlist: [...state.wishlist, action.payload],
       };
+      saveToStorage('ecobazar_wishlist', newState.wishlist);
+      return newState;
 
     case 'REMOVE_FROM_WISHLIST':
-      return {
+      newState = {
         ...state,
         wishlist: state.wishlist.filter(item => item.id !== action.payload),
       };
+      saveToStorage('ecobazar_wishlist', newState.wishlist);
+      return newState;
 
     case 'SET_USER':
-      return {
+      newState = {
         ...state,
         user: action.payload,
       };
+      saveToStorage('ecobazar_user', newState.user);
+      return newState;
 
     case 'SET_AUTHENTICATED':
-      return {
+      newState = {
         ...state,
         isAuthenticated: action.payload,
       };
+      saveToStorage('ecobazar_authenticated', newState.isAuthenticated);
+      return newState;
 
     case 'HIDE_NEWSLETTER_POPUP':
       return {
@@ -597,6 +1170,11 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
       return state;
   }
 }
+
+const MarketplaceContext = createContext<{
+  state: MarketplaceState;
+  dispatch: React.Dispatch<MarketplaceAction>;
+} | null>(null);
 
 export function MarketplaceProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(marketplaceReducer, initialState);

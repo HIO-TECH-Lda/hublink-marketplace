@@ -101,7 +101,7 @@ export default function CheckoutPage() {
           <p className="text-gray-6 mb-8">Adicione produtos ao carrinho para continuar.</p>
           <Link href="/loja">
             <Button className="bg-primary hover:bg-primary-hard text-white">
-              Ir para a Loja
+              Ir para a Banca
             </Button>
           </Link>
         </div>
@@ -122,19 +122,13 @@ export default function CheckoutPage() {
           <span className="text-primary"> Checkout</span>
         </nav>
 
-        {/* Back Button */}
-        <Link href="/carrinho" className="inline-flex items-center text-gray-6 hover:text-primary mb-6">
-          <ArrowLeft size={16} className="mr-2" />
-          Voltar ao Carrinho
-        </Link>
-
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Checkout Form */}
             <div className="lg:col-span-2 space-y-8">
               {/* Billing Information */}
               <div className="bg-white rounded-lg shadow-sm p-6">
-                <h2 className="text-xl font-bold text-gray-9 mb-6">Informações de Faturamento</h2>
+                <h2 className="text-2xl font-bold text-gray-9 mb-6">Informações de Faturamento</h2>
                 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -257,6 +251,16 @@ export default function CheckoutPage() {
                       Enviar para um endereço diferente
                     </Label>
                   </div>
+                </div>
+
+                {/* Back to Cart Button */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6 pt-6 border-t border-gray-2">
+                  <Link href="/carrinho">
+                    <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                      <ArrowLeft size={16} className="mr-2" />
+                      Voltar ao Carrinho
+                    </Button>
+                  </Link>
                 </div>
               </div>
 

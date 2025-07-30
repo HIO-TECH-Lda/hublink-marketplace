@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import SellerSidebar from '@/app/(seller)/components/SellerSidebar';
+import Link from 'next/link';
 
 export default function SellerSettingsPage() {
   const { state, dispatch } = useMarketplace();
@@ -134,7 +135,7 @@ export default function SellerSettingsPage() {
   }
 
   const tabs = [
-    { id: 'store', label: 'Loja', icon: Store },
+    { id: 'store', label: 'Banca', icon: Store },
     { id: 'payment', label: 'Pagamentos', icon: CreditCard },
     { id: 'account', label: 'Conta', icon: User },
     { id: 'notifications', label: 'Notificações', icon: Bell }
@@ -144,7 +145,14 @@ export default function SellerSettingsPage() {
     <div className="min-h-screen bg-gray-1">
       <Header />
       
-      <div className="container py-8">
+      <div className="container py-8 px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav className="text-sm text-gray-6 mb-6">
+          <Link href="/" className="hover:text-primary">Início</Link> / 
+          <Link href="/vendedor/painel" className="hover:text-primary"> Painel do Vendedor</Link> / 
+          <span className="text-primary">Configurações</span>
+        </nav>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1">
@@ -153,96 +161,89 @@ export default function SellerSettingsPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            {/* Header */}
-            <div className="mb-6">
-              <nav className="text-sm text-gray-6 mb-2">
-                <span className="text-primary">Configurações</span>
-              </nav>
-              <h1 className="text-2xl font-bold text-gray-9">Configurações da Loja</h1>
-              <p className="text-gray-6 mt-2">Gerencie as configurações da sua loja e conta</p>
-            </div>
-
             {/* Tabs */}
             <div className="bg-white rounded-lg shadow-sm mb-6">
               <div className="border-b border-gray-2">
-                <nav className="flex space-x-8 px-6">
-                  {tabs.map((tab) => {
-                    const Icon = tab.icon;
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
-                        className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors flex items-center space-x-2 ${
-                          activeTab === tab.id
-                            ? 'border-primary text-primary'
-                            : 'border-transparent text-gray-6 hover:text-gray-9'
-                        }`}
-                      >
-                        <Icon size={16} />
-                        <span>{tab.label}</span>
-                      </button>
-                    );
-                  })}
+                <nav className="flex overflow-x-auto px-4 sm:px-6">
+                  <div className="flex space-x-4 sm:space-x-8 min-w-full">
+                    {tabs.map((tab) => {
+                      const Icon = tab.icon;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveTab(tab.id)}
+                          className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors flex items-center space-x-2 whitespace-nowrap flex-shrink-0 ${
+                            activeTab === tab.id
+                              ? 'border-primary text-primary'
+                              : 'border-transparent text-gray-6 hover:text-gray-9'
+                          }`}
+                        >
+                          <Icon size={16} />
+                          <span>{tab.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </nav>
               </div>
 
               {/* Tab Content */}
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <form onSubmit={handleSubmit}>
                   {/* Store Settings */}
                   {activeTab === 'store' && (
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-9 mb-4">Informações da Loja</h3>
+                        <h3 className="text-lg font-semibold text-gray-9 mb-4">Informações da Banca</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-7 mb-2">
-                              Nome da Loja *
+                              Nome da Banca *
                             </label>
                             <Input
                               type="text"
                               name="storeName"
                               value={storeData.storeName}
                               onChange={handleStoreChange}
-                              placeholder="Ex: Fazenda Verde"
+                              placeholder="Digite o nome da sua loja"
                               required
                             />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-7 mb-2">
-                              Email da Loja *
+                              Email da Banca *
                             </label>
                             <Input
                               type="email"
                               name="storeEmail"
                               value={storeData.storeEmail}
                               onChange={handleStoreChange}
-                              placeholder="loja@exemplo.com"
+                              placeholder="Digite o email da loja"
                               required
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-7 mb-2">
-                              Telefone da Loja
-                            </label>
-                            <Input
-                              type="tel"
-                              name="storePhone"
-                              value={storeData.storePhone}
-                              onChange={handleStoreChange}
-                              placeholder="(11) 99999-9999"
                             />
                           </div>
                         </div>
                         <div className="mt-4">
                           <label className="block text-sm font-medium text-gray-7 mb-2">
-                            Descrição da Loja
+                            Telefone da Banca
+                          </label>
+                          <Input
+                            type="tel"
+                            name="storePhone"
+                            value={storeData.storePhone}
+                            onChange={handleStoreChange}
+                            placeholder="Digite o telefone da loja"
+                          />
+                        </div>
+                        <div className="mt-4">
+                          <label className="block text-sm font-medium text-gray-7 mb-2">
+                            Descrição da Banca
                           </label>
                           <Textarea
                             name="storeDescription"
                             value={storeData.storeDescription}
                             onChange={handleStoreChange}
-                            placeholder="Descreva sua loja..."
+                            placeholder="Descreva sua loja e produtos"
                             rows={4}
                           />
                         </div>
@@ -254,60 +255,47 @@ export default function SellerSettingsPage() {
                   {activeTab === 'payment' && (
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-9 mb-4">Configurações de Pagamento</h3>
+                        <h3 className="text-lg font-semibold text-gray-9 mb-4">Informações de Pagamento</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-7 mb-2">
-                              Banco
+                              Nome do Banco
                             </label>
                             <Input
                               type="text"
                               name="bankName"
                               value={paymentData.bankName}
                               onChange={handlePaymentChange}
-                              placeholder="Ex: Banco do Brasil"
+                              placeholder="Digite o nome do banco"
                             />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-7 mb-2">
-                              Método de Pagamento
-                            </label>
-                            <select
-                              name="paymentMethod"
-                              value={paymentData.paymentMethod}
-                              onChange={handlePaymentChange}
-                              className="w-full px-3 py-2 border border-gray-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            >
-                              <option value="PIX">PIX</option>
-                              <option value="Transferência">Transferência Bancária</option>
-                              <option value="Boleto">Boleto</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-7 mb-2">
-                              Agência
-                            </label>
-                            <Input
-                              type="text"
-                              name="agencyNumber"
-                              value={paymentData.agencyNumber}
-                              onChange={handlePaymentChange}
-                              placeholder="Ex: 0001"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-7 mb-2">
-                              Conta
+                              Número da Conta
                             </label>
                             <Input
                               type="text"
                               name="accountNumber"
                               value={paymentData.accountNumber}
                               onChange={handlePaymentChange}
-                              placeholder="Ex: 12345-6"
+                              placeholder="Digite o número da conta"
                             />
                           </div>
-                          <div className="md:col-span-2">
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-7 mb-2">
+                              Número da Agência
+                            </label>
+                            <Input
+                              type="text"
+                              name="agencyNumber"
+                              value={paymentData.agencyNumber}
+                              onChange={handlePaymentChange}
+                              placeholder="Digite o número da agência"
+                            />
+                          </div>
+                          <div>
                             <label className="block text-sm font-medium text-gray-7 mb-2">
                               Chave PIX
                             </label>
@@ -316,9 +304,24 @@ export default function SellerSettingsPage() {
                               name="pixKey"
                               value={paymentData.pixKey}
                               onChange={handlePaymentChange}
-                              placeholder="Ex: vendedor@exemplo.com"
+                              placeholder="Digite a chave PIX"
                             />
                           </div>
+                        </div>
+                        <div className="mt-4">
+                          <label className="block text-sm font-medium text-gray-7 mb-2">
+                            Método de Pagamento Preferido
+                          </label>
+                          <select
+                            name="paymentMethod"
+                            value={paymentData.paymentMethod}
+                            onChange={handlePaymentChange}
+                            className="w-full px-3 py-2 border border-gray-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                          >
+                            <option value="PIX">PIX</option>
+                            <option value="Transferência Bancária">Transferência Bancária</option>
+                            <option value="Boleto">Boleto</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -339,7 +342,7 @@ export default function SellerSettingsPage() {
                               name="firstName"
                               value={accountData.firstName}
                               onChange={handleAccountChange}
-                              placeholder="Seu nome"
+                              placeholder="Digite seu nome"
                               required
                             />
                           </div>
@@ -352,10 +355,12 @@ export default function SellerSettingsPage() {
                               name="lastName"
                               value={accountData.lastName}
                               onChange={handleAccountChange}
-                              placeholder="Seu sobrenome"
+                              placeholder="Digite seu sobrenome"
                               required
                             />
                           </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-7 mb-2">
                               Email *
@@ -365,7 +370,7 @@ export default function SellerSettingsPage() {
                               name="email"
                               value={accountData.email}
                               onChange={handleAccountChange}
-                              placeholder="seu@email.com"
+                              placeholder="Digite seu email"
                               required
                             />
                           </div>
@@ -378,7 +383,7 @@ export default function SellerSettingsPage() {
                               name="phone"
                               value={accountData.phone}
                               onChange={handleAccountChange}
-                              placeholder="(11) 99999-9999"
+                              placeholder="Digite seu telefone"
                             />
                           </div>
                         </div>
@@ -392,55 +397,55 @@ export default function SellerSettingsPage() {
                       <div>
                         <h3 className="text-lg font-semibold text-gray-9 mb-4">Preferências de Notificação</h3>
                         <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h4 className="font-medium text-gray-9">Novos Pedidos</h4>
-                              <p className="text-sm text-gray-6">Receber notificações quando houver novos pedidos</p>
-                            </div>
+                          <div className="flex items-center space-x-3">
                             <Checkbox
+                              id="newOrders"
                               checked={notifications.newOrders}
                               onCheckedChange={(checked) => handleNotificationChange('newOrders', checked as boolean)}
                             />
+                            <label htmlFor="newOrders" className="text-sm text-gray-7 cursor-pointer">
+                              Novos pedidos
+                            </label>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h4 className="font-medium text-gray-9">Estoque Baixo</h4>
-                              <p className="text-sm text-gray-6">Alertas quando produtos estiverem com estoque baixo</p>
-                            </div>
+                          <div className="flex items-center space-x-3">
                             <Checkbox
+                              id="lowStock"
                               checked={notifications.lowStock}
                               onCheckedChange={(checked) => handleNotificationChange('lowStock', checked as boolean)}
                             />
+                            <label htmlFor="lowStock" className="text-sm text-gray-7 cursor-pointer">
+                              Produtos com estoque baixo
+                            </label>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h4 className="font-medium text-gray-9">Avaliações de Clientes</h4>
-                              <p className="text-sm text-gray-6">Notificações sobre novas avaliações</p>
-                            </div>
+                          <div className="flex items-center space-x-3">
                             <Checkbox
+                              id="customerReviews"
                               checked={notifications.customerReviews}
                               onCheckedChange={(checked) => handleNotificationChange('customerReviews', checked as boolean)}
                             />
+                            <label htmlFor="customerReviews" className="text-sm text-gray-7 cursor-pointer">
+                              Novas avaliações de clientes
+                            </label>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h4 className="font-medium text-gray-9">Pagamentos Recebidos</h4>
-                              <p className="text-sm text-gray-6">Confirmações de pagamentos recebidos</p>
-                            </div>
+                          <div className="flex items-center space-x-3">
                             <Checkbox
+                              id="paymentReceived"
                               checked={notifications.paymentReceived}
                               onCheckedChange={(checked) => handleNotificationChange('paymentReceived', checked as boolean)}
                             />
+                            <label htmlFor="paymentReceived" className="text-sm text-gray-7 cursor-pointer">
+                              Pagamentos recebidos
+                            </label>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h4 className="font-medium text-gray-9">Emails de Marketing</h4>
-                              <p className="text-sm text-gray-6">Receber emails promocionais e novidades</p>
-                            </div>
+                          <div className="flex items-center space-x-3">
                             <Checkbox
+                              id="marketingEmails"
                               checked={notifications.marketingEmails}
                               onCheckedChange={(checked) => handleNotificationChange('marketingEmails', checked as boolean)}
                             />
+                            <label htmlFor="marketingEmails" className="text-sm text-gray-7 cursor-pointer">
+                              Emails de marketing e promoções
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -448,14 +453,14 @@ export default function SellerSettingsPage() {
                   )}
 
                   {/* Submit Button */}
-                  <div className="flex justify-end pt-6 border-t border-gray-2 mt-6">
+                  <div className="flex justify-end mt-8 pt-6 border-t border-gray-2">
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-primary hover:bg-primary-hard text-white flex items-center"
+                      className="bg-primary hover:bg-primary-hard text-white px-6 py-2 flex items-center space-x-2"
                     >
-                      <Save size={16} className="mr-2" />
-                      {isSubmitting ? 'Salvando...' : 'Salvar Configurações'}
+                      <Save size={16} />
+                      <span>{isSubmitting ? 'Salvando...' : 'Salvar Configurações'}</span>
                     </Button>
                   </div>
                 </form>

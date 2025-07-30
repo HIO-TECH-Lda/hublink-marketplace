@@ -32,7 +32,7 @@ export default function ProductPage() {
           <Link href="/loja">
             <Button className="bg-primary hover:bg-primary-hard text-white">
               <ArrowLeft size={16} className="mr-2" />
-              Voltar à Loja
+              Voltar à Banca
             </Button>
           </Link>
         </div>
@@ -79,7 +79,7 @@ export default function ProductPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/loja" className="hover:text-primary"> Loja</Link> / 
+          <Link href="/loja" className="hover:text-primary"> Banca</Link> / 
           <Link href={`/loja?category=${product.category}`} className="hover:text-primary"> {product.category}</Link> / 
           <span className="text-primary">{product.name}</span>
         </nav>

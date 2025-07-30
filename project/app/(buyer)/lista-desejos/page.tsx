@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Heart, ShoppingCart, Share2, Facebook, Twitter, Instagram, X } from 'lucide-react';
+import { ArrowLeft, Heart, ShoppingCart, Share2, Facebook, Twitter, Instagram, X, ChevronDown, ChevronUp } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
@@ -11,6 +11,7 @@ import { useMarketplace } from '@/contexts/MarketplaceContext';
 
 export default function WishlistPage() {
   const { state, dispatch } = useMarketplace();
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   if (!state.isAuthenticated || !state.user) {
     return (
@@ -65,6 +66,16 @@ export default function WishlistPage() {
     }
   };
 
+  const toggleItemExpansion = (productId: string) => {
+    const newExpanded = new Set(expandedItems);
+    if (newExpanded.has(productId)) {
+      newExpanded.delete(productId);
+    } else {
+      newExpanded.add(productId);
+    }
+    setExpandedItems(newExpanded);
+  };
+
   if (state.wishlist.length === 0) {
     return (
       <div className="min-h-screen bg-gray-1">
@@ -105,7 +116,7 @@ export default function WishlistPage() {
         {/* Main Content */}
         <div className="space-y-8">
           {/* Desktop Table View */}
-          <div className="hidden lg:block bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className="hidden lg:block bg-white rounded-lg shadow-sm">
             <div className="px-6 py-4 border-b border-gray-200">
               <h1 className="text-2xl font-bold text-gray-9">Lista de Desejos ({state.wishlist.length} itens)</h1>
             </div>
@@ -223,97 +234,121 @@ export default function WishlistPage() {
             <h1 className="text-2xl font-bold text-gray-9 mb-6">Lista de Desejos ({state.wishlist.length} itens)</h1>
             <div className="space-y-4">
               {state.wishlist.map((product) => (
-                <div key={product.id} className="border border-gray-2 rounded-lg p-4">
-                  <div className="flex items-start space-x-4">
-                    {/* Product Image */}
-                    <div className="w-20 h-20 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    {/* Product Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-9 mb-1 line-clamp-2">{product.name}</h3>
-                      
-                      {/* Seller Info */}
-                      <div className="flex items-center space-x-2 mb-2">
+                <div key={product.id} className="border border-gray-2 rounded-lg overflow-hidden">
+                  {/* Compact Header */}
+                  <div className="p-4">
+                    <div className="flex items-start space-x-3">
+                      {/* Product Image */}
+                      <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                         <img
-                          src={product.sellerLogo || 'https://placehold.co/20x20/cccccc/000000?text=S'}
-                          alt={product.sellerName}
-                          className="w-4 h-4 rounded-full object-cover"
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
                         />
-                        <span className="text-xs text-gray-6">Vendido por {product.sellerName}</span>
                       </div>
 
-                      {/* Price */}
-                      <div className="space-y-1 mb-3">
-                        {product.originalPrice && (
-                          <div className="text-sm text-gray-6 line-through">
-                            R$ {product.originalPrice.toFixed(2)}
+                      {/* Product Info */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-gray-9 mb-1 line-clamp-2">{product.name}</h3>
+                        
+                        {/* Seller Info */}
+                        <div className="flex items-center space-x-2 mb-2">
+                          <img
+                            src={product.sellerLogo || 'https://placehold.co/16x16/cccccc/000000?text=S'}
+                            alt={product.sellerName}
+                            className="w-3 h-3 rounded-full object-cover"
+                          />
+                          <span className="text-xs text-gray-6">Vendido por {product.sellerName}</span>
+                        </div>
+
+                        {/* Price and Stock Status */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            {product.originalPrice && (
+                              <span className="text-xs text-gray-6 line-through">
+                                R$ {product.originalPrice.toFixed(2)}
+                              </span>
+                            )}
+                            <span className="font-medium text-primary text-sm">
+                              R$ {product.price.toFixed(2)}
+                            </span>
                           </div>
-                        )}
-                        <div className="font-medium text-primary">
-                          R$ {product.price.toFixed(2)}
+                          <div className="flex items-center space-x-1">
+                            <div className={`w-2 h-2 rounded-full ${product.inStock ? 'bg-primary' : 'bg-danger'}`}></div>
+                            <span className="text-xs font-medium">
+                              {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
+                            </span>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Stock Status */}
-                      <div className="flex items-center space-x-2 mb-3">
-                        <div className={`w-2 h-2 rounded-full ${product.inStock ? 'bg-primary' : 'bg-danger'}`}></div>
-                        <span className="text-sm font-medium">
-                          {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
-                        </span>
-                      </div>
+                      {/* Expand/Collapse Button */}
+                      <button
+                        onClick={() => toggleItemExpansion(product.id)}
+                        className="p-1 text-gray-6 hover:text-gray-9 transition-colors"
+                      >
+                        {expandedItems.has(product.id) ? (
+                          <ChevronUp size={16} />
+                        ) : (
+                          <ChevronDown size={16} />
+                        )}
+                      </button>
+                    </div>
+                  </div>
 
-                      {/* Actions */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                  {/* Expanded Details */}
+                  {expandedItems.has(product.id) && (
+                    <div className="border-t border-gray-2 p-4 bg-gray-1">
+                      <div className="space-y-4">
+                        {/* Action Buttons */}
+                        <div className="flex flex-col space-y-2">
                           <Button
                             onClick={() => handleAddToCart(product)}
                             disabled={!product.inStock}
-                            size="sm"
-                            className="bg-primary hover:bg-primary-hard text-white"
+                            className="w-full bg-primary hover:bg-primary-hard text-white"
                           >
-                            <ShoppingCart size={14} className="mr-1" />
-                            Adicionar
+                            <ShoppingCart size={14} className="mr-2" />
+                            Adicionar ao Carrinho
                           </Button>
                           <Button
                             onClick={() => handleRemoveFromWishlist(product.id)}
-                            size="sm"
                             variant="outline"
-                            className="border-danger text-danger hover:bg-danger hover:text-white"
+                            className="w-full border-danger text-danger hover:bg-danger hover:text-white"
                           >
-                            <X size={14} />
+                            <X size={14} className="mr-2" />
+                            Remover da Lista
                           </Button>
                         </div>
 
-                        {/* Share Icons */}
-                        <div className="flex items-center space-x-1">
-                          <button
-                            onClick={() => handleShare(product, 'facebook')}
-                            className="p-1 text-gray-6 hover:text-blue-600 transition-colors"
-                          >
-                            <Facebook size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleShare(product, 'twitter')}
-                            className="p-1 text-gray-6 hover:text-blue-400 transition-colors"
-                          >
-                            <Twitter size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleShare(product, 'instagram')}
-                            className="p-1 text-gray-6 hover:text-pink-600 transition-colors"
-                          >
-                            <Instagram size={14} />
-                          </button>
+                        {/* Share Section */}
+                        <div className="border-t border-gray-2 pt-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-7">Compartilhar:</span>
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => handleShare(product, 'facebook')}
+                                className="p-2 text-gray-6 hover:text-blue-600 transition-colors bg-white rounded"
+                              >
+                                <Facebook size={14} />
+                              </button>
+                              <button
+                                onClick={() => handleShare(product, 'twitter')}
+                                className="p-2 text-gray-6 hover:text-blue-400 transition-colors bg-white rounded"
+                              >
+                                <Twitter size={14} />
+                              </button>
+                              <button
+                                onClick={() => handleShare(product, 'instagram')}
+                                className="p-2 text-gray-6 hover:text-pink-600 transition-colors bg-white rounded"
+                              >
+                                <Instagram size={14} />
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -324,7 +359,7 @@ export default function WishlistPage() {
             <Link href="/loja">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
                 <ArrowLeft size={16} className="mr-2" />
-                Voltar à Loja
+                Voltar à Banca
               </Button>
             </Link>
           </div>

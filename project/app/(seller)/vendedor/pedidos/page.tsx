@@ -95,12 +95,6 @@ export default function SellerOrdersPage() {
           <span className="text-primary">Meus Pedidos</span>
         </nav>
 
-        {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Meus Pedidos</h1>
-          <p className="text-gray-6">Gerencie os pedidos que contêm seus produtos</p>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Navigation Sidebar */}
           <div className="lg:col-span-1">

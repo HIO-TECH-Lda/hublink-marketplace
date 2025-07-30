@@ -125,7 +125,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
-                Loja de Alimentos Orgânicos
+                Banca de Alimentos Orgânicos
                 <span className="block">100% Confiável</span>
               </h2>
               <p className="text-lg text-green-gray-1">

@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import Link from 'next/link';
+import BuyerSidebar from '../components/BuyerSidebar';
 
 export default function UserDashboardPage() {
   const { state, dispatch } = useMarketplace();
@@ -70,85 +71,9 @@ export default function UserDashboardPage() {
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {/* Sidebar Navigation */}
-          <div className="lg:col-span-1 order-2 lg:order-1">
-            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
-              {/* User Profile */}
-              <div className="flex items-center space-x-3 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-2">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  {state.user.profileImage ? (
-                    <img
-                      src={state.user.profileImage}
-                      alt="Profile"
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <User className="text-primary" size={20} />
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold text-gray-9 text-sm sm:text-base truncate">
-                    {state.user.firstName} {state.user.lastName}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-6 truncate">{state.user.email}</p>
-                </div>
-              </div>
-
-              {/* Navigation Menu */}
-              <nav className="space-y-1 sm:space-y-2">
-                <Link
-                  href="/painel"
-                  className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-primary bg-primary/10 rounded-lg font-medium text-sm sm:text-base"
-                >
-                  <Package size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
-                  <span>Painel</span>
-                </Link>
-                <Link
-                  href="/historico-pedidos"
-                  className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-sm sm:text-base"
-                >
-                  <Package size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
-                  <span>Histórico de Pedidos</span>
-                </Link>
-                <Link
-                  href="/lista-desejos"
-                  className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-sm sm:text-base"
-                >
-                  <Heart size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
-                  <span>Lista de Desejos</span>
-                </Link>
-                <Link
-                  href="/carrinho"
-                  className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-sm sm:text-base"
-                >
-                  <ShoppingCart size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
-                  <span>Carrinho de Compras</span>
-                </Link>
-                {state.user.isSeller && (
-                  <Link
-                    href="/vendedor/painel"
-                    className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-sm sm:text-base"
-                  >
-                    <Package size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
-                    <span>Painel do Vendedor</span>
-                  </Link>
-                )}
-                <Link
-                  href="/configuracoes"
-                  className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-gray-7 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-sm sm:text-base"
-                >
-                  <Settings size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
-                  <span>Configurações</span>
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-gray-7 hover:text-danger hover:bg-danger/5 rounded-lg transition-colors w-full text-left text-sm sm:text-base"
-                >
-                  <LogOut size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
-                  <span>Sair</span>
-                </button>
-              </nav>
-            </div>
+          {/* Navigation Sidebar */}
+          <div className="lg:col-span-1">
+            <BuyerSidebar />
           </div>
 
           {/* Main Content */}
@@ -159,7 +84,7 @@ export default function UserDashboardPage() {
                 Bem-vindo, {state.user.firstName}!
               </h1>
               <p className="text-gray-6 text-sm sm:text-base">
-                Gerencie seus pedidos, favoritos e configurações de conta aqui.
+                Gerencie seus pedidos e configurações de conta aqui.
               </p>
             </div>
 

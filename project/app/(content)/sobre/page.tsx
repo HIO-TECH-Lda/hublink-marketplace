@@ -69,41 +69,41 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Header />
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-green-gray-1 to-green-gray-2 py-16 lg:py-24">
         <div className="container px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-6">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-9 leading-tight">
-                Loja de Alimentos Orgânicos
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-9 leading-tight">
+                Banca de Alimentos Orgânicos
                 <span className="text-primary block">100% Confiável</span>
               </h1>
-              <p className="text-lg text-gray-7 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
                 Somos uma plataforma que conecta produtores orgânicos certificados com consumidores 
                 que valorizam qualidade, saúde e sustentabilidade. Nossa missão é democratizar o 
                 acesso a alimentos orgânicos frescos e saudáveis.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/loja">
-                  <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-8 py-3">
+                  <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3">
                     Conheça Nossos Produtos
                   </Button>
                 </Link>
                 <Link href="/contato">
-                  <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white px-8 py-3">
+                  <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white px-6 sm:px-8 py-3">
                     Entre em Contato
                   </Button>
                 </Link>
               </div>
             </div>
-            <div className="relative">
+            <div className="relative order-first lg:order-last">
               <img
                 src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
                 alt="Alimentos Orgânicos"
-                className="rounded-2xl shadow-2xl"
+                className="w-full h-auto rounded-2xl shadow-2xl"
               />
             </div>
           </div>
@@ -113,19 +113,19 @@ export default function AboutPage() {
       {/* Mission Section */}
       <section className="py-16 lg:py-24">
         <div className="container px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="relative">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="relative order-first lg:order-last">
               <img
                 src="https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg"
                 alt="Nossa Missão"
-                className="rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg"
               />
             </div>
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-gray-9">
+            <div className="space-y-6 order-last lg:order-first">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-9">
                 Nossa Missão
               </h2>
-              <p className="text-lg text-gray-7 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
                 Conectar produtores orgânicos certificados com consumidores conscientes, 
                 promovendo uma alimentação mais saudável e sustentável para todos.
               </p>
@@ -134,27 +134,27 @@ export default function AboutPage() {
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Leaf size={24} className="text-primary" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-gray-9 mb-2">Sustentabilidade</h3>
-                    <p className="text-gray-7">Promovemos práticas agrícolas que preservam o meio ambiente.</p>
+                    <p className="text-gray-7 text-sm sm:text-base">Promovemos práticas agrícolas que preservam o meio ambiente.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Heart size={24} className="text-primary" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-gray-9 mb-2">Saúde</h3>
-                    <p className="text-gray-7">Oferecemos produtos livres de agrotóxicos e químicos nocivos.</p>
+                    <p className="text-gray-7 text-sm sm:text-base">Oferecemos produtos livres de agrotóxicos e químicos nocivos.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Users size={24} className="text-primary" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-gray-9 mb-2">Comunidade</h3>
-                    <p className="text-gray-7">Fortalecendo produtores locais e criando conexões genuínas.</p>
+                    <p className="text-gray-7 text-sm sm:text-base">Fortalecendo produtores locais e criando conexões genuínas.</p>
                   </div>
                 </div>
               </div>
@@ -167,44 +167,44 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">Nossos Valores</h2>
-            <p className="text-lg text-gray-7 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossos Valores</h2>
+            <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
               Acreditamos que a qualidade dos alimentos impacta diretamente na qualidade de vida 
               das pessoas e na saúde do planeta.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white rounded-lg p-6 text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award size={32} className="text-primary" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
-              <h3 className="font-semibold text-gray-9 mb-2">Qualidade</h3>
-              <p className="text-gray-7 text-sm">Produtos certificados e de alta qualidade</p>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Qualidade</h3>
+              <p className="text-gray-7 text-xs sm:text-sm">Produtos certificados e de alta qualidade</p>
             </div>
             
-            <div className="bg-white rounded-lg p-6 text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Leaf size={32} className="text-primary" />
+            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Leaf size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
-              <h3 className="font-semibold text-gray-9 mb-2">Sustentabilidade</h3>
-              <p className="text-gray-7 text-sm">Práticas que preservam o meio ambiente</p>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Sustentabilidade</h3>
+              <p className="text-gray-7 text-xs sm:text-sm">Práticas que preservam o meio ambiente</p>
             </div>
             
-            <div className="bg-white rounded-lg p-6 text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart size={32} className="text-primary" />
+            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Heart size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
-              <h3 className="font-semibold text-gray-9 mb-2">Transparência</h3>
-              <p className="text-gray-7 text-sm">Rastreabilidade completa dos produtos</p>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Transparência</h3>
+              <p className="text-gray-7 text-xs sm:text-sm">Rastreabilidade completa dos produtos</p>
             </div>
             
-            <div className="bg-white rounded-lg p-6 text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users size={32} className="text-primary" />
+            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
-              <h3 className="font-semibold text-gray-9 mb-2">Comunidade</h3>
-              <p className="text-gray-7 text-sm">Fortalecendo produtores locais</p>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Comunidade</h3>
+              <p className="text-gray-7 text-xs sm:text-sm">Fortalecendo produtores locais</p>
             </div>
           </div>
         </div>
@@ -214,25 +214,25 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">Nossa Equipe Incrível</h2>
-            <p className="text-lg text-gray-7 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossa Equipe Incrível</h2>
+            <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
               Conheça as pessoas apaixonadas que fazem o Ecobazar acontecer todos os dias.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {teamMembers.map((member) => (
               <div key={member.id} className="text-center">
-                <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full overflow-hidden">
                   <img
                     src={member.image}
                     alt={member.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h3 className="font-semibold text-gray-9 mb-1">{member.name}</h3>
-                <p className="text-primary font-medium mb-3">{member.position}</p>
-                <p className="text-gray-7 text-sm">{member.bio}</p>
+                <h3 className="font-semibold text-gray-9 mb-1 text-sm sm:text-base">{member.name}</h3>
+                <p className="text-primary font-medium mb-3 text-xs sm:text-sm">{member.position}</p>
+                <p className="text-gray-7 text-xs sm:text-sm px-2">{member.bio}</p>
               </div>
             ))}
           </div>
@@ -243,37 +243,37 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">Depoimentos de Clientes</h2>
-            <p className="text-lg text-gray-7 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Depoimentos de Clientes</h2>
+            <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
               Veja o que nossos clientes e parceiros dizem sobre o Ecobazar.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="bg-white rounded-lg p-6 shadow-sm">
+              <div key={testimonial.id} className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden mr-3 sm:mr-4 flex-shrink-0">
                     <img
                       src={testimonial.image}
                       alt={testimonial.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-9">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-6">{testimonial.role}</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-semibold text-gray-9 text-sm sm:text-base">{testimonial.name}</h4>
+                    <p className="text-xs sm:text-sm text-gray-6">{testimonial.role}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={16} className="text-yellow-400 fill-current" />
+                    <Star key={i} size={14} className="sm:w-4 sm:h-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
                 
-                <blockquote className="text-gray-7 italic">
-                  <Quote size={20} className="text-primary mb-2" />
+                <blockquote className="text-gray-7 italic text-sm sm:text-base">
+                  <Quote size={16} className="sm:w-5 sm:h-5 text-primary mb-2" />
                   "{testimonial.content}"
                 </blockquote>
               </div>
@@ -285,21 +285,21 @@ export default function AboutPage() {
       {/* CTA Section */}
       <section className="py-16 lg:py-24 bg-gradient-to-r from-primary to-primary-hard">
         <div className="container px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 px-4">
             Nós Entregamos, Você Aproveita Seu Pedido
           </h2>
-          <p className="text-lg text-green-gray-1 mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-green-gray-1 mb-8 max-w-2xl mx-auto px-4">
             Junte-se a milhares de pessoas que já descobriram os benefícios dos alimentos orgânicos 
             através do Ecobazar.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/loja">
-              <Button size="lg" className="bg-white text-primary hover:bg-gray-1 px-8 py-3">
+              <Button size="lg" className="bg-white text-primary hover:bg-gray-1 px-6 sm:px-8 py-3">
                 Começar a Comprar
               </Button>
             </Link>
             <Link href="/contato">
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary px-8 py-3">
+              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary px-6 sm:px-8 py-3">
                 Fale Conosco
               </Button>
             </Link>

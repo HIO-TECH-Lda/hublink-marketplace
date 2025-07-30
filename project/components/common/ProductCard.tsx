@@ -77,8 +77,8 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             </div>
           )}
 
-          {/* Action Buttons */}
-          <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {/* Action Buttons - Desktop (Hover Only) */}
+          <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:block">
             <button
               onClick={handleToggleWishlist}
               className={`p-2 rounded-full shadow-md transition-colors ${
@@ -98,8 +98,29 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             )}
           </div>
 
-          {/* Add to Cart Button - Bottom Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {/* Action Buttons - Mobile (Always Visible) */}
+          <div className="absolute top-3 right-3 flex flex-col space-y-2 md:hidden">
+            <button
+              onClick={handleToggleWishlist}
+              className={`p-2 rounded-full shadow-md transition-colors ${
+                isInWishlist ? 'bg-danger text-white' : 'bg-white text-gray-6'
+              }`}
+            >
+              <Heart size={16} fill={isInWishlist ? 'currentColor' : 'none'} />
+            </button>
+            
+            {showQuickView && (
+              <button
+                onClick={handleQuickView}
+                className="p-2 bg-white text-gray-6 rounded-full shadow-md"
+              >
+                <Eye size={16} />
+              </button>
+            )}
+          </div>
+
+          {/* Add to Cart Button - Desktop (Hover Only) */}
+          <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:block">
             <Button
               onClick={handleAddToCart}
               className="w-full bg-primary hover:bg-primary-hard text-white py-2 px-4 rounded-lg flex items-center justify-center space-x-2"
@@ -144,16 +165,31 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             <span className="text-sm text-gray-6">({product.reviews})</span>
           </div>
 
-          {/* Price */}
-          <div className="flex items-center space-x-2">
-            <span className="text-lg font-semibold text-primary">
-              R$ {product.price.toFixed(2)}
-            </span>
-            {product.originalPrice && (
-              <span className="text-sm text-gray-5 line-through">
-                R$ {product.originalPrice.toFixed(2)}
+          {/* Price and Mobile Add to Cart */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-lg font-semibold text-primary">
+                R$ {product.price.toFixed(2)}
               </span>
-            )}
+              {product.originalPrice && (
+                <span className="text-sm text-gray-5 line-through">
+                  R$ {product.originalPrice.toFixed(2)}
+                </span>
+              )}
+            </div>
+            
+            {/* Mobile Add to Cart Button */}
+            <div className="md:hidden">
+              <Button
+                onClick={handleAddToCart}
+                size="sm"
+                className="bg-primary hover:bg-primary-hard text-white px-3 py-1 rounded-lg flex items-center space-x-1"
+                disabled={!product.inStock}
+              >
+                <ShoppingCart size={14} />
+                <span className="text-xs">{product.inStock ? 'Adicionar' : 'Indisponível'}</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

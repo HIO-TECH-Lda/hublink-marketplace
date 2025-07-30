@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Filter, Grid, List, ChevronDown, Star } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -14,23 +15,42 @@ import { useMarketplace } from '@/contexts/MarketplaceContext';
 
 export default function ShopPage() {
   const { state } = useMarketplace();
+  const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 100]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedRating, setSelectedRating] = useState(0);
   const [selectedSellers, setSelectedSellers] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('popular');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Get search query from URL parameters
+  useEffect(() => {
+    const query = searchParams.get('q');
+    if (query) {
+      setSearchQuery(query);
+    }
+  }, [searchParams]);
 
   const categories = ['Verduras', 'Legumes', 'Frutas', 'Grãos', 'Laticínios'];
   const sellers = Array.from(new Set(state.products.map(p => p.sellerName)));
 
   const filteredProducts = state.products.filter(product => {
+    // Search filter
+    const searchMatch = !searchQuery || 
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.sellerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    
     const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
     const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
     const ratingMatch = selectedRating === 0 || product.rating >= selectedRating;
     const sellerMatch = selectedSellers.length === 0 || selectedSellers.includes(product.sellerName);
     
-    return categoryMatch && priceMatch && ratingMatch && sellerMatch;
+    return searchMatch && categoryMatch && priceMatch && ratingMatch && sellerMatch;
   });
 
   const handleCategoryChange = (category: string, checked: boolean) => {
@@ -56,14 +76,27 @@ export default function ShopPage() {
       <div className="container py-8 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
-          <span>Início</span> / <span className="text-primary">Loja</span>
+          <span>Início</span> / <span className="text-primary">Banca</span>
+          {searchQuery && (
+            <>
+              <span> / </span>
+              <span className="text-primary">Busca: "{searchQuery}"</span>
+            </>
+          )}
         </nav>
 
         {/* Page Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Nossa Loja</h1>
-            <p className="text-gray-6 text-sm sm:text-base">Encontramos {filteredProducts.length} produtos para você</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">
+              {searchQuery ? `Resultados para "${searchQuery}"` : 'Nossa Banca'}
+            </h1>
+            <p className="text-gray-6 text-sm sm:text-base">
+              {searchQuery 
+                ? `Encontramos ${filteredProducts.length} produto${filteredProducts.length !== 1 ? 's' : ''} para "${searchQuery}"`
+                : `Encontramos ${filteredProducts.length} produtos para você`
+              }
+            </p>
           </div>
           
           {/* Sort and View Options */}

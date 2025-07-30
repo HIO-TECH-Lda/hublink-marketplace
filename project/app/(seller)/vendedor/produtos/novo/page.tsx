@@ -104,7 +104,7 @@ export default function NewProductPage() {
         reviews: 0,
         inStock: formData.inStock,
         sellerId: state.user?.sellerId || 'seller1',
-        sellerName: state.user?.storeSettings?.storeName || 'Minha Loja',
+        sellerName: state.user?.storeSettings?.storeName || 'Minha Banca',
         sellerLogo: state.user?.storeSettings?.storeName ? 
           `https://placehold.co/40x40/00BE27/ffffff?text=${state.user.storeSettings.storeName.charAt(0)}` : 
           'https://placehold.co/40x40/00BE27/ffffff?text=S',

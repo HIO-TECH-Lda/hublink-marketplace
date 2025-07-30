@@ -59,20 +59,6 @@ export default function SellerDashboardPage() {
           <span className="text-primary">Painel do Vendedor</span>
         </nav>
 
-        {/* Page Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Painel do Vendedor</h1>
-            <p className="text-gray-6">Bem-vindo de volta, {state.user.firstName}!</p>
-          </div>
-          <Link href="/vendedor/produtos/novo">
-            <Button className="bg-primary hover:bg-primary-hard text-white">
-              <Plus size={16} className="mr-2" />
-              Adicionar Produto
-            </Button>
-          </Link>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Navigation Sidebar */}
           <div className="lg:col-span-1">
@@ -171,12 +157,12 @@ export default function SellerDashboardPage() {
                     <p className="text-sm text-gray-6 mb-2">R$ {product.price.toFixed(2)}</p>
                     <div className="flex items-center space-x-2">
                       <Link href={`/produto/${product.id}`}>
-                        <Button size="sm" variant="outline" className="border-gray-3 text-gray-7 hover:bg-gray-1">
+                        <Button size="sm" variant="outline" className="w-8 h-8 p-0 border-gray-3 text-gray-7 hover:bg-gray-1 flex items-center justify-center">
                           <Eye size={14} />
                         </Button>
                       </Link>
                       <Link href={`/vendedor/produtos/editar/${product.id}`}>
-                        <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                        <Button size="sm" variant="outline" className="w-8 h-8 p-0 border-primary text-primary hover:bg-primary hover:text-white flex items-center justify-center">
                           <Edit size={14} />
                         </Button>
                       </Link>
