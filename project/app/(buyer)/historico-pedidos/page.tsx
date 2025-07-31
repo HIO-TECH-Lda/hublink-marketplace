@@ -211,13 +211,33 @@ export default function OrderHistoryPage() {
                             {order.items.length} {order.items.length === 1 ? 'item' : 'itens'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <Link 
-                              href={`/pedido/${order.id}`}
-                              className="inline-flex items-center text-green-600 hover:text-green-900"
-                            >
-                              <Eye className="w-4 h-4 mr-1" />
-                              Ver Detalhes
-                            </Link>
+                            <div className="flex items-center justify-end space-x-2">
+                              <Link 
+                                href={`/pedido/${order.id}`}
+                                className="inline-flex items-center text-green-600 hover:text-green-900"
+                              >
+                                <Eye className="w-4 h-4 mr-1" />
+                                Ver
+                              </Link>
+                              {order.status === 'Pendente' && (
+                                <Link 
+                                  href={`/pagamento/${order.id}`}
+                                  className="inline-flex items-center text-blue-600 hover:text-blue-900"
+                                >
+                                  <DollarSign className="w-4 h-4 mr-1" />
+                                  Pagar
+                                </Link>
+                              )}
+                              {(order.status === 'Entregue' || order.status === 'Em Trânsito') && (
+                                <Link 
+                                  href={`/reembolso/${order.id}`}
+                                  className="inline-flex items-center text-orange-600 hover:text-orange-900"
+                                >
+                                  <ArrowLeft className="w-4 h-4 mr-1" />
+                                  Reembolso
+                                </Link>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}

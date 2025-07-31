@@ -86,10 +86,9 @@ export default function CheckoutPage() {
     };
 
     dispatch({ type: 'ADD_ORDER', payload: order });
-    dispatch({ type: 'CLEAR_CART' });
     
-    // Redirect to order confirmation
-    router.push(`/pedido/${order.id}`);
+    // Redirect to payment page
+    router.push(`/pagamento/${order.id}`);
   };
 
   if (state.cart.length === 0) {
