@@ -325,10 +325,130 @@ export default function ProductPage() {
             )}
 
             {activeTab === 'reviews' && (
-              <div className="text-center py-8">
-                <Star size={48} className="mx-auto text-gray-4 mb-4" />
-                <h3 className="text-lg font-medium text-gray-9 mb-2">Avaliações</h3>
-                <p className="text-gray-6">As avaliações para este produto ainda não estão disponíveis.</p>
+              <div className="space-y-6">
+                {/* Reviews Header */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                      <span className="text-lg font-semibold text-gray-9">4.8</span>
+                      <span className="text-gray-6">(12 avaliações)</span>
+                    </div>
+                  </div>
+                  {state.isAuthenticated && (
+                    <Link href={`/produto/${product.id}/avaliar`}>
+                      <Button className="bg-primary hover:bg-primary-hard text-white">
+                        Avaliar Produto
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+
+                {/* Mock Reviews */}
+                <div className="space-y-4">
+                  {/* Review 1 */}
+                  <div className="border border-gray-2 rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gray-2 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-gray-6">JS</span>
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-9">João Silva</h4>
+                          <div className="flex items-center gap-2">
+                            <div className="flex">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`w-4 h-4 ${star <= 5 ? 'text-yellow-400 fill-current' : 'text-gray-3'}`}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-sm text-gray-5">há 2 dias</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                        Compra Verificada
+                      </div>
+                    </div>
+                    <h5 className="font-medium text-gray-9 mb-2">Produto excelente!</h5>
+                    <p className="text-gray-7 text-sm">
+                      O tomate orgânico chegou muito fresco e com ótima qualidade. 
+                      Superou minhas expectativas. Recomendo!
+                    </p>
+                  </div>
+
+                  {/* Review 2 */}
+                  <div className="border border-gray-2 rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gray-2 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-gray-6">MS</span>
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-9">Maria Santos</h4>
+                          <div className="flex items-center gap-2">
+                            <div className="flex">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`w-4 h-4 ${star <= 4 ? 'text-yellow-400 fill-current' : 'text-gray-3'}`}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-sm text-gray-5">há 1 semana</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <h5 className="font-medium text-gray-9 mb-2">Boa qualidade</h5>
+                    <p className="text-gray-7 text-sm">
+                      Produto de boa qualidade, entrega rápida. 
+                      O sabor é muito bom e fresco.
+                    </p>
+                  </div>
+
+                  {/* Review 3 */}
+                  <div className="border border-gray-2 rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gray-2 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-gray-6">PS</span>
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-9">Pedro Souza</h4>
+                          <div className="flex items-center gap-2">
+                            <div className="flex">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`w-4 h-4 ${star <= 5 ? 'text-yellow-400 fill-current' : 'text-gray-3'}`}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-sm text-gray-5">há 2 semanas</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                        Compra Verificada
+                      </div>
+                    </div>
+                    <h5 className="font-medium text-gray-9 mb-2">Perfeito!</h5>
+                    <p className="text-gray-7 text-sm">
+                      Tomates orgânicos deliciosos! Muito saborosos e frescos. 
+                      Vou comprar novamente.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Load More Reviews */}
+                <div className="text-center pt-4">
+                  <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                    Ver Todas as Avaliações
+                  </Button>
+                </div>
               </div>
             )}
           </div>

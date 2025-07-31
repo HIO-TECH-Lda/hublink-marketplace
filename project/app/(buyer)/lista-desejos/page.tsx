@@ -115,14 +115,15 @@ export default function WishlistPage() {
 
         {/* Main Content */}
         <div className="space-y-8">
+        <div className="bg-white rounded-lg shadow-sm p-6">
           {/* Desktop Table View */}
           <div className="hidden lg:block bg-white rounded-lg shadow-sm">
             <div className="px-6 py-4 border-b border-gray-200">
               <h1 className="text-2xl font-bold text-gray-9">Lista de Desejos ({state.wishlist.length} itens)</h1>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-1">
+              <table className="w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Produto</th>
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Preço</th>
@@ -131,7 +132,7 @@ export default function WishlistPage() {
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Compartilhar</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-2">
+                <tbody className="divide-y divide-gray-200">
                   {state.wishlist.map((product) => (
                     <tr key={product.id} className="hover:bg-gray-1/50">
                       <td className="px-6 py-4">
@@ -230,7 +231,7 @@ export default function WishlistPage() {
           </div>
 
           {/* Mobile Card View */}
-          <div className="lg:hidden bg-white rounded-lg shadow-sm p-6">
+          <div className="lg:hidden bg-white rounded-lg shadow-sm">
             <h1 className="text-2xl font-bold text-gray-9 mb-6">Lista de Desejos ({state.wishlist.length} itens)</h1>
             <div className="space-y-4">
               {state.wishlist.map((product) => (
@@ -355,7 +356,7 @@ export default function WishlistPage() {
           </div>
 
           {/* Cart Actions */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6 pt-6 border-t border-gray-2">
             <Link href="/loja">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
                 <ArrowLeft size={16} className="mr-2" />
@@ -363,6 +364,8 @@ export default function WishlistPage() {
               </Button>
             </Link>
           </div>
+
+        </div>
         </div>
       </div>
 
