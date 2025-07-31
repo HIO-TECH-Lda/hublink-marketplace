@@ -16,8 +16,7 @@ import {
   Calendar,
   ArrowLeft
 } from 'lucide-react';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -218,285 +217,255 @@ export default function UserManagementPage() {
     }
   };
 
-  if (!state.isAuthenticated || !state.user) {
-    return (
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
-          <Button onClick={() => router.push('/entrar')} className="bg-primary hover:bg-primary-hard text-white">
-            Fazer Login
-          </Button>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-6">Carregando usuários...</p>
+      <AdminLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-6">Carregando usuários...</p>
+          </div>
         </div>
-        <Footer />
-      </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-1">
-      <Header />
-      
-      <div className="container py-8 px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => router.push('/admin')}
-            className="p-0 h-auto text-gray-6 hover:text-primary mb-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar ao Dashboard
-          </Button>
-          <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Usuários</h1>
-          <p className="text-gray-6">Gerencie contas de usuários e vendedores</p>
-        </div>
+    <AdminLayout>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Usuários</h1>
+        <p className="text-gray-6">Gerencie contas de usuários e vendedores</p>
+      </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Users className="h-8 w-8 text-primary" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-6">Total de Usuários</p>
-                  <p className="text-2xl font-bold text-gray-9">{users.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Shield className="h-8 w-8 text-green-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-6">Vendedores</p>
-                  <p className="text-2xl font-bold text-gray-9">
-                    {users.filter(user => user.isSeller).length}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Users className="h-8 w-8 text-blue-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-6">Clientes</p>
-                  <p className="text-2xl font-bold text-gray-9">
-                    {users.filter(user => !user.isSeller).length}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Users className="h-8 w-8 text-green-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-6">Ativos</p>
-                  <p className="text-2xl font-bold text-gray-9">
-                    {users.filter(user => user.status === 'active').length}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Filters */}
-        <Card className="mb-6">
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <Card>
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-7 mb-2 block">Buscar</label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
-                  <Input
-                    placeholder="Nome, email..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Todos os status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos os status</SelectItem>
-                    <SelectItem value="active">Ativo</SelectItem>
-                    <SelectItem value="inactive">Inativo</SelectItem>
-                    <SelectItem value="suspended">Suspenso</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-7 mb-2 block">Tipo</label>
-                <Select value={roleFilter} onValueChange={setRoleFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Todos os tipos" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos os tipos</SelectItem>
-                    <SelectItem value="customer">Clientes</SelectItem>
-                    <SelectItem value="seller">Vendedores</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-end">
-                <Button 
-                  onClick={() => {
-                    setSearchTerm('');
-                    setStatusFilter('all');
-                    setRoleFilter('all');
-                  }}
-                  variant="outline"
-                  className="w-full"
-                >
-                  <Filter className="w-4 h-4 mr-2" />
-                  Limpar Filtros
-                </Button>
+            <div className="flex items-center">
+              <Users className="h-8 w-8 text-primary" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-6">Total de Usuários</p>
+                <p className="text-2xl font-bold text-gray-9">{users.length}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Users Table */}
         <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-9">
-              Usuários ({filteredUsers.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-2">
-                    <th className="text-left py-3 px-4 font-medium text-gray-7">Usuário</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-7">Contato</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-7">Tipo</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-7">Pedidos</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-7">Total Gasto</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-7">Último Login</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-7">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
-                    <tr key={user.id} className="border-b border-gray-2 hover:bg-gray-1/50">
-                      <td className="py-4 px-4">
-                        <div>
-                          <p className="font-medium text-gray-9">
-                            {user.firstName} {user.lastName}
-                          </p>
-                          <p className="text-sm text-gray-6">ID: {user.id}</p>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="space-y-1">
-                          <div className="flex items-center text-sm text-gray-6">
-                            <Mail className="w-3 h-3 mr-1" />
-                            {user.email}
-                          </div>
-                          <div className="flex items-center text-sm text-gray-6">
-                            <Phone className="w-3 h-3 mr-1" />
-                            {user.phone}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <Badge variant={user.isSeller ? 'default' : 'secondary'}>
-                          {user.isSeller ? 'Vendedor' : 'Cliente'}
-                        </Badge>
-                      </td>
-                      <td className="py-4 px-4">
-                        <Badge className={getStatusColor(user.status)}>
-                          {getStatusText(user.status)}
-                        </Badge>
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="text-sm text-gray-9">{user.totalOrders}</span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="text-sm text-gray-9">{formatCurrency(user.totalSpent)}</span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center text-sm text-gray-6">
-                          <Calendar className="w-3 h-3 mr-1" />
-                          {formatDate(user.lastLogin)}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-right">
-                        <div className="flex items-center justify-end space-x-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleViewUser(user.id)}
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEditUser(user.id)}
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteUser(user.id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {filteredUsers.length === 0 && (
-              <div className="text-center py-12">
-                <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum usuário encontrado</h3>
-                <p className="text-gray-6">Tente ajustar os filtros de busca</p>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Shield className="h-8 w-8 text-green-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-6">Vendedores</p>
+                <p className="text-2xl font-bold text-gray-9">
+                  {users.filter(user => user.isSeller).length}
+                </p>
               </div>
-            )}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Users className="h-8 w-8 text-blue-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-6">Clientes</p>
+                <p className="text-2xl font-bold text-gray-9">
+                  {users.filter(user => !user.isSeller).length}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Users className="h-8 w-8 text-green-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-6">Ativos</p>
+                <p className="text-2xl font-bold text-gray-9">
+                  {users.filter(user => user.status === 'active').length}
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
-      
-      <Footer />
-    </div>
+
+      {/* Filters */}
+      <Card className="mb-6">
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-7 mb-2 block">Buscar</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
+                <Input
+                  placeholder="Nome, email..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Todos os status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos os status</SelectItem>
+                  <SelectItem value="active">Ativo</SelectItem>
+                  <SelectItem value="inactive">Inativo</SelectItem>
+                  <SelectItem value="suspended">Suspenso</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-7 mb-2 block">Tipo</label>
+              <Select value={roleFilter} onValueChange={setRoleFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Todos os tipos" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
+                  <SelectItem value="customer">Clientes</SelectItem>
+                  <SelectItem value="seller">Vendedores</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-end">
+              <Button 
+                onClick={() => {
+                  setSearchTerm('');
+                  setStatusFilter('all');
+                  setRoleFilter('all');
+                }}
+                variant="outline"
+                className="w-full"
+              >
+                <Filter className="w-4 h-4 mr-2" />
+                Limpar Filtros
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Users Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-9">
+            Usuários ({filteredUsers.length})
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-2">
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Usuário</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Contato</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Tipo</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Pedidos</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Total Gasto</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Último Login</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-7">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.map((user) => (
+                  <tr key={user.id} className="border-b border-gray-2 hover:bg-gray-1/50">
+                    <td className="py-4 px-4">
+                      <div>
+                        <p className="font-medium text-gray-9">
+                          {user.firstName} {user.lastName}
+                        </p>
+                        <p className="text-sm text-gray-6">ID: {user.id}</p>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="space-y-1">
+                        <div className="flex items-center text-sm text-gray-6">
+                          <Mail className="w-3 h-3 mr-1" />
+                          {user.email}
+                        </div>
+                        <div className="flex items-center text-sm text-gray-6">
+                          <Phone className="w-3 h-3 mr-1" />
+                          {user.phone}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <Badge variant={user.isSeller ? 'default' : 'secondary'}>
+                        {user.isSeller ? 'Vendedor' : 'Cliente'}
+                      </Badge>
+                    </td>
+                    <td className="py-4 px-4">
+                      <Badge className={getStatusColor(user.status)}>
+                        {getStatusText(user.status)}
+                      </Badge>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-sm text-gray-9">{user.totalOrders}</span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-sm text-gray-9">{formatCurrency(user.totalSpent)}</span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center text-sm text-gray-6">
+                        <Calendar className="w-3 h-3 mr-1" />
+                        {formatDate(user.lastLogin)}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 text-right">
+                      <div className="flex items-center justify-end space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleViewUser(user.id)}
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditUser(user.id)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteUser(user.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {filteredUsers.length === 0 && (
+            <div className="text-center py-12">
+              <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum usuário encontrado</h3>
+              <p className="text-gray-6">Tente ajustar os filtros de busca</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </AdminLayout>
   );
 } 
