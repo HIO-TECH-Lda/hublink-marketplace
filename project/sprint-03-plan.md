@@ -16,7 +16,7 @@ O Sprint 03 foca na implementação de funcionalidades avançadas, integrações
 ## 🎯 Objetivos do Sprint 03
 
 ### **Principais Objetivos**
-- ✅ Implementar integrações reais de pagamento (Stripe/PayPal)
+- ✅ Implementar integrações reais de pagamento (M-Pesa/E-Mola/Débito)
 - ✅ Sistema de notificações em tempo real
 - ✅ Melhorias de performance e otimização
 - ✅ Sistema de cupons e promoções
@@ -36,7 +36,7 @@ O Sprint 03 foca na implementação de funcionalidades avançadas, integrações
 - [ ] **Sistema de Notificações** - `components/notifications/NotificationSystem.tsx`
 
 ### **Sprint 02 - Pendências**
-- [ ] **Integração Real de Pagamentos** (Stripe/PayPal)
+- [ ] **Integração Real de Pagamentos** (M-Pesa/E-Mola/Débito)
 - [ ] **Sistema de Email Real** (SMTP/Nodemailer)
 - [ ] **Push Notifications** (Service Workers)
 - [ ] **Sistema de Moderação** de produtos e reviews
@@ -51,28 +51,31 @@ O Sprint 03 foca na implementação de funcionalidades avançadas, integrações
 **Estimativa:** 1 semana
 
 #### **Tarefas:**
-- [ ] **Integração Stripe**
-  - [ ] Configuração do Stripe SDK
-  - [ ] Implementação de Payment Intents
-  - [ ] Gestão de Payment Methods
-  - [ ] Webhooks de pagamento
-  - [ ] Tratamento de chargebacks
-
-- [ ] **Integração PayPal**
-  - [ ] Configuração do PayPal SDK
-  - [ ] Implementação de PayPal Orders
-  - [ ] Gestão de PayPal Accounts
-  - [ ] Webhooks de pagamento
-
-- [ ] **Integração PIX**
-  - [ ] Geração de QR Code PIX
+- [ ] **Integração M-Pesa**
+  - [ ] Configuração da API M-Pesa
+  - [ ] Implementação de STK Push
   - [ ] Verificação de pagamento
-  - [ ] Gestão de status PIX
+  - [ ] Webhooks de confirmação
+  - [ ] Tratamento de falhas
+
+- [ ] **Integração E-Mola**
+  - [ ] Configuração da API E-Mola
+  - [ ] Implementação de pagamento móvel
+  - [ ] Verificação de transação
+  - [ ] Webhooks de status
+  - [ ] Gestão de reembolsos
+
+- [ ] **Integração Cartão de Débito**
+  - [ ] Configuração de gateway de débito
+  - [ ] Processamento de transações
+  - [ ] Validação de cartão
+  - [ ] Gestão de chargebacks
+  - [ ] Relatórios de transação
 
 #### **Arquivos a Criar/Modificar:**
-- `lib/payment/stripe.ts`
-- `lib/payment/paypal.ts`
-- `lib/payment/pix.ts`
+- `lib/payment/mpesa.ts`
+- `lib/payment/emola.ts`
+- `lib/payment/debit.ts`
 - `app/api/payments/webhook/route.ts`
 - `app/(buyer)/pagamento/[orderId]/page.tsx` (atualizar)
 
@@ -468,7 +471,7 @@ O Sprint 03 foca na implementação de funcionalidades avançadas, integrações
 ## 📅 Cronograma Detalhado
 
 ### **Semana 1**
-- **Dias 1-2:** Integrações de pagamento (Stripe/PayPal)
+- **Dias 1-2:** Integrações de pagamento (M-Pesa/E-Mola/Débito)
 - **Dias 3-4:** Sistema de email real
 - **Dia 5:** Sistema de notificações básico
 
@@ -518,7 +521,7 @@ O Sprint 03 foca na implementação de funcionalidades avançadas, integrações
 - **Containerization:** Docker
 
 ### **Integrações**
-- **Payments:** Stripe + PayPal + PIX
+- **Payments:** M-Pesa + E-Mola + Gateway de Débito
 - **Email:** SendGrid/AWS SES
 - **Notifications:** Socket.io + Push API
 - **Analytics:** Google Analytics + Mixpanel
@@ -541,8 +544,9 @@ O Sprint 03 foca na implementação de funcionalidades avançadas, integrações
 - **Total:** R$ 3.000 - R$ 8.300/mês
 
 ### **Serviços Externos**
-- **Stripe:** 2.9% + R$ 0,30 por transação
-- **PayPal:** 3.49% + R$ 0,49 por transação
+- **M-Pesa:** Taxa por transação (varia por região)
+- **E-Mola:** Taxa por transação (varia por região)
+- **Gateway de Débito:** 1.5% - 3% por transação
 - **Email:** R$ 100 - R$ 500/mês
 - **Analytics:** R$ 200 - R$ 1.000/mês
 
@@ -551,7 +555,7 @@ O Sprint 03 foca na implementação de funcionalidades avançadas, integrações
 ## 🚨 Riscos e Mitigações
 
 ### **Riscos Técnicos**
-- **Risco:** Integração de pagamentos complexa
+- **Risco:** Integração de pagamentos móveis complexa
   - **Mitigação:** Testes extensivos em ambiente sandbox
 
 - **Risco:** Performance com alto volume
