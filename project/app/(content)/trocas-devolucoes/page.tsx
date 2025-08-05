@@ -196,7 +196,7 @@ export default function TrocasDevolucoesPage() {
                   
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-medium text-gray-9 mb-2">PIX</h4>
+                      <h4 className="font-medium text-gray-9 mb-2">M-Pesa</h4>
                       <p className="text-gray-7 text-sm mb-4">
                         Reembolso processado em até 24 horas após a aprovação da devolução.
                       </p>
@@ -215,7 +215,7 @@ export default function TrocasDevolucoesPage() {
                       
                       <h4 className="font-medium text-gray-9 mb-2">Dinheiro na Entrega</h4>
                       <p className="text-gray-7 text-sm">
-                        Reembolso via PIX ou transferência bancária em até 5 dias úteis.
+                        Reembolso via M-Pesa ou transferência bancária em até 5 dias úteis.
                       </p>
                     </div>
                   </div>
@@ -331,7 +331,7 @@ export default function TrocasDevolucoesPage() {
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="font-semibold text-gray-9 mb-2">Quanto tempo leva para receber o reembolso?</h3>
               <p className="text-gray-7 text-sm">
-                Depende do método de pagamento: PIX (24h), cartão de débito (5 dias), 
+                Depende do método de pagamento: M-Pesa (24h), cartão de débito (5 dias), 
                 cartão de crédito (até 2 faturas).
               </p>
             </div>

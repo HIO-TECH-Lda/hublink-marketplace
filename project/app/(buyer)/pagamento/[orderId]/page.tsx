@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { CreditCard, Lock, Shield, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
+import { CreditCard, Lock, Shield, CheckCircle, AlertCircle, ArrowLeft, Smartphone } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -26,12 +26,14 @@ export default function PaymentPage() {
   const [error, setError] = useState('');
   const [order, setOrder] = useState<any>(null);
   const [formData, setFormData] = useState({
+    paymentMethod: 'mpesa',
+    phoneNumber: '',
     cardNumber: '',
     expiryMonth: '',
     expiryYear: '',
     cvv: '',
     cardholderName: '',
-    saveCard: false
+    savePaymentMethod: false
   });
 
   useEffect(() => {
@@ -49,11 +51,25 @@ export default function PaymentPage() {
     setError('');
 
     try {
-      const paymentIntent = await PaymentService.createPaymentIntent(order.total * 100);
-      const result = await PaymentService.confirmPayment(paymentIntent.id, 'pm_1');
+      let result;
       
-      if (result.status === 'succeeded') {
-        // Clear cart after successful payment
+      if (formData.paymentMethod === 'mpesa') {
+        result = await PaymentService.initiateMpesaPayment(formData.phoneNumber, order.total);
+      } else if (formData.paymentMethod === 'emola') {
+        result = await PaymentService.initiateEmolaPayment(formData.phoneNumber, order.total);
+      } else if (formData.paymentMethod === 'debit_card') {
+        const cardDetails = {
+          number: formData.cardNumber,
+          expiryMonth: formData.expiryMonth,
+          expiryYear: formData.expiryYear,
+          cvv: formData.cvv,
+          holderName: formData.cardholderName
+        };
+        result = await PaymentService.processDebitCardPayment(cardDetails, order.total);
+      }
+      
+      if (result && (result.status === 'pending_confirmation' || result.status === 'processing')) {
+        // Clear cart after successful payment initiation
         dispatch({ type: 'CLEAR_CART' });
         setIsSuccess(true);
       } else {
@@ -94,10 +110,10 @@ export default function PaymentPage() {
                   <CheckCircle className="w-8 h-8 text-green-600" />
                 </div>
                 <CardTitle className="text-2xl font-bold text-gray-9">
-                  Pagamento Aprovado!
+                  Pagamento Iniciado!
                 </CardTitle>
                 <CardDescription className="text-gray-6">
-                  Seu pedido foi processado com sucesso.
+                  Seu pagamento foi processado com sucesso.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -173,80 +189,151 @@ export default function PaymentPage() {
                 )}
 
                 <div className="space-y-4">
+                  {/* Payment Method Selection */}
                   <div>
-                    <Label htmlFor="cardNumber">Número do Cartão</Label>
-                    <Input
-                      id="cardNumber"
-                      placeholder="1234 5678 9012 3456"
-                      value={formData.cardNumber}
-                      onChange={(e) => setFormData(prev => ({ ...prev, cardNumber: e.target.value }))}
-                      className="mt-1"
-                    />
+                    <Label className="text-base font-medium">Método de Pagamento</Label>
+                    <div className="grid grid-cols-1 gap-3 mt-2">
+                      <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
+                        <input
+                          type="radio"
+                          id="mpesa"
+                          name="paymentMethod"
+                          value="mpesa"
+                          checked={formData.paymentMethod === 'mpesa'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                          className="text-primary"
+                        />
+                        <Smartphone size={20} className="text-primary" />
+                        <Label htmlFor="mpesa" className="flex-1 cursor-pointer">M-Pesa</Label>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
+                        <input
+                          type="radio"
+                          id="emola"
+                          name="paymentMethod"
+                          value="emola"
+                          checked={formData.paymentMethod === 'emola'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                          className="text-primary"
+                        />
+                        <Smartphone size={20} className="text-primary" />
+                        <Label htmlFor="emola" className="flex-1 cursor-pointer">E-Mola</Label>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
+                        <input
+                          type="radio"
+                          id="debit_card"
+                          name="paymentMethod"
+                          value="debit_card"
+                          checked={formData.paymentMethod === 'debit_card'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                          className="text-primary"
+                        />
+                        <CreditCard size={20} className="text-primary" />
+                        <Label htmlFor="debit_card" className="flex-1 cursor-pointer">Cartão de Débito</Label>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4">
+                  {/* Mobile Money Payment Fields */}
+                  {(formData.paymentMethod === 'mpesa' || formData.paymentMethod === 'emola') && (
                     <div>
-                      <Label htmlFor="expiryMonth">Mês</Label>
-                      <Select value={formData.expiryMonth} onValueChange={(value) => setFormData(prev => ({ ...prev, expiryMonth: value }))}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="MM" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
-                            <SelectItem key={month} value={month.toString().padStart(2, '0')}>
-                              {month.toString().padStart(2, '0')}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="expiryYear">Ano</Label>
-                      <Select value={formData.expiryYear} onValueChange={(value) => setFormData(prev => ({ ...prev, expiryYear: value }))}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="YYYY" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
-                            <SelectItem key={year} value={year.toString()}>
-                              {year}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="cvv">CVV</Label>
+                      <Label htmlFor="phoneNumber">Número de Telefone *</Label>
                       <Input
-                        id="cvv"
-                        placeholder="123"
-                        value={formData.cvv}
-                        onChange={(e) => setFormData(prev => ({ ...prev, cvv: e.target.value }))}
-                        maxLength={4}
+                        id="phoneNumber"
+                        placeholder="+258 84 123 4567"
+                        value={formData.phoneNumber}
+                        onChange={(e) => setFormData(prev => ({ ...prev, phoneNumber: e.target.value }))}
                         className="mt-1"
+                        required
                       />
+                      <p className="text-sm text-gray-6 mt-1">
+                        Você receberá uma notificação no seu telefone para confirmar o pagamento.
+                      </p>
                     </div>
-                  </div>
+                  )}
 
-                  <div>
-                    <Label htmlFor="cardholderName">Nome do Titular</Label>
-                    <Input
-                      id="cardholderName"
-                      placeholder="Como aparece no cartão"
-                      value={formData.cardholderName}
-                      onChange={(e) => setFormData(prev => ({ ...prev, cardholderName: e.target.value }))}
-                      className="mt-1"
-                    />
-                  </div>
+                  {/* Debit Card Payment Fields */}
+                  {formData.paymentMethod === 'debit_card' && (
+                    <>
+                      <div>
+                        <Label htmlFor="cardNumber">Número do Cartão</Label>
+                        <Input
+                          id="cardNumber"
+                          placeholder="1234 5678 9012 3456"
+                          value={formData.cardNumber}
+                          onChange={(e) => setFormData(prev => ({ ...prev, cardNumber: e.target.value }))}
+                          className="mt-1"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <Label htmlFor="expiryMonth">Mês</Label>
+                          <Select value={formData.expiryMonth} onValueChange={(value) => setFormData(prev => ({ ...prev, expiryMonth: value }))}>
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="MM" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                                <SelectItem key={month} value={month.toString().padStart(2, '0')}>
+                                  {month.toString().padStart(2, '0')}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label htmlFor="expiryYear">Ano</Label>
+                          <Select value={formData.expiryYear} onValueChange={(value) => setFormData(prev => ({ ...prev, expiryYear: value }))}>
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="YYYY" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
+                                <SelectItem key={year} value={year.toString()}>
+                                  {year}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label htmlFor="cvv">CVV</Label>
+                          <Input
+                            id="cvv"
+                            placeholder="123"
+                            value={formData.cvv}
+                            onChange={(e) => setFormData(prev => ({ ...prev, cvv: e.target.value }))}
+                            maxLength={4}
+                            className="mt-1"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="cardholderName">Nome do Titular</Label>
+                        <Input
+                          id="cardholderName"
+                          placeholder="Como aparece no cartão"
+                          value={formData.cardholderName}
+                          onChange={(e) => setFormData(prev => ({ ...prev, cardholderName: e.target.value }))}
+                          className="mt-1"
+                        />
+                      </div>
+                    </>
+                  )}
 
                   <div className="flex items-center space-x-2">
                     <Checkbox
-                      id="saveCard"
-                      checked={formData.saveCard}
-                      onCheckedChange={(checked) => setFormData(prev => ({ ...prev, saveCard: checked as boolean }))}
+                      id="savePaymentMethod"
+                      checked={formData.savePaymentMethod}
+                      onCheckedChange={(checked) => setFormData(prev => ({ ...prev, savePaymentMethod: checked as boolean }))}
                     />
-                    <Label htmlFor="saveCard" className="text-sm text-gray-7">
-                      Salvar cartão para futuras compras
+                    <Label htmlFor="savePaymentMethod" className="text-sm text-gray-7">
+                      Salvar método de pagamento para futuras compras
                     </Label>
                   </div>
                 </div>
@@ -272,7 +359,7 @@ export default function PaymentPage() {
                   ) : (
                     <>
                       <Lock className="w-4 h-4 mr-2" />
-                      Pagar {formatCurrency(order.total * 100)}
+                      Pagar {formatCurrency(order.total)}
                     </>
                   )}
                 </Button>
@@ -293,17 +380,17 @@ export default function PaymentPage() {
                     <div key={item.id} className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                         <img
-                          src={item.image}
-                          alt={item.name}
+                          src={item.product.image}
+                          alt={item.product.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-gray-9 truncate">{item.name}</h4>
+                        <h4 className="font-medium text-gray-9 truncate">{item.product.name}</h4>
                         <p className="text-sm text-gray-6">Qtd: {item.quantity}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-gray-9">{formatCurrency(item.price * item.quantity * 100)}</p>
+                        <p className="font-medium text-gray-9">{formatCurrency(item.product.price * item.quantity)}</p>
                       </div>
                     </div>
                   ))}
@@ -312,15 +399,11 @@ export default function PaymentPage() {
                 <div className="border-t border-gray-2 pt-4 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-6">Subtotal:</span>
-                    <span className="text-gray-9">{formatCurrency(order.subtotal * 100)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-6">Frete:</span>
-                    <span className="text-gray-9">{formatCurrency(order.shipping * 100)}</span>
+                    <span className="text-gray-9">{formatCurrency(order.total)}</span>
                   </div>
                   <div className="flex justify-between text-lg font-semibold border-t border-gray-2 pt-2">
                     <span className="text-gray-9">Total:</span>
-                    <span className="text-primary">{formatCurrency(order.total * 100)}</span>
+                    <span className="text-primary">{formatCurrency(order.total)}</span>
                   </div>
                 </div>
               </div>

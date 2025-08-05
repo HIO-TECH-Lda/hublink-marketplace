@@ -2,9 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Heart, ShoppingCart, Star, Eye } from 'lucide-react';
+import { Heart, ShoppingCart, Eye, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { formatCurrency } from '@/lib/payment';
 
 interface Product {
   id: string;
@@ -12,12 +13,22 @@ interface Product {
   price: number;
   originalPrice?: number;
   image: string;
+  description: string;
+  category: string;
+  brand: string;
   rating: number;
   reviews: number;
   inStock: boolean;
   sellerId: string;
   sellerName: string;
   sellerLogo?: string;
+  tags: string[];
+  sku: string;
+  weight?: string;
+  color?: string;
+  stockStatus?: string;
+  type?: string;
+  images?: string[];
 }
 
 interface ProductCardProps {
@@ -27,42 +38,41 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, showQuickView = true }: ProductCardProps) {
   const { state, dispatch } = useMarketplace();
-
+  
   const isInWishlist = state.wishlist.some(item => item.id === product.id);
-  const discountPercentage = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
     dispatch({ 
       type: 'ADD_TO_CART', 
-      payload: { product: product as any, quantity: 1 } 
+      payload: { product, quantity: 1 } 
     });
-    dispatch({ type: 'SHOW_CART_POPUP' });
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
     if (isInWishlist) {
       dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: product.id });
     } else {
-      dispatch({ type: 'ADD_TO_WISHLIST', payload: product as any });
+      dispatch({ type: 'ADD_TO_WISHLIST', payload: product });
     }
   };
 
   const handleQuickView = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    dispatch({ type: 'SET_QUICK_VIEW', payload: product as any });
+    
+    dispatch({ type: 'SET_QUICK_VIEW', payload: product });
   };
 
   return (
-    <Link href={`/produto/${product.id}`} className="group block">
-      <div className="bg-white rounded-lg border border-gray-2 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-        {/* Image Container */}
+    <Link href={`/produto/${product.id}`}>
+      <div className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden relative">
+        {/* Product Image */}
         <div className="relative aspect-square overflow-hidden">
           <img
             src={product.image}
@@ -70,10 +80,10 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           
-          {/* Discount Badge */}
-          {discountPercentage > 0 && (
-            <div className="absolute top-3 left-3 bg-danger text-white px-2 py-1 rounded-full text-xs font-medium">
-              -{discountPercentage}%
+          {/* Stock Badge */}
+          {!product.inStock && (
+            <div className="absolute top-3 left-3 bg-danger text-white text-xs px-2 py-1 rounded-full">
+              Fora de Estoque
             </div>
           )}
 
@@ -82,7 +92,7 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             <button
               onClick={handleToggleWishlist}
               className={`p-2 rounded-full shadow-md transition-colors ${
-                isInWishlist ? 'bg-danger text-white' : 'bg-white text-gray-6 hover:bg-danger hover:text-white'
+                isInWishlist ? 'bg-danger text-white' : 'bg-white text-gray-6'
               }`}
             >
               <Heart size={16} fill={isInWishlist ? 'currentColor' : 'none'} />
@@ -91,7 +101,7 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             {showQuickView && (
               <button
                 onClick={handleQuickView}
-                className="p-2 bg-white text-gray-6 rounded-full shadow-md hover:bg-primary hover:text-white transition-colors"
+                className="p-2 bg-white text-gray-6 rounded-full shadow-md"
               >
                 <Eye size={16} />
               </button>
@@ -169,11 +179,11 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <span className="text-lg font-semibold text-primary">
-                R$ {product.price.toFixed(2)}
+                {formatCurrency(product.price)}
               </span>
               {product.originalPrice && (
                 <span className="text-sm text-gray-5 line-through">
-                  R$ {product.originalPrice.toFixed(2)}
+                  {formatCurrency(product.originalPrice)}
                 </span>
               )}
             </div>

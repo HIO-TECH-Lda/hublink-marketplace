@@ -179,7 +179,7 @@ export default function UserDashboardPage() {
                         </div>
                         <div className="col-span-1">
                           <p className="text-xs sm:text-sm font-medium text-gray-7">Total</p>
-                          <p className="text-sm sm:text-base text-gray-9">R$ {order.total.toFixed(2)}</p>
+                          <p className="text-sm sm:text-base text-gray-9">MTn {order.total.toFixed(2)}</p>
                         </div>
                         <div className="col-span-1">
                           <p className="text-xs sm:text-sm font-medium text-gray-7">Status</p>

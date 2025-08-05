@@ -8,6 +8,7 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import SellerSidebar from '../../components/SellerSidebar';
+import { formatCurrency } from '@/lib/payment';
 
 export default function SellerDashboardPage() {
   const { state, dispatch } = useMarketplace();
@@ -73,7 +74,7 @@ export default function SellerDashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-6">Vendas Totais</p>
-                    <p className="text-2xl font-bold text-gray-9">R$ {totalSales.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-gray-9">{formatCurrency(totalSales)}</p>
                   </div>
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                     <DollarSign size={24} className="text-primary" />
@@ -103,47 +104,47 @@ export default function SellerDashboardPage() {
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-6">Produtos Ativos</p>
-                    <p className="text-2xl font-bold text-gray-9">{sellerProducts.length}</p>
+                    <p className="text-sm text-gray-6">Saldo Disponível</p>
+                    <p className="text-2xl font-bold text-gray-9">{formatCurrency(totalBalance)}</p>
                   </div>
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Package size={24} className="text-primary" />
+                  <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
+                    <DollarSign size={24} className="text-success" />
                   </div>
                 </div>
                 <div className="mt-4 flex items-center text-sm">
-                  <span className="text-gray-6">Em estoque</span>
+                  <span className="text-gray-6">Pronto para saque</span>
                 </div>
               </div>
 
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-6">Saldo a Receber</p>
-                    <p className="text-2xl font-bold text-gray-9">R$ {totalBalance.toFixed(2)}</p>
+                    <p className="text-sm text-gray-6">Produtos Ativos</p>
+                    <p className="text-2xl font-bold text-gray-9">{sellerProducts.length}</p>
                   </div>
-                  <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
-                    <DollarSign size={24} className="text-green-500" />
+                  <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center">
+                    <Package size={24} className="text-info" />
                   </div>
                 </div>
                 <div className="mt-4 flex items-center text-sm">
-                  <span className="text-gray-6">Próximo repasse: 15/02</span>
+                  <span className="text-gray-6">Em estoque</span>
                 </div>
               </div>
             </div>
 
             {/* Recent Products */}
             <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-9">Meus Produtos Recentes</h2>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-9">Produtos Recentes</h2>
                 <Link href="/vendedor/produtos">
-                  <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white">
+                  <Button variant="outline" size="sm">
                     Ver Todos
                     <ArrowRight size={16} className="ml-2" />
                   </Button>
                 </Link>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {recentProducts.map((product) => (
                   <div key={product.id} className="border border-gray-2 rounded-lg p-4">
                     <div className="aspect-square bg-gray-1 rounded-lg overflow-hidden mb-3">
@@ -154,15 +155,17 @@ export default function SellerDashboardPage() {
                       />
                     </div>
                     <h3 className="font-medium text-gray-9 mb-1 line-clamp-2">{product.name}</h3>
-                    <p className="text-sm text-gray-6 mb-2">R$ {product.price.toFixed(2)}</p>
-                    <div className="flex items-center space-x-2">
-                      <Link href={`/produto/${product.id}`}>
-                        <Button size="sm" variant="outline" className="w-8 h-8 p-0 border-gray-3 text-gray-7 hover:bg-gray-1 flex items-center justify-center">
-                          <Eye size={14} />
-                        </Button>
-                      </Link>
+                    <p className="text-sm text-gray-6 mb-2">{formatCurrency(product.price)}</p>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        product.inStock 
+                          ? 'bg-success/10 text-success' 
+                          : 'bg-danger/10 text-danger'
+                      }`}>
+                        {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
+                      </span>
                       <Link href={`/vendedor/produtos/editar/${product.id}`}>
-                        <Button size="sm" variant="outline" className="w-8 h-8 p-0 border-primary text-primary hover:bg-primary hover:text-white flex items-center justify-center">
+                        <Button variant="ghost" size="sm">
                           <Edit size={14} />
                         </Button>
                       </Link>
@@ -174,10 +177,10 @@ export default function SellerDashboardPage() {
 
             {/* Recent Orders */}
             <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-9">Pedidos Recentes</h2>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-9">Pedidos Recentes</h2>
                 <Link href="/vendedor/pedidos">
-                  <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white">
+                  <Button variant="outline" size="sm">
                     Ver Todos
                     <ArrowRight size={16} className="ml-2" />
                   </Button>
@@ -186,48 +189,43 @@ export default function SellerDashboardPage() {
               
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-1">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-9">ID do Pedido</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-9">Data</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-9">Cliente</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-9">Total</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-9">Status</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-9">Ações</th>
+                  <thead>
+                    <tr className="border-b border-gray-2">
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">ID do Pedido</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Cliente</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Data</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Total</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-2">
+                  <tbody>
                     {recentOrders.map((order) => {
                       const sellerItems = order.items.filter(item => item.product.sellerId === state.user?.sellerId);
                       const sellerTotal = sellerItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
                       
                       return (
-                        <tr key={order.id} className="hover:bg-gray-1/50">
+                        <tr key={order.id} className="border-b border-gray-1">
                           <td className="px-4 py-3 text-sm font-medium text-gray-9">{order.id}</td>
-                          <td className="px-4 py-3 text-sm text-gray-6">{new Date(order.date).toLocaleDateString('pt-BR')}</td>
-                          <td className="px-4 py-3 text-sm text-gray-6">Cliente {order.userId}</td>
-                          <td className="px-4 py-3 text-sm font-medium text-primary">R$ {sellerTotal.toFixed(2)}</td>
+                          <td className="px-4 py-3 text-sm text-gray-6">
+                            {order.billingAddress?.firstName} {order.billingAddress?.lastName}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-6">{order.date}</td>
                           <td className="px-4 py-3">
-                            <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                              order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                              order.status === 'shipped' ? 'bg-purple-100 text-purple-800' :
-                              order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                              'bg-red-100 text-red-800'
+                            <span className={`text-xs px-2 py-1 rounded-full ${
+                              order.status === 'delivered' ? 'bg-success/10 text-success' :
+                              order.status === 'shipped' ? 'bg-warning/10 text-warning' :
+                              order.status === 'processing' ? 'bg-info/10 text-info' :
+                              'bg-gray-1 text-gray-6'
                             }`}>
-                              {order.status === 'pending' ? 'Pendente' :
-                               order.status === 'processing' ? 'Processando' :
-                               order.status === 'shipped' ? 'Enviado' :
-                               order.status === 'delivered' ? 'Entregue' :
-                               'Cancelado'}
+                              {order.status}
                             </span>
                           </td>
+                          <td className="px-4 py-3 text-sm font-medium text-primary">{formatCurrency(sellerTotal)}</td>
                           <td className="px-4 py-3">
-                            <Link href={`/vendedor/pedidos/${order.id}`}>
-                              <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-                                Ver Detalhes
-                              </Button>
-                            </Link>
+                            <Button variant="ghost" size="sm">
+                              <Eye size={14} />
+                            </Button>
                           </td>
                         </tr>
                       );

@@ -250,7 +250,7 @@ export default function ContactPage() {
               <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Como faço um pedido?</h3>
               <p className="text-gray-7 text-xs sm:text-sm">
                 Navegue pelos produtos, adicione ao carrinho e finalize sua compra. 
-                Aceitamos PIX, cartão de crédito e dinheiro na entrega.
+                Aceitamos M-Pesa, cartão de crédito e dinheiro na entrega.
               </p>
             </div>
             

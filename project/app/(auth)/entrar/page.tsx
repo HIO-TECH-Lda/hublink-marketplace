@@ -63,11 +63,11 @@ export default function SignInPage() {
           storeDescription: 'Produtos orgânicos frescos direto da fazenda',
           storeEmail: 'vendedor@exemplo.com',
           storePhone: '(11) 99999-9999',
-          bankName: 'Banco do Brasil',
+          bankName: 'M-Pesa',
           accountNumber: '12345-6',
           agencyNumber: '0001',
           pixKey: 'vendedor@exemplo.com',
-          paymentMethod: 'PIX'
+          paymentMethod: 'M-Pesa'
         }
       })
     };

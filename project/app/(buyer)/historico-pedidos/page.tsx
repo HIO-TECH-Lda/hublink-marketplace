@@ -8,6 +8,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import BuyerSidebar from '../components/BuyerSidebar';
+import { formatCurrency } from '@/lib/payment';
 
 export default function OrderHistoryPage() {
   const { state } = useMarketplace();
@@ -101,13 +102,11 @@ export default function OrderHistoryPage() {
               <div className="bg-white rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="p-2 bg-green-100 rounded-lg">
-                    <Package className="w-6 h-6 text-green-600" />
+                    <DollarSign className="w-6 h-6 text-green-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Entregues</p>
-                    <p className="text-2xl font-bold text-gray-900">
-                      {userOrders.filter((order: any) => order.status === 'Entregue').length}
-                    </p>
+                    <p className="text-sm font-medium text-gray-600">Total Gasto</p>
+                    <p className="text-2xl font-bold text-gray-900">{formatCurrency(userOrders.reduce((total: number, order: any) => total + order.total, 0))}</p>
                   </div>
                 </div>
               </div>
@@ -134,7 +133,7 @@ export default function OrderHistoryPage() {
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">Valor Total</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      R$ {userOrders.reduce((total: number, order: any) => total + order.total, 0).toFixed(2)}
+                      MTn {userOrders.reduce((total: number, order: any) => total + order.total, 0).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -205,7 +204,7 @@ export default function OrderHistoryPage() {
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            R$ {order.total.toFixed(2)}
+                            {formatCurrency(order.total)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {order.items.length} {order.items.length === 1 ? 'item' : 'itens'}

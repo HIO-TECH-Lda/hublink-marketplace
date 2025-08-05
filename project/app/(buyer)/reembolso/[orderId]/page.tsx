@@ -281,7 +281,7 @@ export default function RefundPage() {
                     </div>
 
                     <div>
-                      <Label htmlFor="amount">Valor do Reembolso (R$)</Label>
+                      <Label htmlFor="amount">Valor do Reembolso (MTn)</Label>
                       <input
                         type="number"
                         id="amount"

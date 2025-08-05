@@ -48,21 +48,21 @@ export default function Footer() {
                 <span className="text-xl sm:text-2xl font-bold">Ecobazar</span>
               </Link>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
-                Marketplace brasileiro de alimentos orgânicos frescos e saudáveis. 
-                Conectamos produtores locais com consumidores conscientes.
+                Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. 
+                Conectamos produtores locais com consumidores conscientes em Beira.
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
                   <MapPin size={16} className="flex-shrink-0" />
-                  <span className="break-words">São Paulo, SP - Brasil</span>
+                  <span className="break-words">Beira, Sofala - Moçambique</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone size={16} className="flex-shrink-0" />
-                  <span>(11) 99999-9999</span>
+                  <span>+258 84 123 4567</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={16} className="flex-shrink-0" />
-                  <span className="break-all">contato@ecobazar.com.br</span>
+                  <span className="break-all">contato@ecobazar.co.mz</span>
                 </div>
               </div>
             </div>
@@ -139,6 +139,7 @@ export default function Footer() {
               <div className="flex flex-wrap gap-2">
                 <div className="px-2 py-1 bg-gray-8 rounded text-xs">M-Pesa</div>
                 <div className="px-2 py-1 bg-gray-8 rounded text-xs">E-Mola</div>
+                <div className="px-2 py-1 bg-gray-8 rounded text-xs">Débito</div>
               </div>
             </div>
           </div>

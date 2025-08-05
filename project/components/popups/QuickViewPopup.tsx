@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { X, Heart, ShoppingCart, Plus, Minus, Star, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { formatCurrency } from '@/lib/payment';
 
 export default function QuickViewPopup() {
   const { state, dispatch } = useMarketplace();
@@ -98,18 +99,17 @@ export default function QuickViewPopup() {
                   <img
                     src={product.sellerLogo}
                     alt={product.sellerName}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-6 h-6 rounded-full object-cover"
                   />
                 )}
                 <span className="text-sm text-gray-6">por {product.sellerName}</span>
               </div>
+              
               <h1 className="text-2xl font-bold text-gray-9 mb-2">{product.name}</h1>
-            </div>
-
-            {/* Rating and Reviews */}
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-1">
-                <div className="flex">
+              
+              {/* Rating */}
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="flex items-center space-x-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
@@ -120,7 +120,23 @@ export default function QuickViewPopup() {
                 </div>
                 <span className="text-sm text-gray-6">({product.reviews} avaliações)</span>
               </div>
-              <span className="text-sm text-gray-6">SKU: {product.sku}</span>
+
+              {/* Price */}
+              <div className="flex items-center space-x-3 mb-4">
+                <span className="text-3xl font-bold text-primary">
+                  {formatCurrency(product.price)}
+                </span>
+                {product.originalPrice && (
+                  <span className="text-lg text-gray-6 line-through">
+                    {formatCurrency(product.originalPrice)}
+                  </span>
+                )}
+                {discountPercentage > 0 && (
+                  <span className="bg-primary text-white text-sm px-2 py-1 rounded">
+                    -{discountPercentage}%
+                  </span>
+                )}
+              </div>
             </div>
 
             {/* Availability */}
@@ -129,25 +145,6 @@ export default function QuickViewPopup() {
               <span className={`text-sm ${product.inStock ? 'text-primary' : 'text-danger'}`}>
                 {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
               </span>
-            </div>
-
-            {/* Price */}
-            <div className="space-y-2">
-              <div className="flex items-center space-x-3">
-                <span className="text-3xl font-bold text-primary">
-                  R$ {product.price.toFixed(2)}
-                </span>
-                {product.originalPrice && (
-                  <span className="text-lg text-gray-5 line-through">
-                    R$ {product.originalPrice.toFixed(2)}
-                  </span>
-                )}
-                {discountPercentage > 0 && (
-                  <span className="bg-danger text-white px-2 py-1 rounded-full text-sm font-medium">
-                    -{discountPercentage}%
-                  </span>
-                )}
-              </div>
             </div>
 
             {/* Brand */}
@@ -246,4 +243,4 @@ export default function QuickViewPopup() {
       </div>
     </div>
   );
-}
+} 

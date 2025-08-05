@@ -262,7 +262,7 @@ export default function NewProductPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-7 mb-2">
-                        Preço de Venda (R$) *
+                        Preço de Venda (MTn) *
                       </label>
                       <Input
                         type="number"
@@ -277,7 +277,7 @@ export default function NewProductPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-7 mb-2">
-                        Preço Original (R$)
+                        Preço Original (MTn)
                       </label>
                       <Input
                         type="number"

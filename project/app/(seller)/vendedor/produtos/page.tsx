@@ -266,11 +266,11 @@ export default function SellerProductsPage() {
                             <div className="text-sm text-gray-900">
                               {product.originalPrice && (
                                 <div className="text-gray-500 line-through">
-                                  R$ {product.originalPrice.toFixed(2)}
+                                  MTn {product.originalPrice.toFixed(2)}
                                 </div>
                               )}
                               <div className="font-medium text-green-600">
-                                R$ {product.price.toFixed(2)}
+                                MTn {product.price.toFixed(2)}
                               </div>
                             </div>
                           </td>

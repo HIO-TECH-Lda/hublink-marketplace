@@ -34,7 +34,7 @@ export default function HomePage() {
                 <span className="text-primary block">Frescos e Saudáveis</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Conectamos você diretamente com produtores locais de alimentos orgânicos. 
+                Conectamos você diretamente com produtores locais de alimentos orgânicos em Beira. 
                 Qualidade garantida, sabor autêntico e nutrição máxima para sua família.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -69,14 +69,14 @@ export default function HomePage() {
                 <Truck className="text-primary" size={32} />
               </div>
               <h3 className="font-semibold text-gray-9">Entrega Grátis</h3>
-              <p className="text-sm text-gray-6">Entrega gratuita em pedidos acima de R$ 50</p>
+              <p className="text-sm text-gray-6">Entrega gratuita em pedidos acima de 500 MZN</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <CreditCard className="text-primary" size={32} />
               </div>
               <h3 className="font-semibold text-gray-9">Pagamento Seguro</h3>
-              <p className="text-sm text-gray-6">Transações 100% seguras</p>
+              <p className="text-sm text-gray-6">M-Pesa, E-Mola e Cartão de Débito</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
@@ -130,7 +130,7 @@ export default function HomePage() {
               </h2>
               <p className="text-lg text-green-gray-1">
                 Nossos produtores são certificados e seguem os mais rigorosos padrões 
-                de qualidade para garantir que você receba apenas o melhor.
+                de qualidade para garantir que você receba apenas o melhor em Beira.
               </p>
               <div className="flex items-center space-x-4">
                 <div className="text-center">
@@ -218,19 +218,19 @@ export default function HomePage() {
             {[
               {
                 name: "Maria Silva",
-                location: "São Paulo, SP",
+                location: "Beira, Sofala",
                 rating: 5,
                 comment: "Produtos sempre frescos e de excelente qualidade. A entrega é rápida e o atendimento é impecável!"
               },
               {
                 name: "João Santos",
-                location: "Rio de Janeiro, RJ",
+                location: "Maputo, Maputo",
                 rating: 5,
                 comment: "Finalmente encontrei um marketplace que conecta diretamente com produtores locais. Recomendo!"
               },
               {
                 name: "Ana Costa",
-                location: "Belo Horizonte, MG",
+                location: "Nampula, Nampula",
                 rating: 5,
                 comment: "A variedade de produtos orgânicos é incrível. Minha família está mais saudável desde que começamos a comprar aqui."
               }

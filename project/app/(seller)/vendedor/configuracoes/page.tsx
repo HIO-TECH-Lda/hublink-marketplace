@@ -29,7 +29,7 @@ export default function SellerSettingsPage() {
     accountNumber: state.user?.storeSettings?.accountNumber || '',
     agencyNumber: state.user?.storeSettings?.agencyNumber || '',
     pixKey: state.user?.storeSettings?.pixKey || '',
-    paymentMethod: state.user?.storeSettings?.paymentMethod || 'PIX'
+    paymentMethod: state.user?.storeSettings?.paymentMethod || 'M-Pesa'
   });
 
   const [accountData, setAccountData] = useState({
@@ -297,14 +297,14 @@ export default function SellerSettingsPage() {
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-7 mb-2">
-                              Chave PIX
+                              Chave M-Pesa
                             </label>
                             <Input
                               type="text"
                               name="pixKey"
                               value={paymentData.pixKey}
                               onChange={handlePaymentChange}
-                              placeholder="Digite a chave PIX"
+                              placeholder="Digite a chave M-Pesa"
                             />
                           </div>
                         </div>
@@ -318,9 +318,9 @@ export default function SellerSettingsPage() {
                             onChange={handlePaymentChange}
                             className="w-full px-3 py-2 border border-gray-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                           >
-                            <option value="PIX">PIX</option>
+                            <option value="M-Pesa">M-Pesa</option>
                             <option value="Transferência Bancária">Transferência Bancária</option>
-                            <option value="Boleto">Boleto</option>
+                            <option value="E-Mola">E-Mola</option>
                           </select>
                         </div>
                       </div>

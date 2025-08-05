@@ -15,7 +15,7 @@ export default function PayoutsPage() {
   const { payouts, user } = state;
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [payoutAmount, setPayoutAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('PIX');
+  const [paymentMethod, setPaymentMethod] = useState('M-Pesa');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!state.isAuthenticated || !state.user || !state.user.isSeller) {
@@ -103,7 +103,7 @@ export default function PayoutsPage() {
       alert('Solicitação de repasse enviada com sucesso!');
       setShowPayoutModal(false);
       setPayoutAmount('');
-      setPaymentMethod('PIX');
+      setPaymentMethod('M-Pesa');
     } catch (error) {
       console.error('Error requesting payout:', error);
       alert('Erro ao solicitar repasse. Tente novamente.');
@@ -115,7 +115,7 @@ export default function PayoutsPage() {
   const handleCloseModal = () => {
     setShowPayoutModal(false);
     setPayoutAmount('');
-    setPaymentMethod('PIX');
+    setPaymentMethod('M-Pesa');
   };
 
   return (
@@ -147,7 +147,7 @@ export default function PayoutsPage() {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">Saldo Disponível</p>
-                    <p className="text-2xl font-bold text-gray-900">R$ {currentBalance.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-gray-900">MTn {currentBalance.toFixed(2)}</p>
                   </div>
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function PayoutsPage() {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">Pendente</p>
-                    <p className="text-2xl font-bold text-gray-900">R$ {pendingAmount.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-gray-900">MTn {pendingAmount.toFixed(2)}</p>
                   </div>
                 </div>
               </div>
@@ -171,7 +171,7 @@ export default function PayoutsPage() {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">Total Ganho</p>
-                    <p className="text-2xl font-bold text-gray-900">R$ {totalEarned.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-gray-900">MTn {totalEarned.toFixed(2)}</p>
                   </div>
                 </div>
               </div>
@@ -245,7 +245,7 @@ export default function PayoutsPage() {
                             {payout.period}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            R$ {payout.amount.toFixed(2)}
+                            MTn {payout.amount.toFixed(2)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(payout.status)}`}>
@@ -280,9 +280,9 @@ export default function PayoutsPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">PIX</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">M-Pesa</h4>
                   <div className="space-y-2 text-sm text-gray-600">
-                    <p><span className="font-medium">Chave PIX:</span> {user?.storeSettings?.pixKey || 'Não informado'}</p>
+                    <p><span className="font-medium">Chave M-Pesa:</span> {user?.storeSettings?.mpesaNumber || 'Não informado'}</p>
                     <p><span className="font-medium">Método:</span> {user?.storeSettings?.paymentMethod || 'Não informado'}</p>
                   </div>
                 </div>
@@ -342,7 +342,7 @@ export default function PayoutsPage() {
               <form onSubmit={handlePayoutRequest} className="space-y-6">
                 <div>
                   <label htmlFor="payoutAmount" className="block text-sm font-medium text-gray-700 mb-2">
-                    Valor do Repasse (R$)
+                    Valor do Repasse (MTn)
                   </label>
                   <Input
                     type="number"
@@ -367,7 +367,7 @@ export default function PayoutsPage() {
                     onChange={(e) => setPaymentMethod(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                   >
-                    <option value="PIX">PIX</option>
+                    <option value="M-Pesa">M-Pesa</option>
                     <option value="Banco">Transferência Bancária</option>
                     <option value="Outro">Outro</option>
                   </select>

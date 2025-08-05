@@ -9,6 +9,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/common/ProductCard';
+import { formatCurrency } from '@/lib/payment';
 
 export default function ProductPage() {
   const params = useParams();
@@ -153,11 +154,11 @@ export default function ProductPage() {
                 <div className="flex items-center space-x-3 mb-4">
                   {product.originalPrice && (
                     <span className="text-lg text-gray-6 line-through">
-                      R$ {product.originalPrice.toFixed(2)}
+                      {formatCurrency(product.originalPrice)}
                     </span>
                   )}
                   <span className="text-3xl font-bold text-primary">
-                    R$ {product.price.toFixed(2)}
+                    {formatCurrency(product.price)}
                   </span>
                   {product.originalPrice && (
                     <span className="bg-primary text-white text-xs px-2 py-1 rounded">
@@ -229,7 +230,7 @@ export default function ProductPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gray-2">
                 <div className="flex items-center space-x-2">
                   <Truck size={20} className="text-primary" />
-                  <span className="text-sm text-gray-6">Entrega Grátis</span>
+                  <span className="text-sm text-gray-6">Entrega Grátis acima de 500 MZN</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Shield size={20} className="text-primary" />

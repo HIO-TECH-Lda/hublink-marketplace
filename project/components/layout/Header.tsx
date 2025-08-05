@@ -63,13 +63,13 @@ export default function Header() {
             <div className="flex items-center space-x-4 sm:space-x-6">
               <div className="flex items-center space-x-2">
                 <Phone size={14} />
-                <span className="hidden md:inline">(11) 99999-9999</span>
-                <span className="md:hidden">(11) 99999-9999</span>
+                <span className="hidden md:inline">+258 84 123 4567</span>
+                <span className="md:hidden">+258 84 123 4567</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={14} />
-                <span className="hidden lg:inline">contato@ecobazar.com.br</span>
-                <span className="lg:hidden">contato@ecobazar.com.br</span>
+                <span className="hidden lg:inline">contato@ecobazar.co.mz</span>
+                <span className="lg:hidden">contato@ecobazar.co.mz</span>
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
@@ -152,34 +152,43 @@ export default function Header() {
               >
                 <ShoppingCart size={20} />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-danger text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cartItemsCount}
                   </span>
                 )}
               </button>
 
-              {/* User Account */}
+              {/* User Menu */}
               <div className="relative">
-                {state.isAuthenticated ? (
-                  <Link 
-                    href={state.user?.isSeller ? '/vendedor/painel' : '/painel'} 
-                    className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors"
-                  >
-                    <User size={20} />
-                    <span className="hidden sm:inline">
-                      {state.user?.isSeller ? 'Painel Vendedor' : 'Minha Conta'}
-                    </span>
-                  </Link>
+                {state.user ? (
+                  <div className="flex items-center space-x-2">
+                    <Link href="/painel" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
+                      {state.user.profileImage ? (
+                        <img 
+                          src={state.user.profileImage} 
+                          alt={state.user.firstName}
+                          className="w-8 h-8 rounded-full"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                          <span className="text-primary font-semibold text-sm">
+                            {state.user.firstName[0]}
+                          </span>
+                        </div>
+                      )}
+                      <span className="hidden sm:inline text-sm font-medium">{state.user.firstName}</span>
+                    </Link>
+                  </div>
                 ) : (
-                  <Link href="/entrar" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
+                  <Link href="/login" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
                     <User size={20} />
-                    <span className="hidden sm:inline">Entrar</span>
+                    <span className="hidden sm:inline text-sm font-medium">Entrar</span>
                   </Link>
                 )}
               </div>
 
-              {/* Mobile Menu Toggle */}
-              <button
+              {/* Mobile Menu Button */}
+              <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-2 hover:bg-gray-1 rounded-lg transition-colors"
               >
@@ -188,7 +197,7 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Navigation */}
           {isMobileMenuOpen && (
             <div className="lg:hidden mt-4 pb-4 border-t border-gray-3">
               <nav className="flex flex-col space-y-2 mt-4">
@@ -204,56 +213,54 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Search Modal */}
+      {/* Search Modal - Mobile */}
       {isSearchModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mt-20">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Buscar Produtos</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
+          <div className="bg-white p-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Buscar Produtos</h3>
               <button 
                 onClick={handleCloseSearchModal}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-2 hover:bg-gray-1 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X size={20} />
               </button>
             </div>
-
-            {/* Search Form */}
-            <form onSubmit={handleSearch} className="p-4">
+            <form onSubmit={handleSearch} className="space-y-4">
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Digite o que você procura..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-base"
+                  className="w-full px-4 py-3 border border-gray-3 rounded-lg focus:outline-none focus:border-primary"
                   autoFocus
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-white rounded-md hover:bg-primary-hard transition-colors"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-primary text-white rounded-lg hover:bg-primary-hard transition-colors"
                 >
                   <Search size={20} />
                 </button>
               </div>
-            </form>
-
-            {/* Quick Search Suggestions */}
-            <div className="px-4 pb-4">
-              <h4 className="text-sm font-medium text-gray-700 mb-3">Busquedas Populares</h4>
-              <div className="flex flex-wrap gap-2">
-                {['Tomates Orgânicos', 'Frutas Frescas', 'Verduras', 'Legumes', 'Produtos Orgânicos'].map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => handleSearchSuggestion(suggestion)}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
+              
+              {/* Search Suggestions */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-gray-7">Sugestões populares:</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['Tomates', 'Cebolas', 'Batatas', 'Cenouras', 'Alface'].map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      type="button"
+                      onClick={() => handleSearchSuggestion(suggestion)}
+                      className="px-3 py-1 bg-gray-1 text-gray-7 rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}

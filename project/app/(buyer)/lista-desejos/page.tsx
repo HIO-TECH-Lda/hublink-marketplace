@@ -8,6 +8,7 @@ import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { formatCurrency } from '@/lib/payment';
 
 export default function WishlistPage() {
   const { state, dispatch } = useMarketplace();
@@ -161,11 +162,11 @@ export default function WishlistPage() {
                         <div className="space-y-1">
                           {product.originalPrice && (
                             <div className="text-sm text-gray-6 line-through">
-                              R$ {product.originalPrice.toFixed(2)}
+                              {formatCurrency(product.originalPrice)}
                             </div>
                           )}
                           <div className="font-medium text-primary">
-                            R$ {product.price.toFixed(2)}
+                            {formatCurrency(product.price)}
                           </div>
                         </div>
                       </td>
@@ -267,11 +268,11 @@ export default function WishlistPage() {
                           <div className="flex items-center space-x-2">
                             {product.originalPrice && (
                               <span className="text-xs text-gray-6 line-through">
-                                R$ {product.originalPrice.toFixed(2)}
+                                {formatCurrency(product.originalPrice)}
                               </span>
                             )}
                             <span className="font-medium text-primary text-sm">
-                              R$ {product.price.toFixed(2)}
+                              {formatCurrency(product.price)}
                             </span>
                           </div>
                           <div className="flex items-center space-x-1">

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, CreditCard, DollarSign, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, CreditCard, DollarSign, ShoppingBag, Smartphone } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useRouter } from 'next/navigation';
+import { formatCurrency } from '@/lib/payment';
 
 export default function CheckoutPage() {
   const { state, dispatch } = useMarketplace();
@@ -24,16 +25,16 @@ export default function CheckoutPage() {
     address: '',
     email: '',
     phone: '',
-    country: 'Brasil',
+    country: 'Moçambique',
     state: '',
     zipCode: '',
     shipToDifferentAddress: false,
     orderNotes: '',
-    paymentMethod: 'pix'
+    paymentMethod: 'mpesa'
   });
 
   const subtotal = state.cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-  const shipping = subtotal >= 50 ? 0 : 10;
+  const shipping = subtotal >= 500 ? 0 : 100; // Free shipping above 500 MZN
   const total = subtotal + shipping;
   const totalItems = state.cart.reduce((total, item) => total + item.quantity, 0);
 
@@ -183,6 +184,7 @@ export default function CheckoutPage() {
                     <Input
                       id="phone"
                       name="phone"
+                      placeholder="+258 84 123 4567"
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
@@ -207,6 +209,7 @@ export default function CheckoutPage() {
                     <Input
                       id="address"
                       name="address"
+                      placeholder="Avenida 25 de Setembro, 123"
                       value={formData.address}
                       onChange={handleInputChange}
                       required
@@ -215,10 +218,11 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="state">Estado *</Label>
+                    <Label htmlFor="state">Província *</Label>
                     <Input
                       id="state"
                       name="state"
+                      placeholder="Sofala"
                       value={formData.state}
                       onChange={handleInputChange}
                       required
@@ -227,10 +231,11 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="zipCode">CEP *</Label>
+                    <Label htmlFor="zipCode">Código Postal *</Label>
                     <Input
                       id="zipCode"
                       name="zipCode"
+                      placeholder="2100"
                       value={formData.zipCode}
                       onChange={handleInputChange}
                       required
@@ -291,26 +296,26 @@ export default function CheckoutPage() {
                   className="space-y-4"
                 >
                   <div className="flex items-center space-x-2 p-4 border border-gray-2 rounded-lg">
-                    <RadioGroupItem value="pix" id="pix" />
-                    <Label htmlFor="pix" className="flex items-center space-x-2 cursor-pointer">
-                      <CreditCard size={20} className="text-primary" />
-                      <span>PIX</span>
+                    <RadioGroupItem value="mpesa" id="mpesa" />
+                    <Label htmlFor="mpesa" className="flex items-center space-x-2 cursor-pointer">
+                      <Smartphone size={20} className="text-primary" />
+                      <span>M-Pesa</span>
                     </Label>
                   </div>
                   
                   <div className="flex items-center space-x-2 p-4 border border-gray-2 rounded-lg">
-                    <RadioGroupItem value="cash" id="cash" />
-                    <Label htmlFor="cash" className="flex items-center space-x-2 cursor-pointer">
-                      <DollarSign size={20} className="text-primary" />
-                      <span>Dinheiro na Entrega</span>
+                    <RadioGroupItem value="emola" id="emola" />
+                    <Label htmlFor="emola" className="flex items-center space-x-2 cursor-pointer">
+                      <Smartphone size={20} className="text-primary" />
+                      <span>E-Mola</span>
                     </Label>
                   </div>
                   
                   <div className="flex items-center space-x-2 p-4 border border-gray-2 rounded-lg">
-                    <RadioGroupItem value="paypal" id="paypal" />
-                    <Label htmlFor="paypal" className="flex items-center space-x-2 cursor-pointer">
+                    <RadioGroupItem value="debit_card" id="debit_card" />
+                    <Label htmlFor="debit_card" className="flex items-center space-x-2 cursor-pointer">
                       <CreditCard size={20} className="text-primary" />
-                      <span>PayPal</span>
+                      <span>Cartão de Débito</span>
                     </Label>
                   </div>
                 </RadioGroup>
@@ -339,7 +344,7 @@ export default function CheckoutPage() {
                         <p className="text-xs text-gray-6">Qtd: {item.quantity}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-sm">R$ {(item.product.price * item.quantity).toFixed(2)}</p>
+                        <p className="font-medium text-sm">{formatCurrency(item.product.price * item.quantity)}</p>
                       </div>
                     </div>
                   ))}
@@ -349,7 +354,7 @@ export default function CheckoutPage() {
                 <div className="space-y-3 border-t border-gray-2 pt-4">
                   <div className="flex justify-between">
                     <span className="text-gray-6">Subtotal ({totalItems} itens)</span>
-                    <span className="font-medium">R$ {subtotal.toFixed(2)}</span>
+                    <span className="font-medium">{formatCurrency(subtotal)}</span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -358,7 +363,7 @@ export default function CheckoutPage() {
                       {shipping === 0 ? (
                         <span className="text-primary">Grátis</span>
                       ) : (
-                        `R$ ${shipping.toFixed(2)}`
+                        formatCurrency(shipping)
                       )}
                     </span>
                   </div>
@@ -366,7 +371,7 @@ export default function CheckoutPage() {
                   <div className="border-t border-gray-2 pt-3">
                     <div className="flex justify-between">
                       <span className="text-lg font-bold text-gray-9">Total</span>
-                      <span className="text-lg font-bold text-primary">R$ {total.toFixed(2)}</span>
+                      <span className="text-lg font-bold text-primary">{formatCurrency(total)}</span>
                     </div>
                   </div>
                 </div>

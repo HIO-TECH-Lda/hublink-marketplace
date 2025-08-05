@@ -17,7 +17,7 @@ export default function ShopPage() {
   const { state } = useMarketplace();
   const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedRating, setSelectedRating] = useState(0);
   const [selectedSellers, setSelectedSellers] = useState<string[]>([]);
@@ -159,13 +159,13 @@ export default function ShopPage() {
                   <Slider
                     value={priceRange}
                     onValueChange={setPriceRange}
-                    max={100}
+                    max={1000}
                     step={1}
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-gray-6">
-                    <span>R$ {priceRange[0]}</span>
-                    <span>R$ {priceRange[1]}</span>
+                    <span>MZN {priceRange[0]}</span>
+                    <span>MZN {priceRange[1]}</span>
                   </div>
                 </div>
               </div>

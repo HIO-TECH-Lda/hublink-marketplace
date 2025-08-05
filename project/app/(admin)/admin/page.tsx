@@ -93,7 +93,7 @@ export default function AdminDashboard() {
         id: '1',
         type: 'order',
         title: 'Novo Pedido #ORD123456',
-        description: 'Pedido de R$ 150,00 realizado por João Silva',
+        description: 'Pedido de MTn 150,00 realizado por João Silva',
         timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
         status: 'pending'
       },
@@ -122,7 +122,7 @@ export default function AdminDashboard() {
         id: '5',
         type: 'order',
         title: 'Pedido Entregue #ORD123455',
-        description: 'Pedido de R$ 89,90 entregue com sucesso',
+        description: 'Pedido de MTn 89,90 entregue com sucesso',
         timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
         status: 'delivered'
       }

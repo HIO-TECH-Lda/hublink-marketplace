@@ -208,8 +208,8 @@ export default function OrderDetailsPage() {
                           <p className="text-sm text-gray-500">Quantidade: {item.quantity}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-sm font-medium text-gray-900">R$ {item.product.price.toFixed(2)}</p>
-                          <p className="text-sm text-gray-500">R$ {(item.product.price * item.quantity).toFixed(2)}</p>
+                          <p className="text-sm font-medium text-gray-900">MTn {item.product.price.toFixed(2)}</p>
+                          <p className="text-sm text-gray-500">MTn {(item.product.price * item.quantity).toFixed(2)}</p>
                         </div>
                       </div>
                     </div>
@@ -227,7 +227,7 @@ export default function OrderDetailsPage() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900">R$ {order.total.toFixed(2)}</span>
+                  <span className="text-gray-900">MTn {order.total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Frete</span>
@@ -236,7 +236,7 @@ export default function OrderDetailsPage() {
                 <div className="border-t pt-3">
                   <div className="flex justify-between">
                     <span className="text-lg font-semibold text-gray-900">Total</span>
-                    <span className="text-lg font-semibold text-gray-900">R$ {order.total.toFixed(2)}</span>
+                    <span className="text-lg font-semibold text-gray-900">MTn {order.total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>

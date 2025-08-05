@@ -153,7 +153,7 @@ export default function SellerOrdersPage() {
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">Valor Total</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      R$ {sellerOrders.reduce((total: number, order: any) => total + getSellerTotalFromOrder(order), 0).toFixed(2)}
+                      MTn {sellerOrders.reduce((total: number, order: any) => total + getSellerTotalFromOrder(order), 0).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -241,7 +241,7 @@ export default function SellerOrdersPage() {
                               {sellerItems.length} {sellerItems.length === 1 ? 'item' : 'itens'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              R$ {sellerTotal.toFixed(2)}
+                              MTn {sellerTotal.toFixed(2)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <Link 

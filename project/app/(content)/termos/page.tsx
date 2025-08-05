@@ -156,8 +156,8 @@ export default function TermosPage() {
 
                 <h3 className="text-lg font-medium text-gray-9 mb-3">5.1 Preços e Pagamentos</h3>
                 <p className="text-gray-7 mb-4">
-                  Todos os preços são exibidos em Reais (R$) e incluem impostos aplicáveis. 
-                  Aceitamos PIX, cartões de crédito/débito e dinheiro na entrega.
+                  Todos os preços são exibidos em Reais (MTn) e incluem impostos aplicáveis. 
+                  Aceitamos M-Pesa, cartões de crédito/débito e dinheiro na entrega.
                 </p>
 
                 <h3 className="text-lg font-medium text-gray-9 mb-3">5.2 Entrega</h3>

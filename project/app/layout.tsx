@@ -4,8 +4,8 @@ import { MarketplaceProvider } from '@/contexts/MarketplaceContext';
 import CartPopup from '@/components/popups/CartPopup';
 
 export const metadata: Metadata = {
-  title: 'Ecobazar - Marketplace de Alimentos Orgânicos',
-  description: 'Marketplace brasileiro de alimentos orgânicos frescos e saudáveis',
+  title: 'Ecobazar - Marketplace de Alimentos Orgânicos em Beira',
+  description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-MZ">
       <body>
         <MarketplaceProvider>
           {children}

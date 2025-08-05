@@ -8,6 +8,7 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { formatCurrency } from '@/lib/payment';
 
 export default function ShoppingCartPage() {
   const { state, dispatch } = useMarketplace();
@@ -34,7 +35,7 @@ export default function ShoppingCartPage() {
   }
 
   const subtotal = state.cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-  const shipping = subtotal >= 50 ? 0 : 10; // Free shipping over R$ 50
+  const shipping = subtotal >= 500 ? 0 : 100; // Free shipping over 500 MZN
   const discount = appliedCoupon ? subtotal * 0.1 : 0; // 10% discount for demo
   const total = subtotal + shipping - discount;
   const totalItems = state.cart.reduce((total, item) => total + item.quantity, 0);
@@ -148,11 +149,11 @@ export default function ShoppingCartPage() {
                       <div className="flex items-center space-x-2">
                         {item.product.originalPrice && (
                           <span className="text-sm text-gray-6 line-through">
-                            R$ {item.product.originalPrice.toFixed(2)}
+                            {formatCurrency(item.product.originalPrice)}
                           </span>
                         )}
                         <span className="font-medium text-primary">
-                          R$ {item.product.price.toFixed(2)}
+                          {formatCurrency(item.product.price)}
                         </span>
                       </div>
                     </div>
@@ -177,7 +178,7 @@ export default function ShoppingCartPage() {
                     {/* Subtotal */}
                     <div className="text-right min-w-0">
                       <div className="font-medium text-gray-9">
-                        R$ {(item.product.price * item.quantity).toFixed(2)}
+                        {formatCurrency(item.product.price * item.quantity)}
                       </div>
                     </div>
 
@@ -227,16 +228,16 @@ export default function ShoppingCartPage() {
                             <div className="flex items-center space-x-2">
                               {item.product.originalPrice && (
                                 <span className="text-xs text-gray-6 line-through">
-                                  R$ {item.product.originalPrice.toFixed(2)}
+                                  {formatCurrency(item.product.originalPrice)}
                                 </span>
                               )}
                               <span className="font-medium text-primary text-sm">
-                                R$ {item.product.price.toFixed(2)}
+                                {formatCurrency(item.product.price)}
                               </span>
                             </div>
                             <div className="text-right">
                               <div className="font-medium text-gray-9 text-sm">
-                                R$ {(item.product.price * item.quantity).toFixed(2)}
+                                {formatCurrency(item.product.price * item.quantity)}
                               </div>
                               <div className="text-xs text-gray-6">Qtd: {item.quantity}</div>
                             </div>
@@ -326,13 +327,13 @@ export default function ShoppingCartPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-6">Subtotal ({totalItems} itens)</span>
-                  <span className="font-medium">R$ {subtotal.toFixed(2)}</span>
+                  <span className="font-medium">{formatCurrency(subtotal)}</span>
                 </div>
                 
                 {discount > 0 && (
                   <div className="flex justify-between text-primary">
                     <span>Desconto</span>
-                    <span>-R$ {discount.toFixed(2)}</span>
+                    <span>-{formatCurrency(discount)}</span>
                   </div>
                 )}
                 
@@ -342,7 +343,7 @@ export default function ShoppingCartPage() {
                     {shipping === 0 ? (
                       <span className="text-primary">Grátis</span>
                     ) : (
-                      `R$ ${shipping.toFixed(2)}`
+                      formatCurrency(shipping)
                     )}
                   </span>
                 </div>
@@ -350,65 +351,66 @@ export default function ShoppingCartPage() {
                 <div className="border-t border-gray-2 pt-3">
                   <div className="flex justify-between">
                     <span className="text-lg font-bold text-gray-9">Total</span>
-                    <span className="text-lg font-bold text-primary">R$ {total.toFixed(2)}</span>
+                    <span className="text-lg font-bold text-primary">{formatCurrency(total)}</span>
                   </div>
                 </div>
-
-                {shipping > 0 && (
-                  <div className="text-sm text-gray-6 text-center p-3 bg-primary/5 rounded-lg">
-                    Adicione mais R$ {(50 - subtotal).toFixed(2)} para frete grátis!
-                  </div>
-                )}
               </div>
 
+              {shipping > 0 && (
+                <div className="text-sm text-gray-6 text-center p-3 bg-primary/5 rounded-lg">
+                  Adicione mais {formatCurrency(500 - subtotal)} para frete grátis!
+                </div>
+              )}
+
               {/* Coupon Section */}
-              <div className="mb-6">
-                <h3 className="font-medium text-gray-9 mb-3">Cupom de Desconto</h3>
+              <div className="border-t border-gray-2 pt-4">
                 <div className="flex space-x-2">
                   <Input
-                    placeholder="Código do Cupom"
+                    placeholder="Código do cupom"
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                     className="flex-1"
                   />
                   <Button
                     onClick={handleApplyCoupon}
-                    disabled={!couponCode.trim()}
-                    className="bg-primary hover:bg-primary-hard text-white"
+                    variant="outline"
+                    className="border-primary text-primary hover:bg-primary hover:text-white"
                   >
                     Aplicar
                   </Button>
                 </div>
+                
                 {appliedCoupon && (
                   <div className="mt-2 flex items-center justify-between p-2 bg-green-50 border border-green-200 rounded">
-                    <span className="text-sm text-green-700">Cupom aplicado: {appliedCoupon}</span>
+                    <span className="text-sm text-green-700">
+                      Cupom aplicado: <strong>{appliedCoupon}</strong>
+                    </span>
                     <button
                       onClick={handleRemoveCoupon}
-                      className="text-green-700 hover:text-green-800"
+                      className="text-green-600 hover:text-green-800"
                     >
-                      <X size={14} />
+                      <X size={16} />
                     </button>
                   </div>
                 )}
               </div>
 
-              {/* Action Buttons */}
-              <div className="space-y-3">
-                <Link href="/checkout">
-                  <Button className="w-full bg-primary hover:bg-primary-hard text-white py-3">
-                    Prosseguir para o Checkout
-                  </Button>
-                </Link>
-                
-                {shipping > 0 && (
-                  <Button
-                    variant="outline"
-                    className="w-full border-dashed border-primary text-primary hover:bg-primary hover:text-white"
-                  >
-                    Adicione mais R$ {(50 - subtotal).toFixed(2)} para frete grátis!
-                  </Button>
-                )}
-              </div>
+              {/* Checkout Button */}
+              <Link href="/checkout">
+                <Button className="w-full bg-primary hover:bg-primary-hard text-white py-3 mt-4">
+                  Finalizar Compra
+                </Button>
+              </Link>
+
+              {/* Continue Shopping */}
+              <Link href="/loja">
+                <Button
+                  variant="outline"
+                  className="w-full border-dashed border-primary text-primary hover:bg-primary hover:text-white"
+                >
+                  Adicione mais {formatCurrency(500 - subtotal)} para frete grátis!
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

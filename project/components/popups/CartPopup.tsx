@@ -5,6 +5,7 @@ import { X, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useRouter } from 'next/navigation';
+import { formatCurrency } from '@/lib/payment';
 
 export default function CartPopup() {
   const { state, dispatch } = useMarketplace();
@@ -79,7 +80,7 @@ export default function CartPopup() {
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium text-sm truncate">{item.product.name}</h4>
                     <p className="text-xs text-gray-6 mb-1">por {item.product.sellerName}</p>
-                    <p className="text-primary font-semibold">R$ {item.product.price.toFixed(2)}</p>
+                    <p className="text-primary font-semibold">{formatCurrency(item.product.price)}</p>
                   </div>
 
                   {/* Quantity Controls */}
@@ -123,7 +124,7 @@ export default function CartPopup() {
               </div>
               <div className="flex justify-between font-semibold text-lg">
                 <span>Preço Total:</span>
-                <span className="text-primary">R$ {subtotal.toFixed(2)}</span>
+                <span className="text-primary">{formatCurrency(subtotal)}</span>
               </div>
             </div>
 

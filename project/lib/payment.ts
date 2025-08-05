@@ -1,11 +1,13 @@
-// Mock Payment Gateway Integration
-// In production, this would integrate with real payment providers like Stripe or PayPal
+// Payment Gateway Integration for Mozambique
+// M-Pesa, E-Mola, and Debit Card integration for Beira, Mozambique
 
 export interface PaymentMethod {
   id: string;
-  type: 'card' | 'pix' | 'bank_transfer';
-  last4?: string;
-  brand?: string;
+  type: 'mpesa' | 'emola' | 'debit_card';
+  phoneNumber?: string; // For M-Pesa and E-Mola
+  last4?: string; // For debit cards
+  bankName?: string; // For debit cards
+  cardType?: 'visa' | 'mastercard' | 'maestro';
   expiryMonth?: number;
   expiryYear?: number;
   isDefault: boolean;
@@ -17,6 +19,7 @@ export interface PaymentIntent {
   currency: string;
   status: 'pending' | 'processing' | 'succeeded' | 'failed' | 'canceled';
   paymentMethod: PaymentMethod;
+  transactionId?: string; // For M-Pesa/E-Mola transactions
   createdAt: string;
   updatedAt: string;
 }
@@ -75,36 +78,45 @@ export interface TrackingEvent {
   timestamp: string;
 }
 
-// Mock Payment Methods
+// Mock Payment Methods for Mozambique
 export const mockPaymentMethods: PaymentMethod[] = [
   {
     id: 'pm_1',
-    type: 'card',
-    last4: '4242',
-    brand: 'visa',
-    expiryMonth: 12,
-    expiryYear: 2025,
+    type: 'mpesa',
+    phoneNumber: '+258841234567',
     isDefault: true
   },
   {
     id: 'pm_2',
-    type: 'card',
-    last4: '5555',
-    brand: 'mastercard',
-    expiryMonth: 8,
-    expiryYear: 2026,
+    type: 'emola',
+    phoneNumber: '+258841234568',
     isDefault: false
   },
   {
     id: 'pm_3',
-    type: 'pix',
+    type: 'debit_card',
+    last4: '1234',
+    bankName: 'Banco de Moçambique',
+    cardType: 'visa',
+    expiryMonth: 12,
+    expiryYear: 2025,
+    isDefault: false
+  },
+  {
+    id: 'pm_4',
+    type: 'debit_card',
+    last4: '5678',
+    bankName: 'Millennium BIM',
+    cardType: 'mastercard',
+    expiryMonth: 8,
+    expiryYear: 2026,
     isDefault: false
   }
 ];
 
-// Mock Payment Processing
+// Mock Payment Processing for Mozambique
 export class PaymentService {
-  static async createPaymentIntent(amount: number, currency: string = 'BRL'): Promise<PaymentIntent> {
+  static async createPaymentIntent(amount: number, currency: string = 'MZN'): Promise<PaymentIntent> {
     // Mock API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
@@ -126,12 +138,18 @@ export class PaymentService {
     // Simulate 95% success rate
     const isSuccess = Math.random() > 0.05;
     
+    const paymentMethod = mockPaymentMethods.find(pm => pm.id === paymentMethodId) || mockPaymentMethods[0];
+    const transactionId = paymentMethod.type === 'mpesa' || paymentMethod.type === 'emola' 
+      ? `${paymentMethod.type.toUpperCase()}_${Date.now()}` 
+      : undefined;
+    
     return {
       id: paymentIntentId,
-      amount: 15000, // Mock amount
-      currency: 'BRL',
+      amount: 1500, // Mock amount in MZN
+      currency: 'MZN',
       status: isSuccess ? 'succeeded' : 'failed',
-      paymentMethod: mockPaymentMethods.find(pm => pm.id === paymentMethodId) || mockPaymentMethods[0],
+      paymentMethod,
+      transactionId,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -168,6 +186,36 @@ export class PaymentService {
     }
     return false;
   }
+
+  // M-Pesa specific methods
+  static async initiateMpesaPayment(phoneNumber: string, amount: number): Promise<{ transactionId: string; status: string }> {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    return {
+      transactionId: `MPESA_${Date.now()}`,
+      status: 'pending_confirmation'
+    };
+  }
+
+  // E-Mola specific methods
+  static async initiateEmolaPayment(phoneNumber: string, amount: number): Promise<{ transactionId: string; status: string }> {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    return {
+      transactionId: `EMOLA_${Date.now()}`,
+      status: 'pending_confirmation'
+    };
+  }
+
+  // Debit card specific methods
+  static async processDebitCardPayment(cardDetails: any, amount: number): Promise<{ transactionId: string; status: string }> {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    return {
+      transactionId: `DEBIT_${Date.now()}`,
+      status: 'processing'
+    };
+  }
 }
 
 // Mock Invoice Service
@@ -185,7 +233,7 @@ export class InvoiceService {
       orderId,
       customerId,
       amount: total,
-      currency: 'BRL',
+      currency: 'MZN',
       status: 'sent',
       dueDate: dueDate.toISOString(),
       items: items.map(item => ({
@@ -215,8 +263,8 @@ export class InvoiceService {
       id: invoiceId,
       orderId: 'order_123',
       customerId: 'customer_123',
-      amount: 15000,
-      currency: 'BRL',
+      amount: 1500,
+      currency: 'MZN',
       status: 'paid',
       dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
       paidAt: new Date().toISOString(),
@@ -226,14 +274,14 @@ export class InvoiceService {
           productId: 'prod_1',
           name: 'Tomates Orgânicos',
           quantity: 2,
-          unitPrice: 7500,
-          total: 15000
+          unitPrice: 750,
+          total: 1500
         }
       ],
-      subtotal: 15000,
+      subtotal: 1500,
       tax: 0,
       shipping: 0,
-      total: 15000,
+      total: 1500,
       createdAt: new Date().toISOString()
     };
   }
@@ -284,7 +332,7 @@ export class RefundService {
     return {
       id: refundId,
       paymentIntentId: 'pi_123',
-      amount: 15000,
+      amount: 1500,
       reason: 'requested_by_customer',
       status: 'succeeded',
       createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
@@ -300,7 +348,7 @@ export class RefundService {
       {
         id: 're_1',
         paymentIntentId,
-        amount: 15000,
+        amount: 1500,
         reason: 'requested_by_customer',
         status: 'succeeded',
         createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
@@ -322,36 +370,36 @@ export class OrderTrackingService {
     return {
       orderId,
       status: 'shipped',
-      trackingNumber: 'BR123456789BR',
-      carrier: 'Correios',
+      trackingNumber: 'MZ123456789MZ',
+      carrier: 'Correios de Moçambique',
       estimatedDelivery: estimatedDelivery.toISOString(),
       events: [
         {
           id: 'ev_1',
           status: 'order_confirmed',
           description: 'Pedido confirmado',
-          location: 'São Paulo, SP',
+          location: 'Beira, Sofala',
           timestamp: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
           id: 'ev_2',
           status: 'processing',
           description: 'Produto em processamento',
-          location: 'São Paulo, SP',
+          location: 'Beira, Sofala',
           timestamp: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString()
         },
         {
           id: 'ev_3',
           status: 'shipped',
           description: 'Produto enviado',
-          location: 'São Paulo, SP',
+          location: 'Beira, Sofala',
           timestamp: new Date(now.getTime() - 12 * 60 * 60 * 1000).toISOString()
         },
         {
           id: 'ev_4',
           status: 'in_transit',
           description: 'Em trânsito',
-          location: 'Rio de Janeiro, RJ',
+          location: 'Maputo, Maputo',
           timestamp: new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString()
         }
       ]
@@ -381,15 +429,15 @@ export class OrderTrackingService {
 }
 
 // Utility functions
-export const formatCurrency = (amount: number, currency: string = 'BRL'): string => {
-  return new Intl.NumberFormat('pt-BR', {
+export const formatCurrency = (amount: number, currency: string = 'MZN'): string => {
+  return new Intl.NumberFormat('pt-MZ', {
     style: 'currency',
     currency
-  }).format(amount / 100); // Convert from cents
+  }).format(amount); // Convert from cents amount/100
 };
 
 export const formatDate = (dateString: string): string => {
-  return new Date(dateString).toLocaleDateString('pt-BR', {
+  return new Date(dateString).toLocaleDateString('pt-MZ', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

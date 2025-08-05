@@ -227,8 +227,8 @@ export default function AdvancedFilters({
                   className="w-full"
                 />
                 <div className="flex justify-between text-sm text-gray-5 mt-2">
-                  <span>R$ {filters.priceRange[0]}</span>
-                  <span>R$ {filters.priceRange[1]}</span>
+                  <span>MTn {filters.priceRange[0]}</span>
+                  <span>MTn {filters.priceRange[1]}</span>
                 </div>
               </div>
             </div>

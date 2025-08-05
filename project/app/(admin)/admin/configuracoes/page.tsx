@@ -388,8 +388,8 @@ export default function SystemSettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="text-sm font-medium">PIX</Label>
-                      <p className="text-sm text-gray-6">Habilitar pagamentos via PIX</p>
+                      <Label className="text-sm font-medium">M-Pesa</Label>
+                      <p className="text-sm text-gray-6">Habilitar pagamentos via M-Pesa</p>
                     </div>
                     <Switch
                       checked={settings.payment.pixEnabled}
@@ -420,7 +420,7 @@ export default function SystemSettingsPage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="minimumPayout">Payout Mínimo (R$)</Label>
+                    <Label htmlFor="minimumPayout">Payout Mínimo (MTn)</Label>
                     <Input
                       id="minimumPayout"
                       type="number"

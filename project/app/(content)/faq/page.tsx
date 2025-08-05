@@ -35,7 +35,7 @@ export default function FAQPage() {
     },
     {
       question: "Quais são as formas de pagamento aceitas?",
-      answer: "Aceitamos PIX, cartão de crédito, cartão de débito e dinheiro na entrega. Todos os pagamentos são processados de forma segura através de nossa plataforma."
+      answer: "Aceitamos M-Pesa, cartão de crédito, cartão de débito e dinheiro na entrega. Todos os pagamentos são processados de forma segura através de nossa plataforma."
     },
     {
       question: "Posso cancelar ou alterar meu pedido?",

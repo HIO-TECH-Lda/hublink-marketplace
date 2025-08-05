@@ -24,7 +24,7 @@ export default function AjudaPage() {
     pedidos: [
       {
         question: 'Como faço um pedido?',
-        answer: 'Navegue pelos produtos, adicione ao carrinho e finalize sua compra. Aceitamos PIX, cartão de crédito e dinheiro na entrega.'
+        answer: 'Navegue pelos produtos, adicione ao carrinho e finalize sua compra. Aceitamos M-Pesa, cartão de crédito e dinheiro na entrega.'
       },
       {
         question: 'Posso cancelar meu pedido?',
@@ -42,7 +42,7 @@ export default function AjudaPage() {
     pagamento: [
       {
         question: 'Quais formas de pagamento vocês aceitam?',
-        answer: 'Aceitamos PIX, cartões de crédito e débito, e dinheiro na entrega.'
+        answer: 'Aceitamos M-Pesa, cartões de crédito e débito, e dinheiro na entrega.'
       },
       {
         question: 'O pagamento é seguro?',
@@ -53,8 +53,8 @@ export default function AjudaPage() {
         answer: 'Sim, aceitamos parcelamento em até 12x nos cartões de crédito.'
       },
       {
-        question: 'Como funciona o PIX?',
-        answer: 'Após finalizar o pedido, você receberá um QR Code para pagamento instantâneo via PIX.'
+        question: 'Como funciona o M-Pesa?',
+        answer: 'Após finalizar o pedido, você receberá um QR Code para pagamento instantâneo via M-Pesa.'
       }
     ],
     entrega: [
@@ -72,7 +72,7 @@ export default function AjudaPage() {
       },
       {
         question: 'Há taxa de entrega?',
-        answer: 'Entregas acima de R$ 50 são gratuitas. Abaixo desse valor, a taxa é de R$ 5.'
+        answer: 'Entregas acima de MTn 50 são gratuitas. Abaixo desse valor, a taxa é de MTn 5.'
       }
     ],
     conta: [
