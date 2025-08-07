@@ -324,7 +324,7 @@ export default function TermosPage() {
                   </p>
                   
                   <div className="space-y-2 text-gray-7">
-                    <p><strong>E-mail:</strong> juridico@ecobazar.com.br</p>
+                    <p><strong>E-mail:</strong> juridico@ecobazar.com</p>
                     <p><strong>Telefone:</strong> (11) 99999-9999</p>
                     <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, São Paulo, SP - 01234-567</p>
                   </div>

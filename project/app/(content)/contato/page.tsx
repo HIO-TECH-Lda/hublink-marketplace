@@ -48,7 +48,7 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'E-mail',
-      content: 'contato@ecobazar.com.br\nsuporte@ecobazar.com.br',
+      content: 'contato@ecobazar.com\nsuporte@ecobazar.com',
       color: 'text-primary'
     },
     {

@@ -74,7 +74,7 @@ export default function SystemSettingsPage() {
     general: {
       siteName: 'Ecobazar',
       siteDescription: 'Marketplace brasileiro de alimentos orgânicos frescos e saudáveis',
-      contactEmail: 'contato@ecobazar.com.br',
+      contactEmail: 'contato@ecobazar.com',
       supportPhone: '(11) 99999-9999',
       timezone: 'America/Sao_Paulo',
       currency: 'BRL',
@@ -99,9 +99,9 @@ export default function SystemSettingsPage() {
     email: {
       smtpHost: 'smtp.gmail.com',
       smtpPort: 587,
-      smtpUser: 'noreply@ecobazar.com.br',
+      smtpUser: 'noreply@ecobazar.com',
       smtpPassword: '********',
-      fromEmail: 'noreply@ecobazar.com.br',
+      fromEmail: 'noreply@ecobazar.com',
       fromName: 'Ecobazar'
     },
     notifications: {
