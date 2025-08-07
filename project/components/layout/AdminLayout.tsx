@@ -14,7 +14,8 @@ import {
   X,
   LogOut,
   Home,
-  TrendingUp
+  TrendingUp,
+  Tag
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
@@ -29,6 +30,7 @@ const navigation = [
   { name: 'Pedidos', href: '/admin/pedidos', icon: ShoppingCart },
   { name: 'Produtos', href: '/admin/produtos', icon: Package },
   { name: 'Vendedores', href: '/admin/vendedores', icon: Shield },
+  { name: 'Categorias', href: '/admin/categorias', icon: Tag },
   { name: 'Relatórios', href: '/admin/relatorios', icon: BarChart3 },
   { name: 'Configurações', href: '/admin/configuracoes', icon: Settings },
 ];
@@ -79,74 +81,81 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:inset-0 ${
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:sticky lg:top-0 lg:translate-x-0 lg:inset-0 lg:h-screen ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">E</span>
+        {/* App name header - sticky */}
+        <div className="sticky top-0 z-20 bg-white border-b border-gray-200">
+          <div className="flex items-center justify-between h-16 px-6">
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">E</span>
+              </div>
+              <span className="ml-3 text-xl font-bold text-gray-9">Ecobazar</span>
             </div>
-            <span className="ml-3 text-xl font-bold text-gray-9">Ecobazar</span>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-1 rounded-md text-gray-400 hover:text-gray-500"
+            >
+              <X className="w-6 h-6" />
+            </button>
           </div>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1 rounded-md text-gray-400 hover:text-gray-500"
-          >
-            <X className="w-6 h-6" />
-          </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="mt-8 px-4">
-          <div className="space-y-1">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.name}
-                  onClick={() => {
-                    router.push(item.href);
-                    setSidebarOpen(false);
-                  }}
-                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                    isActive(item.href)
-                      ? 'bg-primary text-white'
-                      : 'text-gray-6 hover:text-gray-9 hover:bg-gray-100'
-                  }`}
-                >
-                  <Icon className="w-5 h-5 mr-3" />
-                  {item.name}
-                </button>
-              );
-            })}
-          </div>
-        </nav>
+        {/* Navigation - scrollable */}
+        <div className="flex-1 overflow-y-auto" style={{ height: 'calc(100vh - 8rem)' }}>
+          <nav className="px-4 py-4">
+            <div className="space-y-1">
+              {navigation.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => {
+                      router.push(item.href);
+                      setSidebarOpen(false);
+                    }}
+                    className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                      isActive(item.href)
+                        ? 'bg-primary text-white'
+                        : 'text-gray-6 hover:text-gray-9 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5 mr-3" />
+                    {item.name}
+                  </button>
+                );
+              })}
+            </div>
+          </nav>
+        </div>
 
-        {/* User info and logout */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
-          <div className="flex items-center mb-3">
-            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-sm font-medium text-gray-600">
-                {state.user.firstName.charAt(0)}{state.user.lastName.charAt(0)}
-              </span>
+        {/* User info and logout - fixed at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-200">
+          <div className="p-4">
+            <div className="flex items-center mb-3">
+              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                <span className="text-sm font-medium text-gray-600">
+                  {state.user.firstName.charAt(0)}{state.user.lastName.charAt(0)}
+                </span>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-gray-9">
+                  {state.user.firstName} {state.user.lastName}
+                </p>
+                <p className="text-xs text-gray-6">Administrador</p>
+              </div>
             </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-9">
-                {state.user.firstName} {state.user.lastName}
-              </p>
-              <p className="text-xs text-gray-6">Administrador</p>
-            </div>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              size="sm"
+              className="w-full"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sair
+            </Button>
           </div>
-          <Button
-            onClick={handleLogout}
-            variant="outline"
-            size="sm"
-            className="w-full"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Sair
-          </Button>
         </div>
       </div>
 
