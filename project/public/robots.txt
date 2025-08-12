@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://txova.co.mz/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /vendedor/
+Disallow: /painel/
+Disallow: /carrinho/
+Disallow: /checkout/
+Disallow: /login/
+Disallow: /registro/
+
+# Allow important pages
+Allow: /loja
+Allow: /produto/
+Allow: /vendedor/
+Allow: /blog
+Allow: /sobre
+Allow: /contato
+Allow: /faq
+Allow: /termos
+Allow: /privacidade 
