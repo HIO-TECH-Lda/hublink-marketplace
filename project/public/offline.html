@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Txova</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .offline-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .offline-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .offline-icon::before {
+            content: '';
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .offline-icon::after {
+            content: '📶';
+            font-size: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #1f2937;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .cached-pages {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .cached-pages h3 {
+            color: #374151;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .page-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .page-link {
+            color: #10b981;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .page-link:hover {
+            background: #ecfdf5;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #fef3c7;
+            color: #92400e;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #f59e0b;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .offline-icon {
+                width: 100px;
+                height: 100px;
+            }
+
+            .offline-icon::after {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon"></div>
+        
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>Sem conexão com a internet</span>
+        </div>
+
+        <h1>Você está offline</h1>
+        <p>
+            Parece que você perdeu a conexão com a internet. 
+            Não se preocupe! Você ainda pode acessar algumas páginas que foram salvas.
+        </p>
+
+        <button class="retry-button" onclick="window.location.reload()">
+            Tentar Novamente
+        </button>
+
+        <div class="cached-pages">
+            <h3>Páginas Disponíveis Offline</h3>
+            <div class="page-links">
+                <a href="/" class="page-link">🏠 Página Inicial</a>
+                <a href="/loja" class="page-link">🛒 Banca de Produtos</a>
+                <a href="/sobre" class="page-link">ℹ️ Sobre Nós</a>
+                <a href="/contato" class="page-link">📞 Contato</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check connection status
+        function updateConnectionStatus() {
+            const statusIndicator = document.querySelector('.status-indicator');
+            const statusText = statusIndicator.querySelector('span');
+            const statusDot = statusIndicator.querySelector('.status-dot');
+
+            if (navigator.onLine) {
+                statusText.textContent = 'Conectado à internet';
+                statusDot.style.background = '#10b981';
+                statusIndicator.style.background = '#ecfdf5';
+                statusIndicator.style.color = '#065f46';
+                
+                // Auto-reload after 2 seconds when back online
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                statusText.textContent = 'Sem conexão com a internet';
+                statusDot.style.background = '#f59e0b';
+                statusIndicator.style.background = '#fef3c7';
+                statusIndicator.style.color = '#92400e';
+            }
+        }
+
+        // Listen for online/offline events
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Initial check
+        updateConnectionStatus();
+
+        // Add some interactivity
+        document.querySelector('.retry-button').addEventListener('click', () => {
+            const button = document.querySelector('.retry-button');
+            button.textContent = 'Verificando...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 
