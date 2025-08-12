@@ -6,6 +6,7 @@ import { ArrowRight, Truck, CreditCard, Headphones, Trophy, Star, ChevronLeft, C
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
+import SellerCard from '@/components/common/SellerCard';
 import NewsletterPopup from '@/components/popups/NewsletterPopup';
 import CartPopup from '@/components/popups/CartPopup';
 import QuickViewPopup from '@/components/popups/QuickViewPopup';
@@ -18,6 +19,66 @@ export default function HomePage() {
   // Get featured products (first 8 products)
   const featuredProducts = state.products.slice(0, 8);
   const bestSellerProducts = state.products.slice(0, 4);
+
+  // Mock top sellers data
+  const topSellers = [
+    {
+      id: 'seller1',
+      businessName: 'Fazenda Verde',
+      businessDescription: 'Produtos orgânicos frescos direto da fazenda. Cultivamos com amor e respeito pela natureza.',
+      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=FV',
+      rating: 4.8,
+      reviewCount: 127,
+      totalProducts: 15,
+      totalSales: 125000,
+      location: 'Beira, Sofala',
+      isVerified: true,
+      isTopSeller: true,
+      joinedDate: '2023-06-15'
+    },
+    {
+      id: 'seller2',
+      businessName: 'Horta Orgânica Silva',
+      businessDescription: 'Especialistas em vegetais orgânicos frescos. Qualidade garantida desde 2020.',
+      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=HS',
+      rating: 4.9,
+      reviewCount: 89,
+      totalProducts: 12,
+      totalSales: 98000,
+      location: 'Maputo, Maputo',
+      isVerified: true,
+      isTopSeller: true,
+      joinedDate: '2020-03-10'
+    },
+    {
+      id: 'seller3',
+      businessName: 'Frutas Frescas Costa',
+      businessDescription: 'As melhores frutas orgânicas da região. Sabor e qualidade em cada produto.',
+      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=FC',
+      rating: 4.7,
+      reviewCount: 156,
+      totalProducts: 18,
+      totalSales: 145000,
+      location: 'Nampula, Nampula',
+      isVerified: true,
+      isTopSeller: false,
+      joinedDate: '2022-08-22'
+    },
+    {
+      id: 'seller4',
+      businessName: 'Grãos Naturais',
+      businessDescription: 'Grãos orgânicos de alta qualidade. Nutrição e sabor em cada grão.',
+      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=GN',
+      rating: 4.6,
+      reviewCount: 73,
+      totalProducts: 8,
+      totalSales: 67000,
+      location: 'Beira, Sofala',
+      isVerified: true,
+      isTopSeller: false,
+      joinedDate: '2023-01-15'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -173,8 +234,31 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Latest News/Blog */}
+      {/* Top Sellers */}
       <section className="py-16">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-9 mb-4">Melhores Vendedores</h2>
+            <p className="text-gray-6">Conheça os produtores mais confiáveis e bem avaliados</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {topSellers.map((seller) => (
+              <SellerCard key={seller.id} seller={seller} />
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Link href="/vendedores">
+              <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white">
+                Ver Todos os Vendedores
+                <ArrowRight className="ml-2" size={20} />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest News/Blog */}
+      <section className="py-16 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Últimas Notícias</h2>
@@ -208,7 +292,7 @@ export default function HomePage() {
       </section>
 
       {/* Customer Testimonials */}
-      <section className="py-16 bg-gray-1">
+      <section className="py-16">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">O Que Nossos Clientes Dizem</h2>
