@@ -37,9 +37,9 @@ export default function Footer() {
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">E</span>
+                <span className="text-white font-bold text-sm">T</span>
               </div>
-              <span className="text-2xl font-bold">Ecobazar</span>
+              <span className="text-2xl font-bold">Txova</span>
             </div>
             <p className="text-gray-4 mb-6">
               Sua loja de alimentos orgânicos 100% confiável. Produtos frescos e saudáveis direto do produtor.
@@ -146,7 +146,7 @@ export default function Footer() {
         <div className="container py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-4 text-sm mb-4 md:mb-0">
-              © 2024 Ecobazar. Todos os direitos reservados.
+              © 2024 Txova. Todos os direitos reservados.
             </p>
             <div className="flex items-center space-x-4">
               <span className="text-gray-4 text-sm">Aceitamos:</span>

@@ -4,7 +4,7 @@ import { MarketplaceProvider } from '@/contexts/MarketplaceContext';
 import CartPopup from '@/components/popups/CartPopup';
 
 export const metadata: Metadata = {
-  title: 'Ecobazar - Marketplace de Alimentos Orgânicos em Beira',
+  title: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
   description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
 };
 

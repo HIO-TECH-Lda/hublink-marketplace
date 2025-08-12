@@ -1,8 +1,8 @@
-# Relatório Sprint 01 - Ecobazar Marketplace
+# Relatório Sprint 01 - Txova Marketplace
 
 ## Resumo Executivo
 
-Este relatório documenta o desenvolvimento completo do marketplace Ecobazar, uma aplicação Next.js responsiva para comércio eletrônico de alimentos orgânicos. O projeto foi desenvolvido do zero, incluindo a estrutura base, sistema de gerenciamento de estado, componentes reutilizáveis e todas as páginas principais do marketplace. O Sprint 01 culminou com uma reorganização completa da estrutura de arquivos para melhorar a manutenibilidade e escalabilidade do projeto, incluindo a implementação de navegação consistente para usuários compradores e vendedores, um sistema completo de gestão de produtos para vendedores, dados mock realistas, persistência de dados, otimizações de responsividade mobile, e a criação de todas as páginas de suporte e legais necessárias para um marketplace completo.
+Este relatório documenta o desenvolvimento completo do marketplace Txova, uma aplicação Next.js responsiva para comércio eletrônico de alimentos orgânicos. O projeto foi desenvolvido do zero, incluindo a estrutura base, sistema de gerenciamento de estado, componentes reutilizáveis e todas as páginas principais do marketplace. O Sprint 01 culminou com uma reorganização completa da estrutura de arquivos para melhorar a manutenibilidade e escalabilidade do projeto, incluindo a implementação de navegação consistente para usuários compradores e vendedores, um sistema completo de gestão de produtos para vendedores, dados mock realistas, persistência de dados, otimizações de responsividade mobile, e a criação de todas as páginas de suporte e legais necessárias para um marketplace completo.
 
 **Status Final**: ✅ **COMPLETO E FUNCIONAL**
 **Data de Conclusão**: Janeiro 2024
@@ -172,7 +172,7 @@ Este relatório documenta o desenvolvimento completo do marketplace Ecobazar, um
 
 #### `components/layout/Header.tsx`
 - Barra superior com informações de contato e redes sociais
-- Navegação principal com logo "Ecobazar"
+- Navegação principal com logo "Txova"
 - Barra de pesquisa funcional
 - Ícones de lista de desejos e carrinho com contadores
 - Menu hambúrguer responsivo para mobile
@@ -773,7 +773,7 @@ app/
 
 ## Conclusão
 
-O Sprint 01 do Ecobazar Marketplace foi concluído com sucesso, entregando uma aplicação completa e funcional. O projeto demonstra excelente qualidade técnica, com arquitetura sólida, componentes reutilizáveis e uma experiência de usuário superior. A implementação do sistema de navegação consistente com sidebars reutilizáveis e o sistema completo de gestão de produtos para vendedores representam melhorias significativas na usabilidade e funcionalidade do projeto.
+O Sprint 01 do Txova Marketplace foi concluído com sucesso, entregando uma aplicação completa e funcional. O projeto demonstra excelente qualidade técnica, com arquitetura sólida, componentes reutilizáveis e uma experiência de usuário superior. A implementação do sistema de navegação consistente com sidebars reutilizáveis e o sistema completo de gestão de produtos para vendedores representam melhorias significativas na usabilidade e funcionalidade do projeto.
 
 ## Atualizações Recentes (Janeiro 2024)
 

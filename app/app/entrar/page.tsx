@@ -32,9 +32,9 @@ export default function SignInPage() {
         <div className="text-center">
           <Link href="/" className="inline-flex items-center space-x-2 mb-8">
             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-white font-bold">E</span>
+              <span className="text-white font-bold">T</span>
             </div>
-            <span className="text-2xl font-bold text-gray-9">Ecobazar</span>
+            <span className="text-2xl font-bold text-gray-9">Txova</span>
           </Link>
           <h2 className="text-3xl font-bold text-gray-9 mb-2">Entrar</h2>
           <p className="text-gray-6">Entre na sua conta para continuar</p>

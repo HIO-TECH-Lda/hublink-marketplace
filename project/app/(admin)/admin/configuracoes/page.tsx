@@ -72,7 +72,7 @@ export default function SystemSettingsPage() {
   const { state } = useMarketplace();
   const [settings, setSettings] = useState<SystemSettings>({
     general: {
-      siteName: 'Ecobazar',
+      siteName: 'Txova',
       siteDescription: 'Marketplace brasileiro de alimentos orgânicos frescos e saudáveis',
       contactEmail: 'contato@ecobazar.com',
       supportPhone: '(11) 99999-9999',
@@ -102,7 +102,7 @@ export default function SystemSettingsPage() {
       smtpUser: 'noreply@ecobazar.com',
       smtpPassword: '********',
       fromEmail: 'noreply@ecobazar.com',
-      fromName: 'Ecobazar'
+      fromName: 'Txova'
     },
     notifications: {
       orderNotifications: true,

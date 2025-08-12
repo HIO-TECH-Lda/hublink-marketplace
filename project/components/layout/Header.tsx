@@ -91,9 +91,9 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">E</span>
+                <span className="text-white font-bold text-sm">T</span>
               </div>
-              <span className="text-xl sm:text-2xl font-bold text-gray-9">Ecobazar</span>
+              <span className="text-xl sm:text-2xl font-bold text-gray-9">Txova</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -180,7 +180,7 @@ export default function Header() {
                     </Link>
                   </div>
                 ) : (
-                  <Link href="/login" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
+                  <Link href="/entrar" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
                     <User size={20} />
                     <span className="hidden sm:inline text-sm font-medium">Entrar</span>
                   </Link>

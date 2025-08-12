@@ -46,7 +46,7 @@ export default function AboutPage() {
       id: '1',
       name: 'Fernanda Lima',
       role: 'Cliente Fiel',
-      content: 'O Ecobazar transformou minha alimentação! Os produtos são frescos, saborosos e eu sei exatamente de onde vêm.',
+      content: 'O Txova transformou minha alimentação! Os produtos são frescos, saborosos e eu sei exatamente de onde vêm.',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     },
@@ -54,7 +54,7 @@ export default function AboutPage() {
       id: '2',
       name: 'Roberto Almeida',
       role: 'Produtor Orgânico',
-      content: 'Como produtor, o Ecobazar me deu a oportunidade de vender diretamente para os consumidores. É uma parceria incrível!',
+      content: 'Como produtor, o Txova me deu a oportunidade de vender diretamente para os consumidores. É uma parceria incrível!',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     },
@@ -62,7 +62,7 @@ export default function AboutPage() {
       id: '3',
       name: 'Patrícia Mendes',
       role: 'Nutricionista',
-      content: 'Recomendo o Ecobazar para todos os meus pacientes. A qualidade dos produtos orgânicos é excepcional.',
+      content: 'Recomendo o Txova para todos os meus pacientes. A qualidade dos produtos orgânicos é excepcional.',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     }
@@ -216,7 +216,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossa Equipe Incrível</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Conheça as pessoas apaixonadas que fazem o Ecobazar acontecer todos os dias.
+              Conheça as pessoas apaixonadas que fazem o Txova acontecer todos os dias.
             </p>
           </div>
           
@@ -245,7 +245,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Depoimentos de Clientes</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Veja o que nossos clientes e parceiros dizem sobre o Ecobazar.
+              Veja o que nossos clientes e parceiros dizem sobre o Txova.
             </p>
           </div>
           
@@ -290,7 +290,7 @@ export default function AboutPage() {
           </h2>
           <p className="text-base sm:text-lg text-green-gray-1 mb-8 max-w-2xl mx-auto px-4">
             Junte-se a milhares de pessoas que já descobriram os benefícios dos alimentos orgânicos 
-            através do Ecobazar.
+            através do Txova.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/loja">

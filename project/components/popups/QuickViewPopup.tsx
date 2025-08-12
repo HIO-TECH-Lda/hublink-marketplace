@@ -5,6 +5,7 @@ import { X, Heart, ShoppingCart, Plus, Minus, Star, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { formatCurrency } from '@/lib/payment';
+import Link from 'next/link';
 
 export default function QuickViewPopup() {
   const { state, dispatch } = useMarketplace();
@@ -102,7 +103,14 @@ export default function QuickViewPopup() {
                     className="w-6 h-6 rounded-full object-cover"
                   />
                 )}
-                <span className="text-sm text-gray-6">por {product.sellerName}</span>
+                <span className="text-sm text-gray-6">por </span>
+                <Link 
+                  href={`/vendedor/${product.sellerId}`}
+                  className="text-sm text-primary hover:text-primary-hard font-medium transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {product.sellerName}
+                </Link>
               </div>
               
               <h1 className="text-2xl font-bold text-gray-9 mb-2">{product.name}</h1>

@@ -83,7 +83,7 @@ export default function TrocasDevolucoesPage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">Nossa Política</h2>
                 <p className="text-gray-7 mb-4">
-                  Na Ecobazar, sua satisfação é nossa prioridade. Oferecemos uma política 
+                  Na Txova, sua satisfação é nossa prioridade. Oferecemos uma política 
                   de devolução generosa para garantir que você sempre receba produtos de 
                   qualidade e fique satisfeito com sua compra.
                 </p>

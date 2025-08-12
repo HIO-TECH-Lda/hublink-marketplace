@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { AppProvider } from '@/contexts/AppContext';
 
 export const metadata: Metadata = {
-  title: 'Ecobazar - Alimentos Orgânicos Frescos e Saudáveis',
+  title: 'Txova - Alimentos Orgânicos Frescos e Saudáveis',
   description: 'Loja de alimentos orgânicos 100% confiável',
 };
 

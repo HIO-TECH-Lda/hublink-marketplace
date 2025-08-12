@@ -42,9 +42,9 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-sm">E</span>
+              <span className="text-white font-bold text-sm">T</span>
             </div>
-            <span className="text-2xl font-bold text-gray-9">Ecobazar</span>
+            <span className="text-2xl font-bold text-gray-9">Txova</span>
           </Link>
 
           {/* Desktop Navigation */}

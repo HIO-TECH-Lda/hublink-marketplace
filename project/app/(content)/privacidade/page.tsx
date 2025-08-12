@@ -48,7 +48,7 @@ export default function PrivacidadePage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">1. Introdução</h2>
                 <p className="text-gray-7 mb-4">
-                  O Ecobazar ("nós", "nosso", "a empresa") está comprometido em proteger sua privacidade. 
+                  O Txova ("nós", "nosso", "a empresa") está comprometido em proteger sua privacidade. 
                   Esta Política de Privacidade explica como coletamos, usamos, armazenamos e protegemos 
                   suas informações pessoais quando você usa nossa plataforma.
                 </p>

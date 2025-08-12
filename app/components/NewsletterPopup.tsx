@@ -47,7 +47,7 @@ export default function NewsletterPopup() {
 
         <div className="text-center">
           <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl font-bold">E</span>
+            <span className="text-white text-2xl font-bold">T</span>
           </div>
           
           <h3 className="text-2xl font-bold text-gray-9 mb-2">

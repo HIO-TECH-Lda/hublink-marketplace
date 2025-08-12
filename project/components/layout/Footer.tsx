@@ -43,9 +43,9 @@ export default function Footer() {
             <div>
               <Link href="/" className="flex items-center space-x-2 mb-6">
                 <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">E</span>
+                  <span className="text-white font-bold text-sm">T</span>
                 </div>
-                <span className="text-xl sm:text-2xl font-bold">Ecobazar</span>
+                <span className="text-xl sm:text-2xl font-bold">Txova</span>
               </Link>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
                 Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. 
@@ -111,7 +111,7 @@ export default function Footer() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <p className="text-gray-4 text-sm text-center lg:text-left">
-              © 2024 Ecobazar. Todos os direitos reservados.
+              © 2024 Txova. Todos os direitos reservados.
             </p>
             
             {/* Social Media */}

@@ -1,10 +1,10 @@
-# Relatório Sprint 01 - Ecobazar Marketplace
+# Relatório Sprint 01 - Txova Marketplace
 
 ## 📋 Resumo Executivo
 
 **Data:** Janeiro 2024  
 **Sprint:** 01  
-**Projeto:** Ecobazar - Marketplace de Alimentos Orgânicos  
+**Projeto:** Txova - Marketplace de Alimentos Orgânicos  
 **Status:** ✅ Concluído  
 
 ### Objetivos da Sprint

@@ -131,7 +131,13 @@ export default function ProductPage() {
                     alt={product.sellerName}
                     className="w-5 h-5 rounded-full object-cover"
                   />
-                  <span className="text-sm text-gray-6">Vendido por {product.sellerName}</span>
+                  <span className="text-sm text-gray-6">Vendido por </span>
+                  <Link 
+                    href={`/vendedor/${product.sellerId}`}
+                    className="text-sm text-primary hover:text-primary-hard font-medium transition-colors"
+                  >
+                    {product.sellerName}
+                  </Link>
                 </div>
                 
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">{product.name}</h1>

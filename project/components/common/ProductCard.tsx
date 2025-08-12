@@ -69,6 +69,12 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
     dispatch({ type: 'SET_QUICK_VIEW', payload: product });
   };
 
+  const handleSellerClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Navigation will be handled by the Link component
+  };
+
   return (
     <Link href={`/produto/${product.id}`}>
       <div className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden relative">
@@ -153,7 +159,14 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
                 className="w-6 h-6 rounded-full object-cover"
               />
             )}
-            <span className="text-xs text-gray-6">por {product.sellerName}</span>
+            <span className="text-xs text-gray-6">por </span>
+            <Link 
+              href={`/vendedor/${product.sellerId}`}
+              onClick={handleSellerClick}
+              className="text-xs text-primary hover:text-primary-hard font-medium transition-colors"
+            >
+              {product.sellerName}
+            </Link>
           </div>
 
           {/* Product Name */}

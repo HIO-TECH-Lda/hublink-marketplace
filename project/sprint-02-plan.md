@@ -1,4 +1,4 @@
-# Plano Sprint 02 - Ecobazar Marketplace
+# Plano Sprint 02 - Txova Marketplace
 
 ## 📋 **Visão Geral do Sprint**
 
@@ -430,7 +430,7 @@
 
 ## 🎉 **Metas Pós-Sprint 02**
 
-Após a conclusão do Sprint 02, o marketplace Ecobazar terá:
+Após a conclusão do Sprint 02, o marketplace Txova terá:
 - ✅ **Sistema de autenticação completo**
 - ✅ **Processamento real de pagamentos**
 - ✅ **Avaliações e classificações de produtos**

@@ -1,4 +1,4 @@
-# Sprint 03 Plan - Ecobazar Marketplace
+# Sprint 03 Plan - Txova Marketplace
 
 **Data:** Janeiro 2024  
 **Versão:** 3.0.0  
