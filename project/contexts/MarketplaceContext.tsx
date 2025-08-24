@@ -62,6 +62,7 @@ interface User {
     paymentKey: string;
     paymentMethod: string;
   };
+  role: 'buyer' | 'seller' | 'admin';
 }
 
 interface ReturnRequest {
@@ -72,6 +73,88 @@ interface ReturnRequest {
   status: 'pending' | 'approved' | 'rejected' | 'completed';
   createdAt: string;
   userId: string;
+}
+
+// Ticket System Interfaces
+export enum TicketCategory {
+  TECHNICAL_ISSUE = 'technical_issue',
+  PAYMENT_PROBLEM = 'payment_problem',
+  ORDER_ISSUE = 'order_issue',
+  RETURN_REQUEST = 'return_request',
+  ACCOUNT_ISSUE = 'account_issue',
+  PRODUCT_ISSUE = 'product_issue',
+  SHIPPING_PROBLEM = 'shipping_problem',
+  GENERAL_INQUIRY = 'general_inquiry',
+  FEATURE_REQUEST = 'feature_request',
+  BUG_REPORT = 'bug_report'
+}
+
+export enum TicketPriority {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+  URGENT = 'urgent'
+}
+
+export enum TicketStatus {
+  OPEN = 'open',
+  IN_PROGRESS = 'in_progress',
+  WAITING_FOR_USER = 'waiting_for_user',
+  WAITING_FOR_THIRD_PARTY = 'waiting_for_third_party',
+  RESOLVED = 'resolved',
+  CLOSED = 'closed'
+}
+
+export interface TicketAttachment {
+  id: string;
+  ticketId: string;
+  messageId?: string;
+  fileName: string;
+  fileUrl: string;
+  fileSize: number;
+  mimeType: string;
+  uploadedAt: string;
+}
+
+export interface TicketMessage {
+  id: string;
+  ticketId: string;
+  userId: string;
+  userType: 'buyer' | 'seller' | 'admin';
+  message: string;
+  createdAt: string;
+  isInternal: boolean;
+  attachments?: TicketAttachment[];
+}
+
+export interface Ticket {
+  id: string;
+  title: string;
+  description: string;
+  category: TicketCategory;
+  priority: TicketPriority;
+  status: TicketStatus;
+  userId: string;
+  userType: 'buyer' | 'seller' | 'admin';
+  assignedTo?: string;
+  createdAt: string;
+  updatedAt: string;
+  attachments?: TicketAttachment[];
+  messages: TicketMessage[];
+  tags: string[];
+  orderId?: string;
+  productId?: string;
+}
+
+export interface Agent {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'support' | 'moderator';
+  categories: TicketCategory[];
+  maxTickets: number;
+  isActive: boolean;
+  skills: string[];
 }
 
 interface Order {
@@ -86,6 +169,7 @@ interface Order {
   shippingAddress?: any;
   orderNotes?: string;
   returnRequest?: ReturnRequest;
+  user: User;
 }
 
 interface Payout {
@@ -128,6 +212,8 @@ interface MarketplaceState {
   payouts: Payout[];
   blogPosts: BlogPost[];
   reviews: Review[];
+  tickets: Ticket[];
+  agents: Agent[];
   isAuthenticated: boolean;
   showNewsletterPopup: boolean;
   showCartPopup: boolean;
@@ -153,7 +239,10 @@ type MarketplaceAction =
   | { type: 'ADD_PRODUCT'; payload: Product }
   | { type: 'UPDATE_PRODUCT'; payload: Product }
   | { type: 'DELETE_PRODUCT'; payload: string }
-  | { type: 'SET_CURRENT_PAGE'; payload: string };
+  | { type: 'SET_CURRENT_PAGE'; payload: string }
+  | { type: 'ADD_TICKET'; payload: Ticket }
+  | { type: 'UPDATE_TICKET'; payload: Ticket }
+  | { type: 'DELETE_TICKET'; payload: string };
 
 // Mock data
 const mockProducts: Product[] = [
@@ -665,6 +754,52 @@ const mockPayouts: Payout[] = [
   }
 ];
 
+// Mock users for orders
+const mockUsers: User[] = [
+  {
+    id: 'user1',
+    firstName: 'João',
+    lastName: 'Silva',
+    email: 'cliente@exemplo.com',
+    phone: '(11) 99999-9999',
+    isSeller: false,
+    role: 'buyer',
+    sellerId: undefined,
+    profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+    billingAddress: {
+      firstName: 'João',
+      lastName: 'Silva',
+      address: 'Rua das Flores, 123',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '01234-567',
+      email: 'cliente@exemplo.com',
+      phone: '(11) 99999-9999'
+    }
+  },
+  {
+    id: 'user2',
+    firstName: 'Maria',
+    lastName: 'Santos',
+    email: 'maria@exemplo.com',
+    phone: '(11) 88888-8888',
+    isSeller: false,
+    role: 'buyer',
+    sellerId: undefined,
+    profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+    billingAddress: {
+      firstName: 'Maria',
+      lastName: 'Santos',
+      address: 'Avenida Principal, 456',
+      country: 'Brasil',
+      state: 'SP',
+      zipCode: '04567-890',
+      email: 'maria@exemplo.com',
+      phone: '(11) 88888-8888'
+    }
+  }
+];
+
 const mockOrders: Order[] = [
   {
     id: 'ORD-001',
@@ -672,6 +807,7 @@ const mockOrders: Order[] = [
     total: 4550,
     status: 'delivered',
     userId: 'user1',
+    user: mockUsers[0],
     items: [
       {
         product: {
@@ -760,6 +896,7 @@ const mockOrders: Order[] = [
     total: 3297,
     status: 'processing',
     userId: 'user2',
+    user: mockUsers[1],
     items: [
       {
         product: {
@@ -838,6 +975,7 @@ const mockOrders: Order[] = [
     total: 1898,
     status: 'shipped',
     userId: 'user3',
+    user: mockUsers[0], // Using user1 for this order
     items: [
       {
         product: {
@@ -916,6 +1054,7 @@ const mockOrders: Order[] = [
     total: 1425,
     status: 'delivered',
     userId: 'user1',
+    user: mockUsers[0],
     items: [
       {
         product: {
@@ -989,6 +1128,152 @@ const mockOrders: Order[] = [
   }
 ];
 
+// Mock agents for ticket system
+const mockAgents: Agent[] = [
+  {
+    id: 'agent1',
+    name: 'Maria Silva',
+    email: 'maria@marketplace.com',
+    role: 'admin',
+    categories: [TicketCategory.PAYMENT_PROBLEM, TicketCategory.ORDER_ISSUE, TicketCategory.RETURN_REQUEST],
+    maxTickets: 50,
+    isActive: true,
+    skills: ['Pagamentos', 'Pedidos', 'Devoluções']
+  },
+  {
+    id: 'agent2',
+    name: 'João Santos',
+    email: 'joao@marketplace.com',
+    role: 'support',
+    categories: [TicketCategory.TECHNICAL_ISSUE, TicketCategory.ACCOUNT_ISSUE, TicketCategory.GENERAL_INQUIRY],
+    maxTickets: 30,
+    isActive: true,
+    skills: ['Suporte Técnico', 'Contas', 'Geral']
+  },
+  {
+    id: 'agent3',
+    name: 'Ana Costa',
+    email: 'ana@marketplace.com',
+    role: 'moderator',
+    categories: [TicketCategory.PRODUCT_ISSUE, TicketCategory.SHIPPING_PROBLEM, TicketCategory.BUG_REPORT],
+    maxTickets: 25,
+    isActive: true,
+    skills: ['Produtos', 'Envio', 'Bugs']
+  }
+];
+
+// Mock tickets
+const mockTickets: Ticket[] = [
+  {
+    id: 'TICK-001',
+    title: 'Problema com pagamento M-Pesa',
+    description: 'Não consegui finalizar o pagamento usando M-Pesa. O sistema mostra erro de conexão.',
+    category: TicketCategory.PAYMENT_PROBLEM,
+    priority: TicketPriority.HIGH,
+    status: TicketStatus.IN_PROGRESS,
+    userId: 'user1',
+    userType: 'buyer',
+    assignedTo: 'agent1',
+    createdAt: '2024-01-20T10:30:00Z',
+    updatedAt: '2024-01-20T14:15:00Z',
+    tags: ['pagamento', 'm-pesa', 'erro'],
+    attachments: [],
+    messages: [
+      {
+        id: 'msg1',
+        ticketId: 'TICK-001',
+        userId: 'user1',
+        userType: 'buyer',
+        message: 'Não consegui finalizar o pagamento usando M-Pesa. O sistema mostra erro de conexão.',
+        createdAt: '2024-01-20T10:30:00Z',
+        isInternal: false,
+        attachments: []
+      },
+      {
+        id: 'msg2',
+        ticketId: 'TICK-001',
+        userId: 'agent1',
+        userType: 'admin',
+        message: 'Olá! Vou verificar o problema com o M-Pesa. Pode me informar qual erro específico aparece na tela?',
+        createdAt: '2024-01-20T11:00:00Z',
+        isInternal: false,
+        attachments: []
+      },
+      {
+        id: 'msg3',
+        ticketId: 'TICK-001',
+        userId: 'user1',
+        userType: 'buyer',
+        message: 'Aparece "Erro de conexão. Tente novamente." quando clico em pagar.',
+        createdAt: '2024-01-20T11:30:00Z',
+        isInternal: false,
+        attachments: []
+      }
+    ]
+  },
+  {
+    id: 'TICK-002',
+    title: 'Produto não chegou no prazo',
+    description: 'Fiz um pedido há 5 dias e ainda não recebi. O status mostra "em trânsito" há 3 dias.',
+    category: TicketCategory.SHIPPING_PROBLEM,
+    priority: TicketPriority.MEDIUM,
+    status: TicketStatus.WAITING_FOR_THIRD_PARTY,
+    userId: 'user2',
+    userType: 'buyer',
+    assignedTo: 'agent3',
+    createdAt: '2024-01-19T15:45:00Z',
+    updatedAt: '2024-01-20T09:20:00Z',
+    orderId: 'ORD-002',
+    tags: ['envio', 'atraso', 'pedido'],
+    messages: [
+      {
+        id: 'msg4',
+        ticketId: 'TICK-002',
+        userId: 'user2',
+        userType: 'buyer',
+        message: 'Fiz um pedido há 5 dias e ainda não recebi. O status mostra "em trânsito" há 3 dias.',
+        createdAt: '2024-01-19T15:45:00Z',
+        isInternal: false
+      },
+      {
+        id: 'msg5',
+        ticketId: 'TICK-002',
+        userId: 'agent3',
+        userType: 'admin',
+        message: 'Vou verificar com a transportadora. Pode me informar o número do pedido?',
+        createdAt: '2024-01-19T16:00:00Z',
+        isInternal: false
+      }
+    ]
+  },
+  {
+    id: 'TICK-003',
+    title: 'Solicitação de devolução',
+    description: 'Recebi o produto com defeito. Gostaria de solicitar uma devolução.',
+    category: TicketCategory.RETURN_REQUEST,
+    priority: TicketPriority.MEDIUM,
+    status: TicketStatus.OPEN,
+    userId: 'user1',
+    userType: 'buyer',
+    assignedTo: 'agent1',
+    createdAt: '2024-01-20T16:00:00Z',
+    updatedAt: '2024-01-20T16:00:00Z',
+    orderId: 'ORD-001',
+    tags: ['devolução', 'defeito'],
+    messages: [
+      {
+        id: 'msg6',
+        ticketId: 'TICK-003',
+        userId: 'user1',
+        userType: 'buyer',
+        message: 'Recebi o produto com defeito. Gostaria de solicitar uma devolução.',
+        createdAt: '2024-01-20T16:00:00Z',
+        isInternal: false
+      }
+    ]
+  }
+];
+
 // Helper functions for localStorage
 const loadFromStorage = (key: string, defaultValue: any) => {
   if (typeof window === 'undefined') return defaultValue;
@@ -1025,6 +1310,8 @@ const initialState: MarketplaceState = {
   payouts: mockPayouts,
   blogPosts: mockBlogPosts,
   reviews: mockReviews,
+  tickets: mockTickets,
+  agents: mockAgents,
   isAuthenticated: persistedAuth,
   showNewsletterPopup: true,
   showCartPopup: false,
@@ -1183,6 +1470,26 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
       return {
         ...state,
         currentPage: action.payload,
+      };
+
+    case 'ADD_TICKET':
+      return {
+        ...state,
+        tickets: [...state.tickets, action.payload],
+      };
+
+    case 'UPDATE_TICKET':
+      return {
+        ...state,
+        tickets: state.tickets.map(ticket =>
+          ticket.id === action.payload.id ? action.payload : ticket
+        ),
+      };
+
+    case 'DELETE_TICKET':
+      return {
+        ...state,
+        tickets: state.tickets.filter(ticket => ticket.id !== action.payload),
       };
 
     default:
