@@ -194,7 +194,7 @@ export default function OrderHistoryPage() {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center text-sm text-gray-900">
                               <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-                              {new Date(order.date).toLocaleDateString('pt-BR')}
+                              {new Date(order.date).toLocaleDateString('pt-MZ')}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">

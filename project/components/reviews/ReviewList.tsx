@@ -82,7 +82,7 @@ export default function ReviewList({ reviews, productId, onHelpful, onReport }: 
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', {
+    return date.toLocaleDateString('pt-MZ', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

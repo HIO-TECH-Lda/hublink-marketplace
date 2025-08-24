@@ -163,14 +163,14 @@ export default function AdminDashboard() {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('pt-BR', {
+    return new Intl.NumberFormat('pt-MZ', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'MZN'
     }).format(amount);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('pt-BR', {
+    return new Date(dateString).toLocaleString('pt-MZ', {
       day: '2-digit',
       month: '2-digit',
       hour: '2-digit',

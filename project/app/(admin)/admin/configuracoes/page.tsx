@@ -77,8 +77,8 @@ export default function SystemSettingsPage() {
       contactEmail: 'contato@ecobazar.com',
       supportPhone: '(11) 99999-9999',
       timezone: 'America/Sao_Paulo',
-      currency: 'BRL',
-      language: 'pt-BR'
+      currency: 'MZN',
+      language: 'pt-MZ'
     },
     security: {
       requireEmailVerification: true,

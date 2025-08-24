@@ -60,7 +60,7 @@ export default function BlogPostPage() {
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-6 mb-4">
               <div className="flex items-center space-x-1">
                 <Calendar size={14} />
-                <span>{new Date(post.date).toLocaleDateString('pt-BR')}</span>
+                <span>{new Date(post.date).toLocaleDateString('pt-MZ')}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <User size={14} />
@@ -201,7 +201,7 @@ export default function BlogPostPage() {
                   <div className="p-4">
                     <div className="flex items-center space-x-2 text-xs text-gray-6 mb-2">
                       <Calendar size={12} />
-                      <span>{new Date(relatedPost.date).toLocaleDateString('pt-BR')}</span>
+                      <span>{new Date(relatedPost.date).toLocaleDateString('pt-MZ')}</span>
                     </div>
                     
                     <h3 className="font-semibold text-gray-9 mb-2 line-clamp-2">

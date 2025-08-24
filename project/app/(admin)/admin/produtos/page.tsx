@@ -197,7 +197,7 @@ export default function ProductManagementPage() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR');
+    return new Date(dateString).toLocaleDateString('pt-MZ');
   };
 
   const handleUpdateStatus = (productId: string, newStatus: string) => {
@@ -236,10 +236,16 @@ export default function ProductManagementPage() {
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Produtos</h1>
             <p className="text-gray-6">Modere e gerencie produtos da plataforma</p>
           </div>
-          <Button onClick={() => router.back()} variant="outline">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button onClick={() => router.push('/admin/produtos/novo')}>
+              <Package className="w-4 h-4 mr-2" />
+              Novo Produto
+            </Button>
+            <Button onClick={() => router.back()} variant="outline">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+          </div>
         </div>
       </div>
 

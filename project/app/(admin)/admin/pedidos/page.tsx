@@ -147,7 +147,7 @@ export default function OrderManagementPage() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR');
+    return new Date(dateString).toLocaleDateString('pt-MZ');
   };
 
   if (isLoading) {
