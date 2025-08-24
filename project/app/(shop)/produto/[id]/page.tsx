@@ -80,7 +80,7 @@ export default function ProductPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/loja" className="hover:text-primary"> Banca</Link> / 
+          <Link href="/loja" className="hover:text-primary"> Comprar Agora</Link> / 
           <Link href={`/loja?category=${product.category}`} className="hover:text-primary"> {product.category}</Link> / 
           <span className="text-primary">{product.name}</span>
         </nav>
