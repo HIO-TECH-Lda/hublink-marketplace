@@ -238,10 +238,16 @@ export default function VendorManagementPage() {
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Vendedores</h1>
             <p className="text-gray-6">Aprove e gerencie vendedores da plataforma</p>
           </div>
-          <Button onClick={() => router.back()} variant="outline">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button onClick={() => router.push('/admin/vendedores/novo')}>
+              <Shield className="w-4 h-4 mr-2" />
+              Novo Vendedor
+            </Button>
+            <Button onClick={() => router.back()} variant="outline">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+          </div>
         </div>
       </div>
 
