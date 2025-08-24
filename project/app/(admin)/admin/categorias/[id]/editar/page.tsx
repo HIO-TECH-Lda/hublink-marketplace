@@ -77,7 +77,7 @@ export default function EditCategoryPage() {
       name: mockCategory.name,
       description: mockCategory.description,
       status: mockCategory.status,
-      parentCategory: mockCategory.parentCategory || ''
+      parentCategory: mockCategory.parentCategory || 'none'
     });
     
     setIsLoading(false);
@@ -115,7 +115,7 @@ export default function EditCategoryPage() {
           name: formData.name,
           description: formData.description,
           status: formData.status as Category['status'],
-          parentCategory: formData.parentCategory || undefined,
+          parentCategory: formData.parentCategory === 'none' ? undefined : formData.parentCategory,
           updatedAt: new Date().toISOString()
         };
 
@@ -240,7 +240,7 @@ export default function EditCategoryPage() {
                         <SelectValue placeholder="Selecione uma categoria pai" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Nenhuma (Categoria Principal)</SelectItem>
+                        <SelectItem value="none">Nenhuma (Categoria Principal)</SelectItem>
                         {parentCategories.map((parent) => (
                           <SelectItem key={parent.id} value={parent.id}>{parent.name}</SelectItem>
                         ))}

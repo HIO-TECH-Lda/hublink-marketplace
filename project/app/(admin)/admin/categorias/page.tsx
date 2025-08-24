@@ -42,7 +42,6 @@ export default function CategoryManagementPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
   useEffect(() => {
     loadCategories();
@@ -297,7 +296,7 @@ export default function CategoryManagementPage() {
                 </div>
                 <div className="flex items-center space-x-1">
                   <Button
-                    onClick={() => setEditingCategory(category)}
+                    onClick={() => router.push(`/admin/categorias/${category.id}/editar`)}
                     size="sm"
                     variant="outline"
                   >
