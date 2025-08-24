@@ -80,7 +80,7 @@ export default function CreateCampaignPage() {
       setFormData(prev => ({
         ...prev,
         [section]: {
-          ...prev[section as keyof CampaignForm],
+          ...(prev[section as keyof CampaignForm] as any),
           [key]: value
         }
       }));
