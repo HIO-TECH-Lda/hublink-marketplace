@@ -135,7 +135,7 @@ export default function ProductReviewPage() {
           <p className="text-gray-6 mb-8">{error}</p>
           <Link href="/loja">
             <Button className="bg-primary hover:bg-primary-hard text-white">
-              Voltar à Loja
+              Voltar para as Compras
             </Button>
           </Link>
         </div>

@@ -241,7 +241,7 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Melhores Vendedores</h2>
             <p className="text-gray-6">Conheça os produtores mais confiáveis e bem avaliados</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
             {topSellers.map((seller) => (
               <SellerCard key={seller.id} seller={seller} />
             ))}

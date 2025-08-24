@@ -119,6 +119,10 @@ const config: Config = {
         'slide-in-right': 'slide-in-right 0.3s ease-out',
         'fade-in': 'fade-in 0.3s ease-out',
       },
+      lineClamp: {
+        2: '2',
+        3: '3',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

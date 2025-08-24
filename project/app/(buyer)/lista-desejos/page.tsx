@@ -361,7 +361,7 @@ export default function WishlistPage() {
             <Link href="/loja">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
                 <ArrowLeft size={16} className="mr-2" />
-                Voltar à Banca
+                Voltar para as Compras
               </Button>
             </Link>
           </div>

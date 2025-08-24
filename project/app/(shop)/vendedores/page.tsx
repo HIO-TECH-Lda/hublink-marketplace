@@ -376,7 +376,7 @@ export default function SellersPage() {
             </div>
           ) : (
             <div className={viewMode === 'grid' 
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch"
               : "space-y-4"
             }>
               {filteredSellers.map((seller) => (

@@ -59,7 +59,7 @@ interface User {
     bankName: string;
     accountNumber: string;
     agencyNumber: string;
-    mpesaNumber: string; // Changed from pixKey
+    paymentKey: string;
     paymentMethod: string;
   };
 }

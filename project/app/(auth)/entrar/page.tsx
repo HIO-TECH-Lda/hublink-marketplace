@@ -66,7 +66,7 @@ export default function SignInPage() {
           bankName: 'M-Pesa',
           accountNumber: '12345-6',
           agencyNumber: '0001',
-          pixKey: 'vendedor@exemplo.com',
+          paymentKey: 'vendedor@exemplo.com',
           paymentMethod: 'M-Pesa'
         }
       })

@@ -33,7 +33,7 @@ export default function ProductPage() {
           <Link href="/loja">
             <Button className="bg-primary hover:bg-primary-hard text-white">
               <ArrowLeft size={16} className="mr-2" />
-              Voltar à Banca
+              Voltar para as Compras
             </Button>
           </Link>
         </div>

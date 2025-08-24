@@ -282,7 +282,7 @@ export default function PayoutsPage() {
                 <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-2">M-Pesa</h4>
                   <div className="space-y-2 text-sm text-gray-600">
-                    <p><span className="font-medium">Chave M-Pesa:</span> {user?.storeSettings?.mpesaNumber || 'Não informado'}</p>
+                                            <p><span className="font-medium">Chave de Pagamento:</span> {user?.storeSettings?.paymentKey || 'Não informado'}</p>
                     <p><span className="font-medium">Método:</span> {user?.storeSettings?.paymentMethod || 'Não informado'}</p>
                   </div>
                 </div>

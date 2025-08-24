@@ -151,7 +151,7 @@ export default function SellerProfilePage() {
           <Link href="/loja">
             <Button className="bg-primary hover:bg-primary-hard text-white">
               <ArrowLeft size={16} className="mr-2" />
-              Voltar à Banca
+              Voltar para as Compras
             </Button>
           </Link>
         </div>
@@ -168,8 +168,8 @@ export default function SellerProfilePage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/loja" className="hover:text-primary"> Banca</Link> / 
-          <span className="text-primary">{seller.businessName}</span>
+          <Link href="/loja" className="hover:text-primary"> Comprar</Link> / 
+          <span className="text-primary break-words">{seller.businessName}</span>
         </nav>
 
         {/* Seller Header */}
@@ -188,10 +188,10 @@ export default function SellerProfilePage() {
 
           {/* Seller Info */}
           <div className="relative px-6 pb-6">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
-              <div className="flex items-end space-x-4 -mt-16 sm:-mt-20">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-end space-y-4 sm:space-y-0 sm:space-x-4 -mt-16 sm:-mt-20">
                 {/* Logo */}
-                <div className="w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-lg shadow-lg flex items-center justify-center border-4 border-white">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-lg shadow-lg flex items-center justify-center border-4 border-white flex-shrink-0">
                   {seller.logo ? (
                     <img
                       src={seller.logo}
@@ -204,22 +204,22 @@ export default function SellerProfilePage() {
                 </div>
 
                 {/* Basic Info */}
-                <div className="mb-4">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">
+                <div className="flex-1 min-w-0">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2 break-words">
                     {seller.businessName}
                   </h1>
-                  <div className="flex items-center space-x-4 text-sm text-gray-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-gray-6">
                     <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 text-warning fill-warning" />
+                      <Star className="w-4 h-4 text-warning fill-warning flex-shrink-0" />
                       <span>{seller.rating}</span>
                       <span>({seller.reviewCount} avaliações)</span>
                     </div>
                     <div className="flex items-center space-x-1">
-                      <Package className="w-4 h-4" />
+                      <Package className="w-4 h-4 flex-shrink-0" />
                       <span>{seller.totalProducts} produtos</span>
                     </div>
                     <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="w-4 h-4 flex-shrink-0" />
                       <span>Membro desde {new Date(seller.joinedDate).toLocaleDateString('pt-MZ')}</span>
                     </div>
                   </div>
@@ -227,7 +227,7 @@ export default function SellerProfilePage() {
               </div>
 
               {/* Status Badge */}
-              <div className="mt-4 sm:mt-0">
+              <div className="mt-4 lg:mt-0 lg:ml-4">
                 <Badge 
                   variant={seller.status === 'approved' ? 'default' : 'secondary'}
                   className="text-sm"
@@ -241,12 +241,12 @@ export default function SellerProfilePage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-6 order-2 lg:order-1">
             {/* About */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <Building className="w-5 h-5 mr-2" />
+                  <Building className="w-5 h-5 mr-2 flex-shrink-0" />
                   Sobre
                 </CardTitle>
               </CardHeader>
@@ -263,21 +263,21 @@ export default function SellerProfilePage() {
                 <CardTitle>Informações de Contato</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <Mail className="w-4 h-4 text-gray-4" />
-                  <span className="text-sm text-gray-7">{seller.contactPerson.email}</span>
+                <div className="flex items-start space-x-2">
+                  <Mail className="w-4 h-4 text-gray-4 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-gray-7 break-all">{seller.contactPerson.email}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4 text-gray-4" />
+                  <Phone className="w-4 h-4 text-gray-4 flex-shrink-0" />
                   <span className="text-sm text-gray-7">{seller.contactPerson.phone}</span>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <MapPin className="w-4 h-4 text-gray-4 mt-0.5" />
-                  <div className="text-sm text-gray-7">
-                    <p>{seller.address.street}, {seller.address.number}</p>
-                    {seller.address.complement && <p>{seller.address.complement}</p>}
-                    <p>{seller.address.neighborhood}</p>
-                    <p>{seller.address.city}, {seller.address.state}</p>
+                  <MapPin className="w-4 h-4 text-gray-4 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-gray-7 min-w-0">
+                    <p className="break-words">{seller.address.street}, {seller.address.number}</p>
+                    {seller.address.complement && <p className="break-words">{seller.address.complement}</p>}
+                    <p className="break-words">{seller.address.neighborhood}</p>
+                    <p className="break-words">{seller.address.city}, {seller.address.state}</p>
                     <p>{seller.address.zipCode}</p>
                   </div>
                 </div>
@@ -311,11 +311,11 @@ export default function SellerProfilePage() {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 order-1 lg:order-2">
             {/* Products Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-bold text-gray-9 mb-1">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6 space-y-4 lg:space-y-0">
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xl font-bold text-gray-9 mb-1 break-words">
                   Produtos de {seller.businessName}
                 </h2>
                 <p className="text-gray-6">
@@ -324,9 +324,9 @@ export default function SellerProfilePage() {
               </div>
 
               {/* Filters */}
-              <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-full sm:w-40">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -362,7 +362,7 @@ export default function SellerProfilePage() {
             {/* Products Grid */}
             {sortedProducts.length > 0 ? (
               <div className={viewMode === 'grid' 
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
+                ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6'
                 : 'space-y-4'
               }>
                 {sortedProducts.map((product) => (

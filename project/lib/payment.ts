@@ -430,10 +430,13 @@ export class OrderTrackingService {
 
 // Utility functions
 export const formatCurrency = (amount: number, currency: string = 'MZN'): string => {
+  // If amount is in cents (common in payment systems), divide by 100
+  const displayAmount = amount >= 1000 ? amount / 100 : amount;
+  
   return new Intl.NumberFormat('pt-MZ', {
     style: 'currency',
     currency
-  }).format(amount); // Convert from cents amount/100
+  }).format(displayAmount);
 };
 
 export const formatDate = (dateString: string): string => {

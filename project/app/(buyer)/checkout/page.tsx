@@ -101,7 +101,7 @@ export default function CheckoutPage() {
           <p className="text-gray-6 mb-8">Adicione produtos ao carrinho para continuar.</p>
           <Link href="/loja">
             <Button className="bg-primary hover:bg-primary-hard text-white">
-              Ir para a Banca
+              Ir para as Compras
             </Button>
           </Link>
         </div>

@@ -136,22 +136,22 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
           </div>
 
           {/* Add to Cart Button - Desktop (Hover Only) */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:block">
+          <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 hidden md:block">
             <Button
               onClick={handleAddToCart}
-              className="w-full bg-primary hover:bg-primary-hard text-white py-2 px-4 rounded-lg flex items-center justify-center space-x-2"
+              className="w-full bg-primary hover:bg-primary-hard text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2 font-medium shadow-lg"
               disabled={!product.inStock}
             >
-              <ShoppingCart size={16} />
+              <ShoppingCart size={18} />
               <span>{product.inStock ? 'Adicionar ao Carrinho' : 'Fora de Estoque'}</span>
             </Button>
           </div>
         </div>
 
         {/* Product Info */}
-        <div className="p-4">
+        <div className="p-4 space-y-3">
           {/* Seller Info */}
-          <div className="flex items-center space-x-2 mb-2">
+          <div className="flex items-center space-x-2">
             {product.sellerLogo && (
               <img
                 src={product.sellerLogo}
@@ -170,12 +170,12 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
           </div>
 
           {/* Product Name */}
-          <h3 className="font-medium text-gray-9 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+          <h3 className="font-medium text-gray-9 line-clamp-2 group-hover:text-primary transition-colors min-h-[2.5rem] flex items-start">
             {product.name}
           </h3>
 
           {/* Rating */}
-          <div className="flex items-center space-x-1 mb-2">
+          <div className="flex items-center space-x-1">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -189,7 +189,8 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
           </div>
 
           {/* Price and Mobile Add to Cart */}
-          <div className="flex items-center justify-between">
+          <div className="space-y-3">
+            {/* Price Section */}
             <div className="flex items-center space-x-2">
               <span className="text-lg font-semibold text-primary">
                 {formatCurrency(product.price)}
@@ -206,11 +207,11 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
               <Button
                 onClick={handleAddToCart}
                 size="sm"
-                className="bg-primary hover:bg-primary-hard text-white px-3 py-1 rounded-lg flex items-center space-x-1"
+                className="w-full bg-primary hover:bg-primary-hard text-white py-2 px-4 rounded-lg flex items-center justify-center space-x-2"
                 disabled={!product.inStock}
               >
-                <ShoppingCart size={14} />
-                <span className="text-xs">{product.inStock ? 'Adicionar' : 'Indisponível'}</span>
+                <ShoppingCart size={16} />
+                <span>{product.inStock ? 'Adicionar ao Carrinho' : 'Fora de Estoque'}</span>
               </Button>
             </div>
           </div>

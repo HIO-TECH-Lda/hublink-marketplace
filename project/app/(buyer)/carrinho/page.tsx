@@ -132,11 +132,11 @@ export default function ShoppingCartPage() {
                     </div>
 
                     {/* Product Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-9 mb-1 line-clamp-2">{item.product.name}</h3>
+                    <div className="flex-1 min-w-0 space-y-2">
+                      <h3 className="font-medium text-gray-9 line-clamp-2">{item.product.name}</h3>
                       
                       {/* Seller Info */}
-                      <div className="flex items-center space-x-2 mb-2">
+                      <div className="flex items-center space-x-2">
                         <img
                           src={item.product.sellerLogo || 'https://placehold.co/20x20/cccccc/000000?text=S'}
                           alt={item.product.sellerName}
@@ -159,7 +159,7 @@ export default function ShoppingCartPage() {
                     </div>
 
                     {/* Quantity Controls */}
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 flex-shrink-0">
                       <button
                         onClick={() => handleQuantityChange(item.product.id, item.quantity - 1)}
                         className="p-1 hover:bg-gray-1 rounded transition-colors"
@@ -176,7 +176,7 @@ export default function ShoppingCartPage() {
                     </div>
 
                     {/* Subtotal */}
-                    <div className="text-right min-w-0">
+                    <div className="text-right min-w-0 flex-shrink-0">
                       <div className="font-medium text-gray-9">
                         {formatCurrency(item.product.price * item.quantity)}
                       </div>
@@ -185,7 +185,7 @@ export default function ShoppingCartPage() {
                     {/* Remove Button */}
                     <button
                       onClick={() => handleRemoveItem(item.product.id)}
-                      className="p-2 text-gray-6 hover:text-danger hover:bg-danger/5 rounded transition-colors"
+                      className="p-2 text-gray-6 hover:text-danger hover:bg-danger/5 rounded transition-colors flex-shrink-0"
                     >
                       <X size={16} />
                     </button>
@@ -210,11 +210,11 @@ export default function ShoppingCartPage() {
                         </div>
 
                         {/* Product Info */}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-gray-9 mb-1 line-clamp-2">{item.product.name}</h3>
+                        <div className="flex-1 min-w-0 space-y-2">
+                          <h3 className="font-medium text-gray-9 line-clamp-2">{item.product.name}</h3>
                           
                           {/* Seller Info */}
-                          <div className="flex items-center space-x-2 mb-2">
+                          <div className="flex items-center space-x-2">
                             <img
                               src={item.product.sellerLogo || 'https://placehold.co/16x16/cccccc/000000?text=S'}
                               alt={item.product.sellerName}
@@ -224,7 +224,8 @@ export default function ShoppingCartPage() {
                           </div>
 
                           {/* Price and Quantity */}
-                          <div className="flex items-center justify-between">
+                          <div className="space-y-2">
+                            {/* Price Section */}
                             <div className="flex items-center space-x-2">
                               {item.product.originalPrice && (
                                 <span className="text-xs text-gray-6 line-through">
@@ -235,11 +236,13 @@ export default function ShoppingCartPage() {
                                 {formatCurrency(item.product.price)}
                               </span>
                             </div>
-                            <div className="text-right">
+                            
+                            {/* Quantity and Total Section */}
+                            <div className="flex items-center justify-between">
+                              <div className="text-xs text-gray-6">Qtd: {item.quantity}</div>
                               <div className="font-medium text-gray-9 text-sm">
                                 {formatCurrency(item.product.price * item.quantity)}
                               </div>
-                              <div className="text-xs text-gray-6">Qtd: {item.quantity}</div>
                             </div>
                           </div>
                         </div>
@@ -301,7 +304,7 @@ export default function ShoppingCartPage() {
                 <Link href="/loja">
                   <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
                     <ArrowLeft size={16} className="mr-2" />
-                    Voltar à Banca
+                    Voltar para as Compras
                   </Button>
                 </Link>
                 <Button
@@ -397,7 +400,7 @@ export default function ShoppingCartPage() {
 
               {/* Checkout Button */}
               <Link href="/checkout">
-                <Button className="w-full bg-primary hover:bg-primary-hard text-white py-3 mt-4">
+                <Button className="w-full bg-primary hover:bg-primary-hard text-white py-3 mt-4 mb-4">
                   Finalizar Compra
                 </Button>
               </Link>
