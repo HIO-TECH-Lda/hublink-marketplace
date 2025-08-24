@@ -245,7 +245,7 @@ export default function SellerOrdersPage() {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <Link 
-                                href={`/vendedor/pedido/${order.id}`}
+                                href={`/pedido/${order.id}`}
                                 className="inline-flex items-center text-green-600 hover:text-green-900"
                               >
                                 <Eye className="w-4 h-4 mr-1" />
