@@ -234,8 +234,22 @@ export default function UserManagementPage() {
     <AdminLayout>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Usuários</h1>
-        <p className="text-gray-6">Gerencie contas de usuários e vendedores</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Usuários</h1>
+            <p className="text-gray-6">Gerencie contas de usuários e vendedores</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button onClick={() => router.push('/admin/usuarios/novo')}>
+              <Users className="w-4 h-4 mr-2" />
+              Novo Usuário
+            </Button>
+            <Button onClick={() => router.back()} variant="outline">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Stats */}
