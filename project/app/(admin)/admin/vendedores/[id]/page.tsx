@@ -306,7 +306,7 @@ export default function VendorDetailPage() {
                   <p className="text-gray-9">{vendor.businessDescription}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-7">CNPJ</label>
+                  <label className="text-sm font-medium text-gray-7">NUIT</label>
                   <p className="text-gray-9 font-medium">{vendor.cnpj}</p>
                 </div>
                 <div>
@@ -456,7 +456,7 @@ export default function VendorDetailPage() {
               <div className="space-y-3">
                 <Button variant="outline" size="sm" className="w-full justify-start">
                   <FileText className="w-4 h-4 mr-2" />
-                  CNPJ
+                  NUIT
                 </Button>
                 <Button variant="outline" size="sm" className="w-full justify-start">
                   <FileText className="w-4 h-4 mr-2" />

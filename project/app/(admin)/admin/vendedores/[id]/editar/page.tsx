@@ -142,7 +142,7 @@ export default function EditVendorPage() {
       newErrors.businessName = 'Nome da empresa é obrigatório';
     }
     if (!formData.cnpj.trim()) {
-      newErrors.cnpj = 'CNPJ é obrigatório';
+      newErrors.cnpj = 'NUIT é obrigatório';
     }
     if (!formData.contactEmail.trim()) {
       newErrors.contactEmail = 'Email é obrigatório';
@@ -284,7 +284,7 @@ export default function EditVendorPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-7 mb-2 block">CNPJ *</label>
+                      <label className="text-sm font-medium text-gray-7 mb-2 block">NUIT *</label>
                       <Input
                         value={formData.cnpj}
                         onChange={(e) => setFormData({...formData, cnpj: e.target.value})}

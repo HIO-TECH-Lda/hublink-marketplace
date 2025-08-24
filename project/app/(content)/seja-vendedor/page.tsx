@@ -77,7 +77,8 @@ export default function SejaVendedorPage() {
 
   const requisitos = [
     'Produtos orgânicos certificados ou de produção própria',
-    'Documentação legal (CNPJ ou CPF)',
+    'Bilhete de Identidade',
+    'NUIT',
     'Localização para armazenamento adequado',
     'Compromisso com qualidade e frescor',
     'Disponibilidade para entregas regulares',

@@ -307,7 +307,7 @@ export default function VendorManagementPage() {
             <div>
               <label className="text-sm font-medium text-gray-7 mb-2 block">Buscar</label>
               <Input
-                placeholder="Nome da empresa, contato, CNPJ..."
+                placeholder="Nome da empresa, contato, NUIT..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
@@ -358,7 +358,7 @@ export default function VendorManagementPage() {
                 <tr className="border-b border-gray-200">
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Empresa</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Contato</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">CNPJ</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">NUIT</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Vendas</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Avaliação</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
