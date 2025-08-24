@@ -7,7 +7,6 @@ import {
   Save, 
   ArrowLeft, 
   AlertCircle,
-  Upload,
   X
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
@@ -17,6 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import ImageUpload from '@/components/ui/image-upload';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 
 interface Product {
@@ -411,25 +411,20 @@ export default function EditProductPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <Upload className="w-5 h-5 mr-2" />
+                  <Package className="w-5 h-5 mr-2" />
                   Imagens do Produto
                 </CardTitle>
                 <CardDescription>Gerencie as imagens do produto</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-3 gap-4">
-                  {product.images.map((image, index) => (
-                    <div key={index} className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                      <Package className="w-8 h-8 text-gray-4" />
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4">
-                  <Button type="button" variant="outline">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Adicionar Imagem
-                  </Button>
-                </div>
+                <ImageUpload
+                  images={product.images}
+                  onImagesChange={(newImages) => {
+                    // In a real app, you would update the product here
+                    console.log('Images updated:', newImages);
+                  }}
+                  maxImages={5}
+                />
               </CardContent>
             </Card>
           </div>

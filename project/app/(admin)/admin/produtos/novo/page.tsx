@@ -6,7 +6,6 @@ import {
   Package, 
   Save, 
   ArrowLeft, 
-  Upload,
   AlertCircle,
   Tag
 } from 'lucide-react';
@@ -16,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import ImageUpload from '@/components/ui/image-upload';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 
 interface Seller {
@@ -46,7 +46,8 @@ export default function AdminCreateProductPage() {
     category: searchParams.get('category') || '',
     seller: '',
     stock: '',
-    status: 'pending'
+    status: 'pending',
+    images: [] as string[]
   });
 
   const [sellers] = useState<Seller[]>([
@@ -300,20 +301,16 @@ export default function AdminCreateProductPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <Upload className="w-5 h-5 mr-2" />
-                  Imagem do Produto
+                  <Package className="w-5 h-5 mr-2" />
+                  Imagens do Produto
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
-                    <Package className="w-12 h-12 text-gray-4" />
-                  </div>
-                  <Button type="button" variant="outline">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Carregar Imagem
-                  </Button>
-                </div>
+                <ImageUpload
+                  images={formData.images}
+                  onImagesChange={(newImages) => setFormData({...formData, images: newImages})}
+                  maxImages={5}
+                />
               </CardContent>
             </Card>
           </div>

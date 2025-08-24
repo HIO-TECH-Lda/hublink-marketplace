@@ -20,8 +20,10 @@ export default function QuickViewPopup() {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
-  // Mock additional images
-  const productImages = [product.image, product.image, product.image];
+  // Use actual product images or fallback to main image
+  const productImages = product.images && product.images.length > 0 
+    ? product.images 
+    : [product.image];
 
   const handleClose = () => {
     dispatch({ type: 'SET_QUICK_VIEW', payload: null });

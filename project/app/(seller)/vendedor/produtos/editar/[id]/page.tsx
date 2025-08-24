@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import ImageUpload from '@/components/ui/image-upload';
 import SellerSidebar from '@/app/(seller)/components/SellerSidebar';
 
 export default function EditProductPage() {
@@ -36,7 +37,6 @@ export default function EditProductPage() {
     images: [] as string[]
   });
   const [newTag, setNewTag] = useState('');
-  const [newImage, setNewImage] = useState('');
 
   // Find the product to edit
   const product = state.products.find(p => p.id === productId);
@@ -94,20 +94,10 @@ export default function EditProductPage() {
     }));
   };
 
-  const handleAddImage = () => {
-    if (newImage.trim() && !formData.images.includes(newImage.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        images: [...prev.images, newImage.trim()]
-      }));
-      setNewImage('');
-    }
-  };
-
-  const handleRemoveImage = (imageToRemove: string) => {
+  const handleImagesChange = (newImages: string[]) => {
     setFormData(prev => ({
       ...prev,
-      images: prev.images.filter(image => image !== imageToRemove)
+      images: newImages
     }));
   };
 
@@ -445,45 +435,11 @@ export default function EditProductPage() {
                 {/* Images */}
                 <div>
                   <h2 className="text-lg font-semibold text-gray-9 mb-4">Imagens</h2>
-                  <div className="space-y-3">
-                    <div className="flex space-x-2">
-                      <Input
-                        type="url"
-                        value={newImage}
-                        onChange={(e) => setNewImage(e.target.value)}
-                        placeholder="URL da imagem"
-                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddImage())}
-                      />
-                      <Button
-                        type="button"
-                        onClick={handleAddImage}
-                        variant="outline"
-                        className="px-4"
-                      >
-                        <Plus size={16} />
-                      </Button>
-                    </div>
-                    {formData.images.length > 0 && (
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {formData.images.map((image, index) => (
-                          <div key={index} className="relative">
-                            <img
-                              src={image}
-                              alt={`Imagem ${index + 1}`}
-                              className="w-full h-32 object-cover rounded-lg"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveImage(image)}
-                              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-                            >
-                              <X size={12} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <ImageUpload
+                    images={formData.images}
+                    onImagesChange={handleImagesChange}
+                    maxImages={5}
+                  />
                 </div>
 
                 {/* Submit Buttons */}
