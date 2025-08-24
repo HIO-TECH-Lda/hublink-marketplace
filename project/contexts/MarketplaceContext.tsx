@@ -64,17 +64,28 @@ interface User {
   };
 }
 
+interface ReturnRequest {
+  orderId: string;
+  items: string[];
+  reason: string;
+  description?: string;
+  status: 'pending' | 'approved' | 'rejected' | 'completed';
+  createdAt: string;
+  userId: string;
+}
+
 interface Order {
   id: string;
   date: string;
   total: number;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'return_requested';
   items: CartItem[];
   userId: string;
   billingAddress: any;
   paymentMethod: string;
   shippingAddress?: any;
   orderNotes?: string;
+  returnRequest?: ReturnRequest;
 }
 
 interface Payout {
@@ -732,7 +743,16 @@ const mockOrders: Order[] = [
       state: 'Sofala',
       zipCode: '2100'
     },
-    orderNotes: 'Entregar após 18h'
+    orderNotes: 'Entregar após 18h',
+    returnRequest: {
+      orderId: 'ORD-001',
+      items: ['ORD-001-1-0'],
+      reason: 'defective',
+      description: 'Os tomates chegaram danificados e com manchas.',
+      status: 'pending',
+      createdAt: '2024-01-22T10:30:00Z',
+      userId: 'user1'
+    }
   },
   {
     id: 'ORD-002',
@@ -894,7 +914,7 @@ const mockOrders: Order[] = [
     id: 'ORD-004',
     date: '2024-01-12',
     total: 1425,
-    status: 'pending',
+    status: 'delivered',
     userId: 'user1',
     items: [
       {
