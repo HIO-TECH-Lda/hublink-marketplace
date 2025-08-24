@@ -20,6 +20,7 @@ export default function MyTicketsPage() {
   const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all');
   const [categoryFilter, setCategoryFilter] = useState<TicketCategory | 'all'>('all');
   const [priorityFilter, setPriorityFilter] = useState<TicketPriority | 'all'>('all');
+  const [showFilters, setShowFilters] = useState(false);
 
   // Filter tickets based on current user and filters
   const filteredTickets = state.tickets.filter(ticket => {
@@ -198,97 +199,158 @@ export default function MyTicketsPage() {
     <div className="min-h-screen bg-gray-1">
       <Header />
       
-      <div className="container py-8 px-4 sm:px-6 lg:px-8">
+      <div className="container py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-9 mb-2">Meus Tickets</h1>
-              <p className="text-gray-6">Acompanhe suas solicitações de suporte</p>
+            <div className="w-full sm:w-auto">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Meus Tickets</h1>
+              <p className="text-gray-6 text-sm sm:text-base">Acompanhe suas solicitações de suporte</p>
             </div>
-            <Button 
-              onClick={() => router.push('/suporte/novo-ticket')}
-              className="bg-primary hover:bg-primary-hard text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Novo Ticket
-            </Button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button 
+                onClick={() => setShowFilters(!showFilters)}
+                variant="outline"
+                className="flex-1 sm:flex-none"
+              >
+                <Filter className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Filtros</span>
+              </Button>
+              <Button 
+                onClick={() => router.push('/suporte/novo-ticket')}
+                className="bg-primary hover:bg-primary-hard text-white flex-1 sm:flex-none"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Novo Ticket</span>
+                <span className="sm:hidden">Novo</span>
+              </Button>
+            </div>
           </div>
 
-          {/* Filters */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Filter className="w-5 h-5" />
-                Filtros
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                {/* Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input
-                    type="text"
-                    placeholder="Buscar tickets..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
+          {/* Search Bar - Always Visible */}
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              type="text"
+              placeholder="Buscar tickets..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 h-12 text-base"
+            />
+          </div>
+
+          {/* Filters - Collapsible on Mobile */}
+          {showFilters && (
+            <Card className="mb-6">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Filter className="w-5 h-5" />
+                  Filtros
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* Status Filter */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as TicketStatus | 'all')}>
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="Todos os Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todos os Status</SelectItem>
+                        <SelectItem value={TicketStatus.OPEN}>Aberto</SelectItem>
+                        <SelectItem value={TicketStatus.IN_PROGRESS}>Em Progresso</SelectItem>
+                        <SelectItem value={TicketStatus.WAITING_FOR_USER}>Aguardando Resposta</SelectItem>
+                        <SelectItem value={TicketStatus.WAITING_FOR_THIRD_PARTY}>Aguardando Terceiros</SelectItem>
+                        <SelectItem value={TicketStatus.RESOLVED}>Resolvido</SelectItem>
+                        <SelectItem value={TicketStatus.CLOSED}>Fechado</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Category Filter */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Categoria</label>
+                    <Select value={categoryFilter} onValueChange={(value) => setCategoryFilter(value as TicketCategory | 'all')}>
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="Todas as Categorias" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todas as Categorias</SelectItem>
+                        <SelectItem value={TicketCategory.TECHNICAL_ISSUE}>Problema Técnico</SelectItem>
+                        <SelectItem value={TicketCategory.PAYMENT_PROBLEM}>Problema com Pagamento</SelectItem>
+                        <SelectItem value={TicketCategory.ORDER_ISSUE}>Problema com Pedido</SelectItem>
+                        <SelectItem value={TicketCategory.RETURN_REQUEST}>Solicitação de Devolução</SelectItem>
+                        <SelectItem value={TicketCategory.ACCOUNT_ISSUE}>Problema com Conta</SelectItem>
+                        <SelectItem value={TicketCategory.PRODUCT_ISSUE}>Problema com Produto</SelectItem>
+                        <SelectItem value={TicketCategory.SHIPPING_PROBLEM}>Problema com Envio</SelectItem>
+                        <SelectItem value={TicketCategory.GENERAL_INQUIRY}>Consulta Geral</SelectItem>
+                        <SelectItem value={TicketCategory.FEATURE_REQUEST}>Solicitação de Funcionalidade</SelectItem>
+                        <SelectItem value={TicketCategory.BUG_REPORT}>Reportar Bug</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Priority Filter */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Prioridade</label>
+                    <Select value={priorityFilter} onValueChange={(value) => setPriorityFilter(value as TicketPriority | 'all')}>
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="Todas as Prioridades" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todas as Prioridades</SelectItem>
+                        <SelectItem value={TicketPriority.LOW}>Baixa</SelectItem>
+                        <SelectItem value={TicketPriority.MEDIUM}>Média</SelectItem>
+                        <SelectItem value={TicketPriority.HIGH}>Alta</SelectItem>
+                        <SelectItem value={TicketPriority.URGENT}>Urgente</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
+              </CardContent>
+            </Card>
+          )}
 
-                {/* Status Filter */}
-                <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as TicketStatus | 'all')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos os Status</SelectItem>
-                    <SelectItem value={TicketStatus.OPEN}>Aberto</SelectItem>
-                    <SelectItem value={TicketStatus.IN_PROGRESS}>Em Progresso</SelectItem>
-                    <SelectItem value={TicketStatus.WAITING_FOR_USER}>Aguardando Resposta</SelectItem>
-                    <SelectItem value={TicketStatus.WAITING_FOR_THIRD_PARTY}>Aguardando Terceiros</SelectItem>
-                    <SelectItem value={TicketStatus.RESOLVED}>Resolvido</SelectItem>
-                    <SelectItem value={TicketStatus.CLOSED}>Fechado</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {/* Category Filter */}
-                <Select value={categoryFilter} onValueChange={(value) => setCategoryFilter(value as TicketCategory | 'all')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Categoria" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas as Categorias</SelectItem>
-                    <SelectItem value={TicketCategory.TECHNICAL_ISSUE}>Problema Técnico</SelectItem>
-                    <SelectItem value={TicketCategory.PAYMENT_PROBLEM}>Problema com Pagamento</SelectItem>
-                    <SelectItem value={TicketCategory.ORDER_ISSUE}>Problema com Pedido</SelectItem>
-                    <SelectItem value={TicketCategory.RETURN_REQUEST}>Solicitação de Devolução</SelectItem>
-                    <SelectItem value={TicketCategory.ACCOUNT_ISSUE}>Problema com Conta</SelectItem>
-                    <SelectItem value={TicketCategory.PRODUCT_ISSUE}>Problema com Produto</SelectItem>
-                    <SelectItem value={TicketCategory.SHIPPING_PROBLEM}>Problema com Envio</SelectItem>
-                    <SelectItem value={TicketCategory.GENERAL_INQUIRY}>Consulta Geral</SelectItem>
-                    <SelectItem value={TicketCategory.FEATURE_REQUEST}>Solicitação de Funcionalidade</SelectItem>
-                    <SelectItem value={TicketCategory.BUG_REPORT}>Reportar Bug</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {/* Priority Filter */}
-                <Select value={priorityFilter} onValueChange={(value) => setPriorityFilter(value as TicketPriority | 'all')}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Prioridade" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas as Prioridades</SelectItem>
-                    <SelectItem value={TicketPriority.LOW}>Baixa</SelectItem>
-                    <SelectItem value={TicketPriority.MEDIUM}>Média</SelectItem>
-                    <SelectItem value={TicketPriority.HIGH}>Alta</SelectItem>
-                    <SelectItem value={TicketPriority.URGENT}>Urgente</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Active Filters Summary */}
+          {(statusFilter !== 'all' || categoryFilter !== 'all' || priorityFilter !== 'all') && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              {statusFilter !== 'all' && (
+                <Badge variant="secondary" className="text-sm">
+                  Status: {getStatusText(statusFilter)}
+                  <button 
+                    onClick={() => setStatusFilter('all')}
+                    className="ml-2 hover:text-red-500"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </Badge>
+              )}
+              {categoryFilter !== 'all' && (
+                <Badge variant="secondary" className="text-sm">
+                  Categoria: {getCategoryText(categoryFilter)}
+                  <button 
+                    onClick={() => setCategoryFilter('all')}
+                    className="ml-2 hover:text-red-500"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </Badge>
+              )}
+              {priorityFilter !== 'all' && (
+                <Badge variant="secondary" className="text-sm">
+                  Prioridade: {getPriorityText(priorityFilter)}
+                  <button 
+                    onClick={() => setPriorityFilter('all')}
+                    className="ml-2 hover:text-red-500"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </Badge>
+              )}
+            </div>
+          )}
 
           {/* Tickets List */}
           {filteredTickets.length === 0 ? (
@@ -298,7 +360,7 @@ export default function MyTicketsPage() {
                   <MessageSquare className="w-16 h-16 mx-auto" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum ticket encontrado</h3>
-                <p className="text-gray-6 mb-6">
+                <p className="text-gray-6 mb-6 text-sm sm:text-base">
                   {searchTerm || statusFilter !== 'all' || categoryFilter !== 'all' || priorityFilter !== 'all'
                     ? 'Tente ajustar os filtros ou criar um novo ticket.'
                     : 'Você ainda não criou nenhum ticket de suporte.'}
@@ -313,58 +375,69 @@ export default function MyTicketsPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {filteredTickets.map((ticket) => (
-                <Card key={ticket.id} className="hover:shadow-md transition-shadow cursor-pointer" 
-                      onClick={() => router.push(`/suporte/ticket/${ticket.id}`)}>
-                  <CardContent className="p-6">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start gap-3">
+                <Card 
+                  key={ticket.id} 
+                  className="hover:shadow-md transition-shadow cursor-pointer active:scale-[0.98] touch-manipulation" 
+                  onClick={() => router.push(`/suporte/ticket/${ticket.id}`)}
+                >
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex flex-col gap-4">
+                      {/* Header */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-start gap-3 flex-1 min-w-0">
                           <div className="flex-shrink-0 mt-1">
                             {getStatusIcon(ticket.status)}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-semibold text-gray-9 mb-2 truncate">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-9 mb-1 truncate">
                               {ticket.title}
                             </h3>
-                            <p className="text-gray-6 text-sm mb-3 line-clamp-2">
+                            <p className="text-gray-6 text-sm mb-2 line-clamp-2">
                               {ticket.description}
                             </p>
-                            <div className="flex flex-wrap items-center gap-2 mb-3">
-                              <Badge className={getStatusColor(ticket.status)}>
-                                {getStatusText(ticket.status)}
-                              </Badge>
-                              <Badge className={getPriorityColor(ticket.priority)}>
-                                {getPriorityText(ticket.priority)}
-                              </Badge>
-                              <Badge variant="outline" className="text-xs">
-                                <span className="mr-1">{getCategoryIcon(ticket.category)}</span>
-                                {getCategoryText(ticket.category)}
-                              </Badge>
-                              {ticket.orderId && (
-                                <Badge variant="outline" className="text-xs">
-                                  Pedido: {ticket.orderId}
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-4 text-xs text-gray-5">
-                              <span>Criado em {formatDate(ticket.createdAt)}</span>
-                              <span>•</span>
-                              <span>{getUnreadMessages(ticket)} mensagens</span>
-                              {ticket.assignedTo && (
-                                <>
-                                  <span>•</span>
-                                  <span>Atribuído a {state.agents?.find(a => a.id === ticket.assignedTo)?.name}</span>
-                                </>
-                              )}
-                            </div>
                           </div>
                         </div>
+                        <div className="flex-shrink-0">
+                          <span className="text-xs text-gray-5">#{ticket.id}</span>
+                        </div>
                       </div>
-                      
-                      <div className="flex items-center gap-2 text-sm text-gray-5">
-                        <span>#{ticket.id}</span>
+
+                      {/* Badges */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge className={`${getStatusColor(ticket.status)} text-xs`}>
+                          {getStatusText(ticket.status)}
+                        </Badge>
+                        <Badge className={`${getPriorityColor(ticket.priority)} text-xs`}>
+                          {getPriorityText(ticket.priority)}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          <span className="mr-1">{getCategoryIcon(ticket.category)}</span>
+                          <span className="hidden sm:inline">{getCategoryText(ticket.category)}</span>
+                          <span className="sm:hidden">{getCategoryText(ticket.category).split(' ')[0]}</span>
+                        </Badge>
+                        {ticket.orderId && (
+                          <Badge variant="outline" className="text-xs">
+                            <span className="hidden sm:inline">Pedido: {ticket.orderId}</span>
+                            <span className="sm:hidden">P: {ticket.orderId}</span>
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Metadata */}
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs text-gray-5">
+                        <span>Criado em {formatDate(ticket.createdAt)}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span>{getUnreadMessages(ticket)} mensagens</span>
+                        {ticket.assignedTo && (
+                          <>
+                            <span className="hidden sm:inline">•</span>
+                            <span className="truncate">
+                              Atribuído a {state.agents?.find(a => a.id === ticket.assignedTo)?.name}
+                            </span>
+                          </>
+                        )}
                       </div>
                     </div>
                   </CardContent>
