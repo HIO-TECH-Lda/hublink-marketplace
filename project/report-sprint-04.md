@@ -2,12 +2,13 @@
 
 ## 📋 **Resumo Executivo**
 
-A Sprint 04 focou na implementação de um sistema completo de tickets de suporte, sistema profissional de gestão de múltiplas imagens de produtos, melhorias significativas na experiência mobile, e refinamentos em funcionalidades existentes. O sprint entregou um sistema robusto de gestão de suporte ao cliente com interface administrativa completa, sistema avançado de upload e gestão de imagens, e experiência otimizada para dispositivos móveis.
+A Sprint 04 focou na implementação de um sistema completo de tickets de suporte, sistema profissional de gestão de múltiplas imagens de produtos, sistema completo de gestão de newsletter, melhorias significativas na experiência mobile, e refinamentos em funcionalidades existentes. O sprint entregou um sistema robusto de gestão de suporte ao cliente com interface administrativa completa, sistema avançado de upload e gestão de imagens, sistema completo de newsletter com campanhas e segmentação, e experiência otimizada para dispositivos móveis.
 
 ## 🎯 **Objetivos da Sprint**
 
 - ✅ Implementar sistema completo de tickets de suporte
 - ✅ Implementar sistema de gestão de múltiplas imagens de produtos
+- ✅ Implementar sistema completo de gestão de newsletter
 - ✅ Melhorar experiência mobile em todas as páginas
 - ✅ Refinar funcionalidades de upload de documentos
 - ✅ Padronizar sistema de pagamentos
@@ -131,21 +132,86 @@ A Sprint 04 focou na implementação de um sistema completo de tickets de suport
 - **Dados de mock** - consistência nos exemplos
 - **Interface TypeScript** - tipagem atualizada
 
-### **6. Sistema de Retornos Aprimorado**
+### **6. Sistema de Gestão de Newsletter Completo**
 
-#### **5.1 Correção de Bugs**
+#### **6.1 Estrutura de Dados**
+- **Collections MongoDB**: `newsletter_subscribers` e `newsletter_campaigns`
+- **Interfaces TypeScript** para `NewsletterSubscriber`, `NewsletterCampaign`
+- **Enums** para status, tipos de campanha, fontes de inscrição
+- **Integração** com contexto global do marketplace
+- **Mock data** completo para testes e demonstração
+
+#### **6.2 Páginas do Usuário**
+- **Newsletter Popup**: Inscrição com armazenamento em localStorage
+- **Footer Signup**: Inscrição integrada no rodapé do site
+- **FAQ Page**: Inscrição contextual na página de perguntas frequentes
+- **User Settings**: Toggle de preferências de newsletter
+
+#### **6.3 Painel Administrativo**
+- **`/admin/newsletter`** - Gestão geral de assinantes e campanhas
+- **`/admin/newsletter/campanhas/novo`** - Criação de novas campanhas
+- **`/admin/newsletter/campanhas/[id]`** - Visualização de campanhas
+- **Funcionalidades administrativas**:
+  - Gestão de assinantes (visualizar, filtrar, exportar)
+  - Criação de campanhas com editor HTML
+  - Segmentação de audiência por tags e categorias
+  - Agendamento de campanhas
+  - Estatísticas de performance (taxa de abertura, clique)
+  - Preview de campanhas em tempo real
+
+#### **6.4 Recursos Avançados**
+- **Segmentação de audiência** por status, tags e categorias
+- **Editor HTML** para conteúdo de campanhas
+- **Agendamento** de campanhas com fuso horário
+- **Estatísticas detalhadas** de performance
+- **Exportação** de lista de assinantes
+- **Sistema de tags** para organização
+- **Preferências** de assinantes (frequência, categorias)
+
+### **7. Sistema de Retornos e Reembolsos Completo**
+
+#### **7.1 Sistema de Retornos Aprimorado**
 - **Identificação única** de itens para seleção
 - **Helper function** `getItemUniqueId()` implementada
 - **Estado isolado** para cada item do pedido
 - **Interface melhorada** para seleção de itens
-
-#### **5.2 Funcionalidades**
 - **Modal de retorno** com validação
 - **Seleção múltipla** de itens
 - **Razões predefinidas** para retorno
 - **Descrição opcional** do problema
 - **Política de retorno** integrada
 - **Status visual** de retornos solicitados
+
+#### **7.2 Sistema de Reembolsos com Upload de Imagens**
+- **Upload de imagens opcional** (até 3 imagens por solicitação)
+- **Validação de arquivos** (PNG, JPG até 5MB)
+- **Preview em tempo real** com grid de imagens
+- **Remoção individual** de imagens
+- **Conversão para base64** para armazenamento
+- **Interface drag & drop** intuitiva
+- **Feedback visual** durante upload
+
+#### **7.3 Painel Administrativo de Reembolsos**
+- **Visualização completa** de todas as solicitações
+- **Exibição de imagens** enviadas pelos usuários
+- **Modal detalhado** com todas as informações
+- **Aprovação/rejeição** de reembolsos pendentes
+- **Filtros avançados** por status e busca
+- **Estatísticas** de reembolsos
+- **Histórico completo** de processamento
+
+#### **7.4 Painel do Vendedor para Reembolsos**
+- **Visualização** de reembolsos dos seus produtos
+- **Detalhes completos** incluindo imagens
+- **Interface read-only** para acompanhamento
+- **Filtros** por status e produto
+- **Estatísticas** específicas do vendedor
+
+#### **7.5 Estrutura de Dados Aprimorada**
+- **Interface `Refund`** atualizada com campos `description` e `images`
+- **Serviço `RefundService`** expandido para suportar novos parâmetros
+- **Mock data** realista com exemplos de imagens
+- **Compatibilidade** com dados existentes
 
 ## 🔧 **Melhorias Técnicas**
 
@@ -178,12 +244,14 @@ A Sprint 04 focou na implementação de um sistema completo de tickets de suport
 ## 📊 **Métricas da Sprint**
 
 ### **Funcionalidades Entregues**
-- **15 novas páginas** implementadas
-- **9 componentes** reutilizáveis criados (incluindo ImageUpload)
-- **12 interfaces TypeScript** definidas
-- **6 enums** para tipagem
-- **4 fluxos completos** de usuário
+- **21 novas páginas** implementadas (incluindo páginas de newsletter e reembolso)
+- **14 componentes** reutilizáveis criados (incluindo ImageUpload, newsletter components e upload de imagens para reembolsos)
+- **16 interfaces TypeScript** definidas (incluindo NewsletterSubscriber, NewsletterCampaign e Refund aprimorada)
+- **8 enums** para tipagem
+- **8 fluxos completos** de usuário (incluindo sistema de newsletter e reembolsos)
 - **Sistema completo** de gestão de múltiplas imagens
+- **Sistema completo** de newsletter com campanhas e segmentação
+- **Sistema completo** de reembolsos com upload de imagens
 
 ### **Cobertura de Testes**
 - **Validação de formulários** - 100%
@@ -294,6 +362,10 @@ A Sprint 04 focou na implementação de um sistema completo de tickets de suport
 - **Transparência** no status de tickets
 - **Histórico** completo de interações
 - **Experiência visual** aprimorada com múltiplas imagens
+- **Sistema de newsletter** com conteúdo relevante e personalizado
+- **Sistema de reembolsos** transparente e eficiente
+- **Upload de imagens** para evidências de problemas
+- **Processo simplificado** de solicitação de reembolso
 
 ### **3. Escalabilidade**
 - **Sistema preparado** para crescimento
@@ -306,7 +378,10 @@ A Sprint 04 focou na implementação de um sistema completo de tickets de suport
 ### **1. Sistema Completo**
 - **Ticket system** totalmente funcional
 - **Sistema de múltiplas imagens** profissional
+- **Sistema de newsletter** com campanhas e segmentação
+- **Sistema de reembolsos** com upload de imagens
 - **Interface administrativa** completa
+- **Painel do vendedor** para acompanhamento
 - **Experiência mobile** otimizada
 - **Integração perfeita** com sistema existente
 
@@ -326,6 +401,7 @@ A Sprint 04 focou na implementação de um sistema completo de tickets de suport
 
 ### **1. Planejamento**
 - **Sistema de tickets** mais complexo que esperado
+- **Sistema de newsletter** requer planejamento de segmentação
 - **Gestão de imagens** requer componentes especializados
 - **Mobile UI/UX** requer atenção especial
 - **Padronização** de campos é crucial
@@ -335,6 +411,7 @@ A Sprint 04 focou na implementação de um sistema completo de tickets de suport
 - **TypeScript** previne muitos bugs
 - **Componentes reutilizáveis** economizam tempo
 - **Drag & drop** melhora significativamente a UX
+- **Editor HTML** para newsletters melhora a flexibilidade
 - **Performance mobile** deve ser prioridade
 - **Validação** deve ser feita cedo
 
@@ -346,7 +423,7 @@ A Sprint 04 focou na implementação de um sistema completo de tickets de suport
 
 ## 🎯 **Conclusão**
 
-A Sprint 04 foi extremamente produtiva, entregando um sistema completo de tickets de suporte e um sistema profissional de gestão de múltiplas imagens de produtos que elevam significativamente a capacidade de atendimento ao cliente e a qualidade visual da plataforma. As melhorias mobile garantem uma experiência consistente em todos os dispositivos, enquanto as correções técnicas aumentam a estabilidade do sistema.
+A Sprint 04 foi extremamente produtiva, entregando um sistema completo de tickets de suporte, um sistema profissional de gestão de múltiplas imagens de produtos, um sistema completo de newsletter com campanhas e segmentação, e um sistema completo de reembolsos com upload de imagens que elevam significativamente a capacidade de atendimento ao cliente, a qualidade visual da plataforma, a comunicação com os usuários, e a transparência no processo de reembolsos. As melhorias mobile garantem uma experiência consistente em todos os dispositivos, enquanto as correções técnicas aumentam a estabilidade do sistema.
 
 O sistema está pronto para produção e preparado para escalar conforme o crescimento do negócio. A próxima sprint focará em funcionalidades avançadas e otimizações de performance para continuar melhorando a experiência do usuário.
 

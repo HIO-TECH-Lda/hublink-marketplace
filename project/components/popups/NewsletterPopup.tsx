@@ -24,7 +24,32 @@ export default function NewsletterPopup() {
     e.preventDefault();
     // Handle newsletter subscription
     console.log('Newsletter subscription:', email);
-    // Show success message (you can add a toast here)
+    
+    // Mock: Store subscription in localStorage for demo purposes
+    const subscriptions = JSON.parse(localStorage.getItem('newsletter_subscriptions') || '[]');
+    const newSubscription = {
+      id: Date.now().toString(),
+      email,
+      status: 'active',
+      source: 'popup',
+      tags: ['organic', 'new-subscriber'],
+      preferences: {
+        categories: ['vegetables', 'fruits'],
+        frequency: 'weekly',
+        language: 'pt-MZ'
+      },
+      stats: {
+        emailsSent: 0,
+        emailsOpened: 0,
+        emailsClicked: 0
+      },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    subscriptions.push(newSubscription);
+    localStorage.setItem('newsletter_subscriptions', JSON.stringify(subscriptions));
+    
+    // Show success message
     alert('Obrigado por se inscrever na nossa newsletter!');
     handleClose();
   };

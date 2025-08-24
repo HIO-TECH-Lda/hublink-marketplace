@@ -7,7 +7,40 @@ import { Input } from '@/components/ui/input';
 export default function Footer() {
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter subscription
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const email = formData.get('email') as string;
+    
+    if (!email) return;
+    
+    // Mock: Store subscription in localStorage for demo purposes
+    const subscriptions = JSON.parse(localStorage.getItem('newsletter_subscriptions') || '[]');
+    const newSubscription = {
+      id: Date.now().toString(),
+      email,
+      status: 'active',
+      source: 'footer',
+      tags: ['organic', 'new-subscriber'],
+      preferences: {
+        categories: ['vegetables', 'fruits'],
+        frequency: 'weekly',
+        language: 'pt-MZ'
+      },
+      stats: {
+        emailsSent: 0,
+        emailsOpened: 0,
+        emailsClicked: 0
+      },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    subscriptions.push(newSubscription);
+    localStorage.setItem('newsletter_subscriptions', JSON.stringify(subscriptions));
+    
+    // Show success message
+    alert('Obrigado por se inscrever na nossa newsletter!');
+    
+    // Reset form
+    (e.currentTarget as HTMLFormElement).reset();
   };
 
   return (
@@ -23,6 +56,7 @@ export default function Footer() {
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2">
               <Input
                 type="email"
+                name="email"
                 placeholder="Digite seu e-mail"
                 className="flex-1 bg-white text-gray-9 min-w-0"
                 required

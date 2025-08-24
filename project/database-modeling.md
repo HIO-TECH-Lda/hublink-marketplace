@@ -557,6 +557,103 @@ Este documento define o modelo de dados MongoDB para a plataforma Txova, um mark
 
 ---
 
+### 13. **newsletter_subscribers**
+```javascript
+{
+  _id: ObjectId,
+  email: String,
+  firstName: String, // optional
+  lastName: String, // optional
+  status: String, // 'active', 'unsubscribed', 'bounced', 'pending'
+  source: String, // 'popup', 'footer', 'signup', 'admin'
+  tags: [String], // for segmentation
+  preferences: {
+    categories: [String], // preferred content categories
+    frequency: String, // 'weekly', 'monthly', 'promotional'
+    language: String
+  },
+  metadata: {
+    ipAddress: String,
+    userAgent: String,
+    referrer: String,
+    utmSource: String,
+    utmMedium: String,
+    utmCampaign: String
+  },
+  stats: {
+    emailsSent: Number,
+    emailsOpened: Number,
+    emailsClicked: Number,
+    lastOpened: Date,
+    lastClicked: Date
+  },
+  unsubscribedAt: Date,
+  unsubscribedReason: String,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+**Indexes:**
+```javascript
+{ email: 1 } // unique
+{ status: 1 }
+{ source: 1 }
+{ createdAt: -1 }
+{ "preferences.categories": 1 }
+```
+
+---
+
+### 14. **newsletter_campaigns**
+```javascript
+{
+  _id: ObjectId,
+  name: String,
+  subject: String,
+  content: String, // HTML content
+  plainText: String, // plain text version
+  status: String, // 'draft', 'scheduled', 'sending', 'sent', 'cancelled'
+  type: String, // 'newsletter', 'promotional', 'announcement', 'welcome'
+  segment: {
+    tags: [String],
+    categories: [String],
+    status: String, // 'all', 'active', 'new'
+    customFilters: Object
+  },
+  schedule: {
+    scheduledAt: Date,
+    timezone: String
+  },
+  stats: {
+    totalSubscribers: Number,
+    emailsSent: Number,
+    emailsDelivered: Number,
+    emailsOpened: Number,
+    emailsClicked: Number,
+    unsubscribes: Number,
+    bounces: Number,
+    openRate: Number,
+    clickRate: Number
+  },
+  sentAt: Date,
+  sentBy: ObjectId, // ref: users (admin)
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+**Indexes:**
+```javascript
+{ status: 1 }
+{ type: 1 }
+{ "schedule.scheduledAt": 1 }
+{ createdAt: -1 }
+{ sentBy: 1 }
+```
+
+---
+
 ## 🔗 Relacionamentos
 
 ### **Referências Diretas (ObjectId)**

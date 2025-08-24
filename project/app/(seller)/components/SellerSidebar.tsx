@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Package, ShoppingBag, DollarSign, Settings, LogOut, User, TrendingUp } from 'lucide-react';
+import { Package, ShoppingBag, DollarSign, Settings, LogOut, User, TrendingUp, RotateCcw } from 'lucide-react';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 
 interface SellerSidebarProps {
@@ -38,6 +38,12 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
       label: 'Meus Pedidos',
       icon: ShoppingBag,
       active: pathname === '/vendedor/pedidos'
+    },
+    {
+      href: '/vendedor/reembolsos',
+      label: 'Reembolsos',
+      icon: RotateCcw,
+      active: pathname === '/vendedor/reembolsos'
     },
     {
       href: '/vendedor/repasses',

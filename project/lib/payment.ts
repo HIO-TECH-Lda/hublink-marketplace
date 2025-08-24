@@ -32,6 +32,8 @@ export interface Refund {
   status: 'pending' | 'succeeded' | 'failed';
   createdAt: string;
   processedAt?: string;
+  description?: string;
+  images?: string[]; // Base64 encoded images
 }
 
 export interface Invoice {
@@ -303,7 +305,13 @@ export class InvoiceService {
 
 // Mock Refund Service
 export class RefundService {
-  static async createRefund(paymentIntentId: string, amount: number, reason: Refund['reason']): Promise<Refund> {
+  static async createRefund(
+    paymentIntentId: string, 
+    amount: number, 
+    reason: Refund['reason'],
+    description?: string,
+    images?: string[]
+  ): Promise<Refund> {
     // Mock API call delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
@@ -313,7 +321,9 @@ export class RefundService {
       amount,
       reason,
       status: 'pending',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      description,
+      images
     };
     
     // Simulate processing delay
@@ -355,6 +365,94 @@ export class RefundService {
         processedAt: new Date().toISOString()
       }
     ];
+  }
+
+  static async getAllRefunds(): Promise<Refund[]> {
+    // Mock API call delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    return [
+      {
+        id: 're_1',
+        paymentIntentId: 'pi_123',
+        amount: 1500,
+        reason: 'requested_by_customer',
+        status: 'pending',
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        id: 're_2',
+        paymentIntentId: 'pi_124',
+        amount: 2500,
+        reason: 'fraudulent',
+        status: 'succeeded',
+        createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
+        processedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        id: 're_3',
+        paymentIntentId: 'pi_125',
+        amount: 1000,
+        reason: 'duplicate',
+        status: 'failed',
+        createdAt: new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+  }
+
+  static async getRefundsBySeller(sellerId: string): Promise<Refund[]> {
+    // Mock API call delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    return [
+      {
+        id: 're_1',
+        paymentIntentId: 'pi_123',
+        amount: 1500,
+        reason: 'requested_by_customer',
+        status: 'pending',
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        id: 're_2',
+        paymentIntentId: 'pi_124',
+        amount: 2500,
+        reason: 'fraudulent',
+        status: 'succeeded',
+        createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
+        processedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+  }
+
+  static async approveRefund(refundId: string): Promise<Refund> {
+    // Mock API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return {
+      id: refundId,
+      paymentIntentId: 'pi_123',
+      amount: 1500,
+      reason: 'requested_by_customer',
+      status: 'succeeded',
+      createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      processedAt: new Date().toISOString()
+    };
+  }
+
+  static async rejectRefund(refundId: string): Promise<Refund> {
+    // Mock API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return {
+      id: refundId,
+      paymentIntentId: 'pi_123',
+      amount: 1500,
+      reason: 'requested_by_customer',
+      status: 'failed',
+      createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      processedAt: new Date().toISOString()
+    };
   }
 }
 

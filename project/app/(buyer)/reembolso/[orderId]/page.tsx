@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, AlertCircle, CheckCircle, Clock, DollarSign, FileText } from 'lucide-react';
+import { ArrowLeft, AlertCircle, CheckCircle, Clock, DollarSign, FileText, Upload, X, Image as ImageIcon } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -30,8 +30,10 @@ export default function RefundPage() {
   const [formData, setFormData] = useState({
     reason: '',
     description: '',
-    amount: 0
+    amount: 0,
+    images: [] as File[]
   });
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadOrderData();
@@ -60,6 +62,33 @@ export default function RefundPage() {
     }
   };
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const newImages = Array.from(files).filter(file => 
+        file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024 // 5MB limit
+      );
+      
+      if (formData.images.length + newImages.length > 3) {
+        setError('Máximo de 3 imagens permitidas.');
+        return;
+      }
+      
+      setFormData(prev => ({
+        ...prev,
+        images: [...prev.images, ...newImages]
+      }));
+      setError('');
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -72,10 +101,23 @@ export default function RefundPage() {
     setError('');
 
     try {
+      // Convert images to base64 for storage (in real app, upload to cloud storage)
+      const imageUrls = await Promise.all(
+        formData.images.map(async (file) => {
+          return new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(file);
+          });
+        })
+      );
+
       const refund = await RefundService.createRefund(
         `pi_${orderId}`,
         formData.amount * 100, // Convert to cents
-        formData.reason as any
+        formData.reason as any,
+        formData.description,
+        imageUrls
       );
       
       setRefunds(prev => [refund, ...prev]);
@@ -307,6 +349,55 @@ export default function RefundPage() {
                         rows={4}
                         className="mt-1"
                       />
+                    </div>
+
+                    <div>
+                      <Label>Imagens de Apoio (Opcional)</Label>
+                      <div className="mt-1 space-y-3">
+                        {/* Image Upload Area */}
+                        {formData.images.length < 3 && (
+                          <div 
+                            className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors"
+                            onClick={() => fileInputRef.current?.click()}
+                          >
+                            <Upload className="w-8 h-8 text-gray-4 mx-auto mb-2" />
+                            <p className="text-sm text-gray-6 mb-1">Clique para adicionar imagens</p>
+                            <p className="text-xs text-gray-5">PNG, JPG até 5MB (máx. 3 imagens)</p>
+                          </div>
+                        )}
+                        
+                        {/* Hidden File Input */}
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
+
+                        {/* Image Preview */}
+                        {formData.images.length > 0 && (
+                          <div className="grid grid-cols-3 gap-2">
+                            {formData.images.map((file, index) => (
+                              <div key={index} className="relative group">
+                                <img
+                                  src={URL.createObjectURL(file)}
+                                  alt={`Imagem ${index + 1}`}
+                                  className="w-full h-24 object-cover rounded-lg border border-gray-200"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => removeImage(index)}
+                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <Button

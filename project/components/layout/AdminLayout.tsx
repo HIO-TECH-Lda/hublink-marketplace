@@ -16,7 +16,9 @@ import {
   Home,
   TrendingUp,
   Tag,
-  MessageSquare
+  MessageSquare,
+  RotateCcw,
+  Mail
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
@@ -29,9 +31,11 @@ const navigation = [
   { name: 'Dashboard', href: '/admin', icon: Home },
   { name: 'Usuários', href: '/admin/usuarios', icon: Users },
   { name: 'Pedidos', href: '/admin/pedidos', icon: ShoppingCart },
+  { name: 'Reembolsos', href: '/admin/reembolsos', icon: RotateCcw },
   { name: 'Produtos', href: '/admin/produtos', icon: Package },
   { name: 'Vendedores', href: '/admin/vendedores', icon: Shield },
   { name: 'Categorias', href: '/admin/categorias', icon: Tag },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },
   { name: 'Tickets', href: '/admin/tickets', icon: MessageSquare },
   { name: 'Relatórios', href: '/admin/relatorios', icon: BarChart3 },
   { name: 'Configurações', href: '/admin/configuracoes', icon: Settings },
