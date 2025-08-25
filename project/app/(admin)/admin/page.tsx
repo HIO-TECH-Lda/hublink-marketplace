@@ -93,7 +93,7 @@ export default function AdminDashboard() {
         id: '1',
         type: 'order',
         title: 'Novo Pedido #ORD123456',
-        description: 'Pedido de MTn 150,00 realizado por João Silva',
+        description: 'Pedido de MZN 450,00 realizado por João Silva',
         timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
         status: 'pending'
       },
@@ -108,21 +108,21 @@ export default function AdminDashboard() {
         id: '3',
         type: 'product',
         title: 'Produto Adicionado',
-        description: 'Novo produto "Maçãs Orgânicas" adicionado por Fazenda Verde',
+        description: 'Novo produto "Smartphone Samsung Galaxy A54" adicionado por TechStore',
         timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString()
       },
       {
         id: '4',
         type: 'review',
         title: 'Nova Avaliação',
-        description: 'Avaliação 5 estrelas para "Tomates Orgânicos"',
+        description: 'Avaliação 5 estrelas para "Tênis Nike Air Max"',
         timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString()
       },
       {
         id: '5',
         type: 'order',
         title: 'Pedido Entregue #ORD123455',
-        description: 'Pedido de MTn 89,90 entregue com sucesso',
+        description: 'Pedido de MZN 299,90 entregue com sucesso',
         timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
         status: 'delivered'
       }

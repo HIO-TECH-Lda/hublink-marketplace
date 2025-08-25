@@ -1,6 +1,6 @@
-const CACHE_NAME = 'txova-v1.0.0';
-const STATIC_CACHE = 'txova-static-v1.0.0';
-const DYNAMIC_CACHE = 'txova-dynamic-v1.0.0';
+const CACHE_NAME = 'vitrine-v1.0.0';
+const STATIC_CACHE = 'vitrine-static-v1.0.0';
+const DYNAMIC_CACHE = 'vitrine-dynamic-v1.0.0';
 
 // Files to cache immediately
 const STATIC_FILES = [
@@ -175,7 +175,7 @@ self.addEventListener('push', (event) => {
   console.log('Service Worker: Push notification received');
   
   const options = {
-    body: event.data ? event.data.text() : 'Nova notificação do Txova',
+            body: event.data ? event.data.text() : 'Nova notificação da VITRINE',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-72x72.png',
     vibrate: [100, 50, 100],
@@ -198,7 +198,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('Txova', options)
+          self.registration.showNotification('VITRINE', options)
   );
 });
 

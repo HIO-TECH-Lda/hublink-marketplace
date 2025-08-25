@@ -24,12 +24,12 @@ export default function HomePage() {
   const topSellers = [
     {
       id: 'seller1',
-      businessName: 'Fazenda Verde',
-      businessDescription: 'Produtos orgânicos frescos direto da fazenda. Cultivamos com amor e respeito pela natureza.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=FV',
+      businessName: 'TechStore',
+      businessDescription: 'Especialistas em tecnologia e eletrônicos. Os melhores produtos com os melhores preços.',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=TS',
       rating: 4.8,
       reviewCount: 127,
-      totalProducts: 15,
+      totalProducts: 45,
       totalSales: 125000,
       location: 'Beira, Sofala',
       isVerified: true,
@@ -38,12 +38,12 @@ export default function HomePage() {
     },
     {
       id: 'seller2',
-      businessName: 'Horta Orgânica Silva',
-      businessDescription: 'Especialistas em vegetais orgânicos frescos. Qualidade garantida desde 2020.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=HS',
+      businessName: 'AudioPro',
+      businessDescription: 'Produtos de áudio de alta qualidade. Som profissional para todos os gostos.',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=AP',
       rating: 4.9,
       reviewCount: 89,
-      totalProducts: 12,
+      totalProducts: 32,
       totalSales: 98000,
       location: 'Maputo, Maputo',
       isVerified: true,
@@ -52,12 +52,12 @@ export default function HomePage() {
     },
     {
       id: 'seller3',
-      businessName: 'Frutas Frescas Costa',
-      businessDescription: 'As melhores frutas orgânicas da região. Sabor e qualidade em cada produto.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=FC',
+      businessName: 'SportStore',
+      businessDescription: 'Equipamentos esportivos e roupas para todos os tipos de atividade física.',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=SS',
       rating: 4.7,
       reviewCount: 156,
-      totalProducts: 18,
+      totalProducts: 58,
       totalSales: 145000,
       location: 'Nampula, Nampula',
       isVerified: true,
@@ -66,12 +66,12 @@ export default function HomePage() {
     },
     {
       id: 'seller4',
-      businessName: 'Grãos Naturais',
-      businessDescription: 'Grãos orgânicos de alta qualidade. Nutrição e sabor em cada grão.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=GN',
+      businessName: 'BookStore',
+      businessDescription: 'Livros, perfumes e produtos de beleza. Qualidade e variedade em um só lugar.',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=BS',
       rating: 4.6,
       reviewCount: 73,
-      totalProducts: 8,
+      totalProducts: 28,
       totalSales: 67000,
       location: 'Beira, Sofala',
       isVerified: true,
@@ -85,34 +85,36 @@ export default function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-green-gray-1 to-green-gray-2 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg')] bg-cover bg-center opacity-10"></div>
+      <section className="relative bg-gradient-to-r from-blue-gray-1 to-blue-gray-2 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg')] bg-cover bg-center opacity-10"></div>
         <div className="relative container py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
               <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-9 leading-tight">
-                Alimentos Orgânicos
-                <span className="text-primary block">Frescos e Saudáveis</span>
+                VITRINE
+                <span className="text-primary block">Tudo que Você Precisa</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Conectamos você diretamente com produtores locais de alimentos orgânicos em Beira. 
-                Qualidade garantida, sabor autêntico e nutrição máxima para sua família.
+                Encontre produtos de qualidade em todas as categorias: eletrônicos, moda, esportes, casa e muito mais. 
+                Milhares de vendedores confiáveis, preços competitivos e entrega rápida.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3 sm:py-4">
                   Compre Agora
                   <ArrowRight className="ml-2" size={20} />
                 </Button>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white px-6 sm:px-8 py-3 sm:py-4">
-                  Seja um Vendedor
-                </Button>
+                <Link href="/seja-vendedor">
+                  <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white px-6 sm:px-8 py-3 sm:py-4">
+                    Seja um Vendedor
+                  </Button>
+                </Link>
               </div>
             </div>
             <div className="relative order-first lg:order-last">
               <div className="aspect-square rounded-full bg-gradient-to-br from-primary/20 to-primary-soft/20 flex items-center justify-center">
                 <img
-                  src="https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg"
-                  alt="Alimentos Orgânicos"
+                  src="https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg"
+                  alt="Marketplace Completo"
                   className="w-4/5 h-4/5 object-cover rounded-full"
                 />
               </div>
@@ -129,8 +131,8 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <Truck className="text-primary" size={32} />
               </div>
-              <h3 className="font-semibold text-gray-9">Entrega Grátis</h3>
-              <p className="text-sm text-gray-6">Entrega gratuita em pedidos acima de 500 MZN</p>
+              <h3 className="font-semibold text-gray-9">Entrega Rápida</h3>
+              <p className="text-sm text-gray-6">Entrega em até 24h em pedidos acima de 1000 MZN</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
@@ -151,7 +153,7 @@ export default function HomePage() {
                 <Trophy className="text-primary" size={32} />
               </div>
               <h3 className="font-semibold text-gray-9">Qualidade Garantida</h3>
-              <p className="text-sm text-gray-6">Produtos certificados e frescos</p>
+              <p className="text-sm text-gray-6">Produtos verificados e vendedores confiáveis</p>
             </div>
           </div>
         </div>
@@ -162,7 +164,7 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos em Destaque</h2>
-            <p className="text-gray-6">Descubra nossa seleção especial de produtos orgânicos</p>
+            <p className="text-gray-6">Descubra nossa seleção especial de produtos em todas as categorias</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (
@@ -186,32 +188,32 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
-                Banca de Alimentos Orgânicos
-                <span className="block">100% Confiável</span>
+                VITRINE
+                <span className="block">100% Seguro</span>
               </h2>
-              <p className="text-lg text-green-gray-1">
-                Nossos produtores são certificados e seguem os mais rigorosos padrões 
-                de qualidade para garantir que você receba apenas o melhor em Beira.
+              <p className="text-lg text-blue-gray-1">
+                Nossos vendedores são verificados e seguem os mais rigorosos padrões 
+                de qualidade para garantir que você receba apenas o melhor.
               </p>
               <div className="flex items-center space-x-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold">1000+</div>
-                  <div className="text-sm text-green-gray-2">Produtos</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold">50+</div>
-                  <div className="text-sm text-green-gray-2">Vendedores</div>
-                </div>
-                <div className="text-center">
                   <div className="text-2xl font-bold">10k+</div>
-                  <div className="text-sm text-green-gray-2">Clientes</div>
+                  <div className="text-sm text-blue-gray-2">Produtos</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">500+</div>
+                  <div className="text-sm text-blue-gray-2">Vendedores</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">50k+</div>
+                  <div className="text-sm text-blue-gray-2">Clientes</div>
                 </div>
               </div>
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
-                alt="Alimentos Orgânicos Confiáveis"
+                src="https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg"
+                alt="VITRINE Confiável"
                 className="rounded-2xl shadow-2xl"
               />
             </div>
@@ -239,7 +241,7 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Melhores Vendedores</h2>
-            <p className="text-gray-6">Conheça os produtores mais confiáveis e bem avaliados</p>
+            <p className="text-gray-6">Conheça os vendedores mais confiáveis e bem avaliados</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
             {topSellers.map((seller) => (
@@ -268,18 +270,18 @@ export default function HomePage() {
             {[1, 2, 3].map((item) => (
               <div key={item} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                 <img
-                  src={`https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg`}
+                  src={`https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg`}
                   alt="Blog Post"
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
                   <div className="text-sm text-gray-5 mb-2">15 de Janeiro, 2024</div>
                   <h3 className="font-semibold text-gray-9 mb-3 line-clamp-2">
-                    Benefícios dos Alimentos Orgânicos para a Saúde
+                    Como Escolher o Smartphone Ideal para Você
                   </h3>
                   <p className="text-gray-6 text-sm mb-4 line-clamp-3">
-                    Descubra como os alimentos orgânicos podem transformar sua saúde 
-                    e bem-estar com nutrientes mais potentes e livres de agrotóxicos.
+                    Descubra os fatores mais importantes na hora de escolher seu próximo smartphone 
+                    e faça a melhor escolha para suas necessidades.
                   </p>
                   <Link href="/blog/1" className="text-primary hover:text-primary-hard font-medium text-sm">
                     Ler Mais →
@@ -304,19 +306,19 @@ export default function HomePage() {
                 name: "Maria Silva",
                 location: "Beira, Sofala",
                 rating: 5,
-                comment: "Produtos sempre frescos e de excelente qualidade. A entrega é rápida e o atendimento é impecável!"
+                comment: "Produtos sempre de qualidade e entrega rápida. O atendimento é impecável!"
               },
               {
                 name: "João Santos",
                 location: "Maputo, Maputo",
                 rating: 5,
-                comment: "Finalmente encontrei um marketplace que conecta diretamente com produtores locais. Recomendo!"
+                comment: "Finalmente encontrei a VITRINE com tudo que preciso. Recomendo!"
               },
               {
                 name: "Ana Costa",
                 location: "Nampula, Nampula",
                 rating: 5,
-                comment: "A variedade de produtos orgânicos é incrível. Minha família está mais saudável desde que começamos a comprar aqui."
+                comment: "A variedade de produtos é incrível. Preços competitivos e vendedores confiáveis."
               }
             ].map((testimonial, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-md">

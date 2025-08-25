@@ -248,339 +248,337 @@ type MarketplaceAction =
 const mockProducts: Product[] = [
   {
     id: '1',
-    name: 'Tomates Orgânicos',
-    price: 850,
-    originalPrice: 1000,
-    image: 'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
-    description: 'Tomates orgânicos frescos e saborosos, cultivados sem agrotóxicos.',
-    category: 'Legumes',
-    brand: 'Fazenda Verde',
+    name: 'Smartphone Samsung Galaxy A54',
+    price: 45000,
+    originalPrice: 52000,
+    image: 'https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg',
+    description: 'Smartphone Samsung Galaxy A54 128GB, 8GB RAM, Tela 6.4", Câmera Tripla 50MP, Android 13.',
+    category: 'Eletrônicos',
+    brand: 'Samsung',
     rating: 4.5,
-    reviews: 12,
+    reviews: 127,
     inStock: true,
     sellerId: 'seller1',
-    sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
-    tags: ['orgânico', 'fresco', 'sem agrotóxicos'],
-    sku: 'TOM-ORG-001',
-    weight: '500g',
-    color: 'Vermelho',
+    sellerName: 'TechStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=TS',
+    tags: ['smartphone', 'samsung', 'android', 'câmera'],
+    sku: 'SAMS-A54-001',
+    weight: '202g',
+    color: 'Preto',
     stockStatus: 'Em estoque',
-    type: 'Orgânico',
+    type: 'Smartphone',
     images: [
-      'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
-      'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg'
+      'https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg',
+      'https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg'
     ]
   },
   {
     id: '2',
-    name: 'Repolho Chinês Orgânico',
-    price: 1299,
-    originalPrice: 1599,
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
-    description: 'Repolho chinês orgânico, rico em vitaminas e minerais.',
-    category: 'Legumes',
-    brand: 'Fazenda Verde',
-    rating: 4.2,
-    reviews: 8,
+    name: 'Fone de Ouvido Bluetooth JBL',
+    price: 850,
+    originalPrice: 1200,
+    image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg',
+    description: 'Fone de ouvido Bluetooth JBL com cancelamento de ruído, bateria de 20h, resistente à água.',
+    category: 'Eletrônicos',
+    brand: 'JBL',
+    rating: 4.3,
+    reviews: 89,
     inStock: true,
-    sellerId: 'seller1',
-    sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
-    tags: ['orgânico', 'vitaminas', 'minerais'],
-    sku: 'REP-CHI-001',
-    weight: '300g',
-    color: 'Verde',
+    sellerId: 'seller2',
+    sellerName: 'AudioPro',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=AP',
+    tags: ['bluetooth', 'jbl', 'sem fio', 'cancelamento de ruído'],
+    sku: 'JBL-BT-001',
+    weight: '250g',
+    color: 'Azul',
     stockStatus: 'Em estoque',
-    type: 'Orgânico',
-    images: [
-      'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg'
-    ]
+    type: 'Fone de Ouvido'
   },
   {
     id: '3',
-    name: 'Cenouras Orgânicas',
-    price: 699,
-    originalPrice: 899,
-    image: 'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg',
-    description: 'Cenouras orgânicas frescas, ricas em betacaroteno.',
-    category: 'Legumes',
-    brand: 'Horta do Vale',
+    name: 'Tênis Nike Air Max',
+    price: 2500,
+    originalPrice: 3200,
+    image: 'https://images.pexels.com/photos/2526878/pexels-photo-2526878.jpeg',
+    description: 'Tênis Nike Air Max para corrida, tecnologia Air Max, solado de borracha, confortável e durável.',
+    category: 'Esportes',
+    brand: 'Nike',
     rating: 4.7,
-    reviews: 15,
+    reviews: 156,
     inStock: true,
-    sellerId: 'seller2',
-    sellerName: 'Horta do Vale',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
-    tags: ['orgânico', 'betacaroteno', 'vitamina A'],
-    sku: 'CEN-ORG-001',
-    weight: '400g',
-    color: 'Laranja',
+    sellerId: 'seller3',
+    sellerName: 'SportStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=SS',
+    tags: ['nike', 'corrida', 'esporte', 'confortável'],
+    sku: 'NIKE-AM-001',
+    weight: '300g',
+    color: 'Branco',
     stockStatus: 'Em estoque',
-    type: 'Orgânico',
-    images: [
-      'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg'
-    ]
+    type: 'Tênis'
   },
   {
     id: '4',
-    name: 'Alface Crespa Orgânica',
-    price: 450,
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
-    description: 'Alface crespa orgânica, fresca e crocante.',
-    category: 'Verduras',
-    brand: 'Fazenda Verde',
-    rating: 4.3,
-    reviews: 9,
+    name: 'Bolsa Feminina de Couro',
+    price: 1200,
+    image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg',
+    description: 'Bolsa feminina de couro genuíno, múltiplos compartimentos, alça ajustável, elegante e prática.',
+    category: 'Moda',
+    brand: 'FashionBrand',
+    rating: 4.4,
+    reviews: 92,
     inStock: true,
     sellerId: 'seller1',
-    sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
-    tags: ['orgânico', 'fresco', 'verde'],
-    sku: 'ALC-CRE-001',
-    weight: '200g',
-    color: 'Verde',
+    sellerName: 'TechStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=TS',
+    tags: ['couro', 'feminina', 'elegante', 'prática'],
+    sku: 'BOL-COU-001',
+    weight: '500g',
+    color: 'Marrom',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Bolsa'
   },
   {
     id: '5',
-    name: 'Maçãs Fuji Orgânicas',
-    price: 999,
-    originalPrice: 1299,
-    image: 'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg',
-    description: 'Maçãs Fuji orgânicas, doces e suculentas.',
-    category: 'Frutas',
-    brand: 'Pomar Orgânico',
+    name: 'Relógio Smartwatch Xiaomi',
+    price: 1800,
+    originalPrice: 2200,
+    image: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg',
+    description: 'Smartwatch Xiaomi com monitor cardíaco, GPS, resistente à água, bateria de 14 dias.',
+    category: 'Eletrônicos',
+    brand: 'Xiaomi',
     rating: 4.6,
-    reviews: 18,
+    reviews: 203,
     inStock: true,
-    sellerId: 'seller3',
-    sellerName: 'Pomar Orgânico',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
-    tags: ['orgânico', 'doce', 'suculenta'],
-    sku: 'MAC-FUJ-001',
-    weight: '1kg',
-    color: 'Vermelho',
+    sellerId: 'seller2',
+    sellerName: 'AudioPro',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=AP',
+    tags: ['smartwatch', 'xiaomi', 'monitor cardíaco', 'gps'],
+    sku: 'XIA-SW-001',
+    weight: '35g',
+    color: 'Preto',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Smartwatch'
   },
   {
     id: '6',
-    name: 'Bananas Prata Orgânicas',
-    price: 750,
-    image: 'https://images.pexels.com/photos/47305/bananas-banana-bunch-fruit-yellow-47305.jpeg',
-    description: 'Bananas prata orgânicas, ricas em potássio.',
-    category: 'Frutas',
-    brand: 'Fazenda Verde',
-    rating: 4.4,
-    reviews: 11,
+    name: 'Camiseta Básica Algodão',
+    price: 350,
+    image: 'https://images.pexels.com/photos/991509/pexels-photo-991509.jpeg',
+    description: 'Camiseta básica 100% algodão, confortável, respirabilidade natural, disponível em várias cores.',
+    category: 'Moda',
+    brand: 'BasicWear',
+    rating: 4.2,
+    reviews: 167,
     inStock: true,
-    sellerId: 'seller1',
-    sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
-    tags: ['orgânico', 'potássio', 'energia'],
-    sku: 'BAN-PRA-001',
-    weight: '1kg',
-    color: 'Amarelo',
+    sellerId: 'seller3',
+    sellerName: 'SportStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=SS',
+    tags: ['algodão', 'básica', 'confortável', 'respirável'],
+    sku: 'CAM-BAS-001',
+    weight: '150g',
+    color: 'Branco',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Camiseta'
   },
   {
     id: '7',
-    name: 'Cebolas Roxas Orgânicas',
-    price: 599,
-    image: 'https://images.pexels.com/photos/144206/pexels-photo-144206.jpeg',
-    description: 'Cebolas roxas orgânicas, saborosas e nutritivas.',
-    category: 'Legumes',
-    brand: 'Horta do Vale',
-    rating: 4.1,
-    reviews: 7,
+    name: 'Livro "O Poder do Hábito"',
+    price: 450,
+    image: 'https://images.pexels.com/photos/3747468/pexels-photo-3747468.jpeg',
+    description: 'Livro "O Poder do Hábito" de Charles Duhigg, edição em português, capa dura.',
+    category: 'Livros',
+    brand: 'Editora',
+    rating: 4.8,
+    reviews: 78,
     inStock: true,
-    sellerId: 'seller2',
-    sellerName: 'Horta do Vale',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
-    tags: ['orgânico', 'saboroso', 'nutritivo'],
-    sku: 'CEB-ROX-001',
-    weight: '300g',
-    color: 'Roxo',
+    sellerId: 'seller4',
+    sellerName: 'BookStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=BS',
+    tags: ['livro', 'desenvolvimento pessoal', 'hábitos', 'português'],
+    sku: 'LIV-POD-001',
+    weight: '400g',
+    color: 'Azul',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Livro'
   },
   {
     id: '8',
-    name: 'Batatas Doces Orgânicas',
-    price: 899,
-    image: 'https://images.pexels.com/photos/2286776/pexels-photo-2286776.jpeg',
-    description: 'Batatas doces orgânicas, ricas em fibras e vitaminas.',
-    category: 'Legumes',
-    brand: 'Fazenda Verde',
+    name: 'Kit de Maquiagem Profissional',
+    price: 890,
+    originalPrice: 1200,
+    image: 'https://images.pexels.com/photos/2533266/pexels-photo-2533266.jpeg',
+    description: 'Kit completo de maquiagem profissional com 24 cores, pincéis incluídos, paleta versátil.',
+    category: 'Beleza',
+    brand: 'BeautyPro',
     rating: 4.5,
-    reviews: 14,
+    reviews: 134,
     inStock: true,
     sellerId: 'seller1',
-    sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
-    tags: ['orgânico', 'fibras', 'vitaminas'],
-    sku: 'BAT-DOC-001',
-    weight: '1kg',
-    color: 'Laranja',
+    sellerName: 'TechStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=TS',
+    tags: ['maquiagem', 'profissional', '24 cores', 'pincéis'],
+    sku: 'MAQ-KIT-001',
+    weight: '300g',
+    color: 'Multicolor',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Maquiagem'
   },
   {
     id: '9',
-    name: 'Espinafre Orgânico',
-    price: 650,
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
-    description: 'Espinafre orgânico, rico em ferro e vitaminas.',
-    category: 'Verduras',
-    brand: 'Horta do Vale',
-    rating: 4.3,
-    reviews: 10,
+    name: 'Bicicleta Mountain Bike',
+    price: 8500,
+    originalPrice: 12000,
+    image: 'https://images.pexels.com/photos/2158963/pexels-photo-2158963.jpeg',
+    description: 'Bicicleta Mountain Bike 21 marchas, quadro de aço, suspensão dianteira, ideal para trilhas.',
+    category: 'Esportes',
+    brand: 'BikePro',
+    rating: 4.6,
+    reviews: 67,
     inStock: true,
-    sellerId: 'seller2',
-    sellerName: 'Horta do Vale',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
-    tags: ['orgânico', 'ferro', 'vitaminas'],
-    sku: 'ESP-ORG-001',
-    weight: '250g',
-    color: 'Verde',
+    sellerId: 'seller3',
+    sellerName: 'SportStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=SS',
+    tags: ['bicicleta', 'mountain bike', '21 marchas', 'suspensão'],
+    sku: 'BIC-MTB-001',
+    weight: '15kg',
+    color: 'Vermelho',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Bicicleta'
   },
   {
     id: '10',
-    name: 'Mangas Orgânicas',
-    price: 1199,
-    originalPrice: 1499,
-    image: 'https://images.pexels.com/photos/4021659/pexels-photo-4021659.jpeg',
-    description: 'Mangas orgânicas doces e suculentas.',
-    category: 'Frutas',
-    brand: 'Pomar Orgânico',
-    rating: 4.8,
-    reviews: 22,
+    name: 'Câmera DSLR Canon EOS',
+    price: 15000,
+    originalPrice: 18000,
+    image: 'https://images.pexels.com/photos/51383/photo-camera-subject-photographer-51383.jpeg',
+    description: 'Câmera DSLR Canon EOS Rebel T7, 24.1MP, Full HD, Wi-Fi, ideal para fotografia profissional.',
+    category: 'Eletrônicos',
+    brand: 'Canon',
+    rating: 4.9,
+    reviews: 89,
     inStock: true,
-    sellerId: 'seller3',
-    sellerName: 'Pomar Orgânico',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
-    tags: ['orgânico', 'doce', 'suculenta'],
-    sku: 'MAN-ORG-001',
-    weight: '1kg',
-    color: 'Amarelo',
+    sellerId: 'seller2',
+    sellerName: 'AudioPro',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=AP',
+    tags: ['câmera', 'canon', 'dslr', 'profissional'],
+    sku: 'CAN-EOS-001',
+    weight: '475g',
+    color: 'Preto',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Câmera'
   },
   {
     id: '11',
-    name: 'Couve-Flor Orgânica',
-    price: 950,
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
-    description: 'Couve-flor orgânica, fresca e nutritiva.',
-    category: 'Legumes',
-    brand: 'Fazenda Verde',
-    rating: 4.2,
-    reviews: 8,
+    name: 'Perfume Masculino Importado',
+    price: 1200,
+    originalPrice: 1800,
+    image: 'https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg',
+    description: 'Perfume masculino importado, fragrância amadeirada, duração de 8 horas, elegante e sofisticado.',
+    category: 'Beleza',
+    brand: 'LuxuryScents',
+    rating: 4.4,
+    reviews: 112,
     inStock: true,
-    sellerId: 'seller1',
-    sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
-    tags: ['orgânico', 'fresco', 'nutritivo'],
-    sku: 'COU-FLO-001',
-    weight: '400g',
-    color: 'Branco',
+    sellerId: 'seller4',
+    sellerName: 'BookStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=BS',
+    tags: ['perfume', 'masculino', 'importado', 'amadeirado'],
+    sku: 'PER-MAS-001',
+    weight: '100ml',
+    color: 'Transparente',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Perfume'
   },
   {
     id: '12',
-    name: 'Abacaxis Orgânicos',
-    price: 1399,
-    image: 'https://images.pexels.com/photos/47305/bananas-banana-bunch-fruit-yellow-47305.jpeg',
-    description: 'Abacaxis orgânicos, doces e refrescantes.',
-    category: 'Frutas',
-    brand: 'Pomar Orgânico',
-    rating: 4.6,
-    reviews: 16,
+    name: 'Jogo de Panelas Antiaderente',
+    price: 1800,
+    originalPrice: 2500,
+    image: 'https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg',
+    description: 'Jogo de panelas antiaderente 5 peças, cabo ergonômico, base reforçada, ideal para cozinha.',
+    category: 'Casa',
+    brand: 'KitchenPro',
+    rating: 4.7,
+    reviews: 156,
     inStock: true,
-    sellerId: 'seller3',
-    sellerName: 'Pomar Orgânico',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
-    tags: ['orgânico', 'doce', 'refrescante'],
-    sku: 'ABA-ORG-001',
-    weight: '1.5kg',
-    color: 'Amarelo',
+    sellerId: 'seller1',
+    sellerName: 'TechStore',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=TS',
+    tags: ['panelas', 'antiaderente', '5 peças', 'cozinha'],
+    sku: 'PAN-JOG-001',
+    weight: '2.5kg',
+    color: 'Preto',
     stockStatus: 'Em estoque',
-    type: 'Orgânico'
+    type: 'Utensílios'
   }
 ];
 
 const mockBlogPosts: BlogPost[] = [
   {
     id: '1',
-    title: 'Os Benefícios dos Alimentos Orgânicos',
-    excerpt: 'Descubra por que escolher alimentos orgânicos pode fazer toda a diferença na sua saúde e no meio ambiente.',
-    content: 'Conteúdo completo sobre os benefícios dos alimentos orgânicos...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Como Escolher o Smartphone Ideal para Você',
+    excerpt: 'Descubra os fatores mais importantes na hora de escolher seu próximo smartphone e faça a melhor escolha.',
+    content: 'Conteúdo completo sobre como escolher smartphones...',
+    image: 'https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg',
     date: '2024-01-15',
-    author: 'Dr. Maria Silva',
-    category: 'Saúde',
-    tags: ['orgânico', 'saúde', 'nutrição']
+    author: 'Tech Expert',
+    category: 'Tecnologia',
+    tags: ['smartphone', 'tecnologia', 'dicas']
   },
   {
     id: '2',
-    title: 'Como Cultivar sua Própria Horta Orgânica',
-    excerpt: 'Aprenda técnicas simples para começar sua própria horta orgânica em casa.',
-    content: 'Guia completo para cultivar horta orgânica...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Guia Completo de Moda Sustentável',
+    excerpt: 'Aprenda como fazer escolhas mais conscientes na moda e contribuir para um futuro mais sustentável.',
+    content: 'Guia completo sobre moda sustentável...',
+    image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg',
     date: '2024-01-10',
-    author: 'João Santos',
-    category: 'Cultivo',
-    tags: ['horta', 'cultivo', 'orgânico']
+    author: 'Fashion Blogger',
+    category: 'Moda',
+    tags: ['moda', 'sustentável', 'consciência']
   },
   {
     id: '3',
-    title: 'Receitas Saudáveis com Produtos Orgânicos',
-    excerpt: 'Receitas deliciosas e nutritivas usando apenas ingredientes orgânicos.',
-    content: 'Coleção de receitas saudáveis...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Dicas para Economizar nas Compras Online',
+    excerpt: 'Aprenda estratégias inteligentes para economizar dinheiro em suas compras online.',
+    content: 'Coleção de dicas para economizar...',
+    image: 'https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg',
     date: '2024-01-05',
-    author: 'Ana Costa',
-    category: 'Receitas',
-    tags: ['receitas', 'saudável', 'orgânico']
+    author: 'Finance Expert',
+    category: 'Finanças',
+    tags: ['economia', 'compras', 'online']
   },
   {
     id: '4',
-    title: 'O Impacto Ambiental da Agricultura Orgânica',
-    excerpt: 'Entenda como a agricultura orgânica contribui para a preservação do meio ambiente.',
-    content: 'Análise do impacto ambiental...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Os Melhores Presentes para Cada Ocasião',
+    excerpt: 'Descubra ideias criativas e personalizadas para presentear seus entes queridos em qualquer ocasião.',
+    content: 'Guia de presentes para diferentes ocasiões...',
+    image: 'https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg',
     date: '2023-12-28',
-    author: 'Carlos Oliveira',
-    category: 'Meio Ambiente',
-    tags: ['meio ambiente', 'sustentabilidade', 'orgânico']
+    author: 'Gift Expert',
+    category: 'Lifestyle',
+    tags: ['presentes', 'ocasiões', 'criatividade']
   },
   {
     id: '5',
-    title: 'Dicas para Escolher os Melhores Produtos Orgânicos',
-    excerpt: 'Saiba como identificar e escolher produtos orgânicos de qualidade.',
-    content: 'Guia para escolher produtos orgânicos...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Como Organizar sua Casa com Produtos Inteligentes',
+    excerpt: 'Descubra produtos inovadores que podem transformar sua casa em um espaço mais organizado e funcional.',
+    content: 'Guia para organização com produtos inteligentes...',
+    image: 'https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg',
     date: '2023-12-20',
-    author: 'Lucia Ferreira',
-    category: 'Dicas',
-    tags: ['dicas', 'qualidade', 'orgânico']
+    author: 'Home Organizer',
+    category: 'Casa',
+    tags: ['organização', 'casa', 'produtos']
   },
   {
     id: '6',
-    title: 'A Importância da Estação dos Alimentos',
-    excerpt: 'Descubra por que consumir alimentos da estação é melhor para sua saúde e para o planeta.',
-    content: 'Sobre a importância da sazonalidade...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Tendências de Tecnologia para 2024',
+    excerpt: 'Fique por dentro das principais tendências tecnológicas que vão dominar o mercado em 2024.',
+    content: 'Análise das tendências tecnológicas...',
+    image: 'https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg',
     date: '2023-12-15',
-    author: 'Pedro Lima',
-    category: 'Saúde',
-    tags: ['estação', 'sazonalidade', 'saúde']
+    author: 'Tech Analyst',
+    category: 'Tecnologia',
+    tags: ['tendências', 'tecnologia', '2024']
   }
 ];
 
@@ -592,7 +590,7 @@ const mockReviews: Review[] = [
     userName: 'Maria Silva',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 5,
-    comment: 'Tomates deliciosos! Muito frescos e saborosos.',
+    comment: 'Smartphone excelente! Câmera incrível e bateria dura o dia todo.',
     date: '2024-01-10'
   },
   {
@@ -602,7 +600,7 @@ const mockReviews: Review[] = [
     userName: 'João Santos',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 4,
-    comment: 'Ótima qualidade, recomendo!',
+    comment: 'Ótimo custo-benefício, recomendo!',
     date: '2024-01-08'
   },
   {
@@ -612,7 +610,7 @@ const mockReviews: Review[] = [
     userName: 'Ana Costa',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 5,
-    comment: 'Repolho muito fresco e saboroso.',
+    comment: 'Fone de ouvido muito bom, som cristalino!',
     date: '2024-01-12'
   },
   {
@@ -622,7 +620,7 @@ const mockReviews: Review[] = [
     userName: 'Carlos Oliveira',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 4,
-    comment: 'Cenouras orgânicas de excelente qualidade.',
+    comment: 'Tênis confortável e durável, perfeito para corrida.',
     date: '2024-01-09'
   },
   {
@@ -632,7 +630,7 @@ const mockReviews: Review[] = [
     userName: 'Lucia Ferreira',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 5,
-    comment: 'Maçãs Fuji são as melhores que já provei!',
+    comment: 'Smartwatch incrível! Monitor cardíaco muito preciso.',
     date: '2024-01-11'
   },
   {
@@ -642,7 +640,7 @@ const mockReviews: Review[] = [
     userName: 'Pedro Lima',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 4,
-    comment: 'Batatas doces muito saborosas.',
+    comment: 'Kit de maquiagem completo e de boa qualidade.',
     date: '2024-01-07'
   },
   {
@@ -652,7 +650,7 @@ const mockReviews: Review[] = [
     userName: 'Fernanda Costa',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 5,
-    comment: 'Laranjas suculentas e doces!',
+    comment: 'Câmera profissional incrível! Fotos de alta qualidade.',
     date: '2024-01-13'
   },
   {
@@ -662,7 +660,7 @@ const mockReviews: Review[] = [
     userName: 'Roberto Silva',
     userImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
     rating: 4,
-    comment: 'Uvas verdes muito refrescantes.',
+    comment: 'Panelas de excelente qualidade, antiaderente perfeito.',
     date: '2024-01-06'
   }
 ];
@@ -761,7 +759,7 @@ const mockUsers: User[] = [
     firstName: 'João',
     lastName: 'Silva',
     email: 'cliente@exemplo.com',
-    phone: '(11) 99999-9999',
+    phone: '(+258) 99999-9999',
     isSeller: false,
     role: 'buyer',
     sellerId: undefined,
@@ -771,10 +769,10 @@ const mockUsers: User[] = [
       lastName: 'Silva',
       address: 'Rua das Flores, 123',
       country: 'Brasil',
-      state: 'SP',
+      state: 'Sofala',
       zipCode: '01234-567',
       email: 'cliente@exemplo.com',
-      phone: '(11) 99999-9999'
+      phone: '(+258) 99999-9999'
     }
   },
   {
@@ -782,7 +780,7 @@ const mockUsers: User[] = [
     firstName: 'Maria',
     lastName: 'Santos',
     email: 'maria@exemplo.com',
-    phone: '(11) 88888-8888',
+    phone: '(+258) 88888-8888',
     isSeller: false,
     role: 'buyer',
     sellerId: undefined,
@@ -792,10 +790,10 @@ const mockUsers: User[] = [
       lastName: 'Santos',
       address: 'Avenida Principal, 456',
       country: 'Brasil',
-      state: 'SP',
+      state: 'Sofala',
       zipCode: '04567-890',
       email: 'maria@exemplo.com',
-      phone: '(11) 88888-8888'
+      phone: '(+258) 88888-8888'
     }
   }
 ];
@@ -804,7 +802,7 @@ const mockOrders: Order[] = [
   {
     id: 'ORD-001',
     date: '2024-01-20',
-    total: 4550,
+    total: 46850,
     status: 'delivered',
     userId: 'user1',
     user: mockUsers[0],
@@ -812,52 +810,52 @@ const mockOrders: Order[] = [
       {
         product: {
           id: '1',
-          name: 'Tomates Orgânicos',
-          price: 850,
-          originalPrice: 1000,
-          image: 'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg',
-          description: 'Tomates orgânicos frescos e saborosos',
-          category: 'Legumes',
-          brand: 'Fazenda Verde',
+          name: 'Smartphone Samsung Galaxy A54',
+          price: 45000,
+          originalPrice: 52000,
+          image: 'https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg',
+          description: 'Smartphone Samsung Galaxy A54 128GB, 8GB RAM, Tela 6.4", Câmera Tripla 50MP, Android 13.',
+          category: 'Eletrônicos',
+          brand: 'Samsung',
           rating: 4.5,
-          reviews: 128,
+          reviews: 127,
           inStock: true,
           sellerId: 'seller1',
-          sellerName: 'Fazenda Verde',
-          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
-          tags: ['orgânico', 'fresco', 'local'],
-          sku: 'TOM-ORG-001',
-          weight: '500g',
-          color: 'Vermelho',
+          sellerName: 'TechStore',
+          sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=TS',
+          tags: ['smartphone', 'samsung', 'android', 'câmera'],
+          sku: 'SAMS-A54-001',
+          weight: '202g',
+          color: 'Preto',
           stockStatus: 'Em estoque',
-          type: 'Legume'
+          type: 'Smartphone'
         },
-        quantity: 2
+        quantity: 1
       },
       {
         product: {
           id: '2',
-          name: 'Repolho Chinês Orgânico',
-          price: 1299,
-          originalPrice: 1599,
-          image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
-          description: 'Repolho chinês orgânico crocante',
-          category: 'Legumes',
-          brand: 'Fazenda Verde',
-          rating: 4.2,
+          name: 'Fone de Ouvido Bluetooth JBL',
+          price: 850,
+          originalPrice: 1200,
+          image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg',
+          description: 'Fone de ouvido Bluetooth JBL com cancelamento de ruído, bateria de 20h, resistente à água.',
+          category: 'Eletrônicos',
+          brand: 'JBL',
+          rating: 4.3,
           reviews: 89,
           inStock: true,
-          sellerId: 'seller1',
-          sellerName: 'Fazenda Verde',
-          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
-          tags: ['orgânico', 'crocante', 'fresco'],
-          sku: 'REP-CHI-001',
-          weight: '800g',
-          color: 'Verde',
+          sellerId: 'seller2',
+          sellerName: 'AudioPro',
+          sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=AP',
+          tags: ['bluetooth', 'jbl', 'sem fio', 'cancelamento de ruído'],
+          sku: 'JBL-BT-001',
+          weight: '250g',
+          color: 'Azul',
           stockStatus: 'Em estoque',
-          type: 'Legume'
+          type: 'Fone de Ouvido'
         },
-        quantity: 1
+        quantity: 2
       }
     ],
     billingAddress: {
@@ -884,7 +882,7 @@ const mockOrders: Order[] = [
       orderId: 'ORD-001',
       items: ['ORD-001-1-0'],
       reason: 'defective',
-      description: 'Os tomates chegaram danificados e com manchas.',
+      description: 'O smartphone chegou com a tela riscada.',
       status: 'pending',
       createdAt: '2024-01-22T10:30:00Z',
       userId: 'user1'
@@ -893,7 +891,7 @@ const mockOrders: Order[] = [
   {
     id: 'ORD-002',
     date: '2024-01-18',
-    total: 3297,
+    total: 2850,
     status: 'processing',
     userId: 'user2',
     user: mockUsers[1],
@@ -901,51 +899,51 @@ const mockOrders: Order[] = [
       {
         product: {
           id: '3',
-          name: 'Cenouras Orgânicas',
-          price: 699,
-          originalPrice: 899,
-          image: 'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg',
-          description: 'Cenouras orgânicas frescas',
-          category: 'Legumes',
-          brand: 'Horta do Vale',
+          name: 'Tênis Nike Air Max',
+          price: 2500,
+          originalPrice: 3200,
+          image: 'https://images.pexels.com/photos/2526878/pexels-photo-2526878.jpeg',
+          description: 'Tênis Nike Air Max para corrida, tecnologia Air Max, solado de borracha, confortável e durável.',
+          category: 'Esportes',
+          brand: 'Nike',
           rating: 4.7,
           reviews: 156,
           inStock: true,
-          sellerId: 'seller2',
-          sellerName: 'Horta do Vale',
-          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=HV',
-          tags: ['orgânico', 'fresco', 'vitamina A'],
-          sku: 'CEN-ORG-001',
-          weight: '400g',
-          color: 'Laranja',
+          sellerId: 'seller3',
+          sellerName: 'SportStore',
+          sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=SS',
+          tags: ['nike', 'corrida', 'esporte', 'confortável'],
+          sku: 'NIKE-AM-001',
+          weight: '300g',
+          color: 'Branco',
           stockStatus: 'Em estoque',
-          type: 'Legume'
+          type: 'Tênis'
         },
-        quantity: 2
+        quantity: 1
       },
       {
         product: {
-          id: '4',
-          name: 'Alface Crespa Orgânica',
-          price: 450,
-          image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
-          description: 'Alface crespa orgânica fresca',
-          category: 'Verduras',
-          brand: 'Fazenda Verde',
-          rating: 4.3,
-          reviews: 92,
+          id: '6',
+          name: 'Camiseta Básica Algodão',
+          price: 350,
+          image: 'https://images.pexels.com/photos/991509/pexels-photo-991509.jpeg',
+          description: 'Camiseta básica 100% algodão, confortável, respirabilidade natural, disponível em várias cores.',
+          category: 'Moda',
+          brand: 'BasicWear',
+          rating: 4.2,
+          reviews: 167,
           inStock: true,
-          sellerId: 'seller1',
-          sellerName: 'Fazenda Verde',
-          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
-          tags: ['orgânico', 'fresco', 'verde'],
-          sku: 'ALC-CRE-001',
-          weight: '200g',
-          color: 'Verde',
+          sellerId: 'seller3',
+          sellerName: 'SportStore',
+          sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=SS',
+          tags: ['algodão', 'básica', 'confortável', 'respirável'],
+          sku: 'CAM-BAS-001',
+          weight: '150g',
+          color: 'Branco',
           stockStatus: 'Em estoque',
-          type: 'Verdura'
+          type: 'Camiseta'
         },
-        quantity: 3
+        quantity: 1
       }
     ],
     billingAddress: {
@@ -972,7 +970,7 @@ const mockOrders: Order[] = [
   {
     id: 'ORD-003',
     date: '2024-01-15',
-    total: 1898,
+    total: 1800,
     status: 'shipped',
     userId: 'user3',
     user: mockUsers[0], // Using user1 for this order
@@ -980,49 +978,25 @@ const mockOrders: Order[] = [
       {
         product: {
           id: '5',
-          name: 'Maçãs Fuji Orgânicas',
-          price: 999,
-          originalPrice: 1299,
-          image: 'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg',
-          description: 'Maçãs Fuji orgânicas doces',
-          category: 'Frutas',
-          brand: 'Pomar Orgânico',
+          name: 'Relógio Smartwatch Xiaomi',
+          price: 1800,
+          originalPrice: 2200,
+          image: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg',
+          description: 'Smartwatch Xiaomi com monitor cardíaco, GPS, resistente à água, bateria de 14 dias.',
+          category: 'Eletrônicos',
+          brand: 'Xiaomi',
           rating: 4.6,
           reviews: 203,
           inStock: true,
-          sellerId: 'seller3',
-          sellerName: 'Pomar Orgânico',
-          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=PO',
-          tags: ['orgânico', 'doce', 'suculenta'],
-          sku: 'MAC-FUJ-001',
-          weight: '1kg',
-          color: 'Vermelho',
+          sellerId: 'seller2',
+          sellerName: 'AudioPro',
+          sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=AP',
+          tags: ['smartwatch', 'xiaomi', 'monitor cardíaco', 'gps'],
+          sku: 'XIA-SW-001',
+          weight: '35g',
+          color: 'Preto',
           stockStatus: 'Em estoque',
-          type: 'Fruta'
-        },
-        quantity: 1
-      },
-      {
-        product: {
-          id: '6',
-          name: 'Bananas Prata Orgânicas',
-          price: 750,
-          image: 'https://images.pexels.com/photos/47305/bananas-banana-bunch-fruit-yellow-47305.jpeg',
-          description: 'Bananas prata orgânicas',
-          category: 'Frutas',
-          brand: 'Fazenda Verde',
-          rating: 4.4,
-          reviews: 167,
-          inStock: true,
-          sellerId: 'seller1',
-          sellerName: 'Fazenda Verde',
-          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
-          tags: ['orgânico', 'potássio', 'energia'],
-          sku: 'BAN-PRA-001',
-          weight: '1kg',
-          color: 'Amarelo',
-          stockStatus: 'Em estoque',
-          type: 'Fruta'
+          type: 'Smartwatch'
         },
         quantity: 1
       }
@@ -1051,56 +1025,33 @@ const mockOrders: Order[] = [
   {
     id: 'ORD-004',
     date: '2024-01-12',
-    total: 1425,
+    total: 890,
     status: 'delivered',
     userId: 'user1',
     user: mockUsers[0],
     items: [
       {
         product: {
-          id: '7',
-          name: 'Cebolas Roxas Orgânicas',
-          price: 599,
-          image: 'https://images.pexels.com/photos/144206/pexels-photo-144206.jpeg',
-          description: 'Cebolas roxas orgânicas',
-          category: 'Legumes',
-          brand: 'Horta do Vale',
-          rating: 4.1,
-          reviews: 78,
-          inStock: true,
-          sellerId: 'seller2',
-          sellerName: 'Horta do Vale',
-          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=HV',
-          tags: ['orgânico', 'saboroso', 'nutritivo'],
-          sku: 'CEB-ROX-001',
-          weight: '300g',
-          color: 'Roxo',
-          stockStatus: 'Em estoque',
-          type: 'Legume'
-        },
-        quantity: 2
-      },
-      {
-        product: {
           id: '8',
-          name: 'Batatas Doces Orgânicas',
-          price: 899,
-          image: 'https://images.pexels.com/photos/2286776/pexels-photo-2286776.jpeg',
-          description: 'Batatas doces orgânicas',
-          category: 'Legumes',
-          brand: 'Fazenda Verde',
+          name: 'Kit de Maquiagem Profissional',
+          price: 890,
+          originalPrice: 1200,
+          image: 'https://images.pexels.com/photos/2533266/pexels-photo-2533266.jpeg',
+          description: 'Kit completo de maquiagem profissional com 24 cores, pincéis incluídos, paleta versátil.',
+          category: 'Beleza',
+          brand: 'BeautyPro',
           rating: 4.5,
           reviews: 134,
           inStock: true,
           sellerId: 'seller1',
-          sellerName: 'Fazenda Verde',
-          sellerLogo: 'https://placehold.co/40x40/4ade80/ffffff?text=FV',
-          tags: ['orgânico', 'fibras', 'vitaminas'],
-          sku: 'BAT-DOC-001',
-          weight: '1kg',
-          color: 'Laranja',
+          sellerName: 'TechStore',
+          sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=TS',
+          tags: ['maquiagem', 'profissional', '24 cores', 'pincéis'],
+          sku: 'MAQ-KIT-001',
+          weight: '300g',
+          color: 'Multicolor',
           stockStatus: 'Em estoque',
-          type: 'Legume'
+          type: 'Maquiagem'
         },
         quantity: 1
       }
@@ -1296,10 +1247,10 @@ const saveToStorage = (key: string, value: any) => {
 };
 
 // Load persisted data
-const persistedCart = loadFromStorage('ecobazar_cart', []);
-const persistedWishlist = loadFromStorage('ecobazar_wishlist', []);
-const persistedUser = loadFromStorage('ecobazar_user', null);
-const persistedAuth = loadFromStorage('ecobazar_authenticated', false);
+const persistedCart = loadFromStorage('vitrine_cart', []);
+const persistedWishlist = loadFromStorage('vitrine_wishlist', []);
+const persistedUser = loadFromStorage('vitrine_user', null);
+const persistedAuth = loadFromStorage('vitrine_authenticated', false);
 
 const initialState: MarketplaceState = {
   products: mockProducts,
@@ -1340,7 +1291,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
           cart: [...state.cart, { product: action.payload.product, quantity: action.payload.quantity }],
         };
       }
-      saveToStorage('ecobazar_cart', newState.cart);
+      saveToStorage('vitrine_cart', newState.cart);
       return newState;
 
     case 'REMOVE_FROM_CART':
@@ -1348,7 +1299,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         cart: state.cart.filter(item => item.product.id !== action.payload),
       };
-      saveToStorage('ecobazar_cart', newState.cart);
+      saveToStorage('vitrine_cart', newState.cart);
       return newState;
 
     case 'UPDATE_CART_QUANTITY':
@@ -1360,7 +1311,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
             : item
         ),
       };
-      saveToStorage('ecobazar_cart', newState.cart);
+      saveToStorage('vitrine_cart', newState.cart);
       return newState;
 
     case 'CLEAR_CART':
@@ -1368,7 +1319,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         cart: [],
       };
-      saveToStorage('ecobazar_cart', newState.cart);
+      saveToStorage('vitrine_cart', newState.cart);
       return newState;
 
     case 'ADD_TO_WISHLIST':
@@ -1379,7 +1330,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         wishlist: [...state.wishlist, action.payload],
       };
-      saveToStorage('ecobazar_wishlist', newState.wishlist);
+      saveToStorage('vitrine_wishlist', newState.wishlist);
       return newState;
 
     case 'REMOVE_FROM_WISHLIST':
@@ -1387,7 +1338,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         wishlist: state.wishlist.filter(item => item.id !== action.payload),
       };
-      saveToStorage('ecobazar_wishlist', newState.wishlist);
+      saveToStorage('vitrine_wishlist', newState.wishlist);
       return newState;
 
     case 'SET_USER':
@@ -1395,7 +1346,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         user: action.payload,
       };
-      saveToStorage('ecobazar_user', newState.user);
+      saveToStorage('vitrine_user', newState.user);
       return newState;
 
     case 'SET_AUTHENTICATED':
@@ -1403,7 +1354,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         isAuthenticated: action.payload,
       };
-      saveToStorage('ecobazar_authenticated', newState.isAuthenticated);
+      saveToStorage('vitrine_authenticated', newState.isAuthenticated);
       return newState;
 
     case 'HIDE_NEWSLETTER_POPUP':

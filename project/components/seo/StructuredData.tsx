@@ -53,7 +53,7 @@ interface StructuredDataProps {
 
 export default function StructuredData({ type, data }: StructuredDataProps) {
   const generateStructuredData = () => {
-    const baseUrl = 'https://txova.co.mz';
+    const baseUrl = 'https://vitrine.com';
 
     switch (type) {
       case 'organization':
@@ -104,7 +104,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
             availability: productData.availability,
             seller: {
               '@type': 'Organization',
-              name: 'Txova',
+              name: 'VITRINE',
             },
           },
         };
@@ -136,9 +136,9 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
         return {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: 'Txova - Marketplace Orgânico',
+          name: 'VITRINE - Marketplace Completo',
           url: baseUrl,
-          description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
+          description: 'VITRINE - Marketplace completo com produtos de qualidade em todas as categorias: eletrônicos, moda, esportes, casa e muito mais.',
           potentialAction: {
             '@type': 'SearchAction',
             target: {
@@ -171,26 +171,26 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
 
 // Helper functions for common structured data
 export const getOrganizationData = (): OrganizationData => ({
-  name: 'Txova - Marketplace Orgânico',
-  url: 'https://txova.co.mz',
-  logo: 'https://txova.co.mz/icons/icon-512x512.png',
-  description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
+  name: 'VITRINE - Marketplace Completo',
+  url: 'https://vitrine.com',
+  logo: 'https://vitrine.com/icons/icon-512x512.png',
+  description: 'VITRINE - Marketplace completo com produtos de qualidade em todas as categorias: eletrônicos, moda, esportes, casa e muito mais.',
   address: {
-    streetAddress: 'Rua Principal, 123',
+    streetAddress: 'Avenida 25 de Setembro, 1234',
     addressLocality: 'Beira',
     addressRegion: 'Sofala',
     postalCode: '1100',
     addressCountry: 'MZ',
   },
   contactPoint: {
-    telephone: '+258 84 123 4567',
+    telephone: '+258 84 9999-9999',
     contactType: 'customer service',
-    email: 'contato@txova.co.mz',
+    email: 'contato@vitrine.com',
   },
   sameAs: [
-    'https://facebook.com/txova',
-    'https://instagram.com/txova',
-    'https://twitter.com/txova',
+    'https://facebook.com/vitrine',
+    'https://instagram.com/vitrine',
+    'https://twitter.com/vitrine',
   ],
 });
 
@@ -201,10 +201,10 @@ export const getProductData = (product: any): ProductData => ({
   price: product.price,
   priceCurrency: 'MZN',
   availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-  brand: product.brand || 'Txova',
+  brand: product.brand || 'VITRINE',
   category: product.category,
   sku: product.sku || product.id,
-  url: `https://txova.co.mz/produto/${product.id}`,
+  url: `https://vitrine.com/produto/${product.id}`,
   aggregateRating: product.rating ? {
     ratingValue: product.rating,
     reviewCount: product.reviews || 0,

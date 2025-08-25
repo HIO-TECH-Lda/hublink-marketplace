@@ -95,9 +95,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex items-center justify-between h-16 px-6">
             <div className="flex items-center">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">T</span>
+                <span className="text-white font-bold text-lg">V</span>
               </div>
-              <span className="ml-3 text-xl font-bold text-gray-9">Txova</span>
+              <span className="ml-3 text-xl font-bold text-gray-9">Vitrine</span>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}

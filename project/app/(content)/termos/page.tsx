@@ -30,7 +30,7 @@ export default function TermosPage() {
             Termos de Uso
           </h1>
           <p className="text-base sm:text-lg text-gray-7 max-w-3xl mx-auto px-4">
-            Estes termos governam o uso da plataforma Txova. Ao usar nossos serviços, 
+            Estes termos governam o uso da plataforma Vitrine. Ao usar nossos serviços, 
             você concorda com estes termos.
           </p>
           <div className="flex items-center justify-center space-x-2 mt-4 text-sm text-gray-6">
@@ -48,7 +48,7 @@ export default function TermosPage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">1. Aceitação dos Termos</h2>
                 <p className="text-gray-7 mb-4">
-                  Ao acessar e usar a plataforma Txova ("Plataforma"), você aceita e concorda 
+                  Ao acessar e usar a plataforma Vitrine ("Plataforma"), você aceita e concorda 
                   em cumprir estes Termos de Uso ("Termos"). Se você não concordar com qualquer 
                   parte destes termos, não deve usar nossos serviços.
                 </p>
@@ -62,7 +62,7 @@ export default function TermosPage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">2. Definições</h2>
                 <ul className="list-disc list-inside space-y-2 text-gray-7">
-                  <li><strong>"Plataforma"</strong> - O website e aplicativo Txova</li>
+                  <li><strong>"Plataforma"</strong> - O website e aplicativo Vitrine</li>
                   <li><strong>"Usuário"</strong> - Qualquer pessoa que acesse ou use a plataforma</li>
                   <li><strong>"Comprador"</strong> - Usuário que adquire produtos através da plataforma</li>
                   <li><strong>"Vendedor"</strong> - Usuário que vende produtos através da plataforma</li>
@@ -244,7 +244,7 @@ export default function TermosPage() {
                 
                 <p className="text-gray-7 mb-4">
                   A plataforma e todo seu conteúdo, incluindo textos, imagens, logos e software, 
-                  são propriedade da Txova ou de nossos licenciadores.
+                  são propriedade da Vitrine ou de nossos licenciadores.
                 </p>
                 
                 <p className="text-gray-7">
@@ -258,7 +258,7 @@ export default function TermosPage() {
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">10. Limitação de Responsabilidade</h2>
                 
                 <p className="text-gray-7 mb-4">
-                  Em nenhuma circunstância a Txova será responsável por danos indiretos, 
+                  Em nenhuma circunstância a Vitrine será responsável por danos indiretos, 
                   incidentais, especiais ou consequenciais decorrentes do uso da plataforma.
                 </p>
                 
@@ -289,7 +289,7 @@ export default function TermosPage() {
                 
                 <p className="text-gray-7">
                   Estes termos são regidos pelas leis brasileiras. Qualquer disputa será 
-                  resolvida nos tribunais da comarca de São Paulo, SP.
+                  resolvida nos tribunais da comarca de Beira, Sofala.
                 </p>
               </section>
 
@@ -324,9 +324,9 @@ export default function TermosPage() {
                   </p>
                   
                   <div className="space-y-2 text-gray-7">
-                    <p><strong>E-mail:</strong> juridico@ecobazar.com</p>
-                    <p><strong>Telefone:</strong> (11) 99999-9999</p>
-                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, São Paulo, SP - 01234-567</p>
+                    <p><strong>E-mail:</strong> juridico@vitrine.com</p>
+                    <p><strong>Telefone:</strong> (+258) 99999-9999</p>
+                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, Beira, Sofala - 01234-567</p>
                   </div>
                 </div>
               </section>

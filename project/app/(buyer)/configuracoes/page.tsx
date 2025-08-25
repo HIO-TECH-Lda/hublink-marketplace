@@ -276,7 +276,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Estado
+                        Província
                       </label>
                       <input
                         type="text"
@@ -288,7 +288,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        CEP
+                        ZIP
                       </label>
                       <input
                         type="text"

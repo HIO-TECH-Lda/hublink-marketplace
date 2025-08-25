@@ -107,9 +107,9 @@ export default function NewsletterManagementPage() {
         lastName: 'Silva',
         status: 'active',
         source: 'popup',
-        tags: ['organic', 'vegetables'],
+        tags: ['eletronicos', 'tecnologia'],
         preferences: {
-          categories: ['vegetables', 'fruits'],
+          categories: ['eletronicos', 'moda'],
           frequency: 'weekly',
           language: 'pt-MZ'
         },
@@ -130,9 +130,9 @@ export default function NewsletterManagementPage() {
         lastName: 'Santos',
         status: 'active',
         source: 'footer',
-        tags: ['fruits', 'promotional'],
+        tags: ['moda', 'promocional'],
         preferences: {
-          categories: ['fruits', 'dairy'],
+          categories: ['moda', 'beleza'],
           frequency: 'monthly',
           language: 'pt-MZ'
         },
@@ -151,9 +151,9 @@ export default function NewsletterManagementPage() {
         email: 'pedro.oliveira@email.com',
         status: 'unsubscribed',
         source: 'signup',
-        tags: ['organic'],
+        tags: ['esportes'],
         preferences: {
-          categories: ['vegetables'],
+          categories: ['esportes'],
           frequency: 'weekly',
           language: 'pt-MZ'
         },
@@ -173,10 +173,10 @@ export default function NewsletterManagementPage() {
         lastName: 'Costa',
         status: 'bounced',
         source: 'popup',
-        tags: ['dairy'],
+        tags: ['casa'],
         preferences: {
-          categories: ['dairy', 'bakery'],
-          frequency: 'promotional',
+          categories: ['casa', 'decoracao'],
+          frequency: 'promocional',
           language: 'pt-MZ'
         },
         stats: {
@@ -193,8 +193,8 @@ export default function NewsletterManagementPage() {
     const mockCampaigns: NewsletterCampaign[] = [
       {
         id: '1',
-        name: 'Ofertas da Semana - Orgânicos',
-        subject: '🍃 20% OFF em produtos orgânicos selecionados',
+        name: 'Ofertas da Semana - Eletrônicos',
+        subject: '🔥 30% OFF em smartphones selecionados',
         status: 'sent',
         type: 'promotional',
         stats: {
@@ -214,7 +214,7 @@ export default function NewsletterManagementPage() {
       {
         id: '2',
         name: 'Newsletter Mensal - Janeiro',
-        subject: '📰 Novidades e dicas de alimentação saudável',
+        subject: '📰 Novidades e ofertas da VITRINE',
         status: 'scheduled',
         type: 'newsletter',
         stats: {
@@ -232,8 +232,8 @@ export default function NewsletterManagementPage() {
       },
       {
         id: '3',
-        name: 'Bem-vindo ao Txova',
-        subject: '🎉 Bem-vindo! Comece sua jornada orgânica',
+        name: 'Bem-vindo à VITRINE',
+        subject: '🎉 Bem-vindo! Comece sua jornada de compras',
         status: 'sent',
         type: 'welcome',
         stats: {

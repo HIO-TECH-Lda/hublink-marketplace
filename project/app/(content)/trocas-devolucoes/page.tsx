@@ -83,7 +83,7 @@ export default function TrocasDevolucoesPage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">Nossa Política</h2>
                 <p className="text-gray-7 mb-4">
-                  Na Txova, sua satisfação é nossa prioridade. Oferecemos uma política 
+                  Na Vitrine, sua satisfação é nossa prioridade. Oferecemos uma política 
                   de devolução generosa para garantir que você sempre receba produtos de 
                   qualidade e fique satisfeito com sua compra.
                 </p>
@@ -140,7 +140,7 @@ export default function TrocasDevolucoesPage() {
                     <div>
                       <h3 className="font-medium text-gray-9 mb-2">Entre em Contato</h3>
                       <p className="text-gray-7 text-sm">
-                        Ligue para (11) 99999-9999 ou envie um e-mail para suporte@ecobazar.com 
+                        Ligue para (+258) 99999-9999 ou envie um e-mail para suporte@vitrine.com 
                         em até 24 horas após a entrega. Informe o número do pedido e o motivo da devolução.
                       </p>
                     </div>
@@ -285,7 +285,7 @@ export default function TrocasDevolucoesPage() {
                       <Phone size={24} className="text-primary" />
                     </div>
                     <h3 className="font-medium text-gray-9 mb-2">Telefone</h3>
-                    <p className="text-gray-7 text-sm">(11) 99999-9999</p>
+                    <p className="text-gray-7 text-sm">(+258) 99999-9999</p>
                     <p className="text-gray-6 text-xs">Segunda a Sexta, 8h às 18h</p>
                   </div>
                   
@@ -294,7 +294,7 @@ export default function TrocasDevolucoesPage() {
                       <Mail size={24} className="text-primary" />
                     </div>
                     <h3 className="font-medium text-gray-9 mb-2">E-mail</h3>
-                    <p className="text-gray-7 text-sm">suporte@ecobazar.com</p>
+                    <p className="text-gray-7 text-sm">suporte@vitrine.com</p>
                     <p className="text-gray-6 text-xs">Resposta em até 2 horas</p>
                   </div>
                   

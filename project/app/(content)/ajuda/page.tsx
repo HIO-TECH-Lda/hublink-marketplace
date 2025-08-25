@@ -24,7 +24,7 @@ export default function AjudaPage() {
     pedidos: [
       {
         question: 'Como faço um pedido?',
-        answer: 'Navegue pelos produtos, adicione ao carrinho e finalize sua compra. Aceitamos M-Pesa, cartão de crédito e dinheiro na entrega.'
+        answer: 'Navegue pelos produtos, adicione ao carrinho e finalize sua compra. Aceitamos cartão de crédito, PIX, boleto e pagamento na entrega.'
       },
       {
         question: 'Posso cancelar meu pedido?',
@@ -42,7 +42,7 @@ export default function AjudaPage() {
     pagamento: [
       {
         question: 'Quais formas de pagamento vocês aceitam?',
-        answer: 'Aceitamos M-Pesa, cartões de crédito e débito, e dinheiro na entrega.'
+        answer: 'Aceitamos cartões de crédito e débito, PIX, boleto bancário e pagamento na entrega.'
       },
       {
         question: 'O pagamento é seguro?',
@@ -53,8 +53,8 @@ export default function AjudaPage() {
         answer: 'Sim, aceitamos parcelamento em até 12x nos cartões de crédito.'
       },
       {
-        question: 'Como funciona o M-Pesa?',
-        answer: 'Após finalizar o pedido, você receberá um QR Code para pagamento instantâneo via M-Pesa.'
+        question: 'Como funciona o PIX?',
+        answer: 'Após finalizar o pedido, você receberá um QR Code para pagamento instantâneo via PIX.'
       }
     ],
     entrega: [
@@ -72,7 +72,7 @@ export default function AjudaPage() {
       },
       {
         question: 'Há taxa de entrega?',
-        answer: 'Entregas acima de MTn 50 são gratuitas. Abaixo desse valor, a taxa é de MTn 5.'
+        answer: 'Entregas acima de R$ 50 são gratuitas. Abaixo desse valor, a taxa é de R$ 5.'
       }
     ],
     conta: [
@@ -95,12 +95,12 @@ export default function AjudaPage() {
     ],
     produtos: [
       {
-        question: 'Os produtos são realmente orgânicos?',
-        answer: 'Sim! Todos os nossos produtores são certificados e passam por rigorosos controles de qualidade.'
+        question: 'Os produtos são de qualidade?',
+        answer: 'Sim! Todos os nossos vendedores são verificados e passam por rigorosos controles de qualidade.'
       },
       {
         question: 'Como são armazenados os produtos?',
-        answer: 'Utilizamos refrigeração adequada e embalagens especiais para manter a frescura.'
+        answer: 'Utilizamos armazenamento adequado e embalagens especiais para manter a qualidade dos produtos.'
       },
       {
         question: 'Posso solicitar produtos específicos?',
@@ -120,7 +120,7 @@ export default function AjudaPage() {
       icon: Phone,
       title: 'Telefone',
       description: 'Fale diretamente com nossa equipe',
-      contact: '(11) 99999-9999',
+      contact: '(+258) 99999-9999',
       action: 'Ligar Agora',
       href: 'tel:+5511999999999'
     },
@@ -128,9 +128,9 @@ export default function AjudaPage() {
       icon: Mail,
       title: 'E-mail',
       description: 'Envie sua dúvida por e-mail',
-      contact: 'suporte@ecobazar.com',
+      contact: 'suporte@vitrine.com',
       action: 'Enviar E-mail',
-      href: 'mailto:suporte@ecobazar.com'
+      href: 'mailto:suporte@vitrine.com'
     },
     {
       icon: MessageCircle,

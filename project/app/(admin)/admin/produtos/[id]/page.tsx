@@ -80,24 +80,24 @@ export default function ProductDetailPage() {
     // Mock product data
     const mockProduct: Product = {
       id: params.id as string,
-      name: 'Maçãs Orgânicas',
-      description: 'Maçãs orgânicas frescas e saborosas, cultivadas sem agrotóxicos. Perfeitas para consumo direto ou para preparo de receitas saudáveis.',
-      price: 150.00,
-      category: 'Frutas',
-      tags: ['orgânico', 'fresco', 'saudável', 'sem agrotóxicos'],
+      name: 'Smartphone Samsung Galaxy A54',
+      description: 'Smartphone Samsung Galaxy A54 128GB, 8GB RAM, Tela 6.4", Câmera Tripla 50MP, Android 13. Produto de alta qualidade com garantia.',
+      price: 450.00,
+      category: 'Eletrônicos',
+      tags: ['smartphone', 'samsung', 'android', 'câmera', 'tecnologia'],
       seller: {
         id: '1',
         name: 'João Silva',
-        businessName: 'Fazenda Verde',
-        email: 'joao@fazendaverde.com',
-        phone: '(258) 84-123-4567'
+        businessName: 'TechStore',
+        email: 'joao@techstore.com',
+        phone: '(11) 99999-9999'
       },
       status: 'active',
       rating: 4.8,
       reviewCount: 25,
-      stock: 50,
-      image: '/images/apples.jpg',
-      images: ['/images/apples.jpg', '/images/apples-2.jpg', '/images/apples-3.jpg'],
+      stock: 15,
+      image: '/images/smartphone.jpg',
+      images: ['/images/smartphone.jpg', '/images/smartphone-2.jpg', '/images/smartphone-3.jpg'],
       createdAt: '2024-01-15T10:30:00Z',
       updatedAt: '2024-01-20T14:25:00Z'
     };
@@ -110,7 +110,7 @@ export default function ProductDetailPage() {
           email: 'maria@email.com'
         },
         rating: 5,
-        comment: 'Excelente qualidade! As maçãs são muito saborosas e frescas.',
+        comment: 'Excelente smartphone! A câmera é incrível e a performance é muito boa.',
         createdAt: '2024-01-18T15:30:00Z'
       },
       {

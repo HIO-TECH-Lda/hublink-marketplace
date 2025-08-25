@@ -295,7 +295,7 @@ export default function CampaignDetailsPage() {
         <CardContent>
           <div className="border rounded-lg p-4 bg-white">
             <div className="mb-4">
-              <p className="font-medium text-gray-9">De: Txova &lt;noreply@txova.com&gt;</p>
+                              <p className="font-medium text-gray-9">De: VITRINE &lt;noreply@vitrine.com&gt;</p>
               <p className="font-medium text-gray-9">Para: [Assinante]</p>
               <p className="font-medium text-gray-9">Assunto: {campaign.subject}</p>
             </div>

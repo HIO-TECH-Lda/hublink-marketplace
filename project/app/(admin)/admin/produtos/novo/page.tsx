@@ -51,18 +51,22 @@ export default function AdminCreateProductPage() {
   });
 
   const [sellers] = useState<Seller[]>([
-    { id: '1', name: 'João Silva', businessName: 'Fazenda Verde', email: 'joao@fazendaverde.com' },
-    { id: '2', name: 'Maria Santos', businessName: 'Horta Orgânica', email: 'maria@hortaorganica.com' },
-    { id: '3', name: 'Pedro Costa', businessName: 'Produtos Naturais', email: 'pedro@produtosnaturais.com' },
-    { id: '4', name: 'Ana Oliveira', businessName: 'Frutas Frescas', email: 'ana@frutasfrescas.com' }
+    { id: '1', name: 'João Silva', businessName: 'TechStore', email: 'joao@techstore.com' },
+    { id: '2', name: 'Maria Santos', businessName: 'SportStore', email: 'maria@sportstore.com' },
+    { id: '3', name: 'Pedro Costa', businessName: 'FashionStore', email: 'pedro@fashionstore.com' },
+    { id: '4', name: 'Ana Oliveira', businessName: 'BookStore', email: 'ana@bookstore.com' },
+    { id: '5', name: 'Carlos Mendes', businessName: 'BeautyStore', email: 'carlos@beautystore.com' }
   ]);
 
   const [categories] = useState<Category[]>([
-    { id: '1', name: 'Frutas', description: 'Frutas frescas e orgânicas' },
-    { id: '2', name: 'Legumes', description: 'Legumes orgânicos cultivados localmente' },
-    { id: '3', name: 'Verduras', description: 'Verduras frescas e nutritivas' },
-    { id: '4', name: 'Grãos', description: 'Grãos orgânicos e cereais' },
-    { id: '5', name: 'Laticínios', description: 'Produtos lácteos orgânicos' }
+    { id: '1', name: 'Eletrônicos', description: 'Smartphones, computadores, acessórios' },
+    { id: '2', name: 'Moda', description: 'Roupas, calçados, acessórios' },
+    { id: '3', name: 'Esportes', description: 'Equipamentos esportivos e fitness' },
+    { id: '4', name: 'Casa', description: 'Decoração, móveis, utensílios' },
+    { id: '5', name: 'Beleza', description: 'Cosméticos, perfumes, cuidados pessoais' },
+    { id: '6', name: 'Livros', description: 'Livros, revistas, material educacional' },
+    { id: '7', name: 'Brinquedos', description: 'Brinquedos e jogos para todas as idades' },
+    { id: '8', name: 'Automotivo', description: 'Peças, acessórios e produtos automotivos' }
   ]);
 
   const validateForm = () => {
@@ -152,7 +156,7 @@ export default function AdminCreateProductPage() {
                     <Input
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      placeholder="Ex: Maçãs Orgânicas"
+                      placeholder="Ex: Smartphone Samsung Galaxy A54"
                       className={errors.name ? 'border-red-500' : ''}
                     />
                     {errors.name && (

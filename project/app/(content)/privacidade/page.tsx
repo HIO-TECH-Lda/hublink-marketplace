@@ -48,7 +48,7 @@ export default function PrivacidadePage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">1. Introdução</h2>
                 <p className="text-gray-7 mb-4">
-                  O Txova ("nós", "nosso", "a empresa") está comprometido em proteger sua privacidade. 
+                  O Vitrine ("nós", "nosso", "a empresa") está comprometido em proteger sua privacidade. 
                   Esta Política de Privacidade explica como coletamos, usamos, armazenamos e protegemos 
                   suas informações pessoais quando você usa nossa plataforma.
                 </p>
@@ -307,9 +307,9 @@ export default function PrivacidadePage() {
                   </p>
                   
                   <div className="space-y-2 text-gray-7">
-                    <p><strong>E-mail:</strong> privacidade@ecobazar.com</p>
-                    <p><strong>Telefone:</strong> (11) 99999-9999</p>
-                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, São Paulo, SP - 01234-567</p>
+                    <p><strong>E-mail:</strong> privacidade@vitrine.com</p>
+                    <p><strong>Telefone:</strong> (+258) 99999-9999</p>
+                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, Beira, Sofala - 01234-567</p>
                   </div>
                 </div>
               </section>

@@ -15,28 +15,28 @@ export default function AboutPage() {
       name: 'Maria Silva',
       position: 'CEO & Fundadora',
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      bio: 'Especialista em agricultura orgânica com mais de 15 anos de experiência.'
+      bio: 'Especialista em e-commerce e tecnologia com mais de 15 anos de experiência.'
     },
     {
       id: '2',
       name: 'João Santos',
       position: 'Diretor de Operações',
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      bio: 'Responsável por garantir a qualidade e sustentabilidade de todos os produtos.'
+      bio: 'Responsável por garantir a qualidade e eficiência de todas as operações.'
     },
     {
       id: '3',
       name: 'Ana Costa',
-      position: 'Chef de Culinária',
+      position: 'Diretora de Marketing',
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      bio: 'Especialista em receitas orgânicas e alimentação saudável.'
+      bio: 'Especialista em marketing digital e experiência do cliente.'
     },
     {
       id: '4',
       name: 'Carlos Oliveira',
       position: 'Diretor de Tecnologia',
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      bio: 'Desenvolvedor da plataforma que conecta produtores e consumidores.'
+      bio: 'Desenvolvedor da plataforma que conecta vendedores e compradores.'
     }
   ];
 
@@ -46,23 +46,23 @@ export default function AboutPage() {
       id: '1',
       name: 'Fernanda Lima',
       role: 'Cliente Fiel',
-      content: 'O Txova transformou minha alimentação! Os produtos são frescos, saborosos e eu sei exatamente de onde vêm.',
+      content: 'A VITRINE transformou minhas compras online! Produtos de qualidade, preços competitivos e entrega rápida.',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     },
     {
       id: '2',
       name: 'Roberto Almeida',
-      role: 'Produtor Orgânico',
-      content: 'Como produtor, o Txova me deu a oportunidade de vender diretamente para os consumidores. É uma parceria incrível!',
+      role: 'Vendedor Parceiro',
+      content: 'Como vendedor, a VITRINE me deu a oportunidade de expandir meu negócio. É uma parceria incrível!',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     },
     {
       id: '3',
       name: 'Patrícia Mendes',
-      role: 'Nutricionista',
-      content: 'Recomendo o Txova para todos os meus pacientes. A qualidade dos produtos orgânicos é excepcional.',
+      role: 'Influenciadora Digital',
+      content: 'Recomendo a VITRINE para todos os meus seguidores. A variedade de produtos é impressionante.',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     }
@@ -73,18 +73,17 @@ export default function AboutPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-green-gray-1 to-green-gray-2 py-16 lg:py-24">
+      <section className="relative bg-gradient-to-r from-blue-gray-1 to-blue-gray-2 py-16 lg:py-24">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-6">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-9 leading-tight">
-                Banca de Alimentos Orgânicos
-                <span className="text-primary block">100% Confiável</span>
+                VITRINE
+                <span className="text-primary block">Marketplace Completo</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Somos uma plataforma que conecta produtores orgânicos certificados com consumidores 
-                que valorizam qualidade, saúde e sustentabilidade. Nossa missão é democratizar o 
-                acesso a alimentos orgânicos frescos e saudáveis.
+                Somos uma plataforma que conecta vendedores confiáveis com compradores em busca de qualidade. 
+                Nossa missão é democratizar o acesso a produtos de qualidade em todas as categorias.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/loja">
@@ -101,8 +100,8 @@ export default function AboutPage() {
             </div>
             <div className="relative order-first lg:order-last">
               <img
-                src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
-                alt="Alimentos Orgânicos"
+                src="https://images.pexels.com/photos/1647976/pexels-photo-1647976.jpeg"
+                alt="VITRINE Marketplace"
                 className="w-full h-auto rounded-2xl shadow-2xl"
               />
             </div>
@@ -126,17 +125,17 @@ export default function AboutPage() {
                 Nossa Missão
               </h2>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Conectar produtores orgânicos certificados com consumidores conscientes, 
-                promovendo uma alimentação mais saudável e sustentável para todos.
+                Conectar vendedores confiáveis com compradores em busca de qualidade, 
+                promovendo uma experiência de compra segura e satisfatória para todos.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Leaf size={24} className="text-primary" />
+                    <Award size={24} className="text-primary" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-gray-9 mb-2">Sustentabilidade</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Promovemos práticas agrícolas que preservam o meio ambiente.</p>
+                    <h3 className="font-semibold text-gray-9 mb-2">Qualidade</h3>
+                    <p className="text-gray-7 text-sm sm:text-base">Garantimos produtos de alta qualidade de vendedores verificados.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -144,8 +143,8 @@ export default function AboutPage() {
                     <Heart size={24} className="text-primary" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-gray-9 mb-2">Saúde</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Oferecemos produtos livres de agrotóxicos e químicos nocivos.</p>
+                    <h3 className="font-semibold text-gray-9 mb-2">Confiança</h3>
+                    <p className="text-gray-7 text-sm sm:text-base">Construímos relacionamentos baseados em transparência e confiança.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -154,7 +153,7 @@ export default function AboutPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-gray-9 mb-2">Comunidade</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Fortalecendo produtores locais e criando conexões genuínas.</p>
+                    <p className="text-gray-7 text-sm sm:text-base">Fortalecendo vendedores e criando conexões genuínas com compradores.</p>
                   </div>
                 </div>
               </div>
@@ -169,8 +168,8 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossos Valores</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Acreditamos que a qualidade dos alimentos impacta diretamente na qualidade de vida 
-              das pessoas e na saúde do planeta.
+              Acreditamos que a qualidade dos produtos e a confiança entre vendedores e compradores 
+              são fundamentais para uma experiência de marketplace excepcional.
             </p>
           </div>
           
@@ -180,23 +179,23 @@ export default function AboutPage() {
                 <Award size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
               <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Qualidade</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Produtos certificados e de alta qualidade</p>
-            </div>
-            
-            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Leaf size={24} className="sm:w-8 sm:h-8 text-primary" />
-              </div>
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Sustentabilidade</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Práticas que preservam o meio ambiente</p>
+              <p className="text-gray-7 text-xs sm:text-sm">Produtos verificados e de alta qualidade</p>
             </div>
             
             <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Heart size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Transparência</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Rastreabilidade completa dos produtos</p>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Confiança</h3>
+              <p className="text-gray-7 text-xs sm:text-sm">Transparência e segurança em todas as transações</p>
+            </div>
+            
+            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Leaf size={24} className="sm:w-8 sm:h-8 text-primary" />
+              </div>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Inovação</h3>
+              <p className="text-gray-7 text-xs sm:text-sm">Tecnologia avançada para melhor experiência</p>
             </div>
             
             <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
@@ -204,7 +203,7 @@ export default function AboutPage() {
                 <Users size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
               <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Comunidade</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Fortalecendo produtores locais</p>
+              <p className="text-gray-7 text-xs sm:text-sm">Fortalecendo vendedores e satisfazendo compradores</p>
             </div>
           </div>
         </div>
@@ -216,7 +215,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossa Equipe Incrível</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Conheça as pessoas apaixonadas que fazem o Txova acontecer todos os dias.
+              Conheça as pessoas apaixonadas que fazem a VITRINE acontecer todos os dias.
             </p>
           </div>
           
@@ -245,7 +244,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Depoimentos de Clientes</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Veja o que nossos clientes e parceiros dizem sobre o Txova.
+              Veja o que nossos clientes e parceiros dizem sobre a VITRINE.
             </p>
           </div>
           
@@ -286,11 +285,11 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-gradient-to-r from-primary to-primary-hard">
         <div className="container px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 px-4">
-            Nós Entregamos, Você Aproveita Seu Pedido
+            Junte-se à VITRINE Hoje Mesmo
           </h2>
-          <p className="text-base sm:text-lg text-green-gray-1 mb-8 max-w-2xl mx-auto px-4">
-            Junte-se a milhares de pessoas que já descobriram os benefícios dos alimentos orgânicos 
-            através do Txova.
+          <p className="text-base sm:text-lg text-blue-gray-1 mb-8 max-w-2xl mx-auto px-4">
+            Milhares de pessoas já descobriram os benefícios de comprar na VITRINE. 
+            Produtos de qualidade, preços competitivos e entrega rápida.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/loja">

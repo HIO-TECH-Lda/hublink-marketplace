@@ -70,14 +70,14 @@ export default function VendorManagementPage() {
       {
         id: '1',
         userId: '1',
-        businessName: 'Fazenda Verde',
-        businessDescription: 'Produtos orgânicos frescos direto da fazenda',
+        businessName: 'TechStore',
+        businessDescription: 'Loja especializada em produtos eletrônicos e tecnologia',
         cnpj: '12.345.678/0001-90',
         contactPerson: {
           firstName: 'João',
           lastName: 'Silva',
-          email: 'joao@fazendaverde.com',
-          phone: '(11) 99999-9999'
+          email: 'joao@techstore.com',
+          phone: '(+258) 99999-9999'
         },
         status: 'approved',
         rating: 4.8,
@@ -91,14 +91,14 @@ export default function VendorManagementPage() {
       {
         id: '2',
         userId: '2',
-        businessName: 'Horta Orgânica',
-        businessDescription: 'Hortaliças orgânicas cultivadas com amor',
+        businessName: 'SportStore',
+        businessDescription: 'Equipamentos esportivos e fitness de qualidade',
         cnpj: '98.765.432/0001-10',
         contactPerson: {
           firstName: 'Maria',
           lastName: 'Santos',
-          email: 'maria@hortaorganica.com',
-          phone: '(11) 88888-8888'
+          email: 'maria@sportstore.com',
+          phone: '(+258) 88888-8888'
         },
         status: 'pending',
         rating: 0,
@@ -112,14 +112,14 @@ export default function VendorManagementPage() {
       {
         id: '3',
         userId: '3',
-        businessName: 'Bananal Orgânico',
-        businessDescription: 'Bananas orgânicas da melhor qualidade',
+        businessName: 'FashionStore',
+        businessDescription: 'Moda e acessórios para todos os estilos',
         cnpj: '55.444.333/0001-22',
         contactPerson: {
           firstName: 'Pedro',
           lastName: 'Oliveira',
-          email: 'pedro@bananalorganico.com',
-          phone: '(11) 77777-7777'
+          email: 'pedro@fashionstore.com',
+          phone: '(+258) 77777-7777'
         },
         status: 'approved',
         rating: 4.5,
@@ -133,14 +133,56 @@ export default function VendorManagementPage() {
       {
         id: '4',
         userId: '4',
-        businessName: 'Frutas Frescas',
-        businessDescription: 'Frutas frescas e orgânicas',
+        businessName: 'BookStore',
+        businessDescription: 'Livros, revistas e material educacional',
         cnpj: '33.222.111/0001-33',
         contactPerson: {
           firstName: 'Ana',
           lastName: 'Costa',
-          email: 'ana@frutasfrescas.com',
-          phone: '(11) 66666-6666'
+          email: 'ana@bookstore.com',
+          phone: '(+258) 66666-6666'
+        },
+        status: 'approved',
+        rating: 4.7,
+        reviewCount: 28,
+        totalSales: 6500.00,
+        totalProducts: 25,
+        commissionRate: 10,
+        createdAt: '2024-01-15T08:30:00Z',
+        updatedAt: '2024-01-19T15:20:00Z'
+      },
+      {
+        id: '5',
+        userId: '5',
+        businessName: 'BeautyStore',
+        businessDescription: 'Cosméticos, perfumes e produtos de beleza',
+        cnpj: '44.333.222/0001-44',
+        contactPerson: {
+          firstName: 'Carlos',
+          lastName: 'Mendes',
+          email: 'carlos@beautystore.com',
+          phone: '(+258) 55555-5555'
+        },
+        status: 'approved',
+        rating: 4.3,
+        reviewCount: 18,
+        totalSales: 4200.00,
+        totalProducts: 20,
+        commissionRate: 10,
+        createdAt: '2024-01-12T14:20:00Z',
+        updatedAt: '2024-01-18T10:15:00Z'
+      },
+      {
+        id: '6',
+        userId: '6',
+        businessName: 'HomeStore',
+        businessDescription: 'Decoração, móveis e produtos para casa',
+        cnpj: '66.777.888/0001-55',
+        contactPerson: {
+          firstName: 'Lucia',
+          lastName: 'Fernandes',
+          email: 'lucia@homestore.com',
+          phone: '(+258) 44444-4444'
         },
         status: 'rejected',
         rating: 0,

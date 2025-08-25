@@ -46,7 +46,7 @@ export default function SejaVendedorPage() {
     {
       icon: Users,
       title: 'Alcance Ampliado',
-      description: 'Conecte-se com milhares de clientes interessados em produtos orgânicos'
+      description: 'Conecte-se com milhares de clientes interessados em produtos de qualidade'
     },
     {
       icon: TrendingUp,
@@ -76,11 +76,11 @@ export default function SejaVendedorPage() {
   ];
 
   const requisitos = [
-    'Produtos orgânicos certificados ou de produção própria',
-    'Bilhete de Identidade',
+    'Produtos de qualidade e originais',
+    'Documentação pessoal (BI/Carta)',
     'NUIT',
     'Localização para armazenamento adequado',
-    'Compromisso com qualidade e frescor',
+    'Compromisso com qualidade e atendimento',
     'Disponibilidade para entregas regulares',
     'Adesão aos padrões de qualidade da plataforma'
   ];
@@ -127,18 +127,18 @@ export default function SejaVendedorPage() {
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">
-            Seja um Vendedor Txova
+            Seja um Vendedor VITRINE
           </h1>
           <p className="text-base sm:text-lg text-gray-7 max-w-3xl mx-auto px-4">
-            Junte-se à nossa comunidade de produtores orgânicos e alcance milhares de clientes 
-            que valorizam qualidade, frescor e sustentabilidade.
+            Junte-se à nossa comunidade de vendedores e alcance milhares de clientes 
+            que valorizam qualidade, confiança e variedade de produtos.
           </p>
         </div>
 
         {/* Benefits Section */}
         <div className="mb-16">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-9 mb-8 text-center">
-            Por que vender no Txova?
+            Por que vender na VITRINE?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {beneficios.map((beneficio, index) => (
@@ -235,7 +235,7 @@ export default function SejaVendedorPage() {
                     value={formData.telefone}
                     onChange={handleInputChange}
                     required
-                    placeholder="(11) 99999-9999"
+                    placeholder="(+258) 99999-9999"
                   />
                 </div>
                 
@@ -248,7 +248,7 @@ export default function SejaVendedorPage() {
                     value={formData.nomeLoja}
                     onChange={handleInputChange}
                     required
-                    placeholder="Ex: Fazenda Verde"
+                    placeholder="Ex: TechStore"
                   />
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function SejaVendedorPage() {
                   value={formData.descricao}
                   onChange={handleInputChange}
                   rows={3}
-                  placeholder="Conte um pouco sobre sua produção e produtos..."
+                  placeholder="Conte um pouco sobre seus produtos e negócio..."
                 />
               </div>
 
@@ -289,26 +289,26 @@ export default function SejaVendedorPage() {
                     value={formData.cidade}
                     onChange={handleInputChange}
                     required
-                    placeholder="São Paulo"
+                    placeholder="Beira"
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
-                    Estado *
+                    Província *
                   </label>
                   <Input
                     name="estado"
                     value={formData.estado}
                     onChange={handleInputChange}
                     required
-                    placeholder="SP"
+                    placeholder="Sofala"
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
-                    CEP *
+                    ZIP *
                   </label>
                   <Input
                     name="cep"
@@ -322,14 +322,14 @@ export default function SejaVendedorPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-9 mb-2">
-                  Tipo de Produtos *
+                  Categoria de Produtos *
                 </label>
                 <Input
                   name="tipoProduto"
                   value={formData.tipoProduto}
                   onChange={handleInputChange}
                   required
-                  placeholder="Ex: Hortaliças, Frutas, Legumes"
+                  placeholder="Ex: Eletrônicos, Moda, Esportes"
                 />
               </div>
 
@@ -342,7 +342,7 @@ export default function SejaVendedorPage() {
                   value={formData.experiencia}
                   onChange={handleInputChange}
                   rows={3}
-                  placeholder="Conte sobre sua experiência com produção orgânica..."
+                  placeholder="Conte sobre sua experiência com vendas e produtos..."
                 />
               </div>
               
@@ -370,7 +370,7 @@ export default function SejaVendedorPage() {
               Pronto para começar?
             </h2>
             <p className="text-gray-7 mb-6 max-w-2xl mx-auto">
-              Junte-se a centenas de produtores que já estão vendendo no Txova e 
+              Junte-se a centenas de vendedores que já estão vendendo na VITRINE e 
               crescendo seus negócios conosco.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

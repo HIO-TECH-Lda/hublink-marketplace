@@ -82,38 +82,38 @@ export default function AnalyticsPage() {
     const mockTopProducts: TopProduct[] = [
       {
         id: '1',
-        name: 'Tomates Orgânicos',
+        name: 'Smartphone Samsung Galaxy A54',
         sales: 45,
-        revenue: 2250.00,
-        units: 150
+        revenue: 20250.00,
+        units: 45
       },
       {
         id: '2',
-        name: 'Maçãs Orgânicas',
+        name: 'Tênis Nike Air Max',
         sales: 38,
-        revenue: 1900.00,
-        units: 95
+        revenue: 11380.00,
+        units: 38
       },
       {
         id: '3',
-        name: 'Bananas Orgânicas',
+        name: 'Smartwatch Apple Watch',
         sales: 32,
-        revenue: 1280.00,
-        units: 160
+        revenue: 28768.00,
+        units: 32
       },
       {
         id: '4',
-        name: 'Alface Orgânica',
+        name: 'Camiseta Básica Algodão',
         sales: 28,
-        revenue: 840.00,
-        units: 70
+        revenue: 837.20,
+        units: 28
       },
       {
         id: '5',
-        name: 'Cenouras Orgânicas',
+        name: 'Livro "O Poder do Hábito"',
         sales: 25,
-        revenue: 750.00,
-        units: 75
+        revenue: 1125.00,
+        units: 25
       }
     ];
 
@@ -123,37 +123,37 @@ export default function AnalyticsPage() {
     const mockTopSellers: TopSeller[] = [
       {
         id: '1',
-        name: 'Fazenda Verde',
+        name: 'TechStore',
         sales: 120,
-        revenue: 6000.00,
+        revenue: 54000.00,
         products: 15
       },
       {
         id: '2',
-        name: 'Horta Orgânica',
+        name: 'SportStore',
         sales: 95,
-        revenue: 4750.00,
+        revenue: 28450.00,
         products: 12
       },
       {
         id: '3',
-        name: 'Produtos Naturais',
+        name: 'FashionStore',
         sales: 78,
-        revenue: 3900.00,
+        revenue: 2334.00,
         products: 8
       },
       {
         id: '4',
-        name: 'Campo Limpo',
+        name: 'BookStore',
         sales: 65,
-        revenue: 3250.00,
+        revenue: 2925.00,
         products: 10
       },
       {
         id: '5',
-        name: 'Verduras Frescas',
+        name: 'BeautyStore',
         sales: 52,
-        revenue: 2600.00,
+        revenue: 4676.80,
         products: 6
       }
     ];

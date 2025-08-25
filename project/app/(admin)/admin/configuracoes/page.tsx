@@ -72,10 +72,10 @@ export default function SystemSettingsPage() {
   const { state } = useMarketplace();
   const [settings, setSettings] = useState<SystemSettings>({
     general: {
-      siteName: 'Txova',
-      siteDescription: 'Marketplace brasileiro de alimentos orgânicos frescos e saudáveis',
-      contactEmail: 'contato@ecobazar.com',
-      supportPhone: '(11) 99999-9999',
+      siteName: 'VITRINE',
+      siteDescription: 'Marketplace completo com produtos de qualidade em todas as categorias: eletrônicos, moda, esportes, casa e muito mais.',
+      contactEmail: 'contato@vitrine.com',
+      supportPhone: '(+258) 99999-9999',
       timezone: 'America/Sao_Paulo',
       currency: 'MZN',
       language: 'pt-MZ'
@@ -99,10 +99,10 @@ export default function SystemSettingsPage() {
     email: {
       smtpHost: 'smtp.gmail.com',
       smtpPort: 587,
-      smtpUser: 'noreply@ecobazar.com',
+      smtpUser: 'noreply@vitrine.com',
       smtpPassword: '********',
-      fromEmail: 'noreply@ecobazar.com',
-      fromName: 'Txova'
+      fromEmail: 'noreply@vitrine.com',
+      fromName: 'Vitrine'
     },
     notifications: {
       orderNotifications: true,
@@ -258,7 +258,7 @@ export default function SystemSettingsPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="America/Sao_Paulo">São Paulo (GMT-3)</SelectItem>
+                        <SelectItem value="America/Sao_Paulo">Beira (GMT-3)</SelectItem>
                         <SelectItem value="America/Manaus">Manaus (GMT-4)</SelectItem>
                         <SelectItem value="America/Belem">Belém (GMT-3)</SelectItem>
                       </SelectContent>

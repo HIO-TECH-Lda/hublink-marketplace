@@ -2,17 +2,17 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const manifest = {
-    name: 'Txova - Marketplace Orgânico',
-    short_name: 'Txova',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. Conectamos produtores locais com consumidores conscientes.',
+    name: 'VITRINE - Marketplace Completo',
+    short_name: 'VITRINE',
+    description: 'VITRINE - Marketplace completo com produtos de qualidade em todas as categorias: eletrônicos, moda, esportes, casa e muito mais.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
-    theme_color: '#10b981',
+    theme_color: '#2563EB',
     orientation: 'portrait-primary',
     scope: '/',
-    lang: 'pt-MZ',
-    categories: ['shopping', 'food', 'lifestyle'],
+    lang: 'pt-BR',
+    categories: ['shopping', 'business', 'lifestyle'],
     icons: [
       {
         src: '/icons/icon-72x72.png',
@@ -65,13 +65,13 @@ export async function GET() {
     ],
     shortcuts: [
       {
-        name: 'Banca',
-        short_name: 'Banca',
-        description: 'Explorar produtos orgânicos',
+        name: 'Produtos em Destaque',
+        short_name: 'Destaques',
+        description: 'Veja os produtos em destaque',
         url: '/loja',
         icons: [
           {
-            src: '/icons/shortcut-banca.png',
+            src: '/icons/icon-96x96.png',
             sizes: '96x96'
           }
         ]
@@ -79,23 +79,23 @@ export async function GET() {
       {
         name: 'Carrinho',
         short_name: 'Carrinho',
-        description: 'Ver carrinho de compras',
+        description: 'Acesse seu carrinho de compras',
         url: '/carrinho',
         icons: [
           {
-            src: '/icons/shortcut-cart.png',
+            src: '/icons/icon-96x96.png',
             sizes: '96x96'
           }
         ]
       },
       {
-        name: 'Meu Painel',
-        short_name: 'Painel',
-        description: 'Acessar meu painel',
-        url: '/painel',
+        name: 'Minha Conta',
+        short_name: 'Conta',
+        description: 'Acesse sua conta',
+        url: '/conta',
         icons: [
           {
-            src: '/icons/shortcut-dashboard.png',
+            src: '/icons/icon-96x96.png',
             sizes: '96x96'
           }
         ]
@@ -103,40 +103,29 @@ export async function GET() {
     ],
     screenshots: [
       {
-        src: '/screenshots/homepage.png',
+        src: '/screenshots/desktop-1.png',
         sizes: '1280x720',
         type: 'image/png',
         form_factor: 'wide',
-        label: 'Página inicial do Txova'
+        label: 'Tela inicial da VITRINE'
       },
       {
-        src: '/screenshots/shop.png',
-        sizes: '1280x720',
-        type: 'image/png',
-        form_factor: 'wide',
-        label: 'Banca de produtos'
-      },
-      {
-        src: '/screenshots/mobile-home.png',
+        src: '/screenshots/mobile-1.png',
         sizes: '390x844',
         type: 'image/png',
         form_factor: 'narrow',
-        label: 'Página inicial no mobile'
-      },
-      {
-        src: '/screenshots/mobile-shop.png',
-        sizes: '390x844',
-        type: 'image/png',
-        form_factor: 'narrow',
-        label: 'Banca no mobile'
+        label: 'Tela inicial da VITRINE no mobile'
       }
-    ]
+    ],
+    related_applications: [],
+    prefer_related_applications: false,
+    edge_side_panel: {
+      preferred_width: 400
+    },
+    launch_handler: {
+      client_mode: 'navigate-existing'
+    }
   };
 
-  return NextResponse.json(manifest, {
-    headers: {
-      'Content-Type': 'application/manifest+json',
-      'Cache-Control': 'public, max-age=3600',
-    },
-  });
+  return NextResponse.json(manifest);
 } 

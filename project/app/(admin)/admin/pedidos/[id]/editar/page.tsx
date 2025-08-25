@@ -202,10 +202,10 @@ export default function EditOrderPage() {
       newErrors.shippingCity = 'Cidade é obrigatória';
     }
     if (!formData.shippingState.trim()) {
-      newErrors.shippingState = 'Estado é obrigatório';
+      newErrors.shippingState = 'Província é obrigatório';
     }
     if (!formData.shippingZipCode.trim()) {
-      newErrors.shippingZipCode = 'CEP é obrigatório';
+      newErrors.shippingZipCode = 'ZIP é obrigatório';
     }
 
     setErrors(newErrors);
@@ -478,7 +478,7 @@ export default function EditOrderPage() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Estado *</label>
+                    <label className="text-sm font-medium text-gray-7 mb-2 block">Província *</label>
                     <Input
                       value={formData.shippingState}
                       onChange={(e) => setFormData({...formData, shippingState: e.target.value})}
@@ -489,7 +489,7 @@ export default function EditOrderPage() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">CEP *</label>
+                    <label className="text-sm font-medium text-gray-7 mb-2 block">ZIP *</label>
                     <Input
                       value={formData.shippingZipCode}
                       onChange={(e) => setFormData({...formData, shippingZipCode: e.target.value})}

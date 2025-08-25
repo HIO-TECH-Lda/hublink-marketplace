@@ -67,79 +67,117 @@ export default function ProductManagementPage() {
     const mockProducts: Product[] = [
       {
         id: '1',
-        name: 'Maçãs Orgânicas',
-        description: 'Maçãs orgânicas frescas e saborosas',
-        price: 15.00,
-        category: 'Frutas',
+        name: 'Smartphone Samsung Galaxy A54',
+        description: 'Smartphone Samsung Galaxy A54 128GB, 8GB RAM, Tela 6.4", Câmera Tripla 50MP, Android 13.',
+        price: 450.00,
+        category: 'Eletrônicos',
         seller: {
           id: '1',
           name: 'João Silva',
-          businessName: 'Fazenda Verde'
+          businessName: 'TechStore'
         },
         status: 'active',
         rating: 4.8,
         reviewCount: 25,
-        stock: 50,
-        image: '/images/apples.jpg',
+        stock: 15,
+        image: '/images/smartphone.jpg',
         createdAt: '2024-01-15T10:30:00Z',
         updatedAt: '2024-01-20T14:25:00Z'
       },
       {
         id: '2',
-        name: 'Tomates Orgânicos',
-        description: 'Tomates orgânicos cultivados sem agrotóxicos',
-        price: 12.50,
-        category: 'Legumes',
+        name: 'Tênis Nike Air Max',
+        description: 'Tênis Nike Air Max para corrida e esportes, confortável e durável',
+        price: 299.90,
+        category: 'Esportes',
         seller: {
           id: '2',
           name: 'Maria Santos',
-          businessName: 'Horta Orgânica'
+          businessName: 'SportStore'
         },
         status: 'pending',
         rating: 0,
         reviewCount: 0,
-        stock: 30,
-        image: '/images/tomatoes.jpg',
+        stock: 8,
+        image: '/images/tenis.jpg',
         createdAt: '2024-01-20T09:15:00Z',
         updatedAt: '2024-01-20T09:15:00Z'
       },
       {
         id: '3',
-        name: 'Bananas Orgânicas',
-        description: 'Bananas orgânicas da melhor qualidade',
-        price: 8.90,
-        category: 'Frutas',
+        name: 'Camiseta Básica Algodão',
+        description: 'Camiseta básica 100% algodão, confortável e versátil',
+        price: 29.90,
+        category: 'Moda',
         seller: {
           id: '3',
           name: 'Pedro Oliveira',
-          businessName: 'Bananal Orgânico'
+          businessName: 'FashionStore'
         },
         status: 'active',
         rating: 4.5,
         reviewCount: 18,
-        stock: 100,
-        image: '/images/bananas.jpg',
+        stock: 50,
+        image: '/images/camiseta.jpg',
         createdAt: '2024-01-10T11:20:00Z',
         updatedAt: '2024-01-18T16:45:00Z'
       },
       {
         id: '4',
-        name: 'Alface Orgânica',
-        description: 'Alface orgânica fresca e crocante',
-        price: 5.50,
-        category: 'Verduras',
+        name: 'Smartwatch Apple Watch',
+        description: 'Smartwatch Apple Watch Series 8, GPS, monitor cardíaco',
+        price: 899.90,
+        category: 'Eletrônicos',
         seller: {
           id: '1',
           name: 'João Silva',
-          businessName: 'Fazenda Verde'
+          businessName: 'TechStore'
         },
         status: 'rejected',
         rating: 0,
         reviewCount: 0,
         stock: 0,
-        image: '/images/lettuce.jpg',
+        image: '/images/smartwatch.jpg',
         createdAt: '2024-01-19T08:30:00Z',
         updatedAt: '2024-01-19T15:20:00Z'
+      },
+      {
+        id: '5',
+        name: 'Livro "O Poder do Hábito"',
+        description: 'Livro best-seller sobre desenvolvimento pessoal e produtividade',
+        price: 45.00,
+        category: 'Livros',
+        seller: {
+          id: '4',
+          name: 'Ana Costa',
+          businessName: 'BookStore'
+        },
+        status: 'active',
+        rating: 4.7,
+        reviewCount: 32,
+        stock: 25,
+        image: '/images/livro.jpg',
+        createdAt: '2024-01-12T14:20:00Z',
+        updatedAt: '2024-01-18T10:15:00Z'
+      },
+      {
+        id: '6',
+        name: 'Perfume Masculino',
+        description: 'Perfume masculino com fragrância duradoura e elegante',
+        price: 89.90,
+        category: 'Beleza',
+        seller: {
+          id: '5',
+          name: 'Carlos Mendes',
+          businessName: 'BeautyStore'
+        },
+        status: 'active',
+        rating: 4.3,
+        reviewCount: 12,
+        stock: 20,
+        image: '/images/perfume.jpg',
+        createdAt: '2024-01-16T16:45:00Z',
+        updatedAt: '2024-01-19T09:30:00Z'
       }
     ];
 

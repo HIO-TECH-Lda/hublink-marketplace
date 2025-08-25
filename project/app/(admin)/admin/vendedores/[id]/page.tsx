@@ -95,20 +95,20 @@ export default function VendorDetailPage() {
     const mockVendor: Vendor = {
       id: params.id as string,
       userId: '1',
-      businessName: 'Fazenda Verde',
-      businessDescription: 'Produtos orgânicos frescos direto da fazenda. Cultivamos com amor e respeito ao meio ambiente, garantindo qualidade e sabor em todos os nossos produtos.',
+      businessName: 'TechStore',
+      businessDescription: 'Loja especializada em produtos eletrônicos e tecnologia. Oferecemos smartphones, computadores, acessórios e muito mais com a melhor qualidade e preços competitivos.',
       cnpj: '12.345.678/0001-90',
       contactPerson: {
         firstName: 'João',
         lastName: 'Silva',
-        email: 'joao@fazendaverde.com',
+        email: 'joao@techstore.com',
         phone: '(258) 84-123-4567'
       },
       address: {
-        street: 'Estrada Nacional 1',
-        number: 'Km 25',
-        complement: 'Fazenda Verde',
-        neighborhood: 'Zona Rural',
+        street: 'Avenida 25 de Setembro',
+        number: '1234',
+        complement: 'Loja 45',
+        neighborhood: 'Baixa',
         city: 'Maputo',
         state: 'Maputo',
         zipCode: '1100'
@@ -131,26 +131,26 @@ export default function VendorDetailPage() {
     const mockProducts: Product[] = [
       {
         id: '1',
-        name: 'Maçãs Orgânicas',
-        price: 150.00,
+        name: 'Smartphone Samsung Galaxy A54',
+        price: 450.00,
         status: 'active',
         rating: 4.8,
         reviewCount: 25,
-        stock: 50
+        stock: 15
       },
       {
         id: '2',
-        name: 'Alface Orgânica',
-        price: 55.00,
+        name: 'Smartwatch Apple Watch',
+        price: 899.90,
         status: 'active',
         rating: 4.5,
         reviewCount: 18,
-        stock: 30
+        stock: 8
       },
       {
         id: '3',
-        name: 'Tomates Orgânicos',
-        price: 125.00,
+        name: 'Fones de Ouvido Bluetooth',
+        price: 299.90,
         status: 'pending',
         rating: 0,
         reviewCount: 0,

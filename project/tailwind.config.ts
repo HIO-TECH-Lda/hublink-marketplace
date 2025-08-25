@@ -14,9 +14,9 @@ const config: Config = {
       },
       colors: {
         primary: {
-          DEFAULT: '#00BE27',
-          soft: '#6AC187',
-          hard: '#2C762F',
+          DEFAULT: '#2563EB', // Blue-600
+          soft: '#60A5FA',    // Blue-400
+          hard: '#1D4ED8',    // Blue-700
         },
         warning: '#FF7B40',
         danger: '#EA4B4E',
@@ -31,16 +31,16 @@ const config: Config = {
           8: '#666666',
           9: '#4D4D4D',
         },
-        'green-gray': {
-          1: '#F6F8F6',
-          2: '#EDF2ED',
-          3: '#E0E8E0',
-          4: '#C7D4C7',
-          5: '#AEC0AE',
-          6: '#95AC95',
-          7: '#7C987C',
-          8: '#638463',
-          9: '#4A704A',
+        'blue-gray': {
+          1: '#F8FAFC',
+          2: '#F1F5F9',
+          3: '#E2E8F0',
+          4: '#CBD5E1',
+          5: '#94A3B8',
+          6: '#64748B',
+          7: '#475569',
+          8: '#334155',
+          9: '#1E293B',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

@@ -18,52 +18,52 @@ export default function FAQPage() {
 
   const faqs = [
     {
-      question: "O que são alimentos orgânicos?",
-      answer: "Alimentos orgânicos são cultivados sem o uso de pesticidas sintéticos, fertilizantes químicos ou organismos geneticamente modificados. Eles seguem práticas agrícolas que promovem a saúde do solo, biodiversidade e sustentabilidade ambiental."
+      question: "Como funciona a VITRINE?",
+      answer: "A VITRINE é um marketplace completo que conecta vendedores confiáveis com compradores. Oferecemos produtos em todas as categorias: eletrônicos, moda, esportes, casa, beleza e muito mais. Você pode navegar, comparar preços e fazer compras seguras."
     },
     {
-      question: "Como posso ter certeza de que os produtos são realmente orgânicos?",
-      answer: "Todos os nossos produtores são certificados por órgãos reconhecidos e passam por rigorosos controles de qualidade. Você pode rastrear a origem de cada produto através do código QR ou número de lote."
-    },
-    {
-      question: "Qual a diferença entre produtos orgânicos e convencionais?",
-      answer: "Produtos orgânicos são cultivados sem agrotóxicos, têm maior teor de nutrientes, são mais saborosos e não contêm resíduos químicos prejudiciais à saúde. Além disso, promovem a sustentabilidade ambiental."
-    },
-    {
-      question: "Como funciona o processo de entrega?",
-      answer: "Após confirmar seu pedido, nossos parceiros de entrega farão a coleta dos produtos diretamente dos produtores e entregarão na sua casa no horário agendado. Entregamos em até 24 horas na região metropolitana."
+      question: "Como posso ter certeza de que os produtos são de qualidade?",
+      answer: "Todos os nossos vendedores são verificados e passam por rigorosos controles de qualidade. Além disso, temos um sistema de avaliações e reviews que permite que você veja a experiência de outros compradores antes de fazer sua compra."
     },
     {
       question: "Quais são as formas de pagamento aceitas?",
-      answer: "Aceitamos M-Pesa, cartão de crédito, cartão de débito e dinheiro na entrega. Todos os pagamentos são processados de forma segura através de nossa plataforma."
+      answer: "Aceitamos múltiplas formas de pagamento: cartão de crédito, cartão de débito, PIX, boleto bancário e pagamento na entrega. Todos os pagamentos são processados de forma segura através de nossa plataforma."
+    },
+    {
+      question: "Como funciona o processo de entrega?",
+      answer: "Após confirmar seu pedido, nossos parceiros de entrega farão a coleta dos produtos e entregarão na sua casa no horário agendado. Entregamos em até 24 horas na região metropolitana e oferecemos rastreamento em tempo real."
     },
     {
       question: "Posso cancelar ou alterar meu pedido?",
-      answer: "Sim! Pedidos podem ser cancelados ou alterados até 2 horas antes da entrega. Entre em contato conosco através do telefone ou chat online para solicitar as alterações."
+      answer: "Sim! Pedidos podem ser cancelados ou alterados até 2 horas antes da entrega. Entre em contato conosco através do telefone, chat online ou pelo painel da sua conta para solicitar as alterações."
     },
     {
-      question: "Os produtos têm garantia de qualidade?",
-      answer: "Sim! Garantimos a qualidade de todos os produtos. Se você não ficar satisfeito, devolvemos seu dinheiro ou trocamos o produto sem questionamentos."
+      question: "Os produtos têm garantia?",
+      answer: "Sim! Todos os produtos têm garantia conforme a legislação brasileira. Se você não ficar satisfeito, devolvemos seu dinheiro ou trocamos o produto sem questionamentos, respeitando nossa política de devolução."
     },
     {
-      question: "Como posso me tornar um produtor parceiro?",
-      answer: "Para se tornar um produtor parceiro, você precisa ter certificação orgânica e seguir nossas diretrizes de qualidade. Entre em contato conosco para mais informações sobre o processo de cadastro."
+      question: "Como posso me tornar um vendedor na VITRINE?",
+      answer: "Para se tornar um vendedor, você precisa se cadastrar em nossa plataforma, fornecer documentação necessária e seguir nossas diretrizes de qualidade. Entre em contato conosco para mais informações sobre o processo de cadastro."
     },
     {
       question: "Vocês entregam em toda a cidade?",
-      answer: "Atualmente entregamos na região metropolitana de São Paulo. Para outras localidades, consulte nossa equipe de atendimento para verificar a disponibilidade."
+      answer: "Atualmente entregamos na região metropolitana de Beira. Para outras localidades, consulte nossa equipe de atendimento para verificar a disponibilidade e prazos de entrega."
     },
     {
       question: "Como posso rastrear meu pedido?",
-      answer: "Após a confirmação do pedido, você receberá um código de rastreamento por e-mail e SMS. Você também pode acompanhar o status do seu pedido através da sua conta no site."
+      answer: "Após a confirmação do pedido, você receberá um código de rastreamento por e-mail e SMS. Você também pode acompanhar o status do seu pedido através da sua conta no site ou aplicativo."
     },
     {
-      question: "Os produtos são frescos?",
-      answer: "Sim! Todos os produtos são colhidos no dia da entrega ou no máximo 24 horas antes, garantindo máxima frescura e qualidade."
+      question: "Vocês têm produtos de todas as categorias?",
+      answer: "Sim! A VITRINE oferece produtos em todas as categorias: eletrônicos, moda, esportes, casa, beleza, livros, brinquedos, automotivo e muito mais. Use nossos filtros de busca para encontrar produtos específicos."
     },
     {
-      question: "Vocês têm produtos para pessoas com restrições alimentares?",
-      answer: "Sim! Oferecemos produtos sem glúten, sem lactose, veganos e para outras restrições alimentares. Use nossos filtros de busca para encontrar produtos específicos."
+      question: "Como funciona o sistema de avaliações?",
+      answer: "Após receber seu pedido, você pode avaliar o produto e o vendedor. Suas avaliações ajudam outros compradores a fazerem escolhas informadas e incentivam os vendedores a manterem a qualidade."
+    },
+    {
+      question: "Vocês oferecem suporte ao cliente?",
+      answer: "Sim! Nossa equipe de suporte está disponível 24/7 através do chat online, telefone, e-mail e tickets de suporte. Estamos sempre prontos para ajudar você com qualquer dúvida ou problema."
     }
   ];
 
@@ -84,11 +84,11 @@ export default function FAQPage() {
             {/* Page Header */}
             <div className="mb-8">
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-9 mb-4">
-                Bem-vindo, Vamos Falar Sobre Nosso Txova
+                Bem-vindo, Vamos Falar Sobre a VITRINE
               </h1>
               <p className="text-lg text-gray-7">
                 Encontre respostas para as perguntas mais frequentes sobre nossos produtos, 
-                serviços e como funciona nossa plataforma.
+                serviços e como funciona nossa plataforma de marketplace.
               </p>
             </div>
 
@@ -185,11 +185,11 @@ export default function FAQPage() {
                 <div className="space-y-3 text-sm">
                   <div>
                     <p className="font-medium text-gray-9">Telefone</p>
-                    <p className="text-gray-7">+55 (11) 9999-9999</p>
+                    <p className="text-gray-7">+258 84 9999-9999</p>
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">E-mail</p>
-                    <p className="text-gray-7">contato@ecobazar.com</p>
+                    <p className="text-gray-7">contato@vitrine.com</p>
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">Horário</p>
@@ -208,7 +208,7 @@ export default function FAQPage() {
                     onClick={() => toggleItem(0)}
                     className="block text-sm text-gray-7 hover:text-primary transition-colors"
                   >
-                    O que são alimentos orgânicos?
+                    Como funciona a VITRINE?
                   </a>
                   <a
                     href="#"
@@ -222,7 +222,7 @@ export default function FAQPage() {
                     onClick={() => toggleItem(2)}
                     className="block text-sm text-gray-7 hover:text-primary transition-colors"
                   >
-                    Qual a diferença dos produtos convencionais?
+                    Quais são as formas de pagamento?
                   </a>
                   <a
                     href="#"
@@ -238,7 +238,7 @@ export default function FAQPage() {
               <div className="bg-primary/10 rounded-lg p-4">
                 <h3 className="text-lg font-bold text-gray-9 mb-2">Fique por Dentro</h3>
                 <p className="text-sm text-gray-7 mb-4">
-                  Receba dicas sobre alimentação orgânica e novidades do Txova.
+                  Receba ofertas exclusivas e novidades da VITRINE.
                 </p>
                 <div className="space-y-2">
                   <input

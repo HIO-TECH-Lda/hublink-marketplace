@@ -78,7 +78,7 @@ This document summarizes all changes made to adapt the Txova marketplace applica
 - **Phone Placeholder:** `+258 84 123 4567`
 - **Address Placeholder:** `Avenida 25 de Setembro, 123`
 - **State Label:** "Província" (instead of "Estado")
-- **Zip Code Label:** "Código Postal" (instead of "CEP")
+- **Zip Code Label:** "Código Postal" (instead of "ZIP")
 - **Free Shipping:** Above 500 MZN (was 50 BRL)
 
 **Currency Display:**

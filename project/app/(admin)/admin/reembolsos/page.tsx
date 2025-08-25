@@ -47,28 +47,28 @@ export default function AdminRefundsPage() {
            reason: 'requested_by_customer',
            status: 'pending',
            createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-                       description: 'Os produtos chegaram danificados. As cebolas estavam murchas e as batatas doces tinham manchas escuras. Não estão em condições de consumo.',
-            orderId: 'ord_123',
-            customer: { firstName: 'João', lastName: 'Silva', email: 'joao@email.com' },
-            seller: { storeName: 'Banca da Maria' },
-            images: [
-              'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=',
-              'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='
-            ],
+           description: 'Os produtos chegaram danificados. O smartphone tem riscos na tela e o fone de ouvido não funciona corretamente. Não estão em condições de uso.',
+           orderId: 'ord_123',
+           customer: { firstName: 'João', lastName: 'Silva', email: 'joao@email.com' },
+           seller: { storeName: 'TechStore' },
+           images: [
+             'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=',
+             'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='
+           ],
            returnItems: [
              {
                id: 'item_1',
-               name: 'Cebolas Roxas Orgânicas',
-               quantity: 2,
+               name: 'Smartphone Samsung Galaxy A54',
+               quantity: 1,
                price: 1198,
-               image: '/images/onions.jpg'
+               image: '/images/smartphone.jpg'
              },
              {
                id: 'item_2', 
-               name: 'Batatas Doces Orgânicas',
+               name: 'Fone de Ouvido Bluetooth',
                quantity: 1,
                price: 899,
-               image: '/images/sweet-potatoes.jpg'
+               image: '/images/headphones.jpg'
              }
            ]
          },
@@ -82,7 +82,7 @@ export default function AdminRefundsPage() {
            description: 'Transação suspeita detectada pelo sistema de segurança.',
            orderId: 'ord_124',
            customer: { firstName: 'Ana', lastName: 'Costa', email: 'ana@email.com' },
-           seller: { storeName: 'Banca do Pedro' },
+           seller: { storeName: 'FashionStore' },
            returnItems: [
              {
                id: 'item_3',

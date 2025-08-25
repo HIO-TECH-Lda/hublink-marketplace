@@ -65,13 +65,13 @@ export default function CreateCampaignPage() {
   });
 
   const availableTags = [
-    'organic', 'vegetables', 'fruits', 'dairy', 'bakery', 'promotional', 
+    'eletrônicos', 'moda', 'esportes', 'casa', 'beleza', 'promocional', 
     'new-customer', 'returning-customer', 'high-value', 'inactive'
   ];
 
   const availableCategories = [
-    'vegetables', 'fruits', 'dairy', 'bakery', 'grains', 'beverages', 
-    'snacks', 'condiments', 'frozen', 'fresh'
+    'eletrônicos', 'moda', 'esportes', 'casa', 'beleza', 'livros', 
+    'tecnologia', 'acessórios', 'brinquedos', 'automotivo'
   ];
 
   const handleInputChange = (field: string, value: any) => {
@@ -211,7 +211,7 @@ export default function CreateCampaignPage() {
                       id="name"
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
-                      placeholder="Ex: Ofertas da Semana - Orgânicos"
+                      placeholder="Ex: Ofertas da Semana - Eletrônicos"
                       className="mt-1"
                     />
                   </div>
@@ -222,7 +222,7 @@ export default function CreateCampaignPage() {
                       id="subject"
                       value={formData.subject}
                       onChange={(e) => handleInputChange('subject', e.target.value)}
-                      placeholder="Ex: 🍃 20% OFF em produtos orgânicos selecionados"
+                      placeholder="Ex: 🔥 30% OFF em smartphones selecionados"
                       className="mt-1"
                     />
                   </div>
@@ -376,7 +376,7 @@ export default function CreateCampaignPage() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Africa/Maputo">Maputo (GMT+2)</SelectItem>
-                        <SelectItem value="America/Sao_Paulo">São Paulo (GMT-3)</SelectItem>
+                        <SelectItem value="America/Sao_Paulo">Beira (GMT-3)</SelectItem>
                         <SelectItem value="UTC">UTC</SelectItem>
                       </SelectContent>
                     </Select>
@@ -449,7 +449,7 @@ export default function CreateCampaignPage() {
               <CardContent>
                 <div className="border rounded-lg p-4 bg-white">
                   <div className="mb-4">
-                    <p className="font-medium text-gray-9">De: Txova &lt;noreply@txova.com&gt;</p>
+                    <p className="font-medium text-gray-9">De: VITRINE &lt;noreply@vitrine.com&gt;</p>
                     <p className="font-medium text-gray-9">Para: [Assinante]</p>
                     <p className="font-medium text-gray-9">Assunto: {formData.subject || 'Assunto do email'}</p>
                   </div>

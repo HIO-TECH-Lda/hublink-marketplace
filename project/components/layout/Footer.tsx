@@ -76,27 +76,26 @@ export default function Footer() {
             {/* Company Info */}
             <div>
               <Link href="/" className="flex items-center space-x-2 mb-6">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">T</span>
+                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">V</span>
                 </div>
-                <span className="text-xl sm:text-2xl font-bold">Txova</span>
+                <span className="text-xl sm:text-2xl font-bold">VITRINE</span>
               </Link>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
-                Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. 
-                Conectamos produtores locais com consumidores conscientes em Beira.
+                Marketplace completo com produtos de qualidade em todas as categorias: eletrônicos, moda, esportes, casa e muito mais.
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
                   <MapPin size={16} className="flex-shrink-0" />
-                  <span className="break-words">Beira, Sofala - Moçambique</span>
+                  <span className="break-words">Baixa, Beira Sofala- Moçambique</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone size={16} className="flex-shrink-0" />
-                  <span>+258 84 123 4567</span>
+                  <span>+258 84 999-9999</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={16} className="flex-shrink-0" />
-                  <span className="break-all">contato@ecobazar.co.mz</span>
+                  <span className="break-all">contato@vitrine.com</span>
                 </div>
               </div>
             </div>
@@ -148,7 +147,7 @@ export default function Footer() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <p className="text-gray-4 text-sm text-center lg:text-left">
-              © 2024 Txova. Todos os direitos reservados.
+              © 2024 VITRINE. Todos os direitos reservados.
             </p>
             
             {/* Social Media */}

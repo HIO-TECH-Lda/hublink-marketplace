@@ -57,53 +57,83 @@ export default function CategoryManagementPage() {
     const mockCategories: Category[] = [
       {
         id: '1',
-        name: 'Frutas',
-        description: 'Frutas frescas e orgânicas',
-        slug: 'frutas',
+        name: 'Eletrônicos',
+        description: 'Smartphones, computadores, acessórios e tecnologia',
+        slug: 'eletronicos',
         status: 'active',
-        productCount: 25,
+        productCount: 45,
         createdAt: '2024-01-10T10:30:00Z',
         updatedAt: '2024-01-20T14:25:00Z'
       },
       {
         id: '2',
-        name: 'Legumes',
-        description: 'Legumes orgânicos cultivados localmente',
-        slug: 'legumes',
+        name: 'Moda',
+        description: 'Roupas, calçados e acessórios para todos os estilos',
+        slug: 'moda',
         status: 'active',
-        productCount: 18,
+        productCount: 38,
         createdAt: '2024-01-10T11:20:00Z',
         updatedAt: '2024-01-19T16:45:00Z'
       },
       {
         id: '3',
-        name: 'Verduras',
-        description: 'Verduras frescas e nutritivas',
-        slug: 'verduras',
+        name: 'Esportes',
+        description: 'Equipamentos esportivos e fitness de qualidade',
+        slug: 'esportes',
         status: 'active',
-        productCount: 12,
+        productCount: 22,
         createdAt: '2024-01-10T12:15:00Z',
         updatedAt: '2024-01-18T10:30:00Z'
       },
       {
         id: '4',
-        name: 'Grãos',
-        description: 'Grãos orgânicos e cereais',
-        slug: 'graos',
-        status: 'inactive',
-        productCount: 8,
+        name: 'Casa e Jardim',
+        description: 'Decoração, móveis e produtos para casa',
+        slug: 'casa-jardim',
+        status: 'active',
+        productCount: 28,
         createdAt: '2024-01-10T13:45:00Z',
         updatedAt: '2024-01-17T14:20:00Z'
       },
       {
         id: '5',
-        name: 'Laticínios',
-        description: 'Produtos lácteos orgânicos',
-        slug: 'laticinios',
+        name: 'Beleza',
+        description: 'Cosméticos, perfumes e produtos de beleza',
+        slug: 'beleza',
         status: 'active',
-        productCount: 15,
+        productCount: 35,
         createdAt: '2024-01-10T14:30:00Z',
         updatedAt: '2024-01-20T09:15:00Z'
+      },
+      {
+        id: '6',
+        name: 'Livros',
+        description: 'Livros, revistas e material educacional',
+        slug: 'livros',
+        status: 'active',
+        productCount: 15,
+        createdAt: '2024-01-10T15:20:00Z',
+        updatedAt: '2024-01-19T11:30:00Z'
+      },
+      {
+        id: '7',
+        name: 'Brinquedos',
+        description: 'Brinquedos e jogos para todas as idades',
+        slug: 'brinquedos',
+        status: 'active',
+        productCount: 18,
+        createdAt: '2024-01-10T16:10:00Z',
+        updatedAt: '2024-01-18T15:45:00Z'
+      },
+      {
+        id: '8',
+        name: 'Automotivo',
+        description: 'Acessórios e produtos para veículos',
+        slug: 'automotivo',
+        status: 'inactive',
+        productCount: 8,
+        createdAt: '2024-01-10T17:00:00Z',
+        updatedAt: '2024-01-17T09:20:00Z'
       }
     ];
 

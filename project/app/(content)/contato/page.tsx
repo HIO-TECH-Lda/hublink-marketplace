@@ -36,19 +36,19 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Endereço',
-      content: 'Rua das Flores, 123 - Centro\nSão Paulo, SP - 01234-567',
+      content: 'Rua das Flores, 123 - Centro\nSão Paulo, Sofala - 01234-567',
       color: 'text-primary'
     },
     {
       icon: Phone,
       title: 'Telefones',
-      content: '+55 (11) 9999-9999\n+55 (11) 8888-8888',
+      content: '+258 84 9999-9999\n+258 84 8888-8888',
       color: 'text-primary'
     },
     {
       icon: Mail,
       title: 'E-mail',
-      content: 'contato@ecobazar.com\nsuporte@ecobazar.com',
+      content: 'contato@vitrine.com\nsuporte@vitrine.com',
       color: 'text-primary'
     },
     {
@@ -108,7 +108,7 @@ export default function ContactPage() {
                     <MapPin size={32} className="sm:w-12 sm:h-12 text-gray-4 mx-auto mb-3 sm:mb-4" />
                     <p className="text-gray-6 text-sm sm:text-base">Mapa interativo será carregado aqui</p>
                     <p className="text-xs sm:text-sm text-gray-5 mt-2">
-                      Rua das Flores, 123 - Centro, São Paulo, SP
+                      Rua das Flores, 123 - Centro, Beira, Sofala
                     </p>
                   </div>
                 </div>
@@ -250,7 +250,7 @@ export default function ContactPage() {
               <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Como faço um pedido?</h3>
               <p className="text-gray-7 text-xs sm:text-sm">
                 Navegue pelos produtos, adicione ao carrinho e finalize sua compra. 
-                Aceitamos M-Pesa, cartão de crédito e dinheiro na entrega.
+                Aceitamos cartão de crédito, PIX, boleto e pagamento na entrega.
               </p>
             </div>
             
@@ -263,9 +263,9 @@ export default function ContactPage() {
             </div>
             
             <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Os produtos são realmente orgânicos?</h3>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Os produtos são de qualidade?</h3>
               <p className="text-gray-7 text-xs sm:text-sm">
-                Sim! Todos os nossos produtores são certificados e passam por 
+                Sim! Todos os nossos vendedores são verificados e passam por 
                 rigorosos controles de qualidade.
               </p>
             </div>
