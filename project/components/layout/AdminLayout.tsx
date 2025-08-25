@@ -18,7 +18,8 @@ import {
   Tag,
   MessageSquare,
   RotateCcw,
-  Mail
+  Mail,
+  FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
@@ -35,6 +36,7 @@ const navigation = [
   { name: 'Produtos', href: '/admin/produtos', icon: Package },
   { name: 'Vendedores', href: '/admin/vendedores', icon: Shield },
   { name: 'Categorias', href: '/admin/categorias', icon: Tag },
+  { name: 'Blog', href: '/admin/blog', icon: FileText },
   { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },
   { name: 'Tickets', href: '/admin/tickets', icon: MessageSquare },
   { name: 'Relatórios', href: '/admin/relatorios', icon: BarChart3 },

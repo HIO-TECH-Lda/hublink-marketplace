@@ -242,7 +242,10 @@ type MarketplaceAction =
   | { type: 'SET_CURRENT_PAGE'; payload: string }
   | { type: 'ADD_TICKET'; payload: Ticket }
   | { type: 'UPDATE_TICKET'; payload: Ticket }
-  | { type: 'DELETE_TICKET'; payload: string };
+  | { type: 'DELETE_TICKET'; payload: string }
+  | { type: 'ADD_BLOG_POST'; payload: BlogPost }
+  | { type: 'UPDATE_BLOG_POST'; payload: BlogPost }
+  | { type: 'DELETE_BLOG_POST'; payload: string };
 
 // Mock data
 const mockProducts: Product[] = [
@@ -1490,6 +1493,26 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
       return {
         ...state,
         tickets: state.tickets.filter(ticket => ticket.id !== action.payload),
+      };
+
+    case 'ADD_BLOG_POST':
+      return {
+        ...state,
+        blogPosts: [...state.blogPosts, action.payload],
+      };
+
+    case 'UPDATE_BLOG_POST':
+      return {
+        ...state,
+        blogPosts: state.blogPosts.map(post =>
+          post.id === action.payload.id ? action.payload : post
+        ),
+      };
+
+    case 'DELETE_BLOG_POST':
+      return {
+        ...state,
+        blogPosts: state.blogPosts.filter(post => post.id !== action.payload),
       };
 
     default:
