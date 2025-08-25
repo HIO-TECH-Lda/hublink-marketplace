@@ -146,7 +146,7 @@ export default function AjudaPage() {
     <div className="min-h-screen bg-gray-1 overflow-x-hidden">
       <Header />
 
-      <div className="container py-8 px-4 sm:px-6 lg:px-8">
+      <div className="container py-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 

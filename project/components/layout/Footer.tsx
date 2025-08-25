@@ -47,7 +47,7 @@ export default function Footer() {
     <footer className="bg-gray-9 text-white">
       {/* Newsletter Section */}
       <div className="bg-gray-8 py-12">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="text-center md:text-left">
               <h3 className="text-xl sm:text-2xl font-semibold mb-2">Assine Nossa Newsletter</h3>
@@ -71,7 +71,7 @@ export default function Footer() {
 
       {/* Main Footer */}
       <div className="py-12">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
             <div>
@@ -145,7 +145,7 @@ export default function Footer() {
 
       {/* Bottom Footer */}
       <div className="border-t border-gray-7 py-6">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <p className="text-gray-4 text-sm text-center lg:text-left">
               © 2024 Txova. Todos os direitos reservados.

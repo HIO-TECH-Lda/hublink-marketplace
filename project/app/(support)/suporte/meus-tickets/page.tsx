@@ -183,7 +183,7 @@ export default function MyTicketsPage() {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="container py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
           <p className="text-gray-6 mb-8">Você precisa estar logado para ver seus tickets.</p>
           <Button onClick={() => router.push('/entrar')} className="bg-primary hover:bg-primary-hard text-white">
@@ -199,8 +199,8 @@ export default function MyTicketsPage() {
     <div className="min-h-screen bg-gray-1">
       <Header />
       
-      <div className="container py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+      <div className="container py-4 sm:py-8">
+        <div>
           {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div className="w-full sm:w-auto">

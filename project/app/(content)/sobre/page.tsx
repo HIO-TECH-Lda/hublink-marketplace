@@ -74,7 +74,7 @@ export default function AboutPage() {
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-green-gray-1 to-green-gray-2 py-16 lg:py-24">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-6">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-9 leading-tight">
@@ -112,7 +112,7 @@ export default function AboutPage() {
 
       {/* Mission Section */}
       <section className="py-16 lg:py-24">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="relative order-first lg:order-last">
               <img
@@ -165,7 +165,7 @@ export default function AboutPage() {
 
       {/* Values Section */}
       <section className="py-16 lg:py-24 bg-gray-1">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossos Valores</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
@@ -212,7 +212,7 @@ export default function AboutPage() {
 
       {/* Team Section */}
       <section className="py-16 lg:py-24">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossa Equipe Incrível</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
@@ -241,7 +241,7 @@ export default function AboutPage() {
 
       {/* Testimonials Section */}
       <section className="py-16 lg:py-24 bg-gray-1">
-        <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Depoimentos de Clientes</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
@@ -284,7 +284,7 @@ export default function AboutPage() {
 
       {/* CTA Section */}
       <section className="py-16 lg:py-24 bg-gradient-to-r from-primary to-primary-hard">
-        <div className="container px-4 sm:px-6 lg:px-8 text-center">
+        <div className="container text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 px-4">
             Nós Entregamos, Você Aproveita Seu Pedido
           </h2>

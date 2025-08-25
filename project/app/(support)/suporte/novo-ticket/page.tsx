@@ -162,7 +162,7 @@ export default function NewTicketPage() {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="container py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
           <p className="text-gray-6 mb-8">Você precisa estar logado para criar um ticket de suporte.</p>
           <Button onClick={() => router.push('/entrar')} className="bg-primary hover:bg-primary-hard text-white">
@@ -178,8 +178,8 @@ export default function NewTicketPage() {
     <div className="min-h-screen bg-gray-1">
       <Header />
       
-      <div className="container py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="container py-8">
+        <div>
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Novo Ticket de Suporte</h1>
             <p className="text-gray-6">Descreva seu problema ou solicitação para que possamos ajudá-lo.</p>

@@ -289,7 +289,7 @@ export default function OrderTrackingPage() {
           </Button>
         </nav>
 
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="space-y-6">
           {/* Order Header */}
           <Card>
             <CardHeader>

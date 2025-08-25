@@ -221,7 +221,7 @@ export default function TicketDetailPage() {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="container py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
           <p className="text-gray-6 mb-8">Você precisa estar logado para ver este ticket.</p>
           <Button onClick={() => router.push('/entrar')} className="bg-primary hover:bg-primary-hard text-white">
@@ -237,7 +237,7 @@ export default function TicketDetailPage() {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="container py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-9 mb-4">Ticket não encontrado</h1>
           <p className="text-gray-6 mb-8">O ticket que você está procurando não existe ou foi removido.</p>
           <Button onClick={() => router.push('/suporte/meus-tickets')} className="bg-primary hover:bg-primary-hard text-white">
@@ -254,7 +254,7 @@ export default function TicketDetailPage() {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="container py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
           <p className="text-gray-6 mb-8">Você não tem permissão para ver este ticket.</p>
           <Button onClick={() => router.push('/suporte/meus-tickets')} className="bg-primary hover:bg-primary-hard text-white">
@@ -270,8 +270,8 @@ export default function TicketDetailPage() {
     <div className="min-h-screen bg-gray-1">
       <Header />
       
-      <div className="container py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="container py-8">
+        <div>
           {/* Header */}
           <div className="mb-6">
             <Button 

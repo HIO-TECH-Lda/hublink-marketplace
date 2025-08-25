@@ -58,7 +58,7 @@ export default function Header() {
     <div className="w-full">
       {/* Top Bar */}
       <div className="bg-gray-1 border-b border-gray-3 hidden sm:block">
-        <div className="container py-2 px-4 sm:px-6 lg:px-8">
+        <div className="container py-2">
           <div className="flex justify-between items-center text-sm text-gray-8">
             <div className="flex items-center space-x-4 sm:space-x-6">
               <div className="flex items-center space-x-2">
@@ -86,7 +86,7 @@ export default function Header() {
 
       {/* Main Header */}
       <header className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="container py-4 px-4 sm:px-6 lg:px-8">
+        <div className="container py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
