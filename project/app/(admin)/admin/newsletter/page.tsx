@@ -421,20 +421,21 @@ export default function NewsletterManagementPage() {
   return (
     <AdminLayout>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.back()}
-            className="text-gray-6 hover:text-gray-9"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar
-          </Button>
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-9">Gerenciamento de Newsletter</h1>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Newsletter</h1>
             <p className="text-gray-6">Gerencie assinantes e campanhas de email</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              onClick={() => router.back()}
+              className="text-gray-6 hover:text-gray-9"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
           </div>
         </div>
       </div>

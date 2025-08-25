@@ -199,9 +199,13 @@ export default function AdminTicketsPage() {
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6">
         {/* Header */}
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Gestão de Tickets</h1>
-          <p className="text-gray-6 text-sm sm:text-base">Gerencie todas as solicitações de suporte da plataforma</p>
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Tickets</h1>
+              <p className="text-gray-6">Gerencie todas as solicitações de suporte da plataforma</p>
+            </div>
+          </div>
         </div>
 
         {/* Statistics */}

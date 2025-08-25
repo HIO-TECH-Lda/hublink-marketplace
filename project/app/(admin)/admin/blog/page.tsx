@@ -124,15 +124,19 @@ export default function BlogManagementPage() {
   return (
     <AdminLayout>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-9">Gerenciamento do Blog</h1>
-          <p className="text-gray-6 mt-1">Gerencie os posts do blog da plataforma</p>
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento do Blog</h1>
+            <p className="text-gray-6">Gerencie os posts do blog da plataforma</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button onClick={handleCreatePost} className="bg-primary hover:bg-primary-hard text-white">
+              <Plus size={16} className="mr-2" />
+              Novo Post
+            </Button>
+          </div>
         </div>
-        <Button onClick={handleCreatePost} className="bg-primary hover:bg-primary-hard text-white">
-          <Plus size={16} className="mr-2" />
-          Novo Post
-        </Button>
       </div>
 
       {/* Stats Cards */}

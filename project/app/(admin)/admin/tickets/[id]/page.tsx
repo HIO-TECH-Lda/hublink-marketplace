@@ -256,58 +256,50 @@ export default function AdminTicketDetailPage() {
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => router.push('/admin/tickets')}
-              className="h-9"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Voltar
-            </Button>
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-9">Ticket #{ticket.id}</h1>
-              <p className="text-gray-6 text-sm">{ticket.title}</p>
+              <h1 className="text-3xl font-bold text-gray-9 mb-2">Ticket #{ticket.id}</h1>
+              <p className="text-gray-6">{ticket.title}</p>
             </div>
-          </div>
-          <div className="flex gap-2">
-            {isEditing ? (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleCancelEdit}
-                  disabled={isSubmitting}
-                  className="h-9"
-                >
-                  Cancelar
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={handleSaveChanges}
-                  disabled={isSubmitting}
-                  className="h-9"
-                >
-                  <Save className="w-4 h-4 mr-2" />
-                  Salvar
-                </Button>
-              </>
-            ) : (
+            <div className="flex items-center space-x-2">
               <Button
                 variant="outline"
-                size="sm"
-                onClick={() => setIsEditing(true)}
-                className="h-9"
+                onClick={() => router.push('/admin/tickets')}
+                className="text-gray-6 hover:text-gray-9"
               >
-                <Edit3 className="w-4 h-4 mr-2" />
-                Editar
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Voltar
               </Button>
-            )}
+              {isEditing ? (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={handleCancelEdit}
+                    disabled={isSubmitting}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    onClick={handleSaveChanges}
+                    disabled={isSubmitting}
+                  >
+                    <Save className="w-4 h-4 mr-2" />
+                    Salvar
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="outline"
+                  onClick={() => setIsEditing(true)}
+                >
+                  <Edit3 className="w-4 h-4 mr-2" />
+                  Editar
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">

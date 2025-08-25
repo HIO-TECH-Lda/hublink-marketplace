@@ -106,19 +106,21 @@ export default function CreateBlogPostPage() {
   return (
     <AdminLayout>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="outline"
-            onClick={handleCancel}
-            className="text-gray-6 hover:text-gray-9"
-          >
-            <ArrowLeft size={16} className="mr-2" />
-            Voltar
-          </Button>
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-9">Criar Novo Post</h1>
-            <p className="text-gray-6 mt-1">Adicione um novo post ao blog da plataforma</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Criar Novo Post</h1>
+            <p className="text-gray-6">Adicione um novo post ao blog da plataforma</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              onClick={handleCancel}
+              className="text-gray-6 hover:text-gray-9"
+            >
+              <ArrowLeft size={16} className="mr-2" />
+              Voltar
+            </Button>
           </div>
         </div>
       </div>

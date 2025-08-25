@@ -189,19 +189,22 @@ export default function AdminRefundsPage() {
 
   return (
     <AdminLayout>
-      <div className="p-6 space-y-6">
+      <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-9">Gestão de Reembolsos</h1>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Reembolsos</h1>
             <p className="text-gray-6">Gerencie todas as solicitações de reembolso</p>
           </div>
-          <Button onClick={loadRefunds} disabled={isLoading} className="bg-primary hover:bg-primary-hard text-white">
-            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-            Atualizar
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button onClick={loadRefunds} disabled={isLoading} className="bg-primary hover:bg-primary-hard text-white">
+              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              Atualizar
+            </Button>
+          </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -503,7 +506,6 @@ export default function AdminRefundsPage() {
             )}
           </CardContent>
         </Card>
-      </div>
     </AdminLayout>
   );
 }
