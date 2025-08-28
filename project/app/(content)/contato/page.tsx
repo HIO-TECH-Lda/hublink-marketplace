@@ -36,13 +36,13 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Endereço',
-      content: 'Rua das Flores, 123 - Centro\nSão Paulo, SP - 01234-567',
+      content: 'Rua das Flores, 123 - Baixa\n Beira - 2100',
       color: 'text-primary'
     },
     {
       icon: Phone,
       title: 'Telefones',
-      content: '+55 (11) 9999-9999\n+55 (11) 8888-8888',
+      content: '+258 84 9999-9999\n+258 84 8888-8888',
       color: 'text-primary'
     },
     {
@@ -108,7 +108,7 @@ export default function ContactPage() {
                     <MapPin size={32} className="sm:w-12 sm:h-12 text-gray-4 mx-auto mb-3 sm:mb-4" />
                     <p className="text-gray-6 text-sm sm:text-base">Mapa interativo será carregado aqui</p>
                     <p className="text-xs sm:text-sm text-gray-5 mt-2">
-                      Rua das Flores, 123 - Centro, São Paulo, SP
+                      Rua das Flores, 123 - Baixa, Beira - 2100
                     </p>
                   </div>
                 </div>

@@ -49,7 +49,7 @@ export default function CreateAccountPage() {
         firstName: 'Novo',
         lastName: 'Usuário',
         address: '',
-        country: 'Brasil',
+        country: 'Moçambique',
         state: '',
         zipCode: '',
         email: formData.email,

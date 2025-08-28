@@ -764,7 +764,7 @@ const mockUsers: User[] = [
     firstName: 'João',
     lastName: 'Silva',
     email: 'cliente@exemplo.com',
-    phone: '(11) 99999-9999',
+    phone: '(84) 99999-9999',
     isSeller: false,
     role: 'buyer',
     sellerId: undefined,
@@ -773,11 +773,11 @@ const mockUsers: User[] = [
       firstName: 'João',
       lastName: 'Silva',
       address: 'Rua das Flores, 123',
-      country: 'Brasil',
-      state: 'SP',
-      zipCode: '01234-567',
+      country: 'Moçambique',
+      state: 'Sofala',
+      zipCode: '2100',
       email: 'cliente@exemplo.com',
-      phone: '(11) 99999-9999'
+      phone: '(84) 99999-9999'
     }
   },
   {
@@ -785,7 +785,7 @@ const mockUsers: User[] = [
     firstName: 'Maria',
     lastName: 'Santos',
     email: 'maria@exemplo.com',
-    phone: '(11) 88888-8888',
+    phone: '(84) 88888-8888',
     isSeller: false,
     role: 'buyer',
     sellerId: undefined,
@@ -794,11 +794,11 @@ const mockUsers: User[] = [
       firstName: 'Maria',
       lastName: 'Santos',
       address: 'Avenida Principal, 456',
-      country: 'Brasil',
-      state: 'SP',
-      zipCode: '04567-890',
+      country: 'Moçambique',
+      state: 'Sofala',
+      zipCode: '2100',
       email: 'maria@exemplo.com',
-      phone: '(11) 88888-8888'
+      phone: '(84) 88888-8888'
     }
   }
 ];

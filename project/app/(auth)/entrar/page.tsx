@@ -43,7 +43,7 @@ export default function SignInPage() {
       firstName: isSeller ? 'Maria' : 'João',
       lastName: isSeller ? 'Santos' : 'Silva',
       email: formData.email,
-      phone: '(11) 99999-9999',
+      phone: '(84) 99999-9999',
       isSeller: isSeller,
       sellerId: isSeller ? 'seller1' : undefined,
       profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
@@ -51,18 +51,18 @@ export default function SignInPage() {
         firstName: isSeller ? 'Maria' : 'João',
         lastName: isSeller ? 'Santos' : 'Silva',
         address: 'Rua das Flores, 123',
-        country: 'Brasil',
-        state: 'SP',
-        zipCode: '01234-567',
+        country: 'Moçambique',
+        state: 'Sofala',
+        zipCode: '2100',
         email: formData.email,
-        phone: '(11) 99999-9999'
+        phone: '(84) 99999-9999'
       },
       ...(isSeller && {
         storeSettings: {
           storeName: 'Fazenda Verde',
           storeDescription: 'Produtos orgânicos frescos direto da fazenda',
           storeEmail: 'vendedor@exemplo.com',
-          storePhone: '(11) 99999-9999',
+          storePhone: '(84) 99999-9999',
           bankName: 'M-Pesa',
           accountNumber: '12345-6',
           agencyNumber: '0001',

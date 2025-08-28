@@ -51,7 +51,7 @@ export default function FAQPage() {
     },
     {
       question: "Vocês entregam em toda a cidade?",
-      answer: "Atualmente entregamos na região metropolitana de São Paulo. Para outras localidades, consulte nossa equipe de atendimento para verificar a disponibilidade."
+      answer: "Atualmente entregamos na região metropolitana da Beira. Para outras localidades, consulte nossa equipe de atendimento para verificar a disponibilidade."
     },
     {
       question: "Como posso rastrear meu pedido?",
@@ -185,7 +185,7 @@ export default function FAQPage() {
                 <div className="space-y-3 text-sm">
                   <div>
                     <p className="font-medium text-gray-9">Telefone</p>
-                    <p className="text-gray-7">+55 (11) 9999-9999</p>
+                    <p className="text-gray-7">+258 84 9999-9999</p>
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">E-mail</p>

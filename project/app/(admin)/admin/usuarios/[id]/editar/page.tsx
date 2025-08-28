@@ -83,8 +83,7 @@ export default function UserEditPage() {
 
   const languages = [
     { code: 'pt-MZ', name: 'Português (Moçambique)' },
-    { code: 'en-US', name: 'English (US)' },
-    { code: 'pt-MZ', name: 'Português (Brasil)' }
+    { code: 'en-US', name: 'English (US)' }
   ];
 
   useEffect(() => {

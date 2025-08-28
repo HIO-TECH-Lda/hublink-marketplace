@@ -140,7 +140,7 @@ export default function TrocasDevolucoesPage() {
                     <div>
                       <h3 className="font-medium text-gray-9 mb-2">Entre em Contato</h3>
                       <p className="text-gray-7 text-sm">
-                        Ligue para (11) 99999-9999 ou envie um e-mail para suporte@ecobazar.com 
+                        Ligue para (84) 99999-9999 ou envie um e-mail para suporte@ecobazar.com 
                         em até 24 horas após a entrega. Informe o número do pedido e o motivo da devolução.
                       </p>
                     </div>
@@ -285,7 +285,7 @@ export default function TrocasDevolucoesPage() {
                       <Phone size={24} className="text-primary" />
                     </div>
                     <h3 className="font-medium text-gray-9 mb-2">Telefone</h3>
-                    <p className="text-gray-7 text-sm">(11) 99999-9999</p>
+                    <p className="text-gray-7 text-sm">(84) 99999-9999</p>
                     <p className="text-gray-6 text-xs">Segunda a Sexta, 8h às 18h</p>
                   </div>
                   

@@ -77,7 +77,7 @@ export default function VendorManagementPage() {
           firstName: 'João',
           lastName: 'Silva',
           email: 'joao@fazendaverde.com',
-          phone: '(11) 99999-9999'
+          phone: '(84) 99999-9999'
         },
         status: 'approved',
         rating: 4.8,
@@ -98,7 +98,7 @@ export default function VendorManagementPage() {
           firstName: 'Maria',
           lastName: 'Santos',
           email: 'maria@hortaorganica.com',
-          phone: '(11) 88888-8888'
+          phone: '(84) 88888-8888'
         },
         status: 'pending',
         rating: 0,
@@ -119,7 +119,7 @@ export default function VendorManagementPage() {
           firstName: 'Pedro',
           lastName: 'Oliveira',
           email: 'pedro@bananalorganico.com',
-          phone: '(11) 77777-7777'
+          phone: '(84) 77777-7777'
         },
         status: 'approved',
         rating: 4.5,
@@ -140,7 +140,7 @@ export default function VendorManagementPage() {
           firstName: 'Ana',
           lastName: 'Costa',
           email: 'ana@frutasfrescas.com',
-          phone: '(11) 66666-6666'
+          phone: '(84) 66666-6666'
         },
         status: 'rejected',
         rating: 0,

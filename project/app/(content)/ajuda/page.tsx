@@ -120,7 +120,7 @@ export default function AjudaPage() {
       icon: Phone,
       title: 'Telefone',
       description: 'Fale diretamente com nossa equipe',
-      contact: '(11) 99999-9999',
+      contact: '(84) 99999-9999',
       action: 'Ligar Agora',
       href: 'tel:+5511999999999'
     },

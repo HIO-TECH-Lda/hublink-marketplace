@@ -68,8 +68,8 @@ export default function Header() {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={14} />
-                <span className="hidden lg:inline">contato@ecobazar.co.mz</span>
-                <span className="lg:hidden">contato@ecobazar.co.mz</span>
+                <span className="hidden lg:inline">contato@txova.co.mz</span>
+                <span className="lg:hidden">contato@txova.co.mz</span>
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">

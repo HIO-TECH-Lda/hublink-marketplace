@@ -288,8 +288,8 @@ export default function TermosPage() {
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">12. Lei Aplicável</h2>
                 
                 <p className="text-gray-7">
-                  Estes termos são regidos pelas leis brasileiras. Qualquer disputa será 
-                  resolvida nos tribunais da comarca de São Paulo, SP.
+                  Estes termos são regidos pelas leis moçambicanas. Qualquer disputa será 
+                  resolvida nos tribunais da comarca da cidade da Beira.
                 </p>
               </section>
 
@@ -325,8 +325,8 @@ export default function TermosPage() {
                   
                   <div className="space-y-2 text-gray-7">
                     <p><strong>E-mail:</strong> juridico@ecobazar.com</p>
-                    <p><strong>Telefone:</strong> (11) 99999-9999</p>
-                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, São Paulo, SP - 01234-567</p>
+                    <p><strong>Telefone:</strong> (84) 99999-9999</p>
+                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Baixa, Beira - 2100</p>
                   </div>
                 </div>
               </section>

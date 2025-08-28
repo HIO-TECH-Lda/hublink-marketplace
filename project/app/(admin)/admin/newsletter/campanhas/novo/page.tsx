@@ -375,7 +375,6 @@ export default function CreateCampaignPage() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Africa/Maputo">Maputo (GMT+2)</SelectItem>
-                        <SelectItem value="America/Sao_Paulo">São Paulo (GMT-3)</SelectItem>
                         <SelectItem value="UTC">UTC</SelectItem>
                       </SelectContent>
                     </Select>

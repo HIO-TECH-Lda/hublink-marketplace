@@ -308,8 +308,8 @@ export default function PrivacidadePage() {
                   
                   <div className="space-y-2 text-gray-7">
                     <p><strong>E-mail:</strong> privacidade@ecobazar.com</p>
-                    <p><strong>Telefone:</strong> (11) 99999-9999</p>
-                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, São Paulo, SP - 01234-567</p>
+                    <p><strong>Telefone:</strong> (84) 99999-9999</p>
+                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Baixa, Beira - 2100</p>
                   </div>
                 </div>
               </section>

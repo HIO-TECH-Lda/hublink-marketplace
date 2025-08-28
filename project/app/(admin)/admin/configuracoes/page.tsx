@@ -73,10 +73,10 @@ export default function SystemSettingsPage() {
   const [settings, setSettings] = useState<SystemSettings>({
     general: {
       siteName: 'Txova',
-      siteDescription: 'Marketplace brasileiro de alimentos orgânicos frescos e saudáveis',
-      contactEmail: 'contato@ecobazar.com',
-      supportPhone: '(11) 99999-9999',
-      timezone: 'America/Sao_Paulo',
+      siteDescription: 'Marketplace moçambicano de produtos e serviços',
+      contactEmail: 'contato@txova.com',
+      supportPhone: '+258 84 9999-9999',
+      timezone: 'Africa/Maputo',
       currency: 'MZN',
       language: 'pt-MZ'
     },
@@ -258,9 +258,9 @@ export default function SystemSettingsPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="America/Sao_Paulo">São Paulo (GMT-3)</SelectItem>
-                        <SelectItem value="America/Manaus">Manaus (GMT-4)</SelectItem>
-                        <SelectItem value="America/Belem">Belém (GMT-3)</SelectItem>
+                        <SelectItem value="Africa/Maputo">Maputo (GMT+2)</SelectItem>
+                        <SelectItem value="Africa/Lusaka">Lusaka (GMT+2)</SelectItem>
+                        <SelectItem value="Africa/Harare">Harare (GMT+2)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

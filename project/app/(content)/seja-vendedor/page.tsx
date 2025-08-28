@@ -235,7 +235,7 @@ export default function SejaVendedorPage() {
                     value={formData.telefone}
                     onChange={handleInputChange}
                     required
-                    placeholder="(11) 99999-9999"
+                    placeholder="(84) 99999-9999"
                   />
                 </div>
                 
@@ -289,33 +289,33 @@ export default function SejaVendedorPage() {
                     value={formData.cidade}
                     onChange={handleInputChange}
                     required
-                    placeholder="São Paulo"
+                    placeholder="Beira"
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
-                    Estado *
+                    Província *
                   </label>
                   <Input
                     name="estado"
                     value={formData.estado}
                     onChange={handleInputChange}
                     required
-                    placeholder="SP"
+                    placeholder="Sofala"
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
-                    CEP *
+                    Código Postal *
                   </label>
                   <Input
                     name="cep"
                     value={formData.cep}
                     onChange={handleInputChange}
                     required
-                    placeholder="01234-567"
+                    placeholder="2100"
                   />
                 </div>
               </div>

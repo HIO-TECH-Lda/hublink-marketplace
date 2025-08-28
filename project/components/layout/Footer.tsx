@@ -96,7 +96,7 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={16} className="flex-shrink-0" />
-                  <span className="break-all">contato@ecobazar.co.mz</span>
+                  <span className="break-all">contato@txova.co.mz</span>
                 </div>
               </div>
             </div>
