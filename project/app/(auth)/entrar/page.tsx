@@ -27,7 +27,7 @@ export default function SignInPage() {
     setError('');
     
     // Validate mock credentials
-    const isValidEmail = formData.email === 'cliente@exemplo.com' || formData.email === 'vendedor@exemplo.com';
+    const isValidEmail = formData.email === 'cliente@exemplo.com' || formData.email === 'vendedor@exemplo.com' || formData.email === 'admin@exemplo.com';
     const isValidPassword = formData.password === 'qualquer coisa';
     
     if (!isValidEmail || !isValidPassword) {
@@ -37,19 +37,21 @@ export default function SignInPage() {
 
     // Create mock user based on email
     const isSeller = formData.email === 'vendedor@exemplo.com';
+    const isAdmin = formData.email === 'admin@exemplo.com';
     
     const mockUser = {
-      id: isSeller ? 'seller1' : 'user1',
-      firstName: isSeller ? 'Maria' : 'João',
-      lastName: isSeller ? 'Santos' : 'Silva',
+      id: isAdmin ? 'admin1' : isSeller ? 'seller1' : 'user1',
+      firstName: isAdmin ? 'Admin' : isSeller ? 'Maria' : 'João',
+      lastName: isAdmin ? 'Sistema' : isSeller ? 'Santos' : 'Silva',
       email: formData.email,
       phone: '(84) 99999-9999',
       isSeller: isSeller,
       sellerId: isSeller ? 'seller1' : undefined,
       profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      role: (isAdmin ? 'admin' : isSeller ? 'seller' : 'buyer') as 'admin' | 'seller' | 'buyer',
       billingAddress: {
-        firstName: isSeller ? 'Maria' : 'João',
-        lastName: isSeller ? 'Santos' : 'Silva',
+        firstName: isAdmin ? 'Admin' : isSeller ? 'Maria' : 'João',
+        lastName: isAdmin ? 'Sistema' : isSeller ? 'Santos' : 'Silva',
         address: 'Rua das Flores, 123',
         country: 'Moçambique',
         state: 'Sofala',
@@ -76,7 +78,9 @@ export default function SignInPage() {
     dispatch({ type: 'SET_AUTHENTICATED', payload: true });
     
     // Redirect based on user type
-    if (isSeller) {
+    if (isAdmin) {
+      router.push('/admin');
+    } else if (isSeller) {
       router.push('/vendedor/painel');
     } else {
       router.push('/painel');
@@ -226,10 +230,20 @@ export default function SignInPage() {
                 >
                   Login Vendedor
                 </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDemoLogin('admin@exemplo.com')}
+                  className="flex-1 text-xs"
+                >
+                  Login Admin
+                </Button>
               </div>
               <div className="text-xs text-gray-7 space-y-1">
                 <p><strong>Cliente:</strong> cliente@exemplo.com</p>
                 <p><strong>Vendedor:</strong> vendedor@exemplo.com</p>
+                <p><strong>Admin:</strong> admin@exemplo.com</p>
                 <p><strong>Senha:</strong> qualquer coisa</p>
               </div>
             </div>
