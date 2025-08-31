@@ -35,12 +35,12 @@ router.get('/statistics/user', OrderController.getOrderStatistics);
 
 // Admin/Seller routes
 // Get all orders (admin only)
-router.get('/', authorizeRoles(['admin']), OrderController.getAllOrders);
+router.get('/', authorizeRoles('admin'), OrderController.getAllOrders);
 
 // Update order status (admin/seller only)
-router.patch('/:orderId/status', authorizeRoles(['admin', 'seller']), validateRequest(updateOrderStatusSchema), OrderController.updateOrderStatus);
+router.patch('/:orderId/status', authorizeRoles('admin', 'seller'), validateRequest(updateOrderStatusSchema), OrderController.updateOrderStatus);
 
 // Get order statistics (admin can see all statistics)
-router.get('/statistics/all', authorizeRoles(['admin']), OrderController.getOrderStatistics);
+router.get('/statistics/all', authorizeRoles('admin'), OrderController.getOrderStatistics);
 
 export default router;

@@ -209,20 +209,20 @@ cartSchema.methods.addItem = async function(this: ICart, productId: string, quan
       sellerName: seller ? `${seller.firstName} ${seller.lastName}` : 'Unknown Seller',
       quantity,
       unitPrice: variantId ? 
-        (product.variants?.find(v => v._id.toString() === variantId)?.price || product.price) : 
+        (product.variants?.find((v: any) => v._id.toString() === variantId)?.price || product.price) : 
         product.price,
       totalPrice: (variantId ? 
-        (product.variants?.find(v => v._id.toString() === variantId)?.price || product.price) : 
+        (product.variants?.find((v: any) => v._id.toString() === variantId)?.price || product.price) : 
         product.price) * quantity,
       variantId,
       variantName: variantId ? 
-        product.variants?.find(v => v._id.toString() === variantId)?.name : 
+        product.variants?.find((v: any) => v._id.toString() === variantId)?.name : 
         undefined,
       variantValue: variantId ? 
-        product.variants?.find(v => v._id.toString() === variantId)?.value : 
+        product.variants?.find((v: any) => v._id.toString() === variantId)?.value : 
         undefined,
       variantPrice: variantId ? 
-        product.variants?.find(v => v._id.toString() === variantId)?.price : 
+        product.variants?.find((v: any) => v._id.toString() === variantId)?.price : 
         undefined,
       isAvailable: product.status === 'active' && product.stock > 0,
       stockAvailable: product.stock,

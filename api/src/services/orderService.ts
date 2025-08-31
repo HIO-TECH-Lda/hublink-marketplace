@@ -1,5 +1,5 @@
-import Order, { IOrder, IOrderDocument } from '../models/Order';
-import Cart, { ICartDocument } from '../models/Cart';
+import Order, { IOrder } from '../models/Order';
+import Cart, { ICart } from '../models/Cart';
 import Product from '../models/Product';
 import User from '../models/User';
 import { CartService } from './cartService';
@@ -14,7 +14,7 @@ export class OrderService {
       payment: any;
       notes?: string;
     }
-  ): Promise<IOrderDocument> {
+  ): Promise<IOrder> {
     try {
       // Get user's cart
       const cart = await CartService.getUserCart(userId);
@@ -99,7 +99,7 @@ export class OrderService {
       payment: any;
       notes?: string;
     }
-  ): Promise<IOrderDocument> {
+  ): Promise<IOrder> {
     try {
       const orderItems = [];
       let subtotal = 0;
@@ -121,7 +121,7 @@ export class OrderService {
         let variantName, variantValue, variantPrice;
 
         if (itemData.variantId) {
-          const variant = product.variants?.find(v => v._id.toString() === itemData.variantId);
+          const variant = product.variants?.find((v: any) => v._id.toString() === itemData.variantId);
           if (!variant) {
             throw new Error(`Product variant not found: ${itemData.variantId}`);
           }
@@ -199,7 +199,7 @@ export class OrderService {
   }
 
   // Get order by ID
-  static async getOrderById(orderId: string, userId?: string): Promise<IOrderDocument | null> {
+  static async getOrderById(orderId: string, userId?: string): Promise<IOrder | null> {
     try {
       const query: any = { _id: orderId };
       if (userId) {
@@ -217,7 +217,7 @@ export class OrderService {
   }
 
   // Get order by order number
-  static async getOrderByNumber(orderNumber: string, userId?: string): Promise<IOrderDocument | null> {
+  static async getOrderByNumber(orderNumber: string, userId?: string): Promise<IOrder | null> {
     try {
       const query: any = { orderNumber };
       if (userId) {
@@ -245,7 +245,7 @@ export class OrderService {
       sortOrder?: 'asc' | 'desc';
     } = {}
   ): Promise<{
-    orders: IOrderDocument[];
+    orders: IOrder[];
     pagination: {
       page: number;
       limit: number;
@@ -298,7 +298,7 @@ export class OrderService {
       sortOrder?: 'asc' | 'desc';
     } = {}
   ): Promise<{
-    orders: IOrderDocument[];
+    orders: IOrder[];
     pagination: {
       page: number;
       limit: number;
@@ -350,7 +350,7 @@ export class OrderService {
       cancelReason?: string;
       refundAmount?: number;
     } = {}
-  ): Promise<IOrderDocument> {
+  ): Promise<IOrder> {
     try {
       const order = await Order.findById(orderId);
       if (!order) {
@@ -396,7 +396,7 @@ export class OrderService {
   }
 
   // Cancel order
-  static async cancelOrder(orderId: string, cancelledBy: string, reason: string): Promise<IOrderDocument> {
+  static async cancelOrder(orderId: string, cancelledBy: string, reason: string): Promise<IOrder> {
     try {
       const order = await Order.findById(orderId);
       if (!order) {
@@ -492,7 +492,7 @@ export class OrderService {
 
       if (item.variantId) {
         // Update variant stock
-        const variantIndex = product.variants?.findIndex(v => v._id.toString() === item.variantId);
+        const variantIndex = product.variants?.findIndex((v: any) => v._id.toString() === item.variantId);
         if (variantIndex !== undefined && variantIndex >= 0 && product.variants) {
           product.variants[variantIndex].stock -= item.quantity;
         }
@@ -513,7 +513,7 @@ export class OrderService {
 
       if (item.variantId) {
         // Restore variant stock
-        const variantIndex = product.variants?.findIndex(v => v._id.toString() === item.variantId);
+        const variantIndex = product.variants?.findIndex((v: any) => v._id.toString() === item.variantId);
         if (variantIndex !== undefined && variantIndex >= 0 && product.variants) {
           product.variants[variantIndex].stock += item.quantity;
         }

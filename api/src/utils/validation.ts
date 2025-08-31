@@ -544,6 +544,82 @@ export const updateCategorySchema = createCategorySchema.fork(
   (schema) => schema.optional()
 );
 
+// Cart validation schemas
+export const addToCartSchema = Joi.object({
+  productId: Joi.string().required(),
+  quantity: Joi.number().min(1).max(100).required(),
+  variantId: Joi.string().optional()
+});
+
+export const updateCartItemSchema = Joi.object({
+  quantity: Joi.number().min(1).max(100).required()
+});
+
+export const removeFromCartSchema = Joi.object({
+  productId: Joi.string().required(),
+  variantId: Joi.string().optional()
+});
+
+// Order validation schemas
+export const createOrderSchema = Joi.object({
+  items: Joi.array().items(
+    Joi.object({
+      productId: Joi.string().required(),
+      quantity: Joi.number().min(1).required(),
+      variantId: Joi.string().optional()
+    })
+  ).min(1).required(),
+  shippingAddress: Joi.object({
+    firstName: Joi.string().min(2).max(50).required(),
+    lastName: Joi.string().min(2).max(50).required(),
+    email: Joi.string().email().required(),
+    phone: Joi.string().pattern(/^\+?[\d\s\-\(\)]+$/).required(),
+    address: Joi.string().min(10).max(200).required(),
+    city: Joi.string().min(2).max(100).required(),
+    state: Joi.string().min(2).max(100).required(),
+    country: Joi.string().min(2).max(100).required(),
+    zipCode: Joi.string().min(3).max(20).required(),
+    isDefault: Joi.boolean().optional()
+  }).required(),
+  billingAddress: Joi.object({
+    firstName: Joi.string().min(2).max(50).required(),
+    lastName: Joi.string().min(2).max(50).required(),
+    email: Joi.string().email().required(),
+    phone: Joi.string().pattern(/^\+?[\d\s\-\(\)]+$/).required(),
+    address: Joi.string().min(10).max(200).required(),
+    city: Joi.string().min(2).max(100).required(),
+    state: Joi.string().min(2).max(100).required(),
+    country: Joi.string().min(2).max(100).required(),
+    zipCode: Joi.string().min(3).max(20).required(),
+    isDefault: Joi.boolean().optional()
+  }).required(),
+  payment: Joi.object({
+    method: Joi.string().valid('credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash_on_delivery').required(),
+    paymentDetails: Joi.object({
+      cardLast4: Joi.string().length(4).optional(),
+      cardBrand: Joi.string().optional(),
+      paypalEmail: Joi.string().email().optional()
+    }).optional()
+  }).required(),
+  notes: Joi.string().max(500).optional()
+});
+
+export const updateOrderStatusSchema = Joi.object({
+  status: Joi.string().valid('pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded').required(),
+  trackingNumber: Joi.string().optional(),
+  cancelReason: Joi.string().max(500).optional(),
+  refundAmount: Joi.number().min(0).optional()
+});
+
+export const cancelOrderSchema = Joi.object({
+  reason: Joi.string().min(10).max(500).required()
+});
+
+export const refundOrderSchema = Joi.object({
+  refundAmount: Joi.number().min(0).required(),
+  reason: Joi.string().min(10).max(500).required()
+});
+
 // Validation middleware factory
 export const validateRequest = (schema: Joi.ObjectSchema) => {
   return (req: any, res: any, next: any) => {

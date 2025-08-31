@@ -1,10 +1,10 @@
-import Cart, { ICart, ICartDocument } from '../models/Cart';
+import Cart, { ICart } from '../models/Cart';
 import Product from '../models/Product';
 import User from '../models/User';
 
 export class CartService {
   // Get user's cart
-  static async getUserCart(userId: string): Promise<ICartDocument | null> {
+  static async getUserCart(userId: string): Promise<ICart | null> {
     try {
       let cart = await Cart.findOne({ userId }).populate('items.productId');
       
@@ -21,7 +21,7 @@ export class CartService {
   }
 
   // Add item to cart
-  static async addToCart(userId: string, productId: string, quantity: number, variantId?: string): Promise<ICartDocument> {
+  static async addToCart(userId: string, productId: string, quantity: number, variantId?: string): Promise<ICart> {
     try {
       let cart = await this.getUserCart(userId);
       if (!cart) {
@@ -44,7 +44,7 @@ export class CartService {
 
       // Check variant if specified
       if (variantId) {
-        const variant = product.variants?.find(v => v._id.toString() === variantId);
+        const variant = product.variants?.find((v: any) => v._id.toString() === variantId);
         if (!variant) {
           throw new Error('Product variant not found');
         }
@@ -61,7 +61,7 @@ export class CartService {
   }
 
   // Remove item from cart
-  static async removeFromCart(userId: string, productId: string, variantId?: string): Promise<ICartDocument> {
+  static async removeFromCart(userId: string, productId: string, variantId?: string): Promise<ICart> {
     try {
       const cart = await this.getUserCart(userId);
       if (!cart) {
@@ -76,7 +76,7 @@ export class CartService {
   }
 
   // Update item quantity in cart
-  static async updateCartItemQuantity(userId: string, productId: string, quantity: number, variantId?: string): Promise<ICartDocument> {
+  static async updateCartItemQuantity(userId: string, productId: string, quantity: number, variantId?: string): Promise<ICart> {
     try {
       const cart = await this.getUserCart(userId);
       if (!cart) {
@@ -90,7 +90,7 @@ export class CartService {
       }
 
       if (variantId) {
-        const variant = product.variants?.find(v => v._id.toString() === variantId);
+        const variant = product.variants?.find((v: any) => v._id.toString() === variantId);
         if (!variant) {
           throw new Error('Product variant not found');
         }
@@ -111,7 +111,7 @@ export class CartService {
   }
 
   // Clear cart
-  static async clearCart(userId: string): Promise<ICartDocument> {
+  static async clearCart(userId: string): Promise<ICart> {
     try {
       const cart = await this.getUserCart(userId);
       if (!cart) {
@@ -210,7 +210,7 @@ export class CartService {
 
         let availableStock = product.stock;
         if (item.variantId) {
-          const variant = product.variants?.find(v => v._id.toString() === item.variantId);
+          const variant = product.variants?.find((v: any) => v._id.toString() === item.variantId);
           if (!variant) {
             unavailableItems.push({
               productId: item.productId.toString(),
@@ -243,7 +243,7 @@ export class CartService {
     productId: string;
     quantity: number;
     variantId?: string;
-  }>): Promise<ICartDocument> {
+  }>): Promise<ICart> {
     try {
       const cart = await this.getUserCart(userId);
       if (!cart) {
@@ -266,7 +266,7 @@ export class CartService {
   }
 
   // Get cart items with product details
-  static async getCartWithProductDetails(userId: string): Promise<ICartDocument | null> {
+  static async getCartWithProductDetails(userId: string): Promise<ICart | null> {
     try {
       const cart = await Cart.findOne({ userId })
         .populate({

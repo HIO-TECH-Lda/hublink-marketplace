@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import User from '../models/User';
 import Category from '../models/Category';
 import Product from '../models/Product';
+import Cart from '../models/Cart';
+import Order from '../models/Order';
 
 export class TestController {
   // Test database connection
@@ -55,6 +57,40 @@ export class TestController {
       res.status(500).json({
         success: false,
         message: 'Failed to create test user',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  // Create test seller
+  static async createTestSeller(req: Request, res: Response) {
+    try {
+      const testSeller = new User({
+        firstName: 'Test',
+        lastName: 'Seller',
+        email: `seller-${Date.now()}@example.com`,
+        phone: '+258841234568',
+        password: 'TestPassword123!',
+        role: 'seller'
+      });
+
+      await testSeller.save();
+
+      res.status(201).json({
+        success: true,
+        message: 'Test seller created successfully',
+        data: {
+          sellerId: testSeller._id,
+          email: testSeller.email,
+          fullName: testSeller.fullName,
+          role: testSeller.role
+        }
+      });
+    } catch (error) {
+      console.error('Create test seller error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to create test seller',
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -154,6 +190,158 @@ export class TestController {
       return res.status(500).json({
         success: false,
         message: 'Failed to create test product',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  // Create test cart
+  static async createTestCart(req: Request, res: Response) {
+    try {
+      // Get a user
+      const user = await User.findOne({ role: 'buyer' });
+      if (!user) {
+        return res.status(400).json({
+          success: false,
+          message: 'No buyer user found. Please create a buyer user first.'
+        });
+      }
+
+      // Get a product
+      const product = await Product.findOne({ status: 'active' });
+      if (!product) {
+        return res.status(400).json({
+          success: false,
+          message: 'No active product found. Please create a product first.'
+        });
+      }
+
+      const testCart = new Cart({
+        userId: user._id,
+        items: [{
+          productId: product._id,
+          productName: product.name,
+          productImage: product.primaryImage,
+          productSlug: product.slug,
+          sellerId: product.sellerId,
+          sellerName: product.sellerName,
+          quantity: 2,
+          unitPrice: product.price,
+          totalPrice: product.price * 2,
+          addedAt: new Date()
+        }],
+        currency: 'USD'
+      });
+
+      await testCart.save();
+
+      return res.status(201).json({
+        success: true,
+        message: 'Test cart created successfully',
+        data: {
+          cartId: testCart._id,
+          userId: testCart.userId,
+          itemCount: testCart.itemCount,
+          total: testCart.total
+        }
+      });
+    } catch (error) {
+      console.error('Create test cart error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to create test cart',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  // Create test order
+  static async createTestOrder(req: Request, res: Response) {
+    try {
+      // Get a user
+      const user = await User.findOne({ role: 'buyer' });
+      if (!user) {
+        return res.status(400).json({
+          success: false,
+          message: 'No buyer user found. Please create a buyer user first.'
+        });
+      }
+
+      // Get a product
+      const product = await Product.findOne({ status: 'active' });
+      if (!product) {
+        return res.status(400).json({
+          success: false,
+          message: 'No active product found. Please create a product first.'
+        });
+      }
+
+      const testOrder = new Order({
+        userId: user._id,
+        items: [{
+          productId: product._id,
+          productName: product.name,
+          productImage: product.primaryImage,
+          productSlug: product.slug,
+          sellerId: product.sellerId,
+          sellerName: product.sellerName,
+          quantity: 1,
+          unitPrice: product.price,
+          totalPrice: product.price,
+          status: 'pending'
+        }],
+        status: 'pending',
+        subtotal: product.price,
+        total: product.price,
+        currency: 'USD',
+        shippingAddress: {
+          firstName: 'Test',
+          lastName: 'User',
+          email: user.email,
+          phone: user.phone,
+          address: '123 Test Street',
+          city: 'Maputo',
+          state: 'Maputo',
+          country: 'Mozambique',
+          zipCode: '1100'
+        },
+        billingAddress: {
+          firstName: 'Test',
+          lastName: 'User',
+          email: user.email,
+          phone: user.phone,
+          address: '123 Test Street',
+          city: 'Maputo',
+          state: 'Maputo',
+          country: 'Mozambique',
+          zipCode: '1100'
+        },
+        payment: {
+          method: 'credit_card',
+          status: 'pending',
+          amount: product.price,
+          currency: 'USD'
+        }
+      });
+
+      await testOrder.save();
+
+      return res.status(201).json({
+        success: true,
+        message: 'Test order created successfully',
+        data: {
+          orderId: testOrder._id,
+          orderNumber: testOrder.orderNumber,
+          userId: testOrder.userId,
+          status: testOrder.status,
+          total: testOrder.total
+        }
+      });
+    } catch (error) {
+      console.error('Create test order error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to create test order',
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
