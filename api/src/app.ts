@@ -4,12 +4,14 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { connectDB } from './config/database';
+import { validateEnvironmentVariables } from './utils/envValidation';
 import testRoutes from './routes/test';
 import authRoutes from './routes/auth';
 import productRoutes from './routes/products';
 import categoryRoutes from './routes/categories';
 import cartRoutes from './routes/cart';
 import orderRoutes from './routes/orders';
+import paymentRoutes from './routes/payment';
 
 // Load environment variables
 dotenv.config();
@@ -84,6 +86,19 @@ app.get('/api/v1', (req: Request, res: Response) => {
       updateOrderStatus: 'PATCH /api/v1/orders/:orderId/status (admin/seller)',
       allOrders: 'GET /api/v1/orders (admin)',
       orderStatistics: 'GET /api/v1/orders/statistics/user'
+    },
+    paymentEndpoints: {
+      createPaymentIntent: 'POST /api/v1/payments/create-intent',
+      confirmPayment: 'POST /api/v1/payments/confirm',
+      processRefund: 'POST /api/v1/payments/refund (admin/seller)',
+      getPayment: 'GET /api/v1/payments/:paymentId',
+      getUserPayments: 'GET /api/v1/payments/user/payments',
+      getPaymentByOrder: 'GET /api/v1/payments/order/:orderId',
+      getPaymentsByStatus: 'GET /api/v1/payments/status/:status (admin)',
+      createManualPayment: 'POST /api/v1/payments/manual',
+      markManualComplete: 'PATCH /api/v1/payments/manual/:paymentId/complete (admin/seller)',
+      paymentStatistics: 'GET /api/v1/payments/statistics/overview (admin)',
+      stripeWebhook: 'POST /api/v1/payments/webhook/stripe'
     }
   });
 });
@@ -106,6 +121,9 @@ app.use('/api/v1/cart', cartRoutes);
 // Order routes
 app.use('/api/v1/orders', orderRoutes);
 
+// Payment routes
+app.use('/api/v1/payments', paymentRoutes);
+
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
   res.status(404).json({
@@ -127,6 +145,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 // Start server
 const startServer = async () => {
   try {
+    // Validate environment variables
+    if (!validateEnvironmentVariables()) {
+      console.error('❌ Environment validation failed. Please check your .env file.');
+      process.exit(1);
+    }
+
     // Connect to MongoDB
     await connectDB();
 
@@ -136,6 +160,7 @@ const startServer = async () => {
       console.log(`✅ Health check: http://localhost:${PORT}/health`);
       console.log(`🌐 API Base URL: http://localhost:${PORT}/api/v1`);
       console.log(`🗄️ Database: MongoDB Atlas`);
+      console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);

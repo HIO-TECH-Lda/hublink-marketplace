@@ -98,13 +98,113 @@ export const changePasswordSchema = Joi.object({
       'string.pattern.base': 'New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
       'any.required': 'New password is required'
     }),
-  
+
   confirmNewPassword: Joi.string()
     .valid(Joi.ref('newPassword'))
     .required()
     .messages({
       'any.only': 'New passwords do not match',
       'any.required': 'Please confirm your new password'
+    })
+});
+
+// Payment validation schemas
+export const createPaymentIntentSchema = Joi.object({
+  orderId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Order ID is required'
+    }),
+  
+  amount: Joi.number()
+    .min(0.01)
+    .required()
+    .messages({
+      'number.min': 'Amount must be greater than 0',
+      'any.required': 'Amount is required'
+    }),
+  
+  currency: Joi.string()
+    .length(3)
+    .uppercase()
+    .default('USD')
+    .messages({
+      'string.length': 'Currency must be 3 characters (e.g., USD, EUR)',
+      'string.uppercase': 'Currency must be uppercase'
+    }),
+  
+  paymentMethod: Joi.string()
+    .valid('card', 'bank_transfer', 'cash_on_delivery')
+    .default('card')
+    .messages({
+      'any.only': 'Payment method must be card, bank_transfer, or cash_on_delivery'
+    })
+});
+
+export const confirmPaymentSchema = Joi.object({
+  paymentIntentId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Payment intent ID is required'
+    })
+});
+
+export const refundPaymentSchema = Joi.object({
+  paymentId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Payment ID is required'
+    }),
+  
+  amount: Joi.number()
+    .min(0.01)
+    .required()
+    .messages({
+      'number.min': 'Refund amount must be greater than 0',
+      'any.required': 'Refund amount is required'
+    }),
+  
+  reason: Joi.string()
+    .min(10)
+    .max(500)
+    .required()
+    .messages({
+      'string.min': 'Refund reason must be at least 10 characters',
+      'string.max': 'Refund reason cannot exceed 500 characters',
+      'any.required': 'Refund reason is required'
+    })
+});
+
+export const createManualPaymentSchema = Joi.object({
+  orderId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Order ID is required'
+    }),
+  
+  amount: Joi.number()
+    .min(0.01)
+    .required()
+    .messages({
+      'number.min': 'Amount must be greater than 0',
+      'any.required': 'Amount is required'
+    }),
+  
+  currency: Joi.string()
+    .length(3)
+    .uppercase()
+    .default('USD')
+    .messages({
+      'string.length': 'Currency must be 3 characters (e.g., USD, EUR)',
+      'string.uppercase': 'Currency must be uppercase'
+    }),
+  
+  method: Joi.string()
+    .valid('bank_transfer', 'cash_on_delivery', 'm_pesa', 'e_mola')
+    .required()
+    .messages({
+      'any.only': 'Method must be bank_transfer, cash_on_delivery, m_pesa, or e_mola',
+      'any.required': 'Payment method is required'
     })
 });
 

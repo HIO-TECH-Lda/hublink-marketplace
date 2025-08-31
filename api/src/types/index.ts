@@ -282,11 +282,15 @@ export interface IPayment {
   orderId: string;
   userId: string;
   amount: number;
-  method: 'm-pesa' | 'e-mola' | 'stripe' | 'cash';
-  status: 'pending' | 'completed' | 'failed' | 'refunded';
-  externalId?: string;
-  transactionId?: string;
-  metadata?: Record<string, any>;
+  currency: string;
+  method: 'stripe' | 'paypal' | 'bank_transfer' | 'cash_on_delivery' | 'm_pesa' | 'e_mola';
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
+  gateway: 'stripe' | 'paypal' | 'manual' | 'm_pesa' | 'e_mola';
+  gatewayTransactionId?: string;
+  gatewayResponse?: any;
+  refundAmount?: number;
+  refundReason?: string;
+  refundedAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }
