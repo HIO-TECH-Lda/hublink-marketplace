@@ -126,8 +126,7 @@ const cartSchema = new Schema<ICart>({
   userId: {
     type: Schema.Types.ObjectId as any,
     ref: 'User',
-    required: true,
-    unique: true
+    required: true
   },
   items: [cartItemSchema],
   totalItems: {

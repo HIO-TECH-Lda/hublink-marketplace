@@ -267,8 +267,7 @@ const orderPaymentSchema = new Schema<IOrderPayment>({
 const orderSchema = new Schema<IOrder>({
   orderNumber: {
     type: String,
-    required: false,
-    unique: true
+    required: false
   },
   userId: {
     type: Schema.Types.ObjectId as any,
