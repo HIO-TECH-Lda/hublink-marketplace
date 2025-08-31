@@ -756,6 +756,62 @@ export const refundOrderSchema = Joi.object({
   reason: Joi.string().min(10).max(500).required()
 });
 
+// Review validation schemas
+export const createReviewSchema = Joi.object({
+  productId: Joi.string().required().messages({
+    'any.required': 'Product ID is required'
+  }),
+  orderId: Joi.string().required().messages({
+    'any.required': 'Order ID is required'
+  }),
+  rating: Joi.number().min(1).max(5).required().messages({
+    'number.min': 'Rating must be at least 1',
+    'number.max': 'Rating cannot exceed 5',
+    'any.required': 'Rating is required'
+  }),
+  title: Joi.string().min(5).max(100).required().messages({
+    'string.min': 'Title must be at least 5 characters',
+    'string.max': 'Title cannot exceed 100 characters',
+    'any.required': 'Review title is required'
+  }),
+  content: Joi.string().min(10).max(1000).required().messages({
+    'string.min': 'Content must be at least 10 characters',
+    'string.max': 'Content cannot exceed 1000 characters',
+    'any.required': 'Review content is required'
+  }),
+  images: Joi.array().items(Joi.string().uri()).optional().messages({
+    'string.uri': 'Image URL must be a valid URI'
+  })
+});
+
+export const updateReviewSchema = Joi.object({
+  rating: Joi.number().min(1).max(5).optional().messages({
+    'number.min': 'Rating must be at least 1',
+    'number.max': 'Rating cannot exceed 5'
+  }),
+  title: Joi.string().min(5).max(100).optional().messages({
+    'string.min': 'Title must be at least 5 characters',
+    'string.max': 'Title cannot exceed 100 characters'
+  }),
+  content: Joi.string().min(10).max(1000).optional().messages({
+    'string.min': 'Content must be at least 10 characters',
+    'string.max': 'Content cannot exceed 1000 characters'
+  }),
+  images: Joi.array().items(Joi.string().uri()).optional().messages({
+    'string.uri': 'Image URL must be a valid URI'
+  })
+});
+
+export const moderateReviewSchema = Joi.object({
+  status: Joi.string().valid('approved', 'rejected').required().messages({
+    'any.only': 'Status must be approved or rejected',
+    'any.required': 'Status is required'
+  }),
+  notes: Joi.string().max(500).optional().messages({
+    'string.max': 'Moderator notes cannot exceed 500 characters'
+  })
+});
+
 // Validation middleware factory
 export const validateRequest = (schema: Joi.ObjectSchema) => {
   return (req: any, res: any, next: any) => {

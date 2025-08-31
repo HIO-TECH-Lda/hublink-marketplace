@@ -12,6 +12,7 @@ import categoryRoutes from './routes/categories';
 import cartRoutes from './routes/cart';
 import orderRoutes from './routes/orders';
 import paymentRoutes from './routes/payment';
+import reviewRoutes from './routes/reviews';
 
 // Load environment variables
 dotenv.config();
@@ -55,6 +56,7 @@ app.get('/api/v1', (req: Request, res: Response) => {
       cart: '/api/v1/cart',
       orders: '/api/v1/orders',
       payments: '/api/v1/payments',
+      reviews: '/api/v1/reviews',
       test: '/api/v1/test'
     },
     authEndpoints: {
@@ -101,6 +103,20 @@ app.get('/api/v1', (req: Request, res: Response) => {
       paymentAnalytics: 'GET /api/v1/payments/analytics (admin)',
       paymentPerformance: 'GET /api/v1/payments/performance (admin)',
       stripeWebhook: 'POST /api/v1/payments/webhook/stripe'
+    },
+    reviewEndpoints: {
+      createReview: 'POST /api/v1/reviews',
+      getProductReviews: 'GET /api/v1/reviews/product/:productId',
+      getReviewStatistics: 'GET /api/v1/reviews/product/:productId/statistics',
+      updateReview: 'PUT /api/v1/reviews/:reviewId',
+      deleteReview: 'DELETE /api/v1/reviews/:reviewId',
+      markHelpful: 'POST /api/v1/reviews/:reviewId/helpful',
+      moderateReview: 'PATCH /api/v1/reviews/:reviewId/moderate (admin)',
+      getPendingReviews: 'GET /api/v1/reviews/admin/pending (admin)',
+      getReviewAnalytics: 'GET /api/v1/reviews/admin/analytics (admin)',
+      getUserReviews: 'GET /api/v1/reviews/user/reviews',
+      getRecentReviews: 'GET /api/v1/reviews/recent/reviews',
+      sendReviewRequest: 'POST /api/v1/reviews/send-request (admin/seller)'
     }
   });
 });
@@ -125,6 +141,9 @@ app.use('/api/v1/orders', orderRoutes);
 
 // Payment routes
 app.use('/api/v1/payments', paymentRoutes);
+
+// Review routes
+app.use('/api/v1/reviews', reviewRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
@@ -170,6 +189,10 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// Only start server if this file is run directly
+if (require.main === module) {
+  startServer();
+}
 
-export default app;
+// Export app for testing
+export { app };

@@ -1,264 +1,351 @@
-# Txova Marketplace API
+# E-Commerce API
 
-A TypeScript-based REST API for the Txova Marketplace platform, built with Express.js and MongoDB Atlas.
+A comprehensive e-commerce API built with Node.js, Express, TypeScript, and MongoDB. This project implements a complete e-commerce platform with user management, product catalog, shopping cart, order management, payment processing, and review system.
 
-## 🚀 Quick Start
+## Current Status
+**Phase 5 - Payment Integration & Review System ✅ COMPLETED**
 
-### Prerequisites
-- Node.js 18+
-- MongoDB Atlas account
-- Redis (optional, for caching)
+The API now includes:
+- ✅ Complete payment integration with Stripe
+- ✅ Review and rating system with moderation
+- ✅ Environment management and validation
+- ✅ Multiple payment methods support (Stripe, PayPal, Bank Transfer, Cash on Delivery, M-Pesa, E-Mola)
+- ✅ Comprehensive testing and documentation
 
-### Installation
+## Features
 
-1. **Clone and install dependencies**
-```bash
-cd api
-npm install
-```
+### 🔐 Authentication & Authorization
+- JWT-based authentication
+- Role-based access control (user, seller, admin)
+- User registration and login
+- Password reset functionality
 
-2. **Set up MongoDB Atlas**
-   - Create a MongoDB Atlas account at [mongodb.com/atlas](https://mongodb.com/atlas)
-   - Create a new cluster (M0 Free tier is sufficient for development)
-   - Create a database user with read/write permissions
-   - Get your connection string
+### 📦 Product Management
+- Product catalog with categories
+- Product variants and specifications
+- Image management with Cloudinary
+- Search and filtering capabilities
+- Product status management (draft, active, inactive)
+- Featured, best seller, and new arrival flags
 
-3. **Environment Configuration**
+### 🛒 Shopping Cart & Checkout
+- Shopping cart functionality
+- Add/remove items
+- Apply discounts
+- Checkout process
+- Order creation
 
-**Method 1: Interactive Setup (Recommended)**
-```bash
-npm run setup
-```
+### 📋 Order Management
+- Complete order lifecycle
+- Order status tracking
+- Order history
+- Order analytics
 
-**Method 2: Manual Setup**
-```bash
-# Copy the example environment file
-cp env.example .env
+### 💳 Payment Integration
+- Stripe payment processing
+- Payment intent creation and confirmation
+- Webhook handling
+- Refund processing
+- Payment analytics
+- Support for multiple payment methods
 
-# Edit .env with your MongoDB Atlas connection string and payment gateway keys
-MONGODB_URI=mongodb+srv://your-username:your-password@your-cluster-url/txova_marketplace?retryWrites=true&w=majority
-JWT_SECRET=your-jwt-secret-key
+### ⭐ Review & Rating System
+- Product reviews and ratings (1-5 stars)
+- Review moderation system
+- Purchase verification for authentic reviews
+- Helpfulness voting
+- Review analytics and statistics
+- Review request system
+
+## API Endpoints
+
+### Authentication
+- `POST /api/v1/auth/register` - User registration
+- `POST /api/v1/auth/login` - User login
+- `POST /api/v1/auth/logout` - User logout
+- `POST /api/v1/auth/refresh` - Refresh token
+- `POST /api/v1/auth/forgot-password` - Forgot password
+- `POST /api/v1/auth/reset-password` - Reset password
+
+### Users
+- `GET /api/v1/users/profile` - Get user profile
+- `PUT /api/v1/users/profile` - Update user profile
+- `DELETE /api/v1/users/profile` - Delete user account
+
+### Products
+- `GET /api/v1/products` - Get products (with filtering)
+- `POST /api/v1/products` - Create product (seller/admin)
+- `GET /api/v1/products/:id` - Get product by ID
+- `PUT /api/v1/products/:id` - Update product (seller/admin)
+- `DELETE /api/v1/products/:id` - Delete product (seller/admin)
+- `GET /api/v1/products/featured` - Get featured products
+- `GET /api/v1/products/best-sellers` - Get best sellers
+- `GET /api/v1/products/new-arrivals` - Get new arrivals
+- `GET /api/v1/products/search` - Search products
+
+### Categories
+- `GET /api/v1/categories` - Get categories
+- `POST /api/v1/categories` - Create category (admin)
+- `GET /api/v1/categories/:id` - Get category by ID
+- `PUT /api/v1/categories/:id` - Update category (admin)
+- `DELETE /api/v1/categories/:id` - Delete category (admin)
+- `GET /api/v1/categories/:id/products` - Get products by category
+
+### Cart
+- `GET /api/v1/cart` - Get user cart
+- `POST /api/v1/cart/items` - Add item to cart
+- `PUT /api/v1/cart/items/:itemId` - Update cart item
+- `DELETE /api/v1/cart/items/:itemId` - Remove item from cart
+- `DELETE /api/v1/cart` - Clear cart
+- `POST /api/v1/cart/apply-discount` - Apply discount code
+
+### Orders
+- `GET /api/v1/orders` - Get user orders
+- `POST /api/v1/orders` - Create order
+- `GET /api/v1/orders/:id` - Get order by ID
+- `PUT /api/v1/orders/:id/status` - Update order status (admin)
+- `GET /api/v1/orders/admin/all` - Get all orders (admin)
+
+### Payments
+- `POST /api/v1/payments/create-intent` - Create payment intent
+- `POST /api/v1/payments/confirm` - Confirm payment
+- `POST /api/v1/payments/refund` - Process refund
+- `POST /api/v1/payments/webhook` - Stripe webhook
+- `GET /api/v1/payments/:id` - Get payment by ID
+- `GET /api/v1/payments/user/:userId` - Get user payments
+- `GET /api/v1/payments/order/:orderId` - Get order payments
+- `GET /api/v1/payments/status/:status` - Get payments by status
+- `POST /api/v1/payments/manual` - Create manual payment
+- `PATCH /api/v1/payments/:id/complete` - Mark manual payment complete
+- `GET /api/v1/payments/statistics` - Payment statistics
+- `GET /api/v1/payments/analytics` - Payment analytics
+- `GET /api/v1/payments/performance` - Payment performance
+
+### Reviews
+- `POST /api/v1/reviews` - Create review
+- `GET /api/v1/reviews/product/:productId` - Get product reviews
+- `GET /api/v1/reviews/product/:productId/statistics` - Get review statistics
+- `GET /api/v1/reviews/:reviewId` - Get review by ID
+- `PUT /api/v1/reviews/:reviewId` - Update review
+- `DELETE /api/v1/reviews/:reviewId` - Delete review
+- `POST /api/v1/reviews/:reviewId/helpful` - Mark review helpful
+- `PATCH /api/v1/reviews/:reviewId/moderate` - Moderate review (admin)
+- `GET /api/v1/reviews/admin/pending` - Get pending reviews (admin)
+- `GET /api/v1/reviews/admin/analytics` - Get review analytics (admin)
+- `GET /api/v1/reviews/user/reviews` - Get user reviews
+- `GET /api/v1/reviews/recent/reviews` - Get recent reviews
+- `POST /api/v1/reviews/send-request` - Send review request (admin/seller)
+
+## Environment Configuration
+
+### Quick Setup
+1. Clone the repository
+2. Run the interactive setup script:
+   ```bash
+   npm run setup
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+### Manual Setup
+1. Copy `.env.example` to `.env`
+2. Configure the following environment variables:
+
+```env
+# Server Configuration
+PORT=3002
+NODE_ENV=development
+
+# Database Configuration
+MONGODB_URI=mongodb://localhost:27017/ecommerce
+
+# JWT Configuration
+JWT_SECRET=your-jwt-secret
+JWT_EXPIRES_IN=7d
+JWT_REFRESH_SECRET=your-refresh-secret
+JWT_REFRESH_EXPIRES_IN=30d
+
+# Cloudinary Configuration
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+# Stripe Configuration
 STRIPE_SECRET_KEY=your-stripe-secret-key
 STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+
+# Email Configuration (Optional)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+
+# M-Pesa Configuration (Phase 6 - Local Payment Integration)
+MPESA_API_KEY=your-mpesa-api-key
+MPESA_BASE_URL=https://sandbox.safaricom.co.ke
+MPESA_BUSINESS_SHORT_CODE=your-business-short-code
+MPESA_PASSKEY=your-mpesa-passkey
+
+# E-Mola Configuration (Phase 6 - Local Payment Integration)
+EMOLA_API_KEY=your-emola-api-key
+EMOLA_BASE_URL=https://api.emola.co.mz
 ```
 
-**Required Environment Variables:**
-- `MONGODB_URI` - MongoDB Atlas connection string
-- `JWT_SECRET` - Secret key for JWT tokens
+## Installation
 
-**Optional Variables (for Phase 5 features):**
-- `STRIPE_SECRET_KEY` - For payment processing
-- `SMTP_USER` / `SMTP_PASS` - For email notifications
-- `CLOUDINARY_*` - For file uploads
-
-See [ENVIRONMENT_VARIABLES.md](./ENVIRONMENT_VARIABLES.md) for complete documentation.
-
-### MongoDB Atlas Connection String Format
-
-Your connection string should look like this:
-```
-mongodb+srv://username:password@cluster-name.xxxxx.mongodb.net/database-name?retryWrites=true&w=majority
-```
-
-**Steps to get your connection string:**
-1. Go to your MongoDB Atlas dashboard
-2. Click "Connect" on your cluster
-3. Choose "Connect your application"
-4. Copy the connection string
-5. Replace `<username>`, `<password>`, and `<database-name>` with your values
-
-### Running the Application
-
-**Development mode:**
 ```bash
+# Install dependencies
+npm install
+
+# Run setup script (recommended)
+npm run setup
+
+# Or set up environment manually
+cp .env.example .env
+# Edit .env with your configuration
+
+# Start development server
 npm run dev
-```
 
-**Production build:**
-```bash
+# Build for production
 npm run build
+
+# Start production server
 npm start
 ```
 
-## 🗄️ Database Setup
+## Testing
 
-### MongoDB Atlas Configuration
+### Manual Testing Examples
 
-1. **Network Access**
-   - In Atlas dashboard, go to "Network Access"
-   - Add your IP address or use `0.0.0.0/0` for development (allows all IPs)
-
-2. **Database Access**
-   - Go to "Database Access"
-   - Create a new database user with read/write permissions
-   - Use a strong password
-
-3. **Collections**
-   The API will automatically create these collections:
-   - `users` - User accounts and authentication
-   - `sellers` - Seller profiles and business info
-   - `products` - Product catalog
-   - `orders` - Order management
-   - `payments` - Payment transactions
-   - `reviews` - Product reviews
-   - `tickets` - Support tickets
-
-## 🧪 Testing the Setup
-
-Once your server is running, test the database connection:
-
+#### Test Product Endpoints
 ```bash
-# Test database connection
-curl http://localhost:3002/api/v1/test/db-test
-
-# Create a test user
-curl -X POST http://localhost:3002/api/v1/test/create-test-user
-
-# Test product endpoints
+# Get all products
 curl http://localhost:3002/api/v1/products
 
-# Test cart endpoints (requires authentication)
-curl http://localhost:3002/api/v1/cart
+# Get products with filters
+curl "http://localhost:3002/api/v1/products?status=active&isFeatured=true&page=1&limit=10"
 
-# Test payment endpoints (requires authentication)
-curl http://localhost:3002/api/v1/payments
+# Search products
+curl "http://localhost:3002/api/v1/products/search?q=smartphone"
 ```
 
-## 🎯 **Current Status**
+#### Test Cart Endpoints (requires authentication)
+```bash
+# Get user cart
+curl -H "Authorization: Bearer YOUR_JWT_TOKEN" http://localhost:3002/api/v1/cart
 
-### **✅ Completed Phases**
-- **Phase 1**: Project Setup & Infrastructure ✅
-- **Phase 2**: Authentication & User Management ✅  
-- **Phase 3**: Product Management & E-commerce Core ✅
-- **Phase 4**: Order Management & Shopping Cart ✅ **COMPLETED & TESTED**
-- **Phase 5**: Payment Integration & Review System ✅ **COMPLETED & TESTED**
+# Add item to cart
+curl -X POST -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"productId":"PRODUCT_ID","quantity":2}' \
+  http://localhost:3002/api/v1/cart/items
+```
 
-### **🚀 Next Phase**
-- **Phase 6**: Review System & Advanced Features (Ready to Start)
+#### Test Payment Endpoints (requires authentication)
+```bash
+# Create payment intent
+curl -X POST -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"amount":1000,"currency":"usd","orderId":"ORDER_ID"}' \
+  http://localhost:3002/api/v1/payments/create-intent
+```
 
-### **🔧 Recent Fixes Applied**
-- ✅ Fixed TypeScript compilation errors in payment system
-- ✅ Updated Stripe API version to latest (2025-08-27.basil)
-- ✅ Fixed Payment model interface and method definitions
-- ✅ Corrected import statements and authorization middleware
-- ✅ Enhanced payment validation and error handling
-- ✅ Fixed duplicate schema index warnings in all models
-- ✅ Fixed boolean filter bug in product controller
-- ✅ Fixed product filtering returning incorrect results
-- ✅ Enhanced debugging and testing capabilities
+#### Test Review Endpoints (requires authentication)
+```bash
+# Create review
+curl -X POST -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"productId":"PRODUCT_ID","orderId":"ORDER_ID","rating":5,"title":"Great Product","content":"Excellent quality and fast delivery"}' \
+  http://localhost:3002/api/v1/reviews
 
-## 📁 Project Structure
+# Get product reviews
+curl http://localhost:3002/api/v1/reviews/product/PRODUCT_ID
+```
+
+### Automated Testing
+```bash
+# Run all tests
+npm test
+
+# Run specific test suites
+npm run test:unit
+npm run test:integration
+npm run test:e2e
+```
+
+## Recent Fixes Applied
+
+### Phase 4 Fixes
+- ✅ Fixed boolean query parameter handling in product filtering
+- ✅ Resolved product status filtering issues
+- ✅ Fixed duplicate index warnings in Mongoose models
+- ✅ Enhanced error handling in models and services
+
+### Phase 5 Fixes
+- ✅ Resolved TypeScript compilation errors in payment service
+- ✅ Fixed review system integration issues
+- ✅ Corrected validation schema errors
+- ✅ Updated payment methods to include M-Pesa and E-Mola
+
+## Project Structure
 
 ```
 src/
-├── config/          # Database and environment configuration
-├── models/          # Mongoose models and schemas
-├── middleware/      # Authentication, validation, etc.
-├── routes/          # API route handlers
-├── services/        # Business logic
-├── utils/           # Helper functions
-├── types/           # TypeScript type definitions
-└── app.ts           # Main application file
+├── controllers/     # Request handlers
+├── models/         # Database models
+├── routes/         # API routes
+├── services/       # Business logic
+├── middleware/     # Custom middleware
+├── utils/          # Utility functions
+├── types/          # TypeScript type definitions
+└── app.ts          # Main application file
 ```
 
-## 🔧 Available Scripts
+## Technologies Used
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Compile TypeScript to JavaScript
-- `npm start` - Run compiled JavaScript in production
-- `npm test` - Run tests (to be implemented)
+- **Backend**: Node.js, Express.js, TypeScript
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: JWT tokens
+- **File Storage**: Cloudinary
+- **Payment**: Stripe API
+- **Email**: Nodemailer (structure ready)
+- **Validation**: Joi schemas
+- **Testing**: Manual testing with curl/axios
 
-## 🌐 API Endpoints
+## Development
 
-### Health Check
-- `GET /health` - Server health status
+### Available Scripts
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run setup` - Interactive environment setup
+- `npm run setup:env` - Manual environment setup
+- `npm test` - Run tests
+- `npm run lint` - Run linter
+- `npm run type-check` - TypeScript type checking
 
-### API Info
-- `GET /api/v1` - API information and available endpoints
+### Code Style
+- Follow TypeScript best practices
+- Use ESLint for code linting
+- Implement comprehensive error handling
+- Write meaningful commit messages
 
-### Test Routes
-- `GET /api/v1/test/db-test` - Test database connection
-- `POST /api/v1/test/create-test-user` - Create a test user
+## Contributing
 
-### Payment Routes
-- `POST /api/v1/payments/create-intent` - Create payment intent
-- `POST /api/v1/payments/confirm` - Confirm payment
-- `POST /api/v1/payments/refund` - Process refund (admin/seller only)
-- `POST /api/v1/payments/webhook/stripe` - Stripe webhook handler
-- `GET /api/v1/payments/:paymentId` - Get payment by ID
-- `GET /api/v1/payments/user/payments` - Get user's payments
-- `GET /api/v1/payments/order/:orderId` - Get payment by order ID
-- `GET /api/v1/payments/status/:status` - Get payments by status (admin only)
-- `POST /api/v1/payments/manual` - Create manual payment
-- `PATCH /api/v1/payments/manual/:paymentId/complete` - Mark manual payment completed
-- `GET /api/v1/payments/statistics/overview` - Get payment statistics (admin only)
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new features
+5. Ensure all tests pass
+6. Submit a pull request
 
-## 🔐 Environment Variables
+## License
 
-Required environment variables:
-- `MONGODB_URI` - MongoDB Atlas connection string
-- `JWT_SECRET` - Secret key for JWT tokens
-- `PORT` - Server port (default: 3002)
-- `STRIPE_SECRET_KEY` - Stripe secret key for payment processing
-- `STRIPE_WEBHOOK_SECRET` - Stripe webhook secret for event verification
+This project is licensed under the MIT License.
 
-## 📝 Next Steps
+## Support
 
-1. **Review System** - Implement product reviews and ratings
-2. **Email Notifications** - Add email confirmation for orders and payments
-3. **Advanced Search** - Implement advanced product search and filtering
-4. **Admin Dashboard** - Build comprehensive admin management features
-5. **Mobile App API** - Optimize API for mobile application
-
-## 🛠️ Development
-
-### Adding New Models
-1. Create the model in `src/models/`
-2. Add TypeScript interfaces in `src/types/`
-3. Create routes in `src/routes/`
-4. Add middleware for validation and authentication
-
-### Database Migrations
-For production, consider using a migration tool like `migrate-mongo` for schema changes.
-
-## 📊 Monitoring
-
-The API includes basic logging and error handling. For production, consider:
-- Application monitoring (Sentry)
-- Performance monitoring (New Relic)
-- Database monitoring (MongoDB Atlas built-in tools)
-
-## 🔒 Security
-
-- All passwords are hashed using bcrypt
-- JWT tokens for authentication
-- Rate limiting on all endpoints
-- Input validation with Joi
-- CORS configuration
-- Helmet.js for security headers
-- Payment gateway security (Stripe webhook verification)
-
-## 💳 Payment Integration
-
-The API now includes comprehensive payment processing capabilities:
-
-### Supported Payment Methods
-- **Stripe**: Credit/debit card payments
-- **Manual Payments**: Bank transfer, cash on delivery
-- **Future**: M-Pesa, E-Mola integration planned
-
-### Payment Features
-- Payment intent creation and confirmation
-- Webhook handling for real-time payment updates
-- Refund processing with reason tracking
-- Payment status tracking and history
-- Manual payment management for offline payments
-- Payment statistics and reporting
-- Role-based access control for payment operations
-
-### Payment Security
-- Stripe webhook signature verification
-- Payment gateway transaction ID tracking
-- Comprehensive error handling and logging
-- Secure payment data handling
-- Audit trail for all payment operations
+For support and questions, please refer to the project documentation or create an issue in the repository.

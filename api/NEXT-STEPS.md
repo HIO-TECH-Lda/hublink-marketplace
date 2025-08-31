@@ -1,452 +1,271 @@
-# 🚀 **NEXT STEPS - E-COMMERCE API PROJECT**
+# Next Steps - E-Commerce API Development Roadmap
 
-## 📋 **PROJECT CONTEXT**
+## Project Context
+This is a comprehensive e-commerce API built with Node.js, Express, TypeScript, and MongoDB. The project implements a complete e-commerce platform with user management, product catalog, shopping cart, order management, payment processing, and review system.
 
-### **Current Status**
-- **Phases 1-4**: ✅ **COMPLETED** (Setup, Auth, Products, Orders)
-- **Current Phase**: Phase 5 - Payment Integration & Review System
-- **Database**: MongoDB Atlas (remote)
-- **Server**: Port 3002, Express.js + TypeScript
-- **Location**: `C:\Users\hnu\Downloads\project-bolt-sb1-uqyvamjw\api`
+## Completed Phases
 
-### **Project Structure**
-```
-api/
-├── src/
-│   ├── config/database.ts
-│   ├── controllers/ (auth, product, category, cart, order, test)
-│   ├── middleware/auth.ts
-│   ├── models/ (User, Product, Category, Cart, Order)
-│   ├── routes/ (auth, products, categories, cart, orders, test)
-│   ├── services/ (auth, product, category, cart, order)
-│   ├── types/index.ts
-│   ├── utils/validation.ts
-│   └── app.ts
-├── .env, package.json, tsconfig.json, PROJECT-STATUS.md
-```
+### ✅ Phase 1: Foundation & User Management
+- User authentication and authorization
+- Database models (User, Category, Product, Cart, Order)
+- Basic API structure
 
-## 🔧 **SETUP FOR NEW COMPUTER**
+### ✅ Phase 2: Product Management
+- Product catalog system
+- Category management with hierarchical structure
+- Advanced product features (variants, specifications, images)
+- Search and filtering capabilities
 
-### **1. Environment Setup**
-```bash
-# Clone/Download project
-cd api/
-npm install
+### ✅ Phase 3: Shopping Cart & Checkout
+- Shopping cart functionality
+- Checkout process
+- Order creation and management
 
-# Environment variables (.env)
-PORT=3002
-MONGODB_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/your-database
-JWT_SECRET=your-jwt-secret-key
-JWT_EXPIRES_IN=7d
-JWT_REFRESH_EXPIRES_IN=30d
-NODE_ENV=development
-```
+### ✅ Phase 4: Order Management
+- Complete order lifecycle management
+- Order status tracking
+- Order analytics and reporting
+- **COMPLETED & TESTED**
 
-### **2. Dependencies (package.json)**
-```json
-{
-  "dependencies": {
-    "express": "^4.18.2", "mongoose": "^8.0.0", "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2", "joi": "^17.11.0", "cors": "^2.8.5",
-    "helmet": "^7.1.0", "express-rate-limit": "^7.1.5", "dotenv": "^16.3.1"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.21", "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.5", "@types/cors": "^2.8.17",
-    "typescript": "^5.2.2", "ts-node": "^10.9.1", "tsconfig-paths": "^4.2.1", "nodemon": "^3.0.1"
-  }
-}
-```
+### ✅ Phase 5: Payment Integration & Review System
+- Stripe payment integration
+- Review and rating system
+- Environment management
+- **COMPLETED & TESTED**
 
-### **3. Start Server**
-```bash
-npm run dev
-# Server runs on http://localhost:3002
-```
+## Current Phase: Phase 6 - Local Payment Integration
 
-## 📊 **COMPLETED FEATURES**
+### Phase 6: Local Payment Integration (M-Pesa & E-Mola)
+**Duration**: 2-3 weeks
+**Priority**: High
 
-### **Phase 1: Project Setup** ✅
-- Node.js + Express.js + TypeScript
-- MongoDB Atlas connection
-- Security middleware (CORS, Helmet, Rate Limiting)
-- Error handling and validation
+#### Objectives
+- Implement M-Pesa payment integration for Kenya
+- Implement E-Mola payment integration for Mozambique
+- Enhance payment analytics and reporting
+- Improve payment security and fraud detection
 
-### **Phase 2: Authentication** ✅
-- JWT Authentication with refresh tokens
-- Role-Based Access Control (buyer, seller, admin, support)
-- User registration, login, profile management
-- Password hashing with bcrypt
-- Input validation with Joi
+#### Key Features to Implement
 
-### **Phase 3: Product Management** ✅
-- Product model with variants, specifications, images
-- Category model with hierarchical structure
-- Product CRUD operations, search, filtering
-- Category management with tree structure
-- SEO optimization (slugs, meta tags)
+##### 1. M-Pesa Integration (Kenya)
+- **STK Push Integration**
+  - Initiate payment requests
+  - Handle payment callbacks
+  - Payment status verification
+  - Transaction reconciliation
 
-### **Phase 4: Order Management** ✅ **COMPLETED & TESTED**
-- Shopping cart with persistence and expiration
-- Order management with status workflow
-- Stock management (deduct on order, restore on cancel)
-- Cart merging and availability checking
-- Order tracking and statistics
-- **Bug Fixes Applied**: Duplicate index warnings, boolean filter bugs, TypeScript errors
-- **Testing Completed**: All endpoints verified, filtering working correctly
+- **API Integration**
+  - M-Pesa API authentication
+  - Business-to-Customer (B2C) payments
+  - Customer-to-Business (C2B) payments
+  - Transaction status queries
 
-## 🔗 **API ENDPOINTS**
+- **Security Features**
+  - API key management
+  - Request signing
+  - Callback verification
+  - Fraud detection
 
-### **Authentication** (`/api/v1/auth`)
-- `POST /register`, `POST /login`, `POST /refresh`
-- `GET /me`, `PUT /me`, `PUT /change-password`
+##### 2. E-Mola Integration (Mozambique)
+- **Payment Gateway Integration**
+  - E-Mola API integration
+  - Payment initiation
+  - Status verification
+  - Transaction management
 
-### **Products** (`/api/v1/products`)
-- `GET /`, `GET /featured`, `GET /best-sellers`, `GET /new-arrivals`
-- `GET /search`, `GET /:productId`, `GET /slug/:slug`
-- `POST /`, `PUT /:productId`, `DELETE /:productId`
+- **User Experience**
+  - Seamless payment flow
+  - Payment confirmation
+  - Error handling
+  - User notifications
 
-### **Categories** (`/api/v1/categories`)
-- `GET /`, `GET /roots`, `GET /featured`, `GET /tree`
-- `GET /:categoryId`, `GET /slug/:slug`
-- `POST /`, `PUT /:categoryId`, `DELETE /:categoryId`
+##### 3. Enhanced Payment Analytics
+- **Multi-Gateway Analytics**
+  - Payment method performance
+  - Gateway success rates
+  - Regional payment patterns
+  - Revenue analytics
 
-### **Cart** (`/api/v1/cart`)
-- `GET /`, `GET /summary`, `GET /availability`
-- `POST /add`, `PUT /update`, `DELETE /remove`, `DELETE /clear`
-- `POST /merge`, `POST /discount`
+- **Fraud Detection**
+  - Suspicious transaction detection
+  - Risk scoring
+  - Automated fraud prevention
+  - Manual review workflows
 
-### **Orders** (`/api/v1/orders`)
-- `POST /create-from-cart`, `POST /create`
-- `GET /my-orders`, `GET /:orderId`, `GET /number/:orderNumber`
-- `POST /:orderId/cancel`, `PATCH /:orderId/status`
+#### Technical Implementation
 
-### **Test** (`/api/v1/test`)
-- `GET /db-test`, `POST /create-test-user`, `POST /create-test-seller`
-- `POST /create-test-category`, `POST /create-test-product`
-- `POST /create-test-cart`, `POST /create-test-order`
+##### New Models
+- **PaymentGateway Model**
+  - Gateway configuration
+  - API credentials management
+  - Transaction logging
+  - Performance metrics
 
-## 🚀 **PHASE 5: PAYMENT INTEGRATION & REVIEW SYSTEM**
+##### New Services
+- **M-Pesa Service**
+  - STK push implementation
+  - API integration
+  - Callback handling
+  - Transaction verification
 
-### **5.1 Payment Integration**
+- **E-Mola Service**
+  - Payment gateway integration
+  - Transaction management
+  - Status verification
+  - Error handling
 
-#### **Dependencies to Add**
-```bash
-npm install stripe @types/stripe
-npm install @paypal/checkout-server-sdk
-npm install nodemailer @types/nodemailer
-```
+- **Payment Analytics Service**
+  - Multi-gateway analytics
+  - Fraud detection
+  - Performance monitoring
+  - Reporting
 
-#### **Environment Variables to Add**
+##### New Controllers
+- **Local Payment Controller**
+  - M-Pesa endpoints
+  - E-Mola endpoints
+  - Payment verification
+  - Analytics endpoints
+
+##### New Routes
+- **Local Payment Routes**
+  - M-Pesa payment routes
+  - E-Mola payment routes
+  - Payment verification routes
+  - Analytics routes
+
+#### API Endpoints to Add
+- `POST /api/v1/payments/mpesa/initiate` - Initiate M-Pesa payment
+- `POST /api/v1/payments/mpesa/callback` - M-Pesa callback
+- `GET /api/v1/payments/mpesa/status/:transactionId` - Check M-Pesa status
+- `POST /api/v1/payments/emola/initiate` - Initiate E-Mola payment
+- `POST /api/v1/payments/emola/callback` - E-Mola callback
+- `GET /api/v1/payments/emola/status/:transactionId` - Check E-Mola status
+- `GET /api/v1/payments/analytics/gateways` - Gateway analytics
+- `GET /api/v1/payments/analytics/fraud` - Fraud analytics
+
+#### Environment Variables to Add
 ```env
-# Payment Gateways
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-PAYPAL_CLIENT_ID=your_paypal_client_id
-PAYPAL_CLIENT_SECRET=your_paypal_client_secret
-PAYPAL_MODE=sandbox
+# M-Pesa Configuration
+MPESA_API_KEY=your-mpesa-api-key
+MPESA_BASE_URL=https://sandbox.safaricom.co.ke
+MPESA_BUSINESS_SHORT_CODE=your-business-short-code
+MPESA_PASSKEY=your-mpesa-passkey
+MPESA_CALLBACK_URL=your-callback-url
 
-# Email
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_app_password
+# E-Mola Configuration
+EMOLA_API_KEY=your-emola-api-key
+EMOLA_BASE_URL=https://api.emola.co.mz
+EMOLA_MERCHANT_ID=your-merchant-id
+EMOLA_CALLBACK_URL=your-callback-url
+
+# Payment Security
+PAYMENT_FRAUD_DETECTION_ENABLED=true
+PAYMENT_RISK_SCORE_THRESHOLD=0.7
+PAYMENT_MAX_AMOUNT=100000
 ```
 
-#### **New Models to Create**
+#### Testing Strategy
+- **Unit Testing**: Individual service methods
+- **Integration Testing**: Payment gateway integration
+- **End-to-End Testing**: Complete payment flows
+- **Security Testing**: Fraud detection and prevention
+- **Performance Testing**: Payment processing performance
 
-**Payment Model** (`src/models/Payment.ts`)
-```typescript
-interface IPayment {
-  orderId: ObjectId;
-  userId: ObjectId;
-  amount: number;
-  currency: string;
-  method: 'stripe' | 'paypal' | 'bank_transfer' | 'cash_on_delivery';
-  status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
-  gateway: 'stripe' | 'paypal' | 'manual';
-  gatewayTransactionId?: string;
-  gatewayResponse?: any;
-  refundAmount?: number;
-  refundReason?: string;
-  refundedAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
+## Future Phases
 
-**Review Model** (`src/models/Review.ts`)
-```typescript
-interface IReview {
-  productId: ObjectId;
-  userId: ObjectId;
-  orderId: ObjectId;
-  rating: number; // 1-5 stars
-  title: string;
-  content: string;
-  images?: string[];
-  isVerified: boolean;
-  isHelpful: number;
-  isNotHelpful: number;
-  status: 'pending' | 'approved' | 'rejected';
-  moderatorNotes?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
+### Phase 7: Advanced Features
+- **Email Service Integration**
+  - Nodemailer/SendGrid integration
+  - Transactional emails
+  - Marketing emails
+  - Email templates
 
-**Wishlist Model** (`src/models/Wishlist.ts`)
-```typescript
-interface IWishlist {
-  userId: ObjectId;
-  items: IWishlistItem[];
-  createdAt: Date;
-  updatedAt: Date;
-}
+- **Wishlist System**
+  - User wishlist functionality
+  - Wishlist sharing
+  - Price drop notifications
+  - Wishlist analytics
 
-interface IWishlistItem {
-  productId: ObjectId;
-  addedAt: Date;
-  notes?: string;
-}
-```
+- **Recommendation Engine**
+  - Product recommendations
+  - User behavior analysis
+  - Collaborative filtering
+  - Personalized suggestions
 
-#### **New Services to Create**
+### Phase 8: Analytics & Reporting
+- **Advanced Analytics**
+  - Sales analytics
+  - User behavior analytics
+  - Product performance analytics
+  - Revenue analytics
 
-**Payment Service** (`src/services/paymentService.ts`)
-```typescript
-export class PaymentService {
-  static async createPaymentIntent(orderId: string, amount: number, currency: string): Promise<IPaymentIntent>
-  static async confirmPayment(paymentIntentId: string): Promise<IPayment>
-  static async processRefund(paymentId: string, amount: number, reason: string): Promise<IPayment>
-  static async handleWebhook(event: any): Promise<void>
-  static async getPaymentStatus(paymentId: string): Promise<IPayment>
-}
-```
+- **Reporting System**
+  - Automated reports
+  - Custom report builder
+  - Data export functionality
+  - Dashboard creation
 
-**Review Service** (`src/services/reviewService.ts`)
-```typescript
-export class ReviewService {
-  static async createReview(reviewData: IReview): Promise<IReview>
-  static async getProductReviews(productId: string, page: number, limit: number): Promise<{ reviews: IReview[], total: number, averageRating: number }>
-  static async updateReview(reviewId: string, userId: string, updateData: Partial<IReview>): Promise<IReview>
-  static async deleteReview(reviewId: string, userId: string): Promise<void>
-  static async moderateReview(reviewId: string, status: 'approved' | 'rejected', notes?: string): Promise<IReview>
-  static async getReviewStatistics(productId: string): Promise<{ averageRating: number, totalReviews: number, ratingDistribution: Record<number, number> }>
-}
-```
+### Phase 9: Mobile App API
+- **Mobile Optimization**
+  - Mobile-specific endpoints
+  - Push notifications
+  - Offline support
+  - Mobile analytics
 
-**Email Service** (`src/services/emailService.ts`)
-```typescript
-export class EmailService {
-  static async sendOrderConfirmation(order: IOrder): Promise<void>
-  static async sendPaymentConfirmation(payment: IPayment): Promise<void>
-  static async sendOrderStatusUpdate(order: IOrder, status: string): Promise<void>
-  static async sendReviewRequest(order: IOrder): Promise<void>
-  static async sendPasswordReset(user: IUser, resetToken: string): Promise<void>
-  static async sendEmailVerification(user: IUser, verificationToken: string): Promise<void>
-}
-```
+### Phase 10: Performance & Scalability
+- **Performance Optimization**
+  - Database optimization
+  - Caching implementation
+  - CDN integration
+  - Load balancing
 
-#### **New Controllers to Create**
+- **Scalability Features**
+  - Microservices architecture
+  - Containerization
+  - Cloud deployment
+  - Monitoring and logging
 
-**Payment Controller** (`src/controllers/paymentController.ts`)
-```typescript
-export class PaymentController {
-  static async createPaymentIntent(req: Request, res: Response): Promise<void>
-  static async confirmPayment(req: Request, res: Response): Promise<void>
-  static async processRefund(req: Request, res: Response): Promise<void>
-  static async handleWebhook(req: Request, res: Response): Promise<void>
-  static async getPaymentStatus(req: Request, res: Response): Promise<void>
-}
-```
+## Development Guidelines
 
-**Review Controller** (`src/controllers/reviewController.ts`)
-```typescript
-export class ReviewController {
-  static async createReview(req: Request, res: Response): Promise<void>
-  static async getProductReviews(req: Request, res: Response): Promise<void>
-  static async updateReview(req: Request, res: Response): Promise<void>
-  static async deleteReview(req: Request, res: Response): Promise<void>
-  static async moderateReview(req: Request, res: Response): Promise<void>
-  static async getReviewStatistics(req: Request, res: Response): Promise<void>
-}
-```
+### Code Quality
+- Follow TypeScript best practices
+- Implement comprehensive error handling
+- Write unit tests for all new features
+- Maintain consistent code style
+- Document all API endpoints
 
-#### **New Routes to Create**
+### Security
+- Implement proper authentication and authorization
+- Validate all input data
+- Use HTTPS for all communications
+- Implement rate limiting
+- Regular security audits
 
-**Payment Routes** (`src/routes/payment.ts`)
-```typescript
-router.post('/create-intent', authenticateToken, validateRequest(createPaymentIntentSchema), PaymentController.createPaymentIntent);
-router.post('/confirm', authenticateToken, validateRequest(confirmPaymentSchema), PaymentController.confirmPayment);
-router.post('/refund', authenticateToken, authorizeRoles(['admin', 'seller']), validateRequest(refundPaymentSchema), PaymentController.processRefund);
-router.post('/webhook', PaymentController.handleWebhook);
-router.get('/:paymentId/status', authenticateToken, PaymentController.getPaymentStatus);
-```
+### Performance
+- Optimize database queries
+- Implement caching where appropriate
+- Monitor response times
+- Use pagination for large datasets
+- Implement proper indexing
 
-**Review Routes** (`src/routes/reviews.ts`)
-```typescript
-router.post('/', authenticateToken, validateRequest(createReviewSchema), ReviewController.createReview);
-router.get('/product/:productId', ReviewController.getProductReviews);
-router.put('/:reviewId', authenticateToken, validateRequest(updateReviewSchema), ReviewController.updateReview);
-router.delete('/:reviewId', authenticateToken, ReviewController.deleteReview);
-router.patch('/:reviewId/moderate', authenticateToken, authorizeRoles(['admin']), validateRequest(moderateReviewSchema), ReviewController.moderateReview);
-router.get('/product/:productId/statistics', ReviewController.getReviewStatistics);
-```
+### Testing
+- Unit tests for all business logic
+- Integration tests for API endpoints
+- End-to-end tests for critical flows
+- Performance testing for high-traffic scenarios
+- Security testing for payment flows
 
-#### **New Validation Schemas** (`src/utils/validation.ts`)
-```typescript
-// Payment validation
-export const createPaymentIntentSchema = Joi.object({
-  orderId: Joi.string().required(),
-  amount: Joi.number().min(0).required(),
-  currency: Joi.string().length(3).required()
-});
+## Current Status
+- **Phase 5**: ✅ COMPLETED
+- **Phase 6**: 🚀 READY TO START
+- **Overall Progress**: 50% Complete
 
-export const confirmPaymentSchema = Joi.object({
-  paymentIntentId: Joi.string().required()
-});
-
-export const refundPaymentSchema = Joi.object({
-  paymentId: Joi.string().required(),
-  amount: Joi.number().min(0).required(),
-  reason: Joi.string().min(10).max(500).required()
-});
-
-// Review validation
-export const createReviewSchema = Joi.object({
-  productId: Joi.string().required(),
-  orderId: Joi.string().required(),
-  rating: Joi.number().min(1).max(5).required(),
-  title: Joi.string().min(5).max(100).required(),
-  content: Joi.string().min(10).max(1000).required(),
-  images: Joi.array().items(Joi.string().uri()).optional()
-});
-
-export const updateReviewSchema = Joi.object({
-  rating: Joi.number().min(1).max(5).optional(),
-  title: Joi.string().min(5).max(100).optional(),
-  content: Joi.string().min(10).max(1000).optional(),
-  images: Joi.array().items(Joi.string().uri()).optional()
-});
-
-export const moderateReviewSchema = Joi.object({
-  status: Joi.string().valid('approved', 'rejected').required(),
-  notes: Joi.string().max(500).optional()
-});
-```
-
-#### **Update App.ts**
-```typescript
-// Add new routes
-import paymentRoutes from './routes/payment';
-import reviewRoutes from './routes/reviews';
-
-app.use('/api/v1/payments', paymentRoutes);
-app.use('/api/v1/reviews', reviewRoutes);
-```
-
-## 🛠️ **IMPLEMENTATION STEPS**
-
-### **Step 1: Setup & Dependencies**
-1. Install new dependencies
-2. Configure environment variables
-3. Test existing functionality
-
-### **Step 2: Payment Integration**
-1. Create Payment model
-2. Implement Payment service with Stripe/PayPal
-3. Create Payment controller and routes
-4. Test payment flow
-
-### **Step 3: Review System**
-1. Create Review model
-2. Implement Review service
-3. Create Review controller and routes
-4. Test review functionality
-
-### **Step 4: Email Notifications**
-1. Configure SMTP settings
-2. Create Email service
-3. Integrate with order and payment flows
-
-### **Step 5: Advanced Features**
-1. Implement wishlist system
-2. Add product comparison
-3. Create recommendation system
-
-### **Step 6: Testing & Documentation**
-1. Test all new endpoints
-2. Update API documentation
-3. Update PROJECT-STATUS.md
-
-## 🧪 **TESTING CHECKLIST**
-
-### **Payment Testing**
-- [ ] Create payment intent
-- [ ] Confirm payment
-- [ ] Process refund
-- [ ] Handle webhooks
-- [ ] Error scenarios
-
-### **Review Testing**
-- [ ] Create review
-- [ ] Get product reviews
-- [ ] Update review
-- [ ] Moderate review
-- [ ] Review statistics
-
-### **Integration Testing**
-- [ ] Order → Payment flow
-- [ ] Payment → Email notification
-- [ ] Order → Review request
-- [ ] Cart → Order → Payment flow
-
-## 🔒 **SECURITY CONSIDERATIONS**
-
-### **Payment Security**
-- Use HTTPS for all payment endpoints
-- Validate payment webhooks
-- Implement proper error handling
-- Store sensitive data securely
-
-### **Review Security**
-- Prevent duplicate reviews
-- Implement review moderation
-- Validate review ownership
-- Prevent review spam
-
-## 📊 **SUCCESS METRICS**
-
-### **Phase 5 Goals**
-- [ ] Payment processing working end-to-end
-- [ ] Review system fully functional
-- [ ] Email notifications working
-- [ ] Advanced features implemented
-- [ ] All tests passing
-- [ ] Performance optimized
-
-### **Key Performance Indicators**
-- Payment success rate > 95%
-- Review submission rate > 10% of orders
-- API response time < 200ms
-- Error rate < 1%
-
-## 📚 **RESOURCES**
-
-### **Documentation**
-- [Stripe API](https://stripe.com/docs/api)
-- [PayPal API](https://developer.paypal.com/docs/api/)
-- [Nodemailer](https://nodemailer.com/)
-- [MongoDB](https://docs.mongodb.com/)
-
-### **Current Files to Reference**
-- `PROJECT-STATUS.md` - Detailed project status
-- `src/types/index.ts` - TypeScript interfaces
-- `src/utils/validation.ts` - Validation schemas
-- `src/middleware/auth.ts` - Authentication middleware
-
----
-
-**This document provides all necessary context and implementation details to continue the e-commerce API project on another computer. Follow the steps sequentially to implement Phase 5 successfully.**
+## Next Immediate Actions
+1. Set up M-Pesa sandbox environment
+2. Set up E-Mola development environment
+3. Create payment gateway models and services
+4. Implement M-Pesa STK push integration
+5. Implement E-Mola payment integration
+6. Add comprehensive testing for local payment methods
+7. Update documentation for Phase 6

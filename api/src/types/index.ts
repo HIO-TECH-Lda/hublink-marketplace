@@ -303,11 +303,16 @@ export interface IReview {
   orderId: string;
   rating: number;
   title: string;
-  comment: string;
+  content: string;
+  images?: string[];
   isVerified: boolean;
+  isHelpful: number;
+  isNotHelpful: number;
   status: 'pending' | 'approved' | 'rejected';
+  moderatorNotes?: string;
   moderatedBy?: string;
   moderatedAt?: Date;
+  helpfulnessRatio?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
