@@ -812,6 +812,31 @@ export const moderateReviewSchema = Joi.object({
   })
 });
 
+// Wishlist validation schemas
+export const validateWishlistAdd = Joi.object({
+  productId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Product ID is required'
+    }),
+  
+  notes: Joi.string()
+    .max(500)
+    .optional()
+    .messages({
+      'string.max': 'Notes cannot exceed 500 characters'
+    })
+});
+
+export const validateWishlistUpdate = Joi.object({
+  notes: Joi.string()
+    .max(500)
+    .optional()
+    .messages({
+      'string.max': 'Notes cannot exceed 500 characters'
+    })
+});
+
 // Validation middleware factory
 export const validateRequest = (schema: Joi.ObjectSchema) => {
   return (req: any, res: any, next: any) => {

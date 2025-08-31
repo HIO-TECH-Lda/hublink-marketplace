@@ -13,6 +13,7 @@ import cartRoutes from './routes/cart';
 import orderRoutes from './routes/orders';
 import paymentRoutes from './routes/payment';
 import reviewRoutes from './routes/reviews';
+import wishlistRoutes from './routes/wishlist';
 
 // Load environment variables
 dotenv.config();
@@ -117,6 +118,20 @@ app.get('/api/v1', (req: Request, res: Response) => {
       getUserReviews: 'GET /api/v1/reviews/user/reviews',
       getRecentReviews: 'GET /api/v1/reviews/recent/reviews',
       sendReviewRequest: 'POST /api/v1/reviews/send-request (admin/seller)'
+    },
+    wishlistEndpoints: {
+      getWishlist: 'GET /api/v1/wishlist',
+      addToWishlist: 'POST /api/v1/wishlist/add',
+      removeFromWishlist: 'DELETE /api/v1/wishlist/remove/:productId',
+      checkWishlistStatus: 'GET /api/v1/wishlist/check/:productId',
+      clearWishlist: 'DELETE /api/v1/wishlist/clear',
+      moveToCart: 'POST /api/v1/wishlist/move-to-cart/:productId',
+      getWishlistStats: 'GET /api/v1/wishlist/stats',
+      getWishlistItems: 'GET /api/v1/wishlist/items',
+      updateItemNotes: 'PUT /api/v1/wishlist/update-notes/:productId',
+      getRecommendations: 'GET /api/v1/wishlist/recommendations',
+      bulkAddToWishlist: 'POST /api/v1/wishlist/bulk-add',
+      bulkRemoveFromWishlist: 'DELETE /api/v1/wishlist/bulk-remove'
     }
   });
 });
@@ -144,6 +159,9 @@ app.use('/api/v1/payments', paymentRoutes);
 
 // Review routes
 app.use('/api/v1/reviews', reviewRoutes);
+
+// Wishlist routes
+app.use('/api/v1/wishlist', wishlistRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {

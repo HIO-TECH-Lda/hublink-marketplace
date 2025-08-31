@@ -317,6 +317,21 @@ export interface IReview {
   updatedAt?: Date;
 }
 
+// Wishlist Types
+export interface IWishlistItem {
+  productId: string;
+  addedAt: Date;
+  notes?: string;
+}
+
+export interface IWishlist {
+  _id?: string;
+  userId: string;
+  items: IWishlistItem[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 // Ticket Types
 export interface ITicket {
   _id?: string;
@@ -373,4 +388,7 @@ export interface JWTPayload {
 // Request with User
 export interface AuthenticatedRequest extends Request {
   user?: JWTPayload;
+  body: any;
+  params: any;
+  query: any;
 }
