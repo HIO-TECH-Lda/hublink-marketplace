@@ -1,7 +1,7 @@
 import express from 'express';
 import { OrderController } from '../controllers/orderController';
 import { authenticateToken, authorizeRoles } from '../middleware/auth';
-import { validateRequest, createOrderSchema, updateOrderStatusSchema, cancelOrderSchema } from '../utils/validation';
+import { validateRequest, createOrderSchema, createOrderFromCartSchema, updateOrderStatusSchema, cancelOrderSchema } from '../utils/validation';
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.use(authenticateToken);
 
 // Public routes (authenticated users)
 // Create order from cart
-router.post('/create-from-cart', validateRequest(createOrderSchema), OrderController.createOrderFromCart);
+router.post('/create-from-cart', validateRequest(createOrderFromCartSchema), OrderController.createOrderFromCart);
 
 // Create order with specific items
 router.post('/create', validateRequest(createOrderSchema), OrderController.createOrder);
