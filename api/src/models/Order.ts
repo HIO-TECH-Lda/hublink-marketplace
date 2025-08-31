@@ -267,7 +267,7 @@ const orderPaymentSchema = new Schema<IOrderPayment>({
 const orderSchema = new Schema<IOrder>({
   orderNumber: {
     type: String,
-    required: true,
+    required: false,
     unique: true
   },
   userId: {
@@ -550,7 +550,7 @@ orderSchema.pre('save', async function(this: IOrder, next) {
 
 // Indexes
 orderSchema.index({ userId: 1 });
-orderSchema.index({ orderNumber: 1 });
+// orderNumber unique constraint is already defined in schema
 orderSchema.index({ status: 1 });
 orderSchema.index({ createdAt: -1 });
 orderSchema.index({ 'payment.transactionId': 1 });

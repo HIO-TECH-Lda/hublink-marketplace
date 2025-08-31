@@ -93,9 +93,9 @@ export class ProductController {
         sortOrder: req.query.sortOrder as 'asc' | 'desc',
         page: req.query.page ? Number(req.query.page) : 1,
         limit: req.query.limit ? Number(req.query.limit) : 20,
-        isFeatured: req.query.isFeatured === 'true',
-        isBestSeller: req.query.isBestSeller === 'true',
-        isNewArrival: req.query.isNewArrival === 'true'
+        isFeatured: req.query.isFeatured ? req.query.isFeatured === 'true' : undefined,
+        isBestSeller: req.query.isBestSeller ? req.query.isBestSeller === 'true' : undefined,
+        isNewArrival: req.query.isNewArrival ? req.query.isNewArrival === 'true' : undefined
       };
 
       const result = await ProductService.getProducts(filters);

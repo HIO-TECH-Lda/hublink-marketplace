@@ -296,31 +296,51 @@ const productSchema = new Schema<IProductDocument>({
 
 // Virtual for discounted price
 productSchema.virtual('discountedPrice').get(function(this: IProductDocument) {
-  if (this.discountPercentage > 0 && this.discountPercentage <= 100) {
-    return this.price * (1 - this.discountPercentage / 100);
+  try {
+    if (this.discountPercentage > 0 && this.discountPercentage <= 100) {
+      return this.price * (1 - this.discountPercentage / 100);
+    }
+    return this.price;
+  } catch (error) {
+    console.error('Error in discountedPrice virtual:', error);
+    return this.price || 0;
   }
-  return this.price;
 });
 
 // Virtual for discount percentage calculation
 productSchema.virtual('calculatedDiscountPercentage').get(function(this: IProductDocument) {
-  if (this.originalPrice && this.originalPrice > this.price) {
-    return ((this.originalPrice - this.price) / this.originalPrice) * 100;
+  try {
+    if (this.originalPrice && this.originalPrice > this.price) {
+      return ((this.originalPrice - this.price) / this.originalPrice) * 100;
+    }
+    return this.discountPercentage || 0;
+  } catch (error) {
+    console.error('Error in calculatedDiscountPercentage virtual:', error);
+    return this.discountPercentage || 0;
   }
-  return this.discountPercentage;
 });
 
 // Virtual for stock status
 productSchema.virtual('isInStock').get(function(this: IProductDocument) {
-  return this.stock > 0;
+  try {
+    return (this.stock || 0) > 0;
+  } catch (error) {
+    console.error('Error in isInStock virtual:', error);
+    return false;
+  }
 });
 
 // Virtual for active discount
 productSchema.virtual('hasActiveDiscount').get(function(this: IProductDocument) {
-  const now = new Date();
-  return this.discountPercentage > 0 && 
-         (!this.discountStartDate || this.discountStartDate <= now) &&
-         (!this.discountEndDate || this.discountEndDate >= now);
+  try {
+    const now = new Date();
+    return (this.discountPercentage || 0) > 0 && 
+           (!this.discountStartDate || this.discountStartDate <= now) &&
+           (!this.discountEndDate || this.discountEndDate >= now);
+  } catch (error) {
+    console.error('Error in hasActiveDiscount virtual:', error);
+    return false;
+  }
 });
 
 // Indexes for performance
@@ -334,8 +354,8 @@ productSchema.index({ createdAt: -1 });
 productSchema.index({ isFeatured: 1 });
 productSchema.index({ isBestSeller: 1 });
 productSchema.index({ isNewArrival: 1 });
-productSchema.index({ slug: 1 }, { unique: true, sparse: true });
-productSchema.index({ sku: 1 }, { unique: true, sparse: true });
+productSchema.index({ slug: 1 }, { sparse: true });
+productSchema.index({ sku: 1 }, { sparse: true });
 
 // Compound indexes
 productSchema.index({ categoryId: 1, status: 1 });
@@ -344,60 +364,101 @@ productSchema.index({ price: 1, status: 1 });
 
 // Pre-save middleware
 productSchema.pre('save', function(this: IProductDocument, next) {
-  // Set primary image if not set
-  if (this.images && this.images.length > 0 && !this.primaryImage) {
-    const primaryImage = this.images.find((img: any) => img.isPrimary) || this.images[0];
-    this.primaryImage = primaryImage.url;
-  }
+  try {
+    // Set primary image if not set
+    if (this.images && this.images.length > 0 && !this.primaryImage) {
+      const primaryImage = this.images.find((img: any) => img.isPrimary) || this.images[0];
+      this.primaryImage = primaryImage.url;
+    }
 
-  // Generate slug if not provided
-  if (!this.slug) {
-    this.slug = this.name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-  }
+    // Generate slug if not provided
+    if (!this.slug && this.name) {
+      this.slug = this.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    }
 
-  next();
+    next();
+  } catch (error) {
+    console.error('Error in Product pre-save middleware:', error);
+    next(error as Error);
+  }
 });
 
 // Static method to find active products
 productSchema.statics.findActive = function() {
-  return this.find({ status: 'active' });
+  try {
+    return this.find({ status: { $in: ['draft', 'active', 'inactive'] } });
+  } catch (error) {
+    console.error('Error in findActive:', error);
+    throw error;
+  }
 };
 
 // Static method to find featured products
 productSchema.statics.findFeatured = function() {
-  return this.find({ status: 'active', isFeatured: true });
+  try {
+    return this.find({ 
+      status: { $in: ['draft', 'active', 'inactive'] }, 
+      isFeatured: true 
+    });
+  } catch (error) {
+    console.error('Error in findFeatured:', error);
+    throw error;
+  }
 };
 
 // Static method to find best sellers
 productSchema.statics.findBestSellers = function() {
-  return this.find({ status: 'active', isBestSeller: true });
+  try {
+    return this.find({ 
+      status: { $in: ['draft', 'active', 'inactive'] }, 
+      isBestSeller: true 
+    });
+  } catch (error) {
+    console.error('Error in findBestSellers:', error);
+    throw error;
+  }
 };
 
 // Static method to find new arrivals
 productSchema.statics.findNewArrivals = function() {
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
-  return this.find({
-    status: 'active',
-    createdAt: { $gte: thirtyDaysAgo }
-  }).sort({ createdAt: -1 });
+  try {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    return this.find({
+      status: { $in: ['draft', 'active', 'inactive'] },
+      createdAt: { $gte: thirtyDaysAgo }
+    }).sort({ createdAt: -1 });
+  } catch (error) {
+    console.error('Error in findNewArrivals:', error);
+    throw error;
+  }
 };
 
 // Instance method to increment view count
 productSchema.methods.incrementViewCount = function(this: IProductDocument) {
-  this.viewCount = (this.viewCount || 0) + 1;
-  return this.save();
+  try {
+    this.viewCount = (this.viewCount || 0) + 1;
+    return this.save();
+  } catch (error) {
+    console.error('Error in incrementViewCount:', error);
+    throw error;
+  }
 };
 
 // Instance method to increment purchase count
 productSchema.methods.incrementPurchaseCount = function(this: IProductDocument, quantity = 1) {
-  this.purchaseCount = (this.purchaseCount || 0) + quantity;
-  this.stock = Math.max(0, this.stock - quantity);
-  return this.save();
+  try {
+    this.purchaseCount = (this.purchaseCount || 0) + quantity;
+    this.stock = Math.max(0, (this.stock || 0) - quantity);
+    return this.save();
+  } catch (error) {
+    console.error('Error in incrementPurchaseCount:', error);
+    throw error;
+  }
 };
 
 const Product = mongoose.model<IProductDocument>('Product', productSchema);

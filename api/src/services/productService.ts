@@ -22,7 +22,7 @@ export class ProductService {
         ...productData,
         sellerId,
         sellerName,
-        status: 'draft' // Default to draft for review
+        status: productData.status || 'draft' // Use provided status or default to draft
       });
 
       await product.save();

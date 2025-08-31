@@ -110,7 +110,24 @@ const categorySchema = new Schema<ICategoryDocument>({
 
 // Virtual for full path
 categorySchema.virtual('fullPath').get(function() {
-  return this.path.map((id: any) => id.name).join(' > ') + ' > ' + this.name;
+  try {
+    if (!this.path || !Array.isArray(this.path) || this.path.length === 0) {
+      return this.name || '';
+    }
+    
+    // If path is populated with category documents, use their names
+    if (this.path[0] && typeof this.path[0] === 'object' && 'name' in this.path[0]) {
+      const pathNames = this.path.map((category: any) => category.name || '').filter(name => name);
+      return pathNames.length > 0 ? pathNames.join(' > ') + ' > ' + (this.name || '') : (this.name || '');
+    }
+    
+    // If path contains ObjectIds, return just the current category name
+    // The full path would need to be populated separately
+    return this.name || '';
+  } catch (error) {
+    console.error('Error in fullPath virtual:', error);
+    return this.name || '';
+  }
 });
 
 // Virtual for product count (will be populated)
@@ -130,7 +147,6 @@ categorySchema.virtual('hasChildren', {
 });
 
 // Indexes for performance
-categorySchema.index({ slug: 1 }, { unique: true });
 categorySchema.index({ parentId: 1 });
 categorySchema.index({ level: 1 });
 categorySchema.index({ isActive: 1 });
@@ -144,90 +160,140 @@ categorySchema.index({ level: 1, isActive: 1 });
 
 // Pre-save middleware
 categorySchema.pre('save', async function(next) {
-  // Generate slug if not provided
-  if (!this.slug) {
-    this.slug = this.name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-  }
-
-  // Set level based on parent
-  if (this.parentId) {
-    const parent = await mongoose.model('Category').findById(this.parentId);
-    if (parent) {
-      this.level = parent.level + 1;
-      this.path = [...parent.path, parent._id];
+  try {
+    // Generate slug if not provided
+    if (!this.slug && this.name) {
+      this.slug = this.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
     }
-  } else {
-    this.level = 0;
-    this.path = [];
-  }
 
-  next();
+    // Set level based on parent
+    if (this.parentId) {
+      const parent = await mongoose.model('Category').findById(this.parentId);
+      if (parent) {
+        this.level = parent.level + 1;
+        this.path = [...(parent.path || []), parent._id];
+      } else {
+        this.level = 0;
+        this.path = [];
+      }
+    } else {
+      this.level = 0;
+      this.path = [];
+    }
+
+    next();
+  } catch (error) {
+    console.error('Error in Category pre-save middleware:', error);
+    next(error as Error);
+  }
 });
 
 // Static method to find root categories
 categorySchema.statics.findRoots = function() {
-  return this.find({ parentId: null, isActive: true }).sort({ sortOrder: 1 });
+  try {
+    return this.find({ parentId: null, isActive: true }).sort({ sortOrder: 1 });
+  } catch (error) {
+    console.error('Error in findRoots:', error);
+    throw error;
+  }
 };
 
 // Static method to find children of a category
 categorySchema.statics.findChildren = function(parentId: string) {
-  return this.find({ parentId, isActive: true }).sort({ sortOrder: 1 });
+  try {
+    return this.find({ parentId, isActive: true }).sort({ sortOrder: 1 });
+  } catch (error) {
+    console.error('Error in findChildren:', error);
+    throw error;
+  }
 };
 
 // Static method to find featured categories
 categorySchema.statics.findFeatured = function() {
-  return this.find({ isActive: true, isFeatured: true }).sort({ sortOrder: 1 });
+  try {
+    return this.find({ isActive: true, isFeatured: true }).sort({ sortOrder: 1 });
+  } catch (error) {
+    console.error('Error in findFeatured:', error);
+    throw error;
+  }
 };
 
 // Static method to build category tree
 categorySchema.statics.buildTree = async function() {
-  const categories = await this.find({ isActive: true }).sort({ sortOrder: 1 });
-  
-  const buildTreeRecursive = (parentId: string | null) => {
-    return categories
-      .filter((cat: any) => (parentId === null && !cat.parentId) || cat.parentId?.toString() === parentId)
-      .map((cat: any) => ({
-        ...cat.toObject(),
-        children: buildTreeRecursive(cat._id.toString())
-      }));
-  };
+  try {
+    const categories = await this.find({ isActive: true }).sort({ sortOrder: 1 });
+    
+    const buildTreeRecursive = (parentId: string | null) => {
+      return categories
+        .filter((cat: any) => (parentId === null && !cat.parentId) || cat.parentId?.toString() === parentId)
+        .map((cat: any) => {
+          try {
+            return {
+              ...cat.toObject({ virtuals: false }), // Disable virtuals to avoid issues
+              children: buildTreeRecursive(cat._id.toString())
+            };
+          } catch (error) {
+            console.error('Error in buildTree:', error);
+            return {
+              _id: cat._id,
+              name: cat.name,
+              slug: cat.slug,
+              children: buildTreeRecursive(cat._id.toString())
+            };
+          }
+        });
+    };
 
-  return buildTreeRecursive(null);
+    return buildTreeRecursive(null);
+  } catch (error) {
+    console.error('Error in buildTree static method:', error);
+    return [];
+  }
 };
 
 // Instance method to get all descendants
 categorySchema.methods.getDescendants = async function(this: ICategoryDocument) {
-  const descendants = [];
-  const children = await mongoose.model('Category').find({ parentId: this._id, isActive: true });
-  
-  for (const child of children) {
-    descendants.push(child);
-    const childDescendants = await child.getDescendants();
-    descendants.push(...childDescendants);
+  try {
+    const descendants = [];
+    const children = await mongoose.model('Category').find({ parentId: this._id, isActive: true });
+    
+    for (const child of children) {
+      descendants.push(child);
+      const childDescendants = await child.getDescendants();
+      descendants.push(...childDescendants);
+    }
+    
+    return descendants;
+  } catch (error) {
+    console.error('Error in getDescendants:', error);
+    return [];
   }
-  
-  return descendants;
 };
 
 // Instance method to get all ancestors
 categorySchema.methods.getAncestors = async function(this: ICategoryDocument) {
-  const ancestors = [];
-  let current = this;
-  
-  while (current.parentId) {
-    const parent = await mongoose.model('Category').findById(current.parentId);
-    if (parent) {
-      ancestors.unshift(parent);
-      current = parent;
-    } else {
-      break;
+  try {
+    const ancestors = [];
+    let current = this;
+    
+    while (current.parentId) {
+      const parent = await mongoose.model('Category').findById(current.parentId);
+      if (parent) {
+        ancestors.unshift(parent);
+        current = parent;
+      } else {
+        break;
+      }
     }
+    
+    return ancestors;
+  } catch (error) {
+    console.error('Error in getAncestors:', error);
+    return [];
   }
-  
-  return ancestors;
 };
 
 
