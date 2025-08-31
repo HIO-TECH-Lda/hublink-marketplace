@@ -162,34 +162,118 @@ export interface ICategory {
   updatedAt?: Date;
 }
 
-// Order Types
-export interface IOrder {
-  _id?: string;
-  orderNumber: string;
-  userId: string;
+// Cart Types
+export interface ICartItem {
+  productId: string;
+  productName: string;
+  productImage: string;
+  productSlug: string;
   sellerId: string;
-  items: IOrderItem[];
+  sellerName: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+  variantId?: string;
+  variantName?: string;
+  variantValue?: string;
+  variantPrice?: number;
+  isAvailable: boolean;
+  stockAvailable: number;
+  addedAt: Date;
+}
+
+export interface ICart {
+  _id?: string;
+  userId: string;
+  items: ICartItem[];
+  totalItems: number;
   subtotal: number;
-  shipping: number;
   tax: number;
+  shipping: number;
+  discount: number;
   total: number;
-  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
-  paymentMethod: 'm-pesa' | 'e-mola' | 'stripe' | 'cash';
-  shippingAddress: IAddress;
-  trackingNumber?: string;
-  estimatedDelivery?: Date;
-  notes?: string;
+  currency: string;
+  expiresAt: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
+// Order Types
 export interface IOrderItem {
   productId: string;
-  name: string;
-  price: number;
+  productName: string;
+  productImage: string;
+  productSlug: string;
+  sellerId: string;
+  sellerName: string;
   quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+  variantId?: string;
+  variantName?: string;
+  variantValue?: string;
+  variantPrice?: number;
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+  trackingNumber?: string;
+  shippedAt?: Date;
+  deliveredAt?: Date;
+}
+
+export interface IOrderAddress {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+  isDefault: boolean;
+}
+
+export interface IOrderPayment {
+  method: 'credit_card' | 'debit_card' | 'paypal' | 'bank_transfer' | 'cash_on_delivery';
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
+  transactionId?: string;
+  amount: number;
+  currency: string;
+  paidAt?: Date;
+  refundedAt?: Date;
+  refundAmount?: number;
+  paymentDetails?: {
+    cardLast4?: string;
+    cardBrand?: string;
+    paypalEmail?: string;
+  };
+}
+
+export interface IOrder {
+  _id?: string;
+  orderNumber: string;
+  userId: string;
+  items: IOrderItem[];
+  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  discount: number;
   total: number;
+  currency: string;
+  shippingAddress: IOrderAddress;
+  billingAddress: IOrderAddress;
+  payment: IOrderPayment;
+  notes?: string;
+  estimatedDelivery?: Date;
+  confirmedAt?: Date;
+  processedAt?: Date;
+  shippedAt?: Date;
+  deliveredAt?: Date;
+  cancelledAt?: Date;
+  cancelledBy?: string;
+  cancelReason?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 // Payment Types
@@ -230,6 +314,7 @@ export interface ITicket {
   title: string;
   description: string;
   category: 'technical_issue' | 'payment_problem' | 'order_issue' | 'return_request' | 'account_issue';
+
   priority: 'low' | 'medium' | 'high' | 'urgent';
   status: 'open' | 'in_progress' | 'waiting_for_user' | 'resolved' | 'closed';
   userId: string;

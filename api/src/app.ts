@@ -8,6 +8,8 @@ import testRoutes from './routes/test';
 import authRoutes from './routes/auth';
 import productRoutes from './routes/products';
 import categoryRoutes from './routes/categories';
+import cartRoutes from './routes/cart';
+import orderRoutes from './routes/orders';
 
 // Load environment variables
 dotenv.config();
@@ -48,6 +50,7 @@ app.get('/api/v1', (req: Request, res: Response) => {
       users: '/api/v1/users',
       products: '/api/v1/products',
       categories: '/api/v1/categories',
+      cart: '/api/v1/cart',
       orders: '/api/v1/orders',
       payments: '/api/v1/payments',
       test: '/api/v1/test'
@@ -60,6 +63,27 @@ app.get('/api/v1', (req: Request, res: Response) => {
       updateProfile: 'PUT /api/v1/auth/me',
       changePassword: 'PUT /api/v1/auth/change-password',
       logout: 'POST /api/v1/auth/logout'
+    },
+    cartEndpoints: {
+      getCart: 'GET /api/v1/cart',
+      addToCart: 'POST /api/v1/cart/add',
+      updateCart: 'PUT /api/v1/cart/update',
+      removeFromCart: 'DELETE /api/v1/cart/remove',
+      clearCart: 'DELETE /api/v1/cart/clear',
+      cartSummary: 'GET /api/v1/cart/summary',
+      cartAvailability: 'GET /api/v1/cart/availability'
+    },
+    orderEndpoints: {
+      createFromCart: 'POST /api/v1/orders/create-from-cart',
+      createOrder: 'POST /api/v1/orders/create',
+      myOrders: 'GET /api/v1/orders/my-orders',
+      getOrder: 'GET /api/v1/orders/:orderId',
+      getOrderByNumber: 'GET /api/v1/orders/number/:orderNumber',
+      orderTracking: 'GET /api/v1/orders/:orderId/tracking',
+      cancelOrder: 'POST /api/v1/orders/:orderId/cancel',
+      updateOrderStatus: 'PATCH /api/v1/orders/:orderId/status (admin/seller)',
+      allOrders: 'GET /api/v1/orders (admin)',
+      orderStatistics: 'GET /api/v1/orders/statistics/user'
     }
   });
 });
@@ -75,6 +99,12 @@ app.use('/api/v1/products', productRoutes);
 
 // Category routes
 app.use('/api/v1/categories', categoryRoutes);
+
+// Cart routes
+app.use('/api/v1/cart', cartRoutes);
+
+// Order routes
+app.use('/api/v1/orders', orderRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
@@ -99,12 +129,12 @@ const startServer = async () => {
   try {
     // Connect to MongoDB
     await connectDB();
-    
+
     // Start Express server
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`📊 Health check: http://localhost:${PORT}/health`);
-      console.log(`🔗 API Base URL: http://localhost:${PORT}/api/v1`);
+      console.log(`✅ Health check: http://localhost:${PORT}/health`);
+      console.log(`🌐 API Base URL: http://localhost:${PORT}/api/v1`);
       console.log(`🗄️ Database: MongoDB Atlas`);
     });
   } catch (error) {
