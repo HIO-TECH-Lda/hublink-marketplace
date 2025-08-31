@@ -354,8 +354,7 @@ productSchema.index({ createdAt: -1 });
 productSchema.index({ isFeatured: 1 });
 productSchema.index({ isBestSeller: 1 });
 productSchema.index({ isNewArrival: 1 });
-productSchema.index({ slug: 1 }, { sparse: true });
-productSchema.index({ sku: 1 }, { sparse: true });
+// slug and sku unique constraints are already defined in schema
 
 // Compound indexes
 productSchema.index({ categoryId: 1, status: 1 });
