@@ -84,4 +84,18 @@ router.get('/statistics/overview',
   PaymentController.getPaymentStatistics
 );
 
+// Get detailed payment analytics (admin only)
+router.get('/analytics', 
+  authenticateToken, 
+  authorizeRoles('admin'), 
+  PaymentController.getPaymentAnalytics
+);
+
+// Get payment performance monitoring (admin only)
+router.get('/performance', 
+  authenticateToken, 
+  authorizeRoles('admin'), 
+  PaymentController.getPaymentPerformance
+);
+
 export default router;

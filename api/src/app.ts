@@ -98,6 +98,8 @@ app.get('/api/v1', (req: Request, res: Response) => {
       createManualPayment: 'POST /api/v1/payments/manual',
       markManualComplete: 'PATCH /api/v1/payments/manual/:paymentId/complete (admin/seller)',
       paymentStatistics: 'GET /api/v1/payments/statistics/overview (admin)',
+      paymentAnalytics: 'GET /api/v1/payments/analytics (admin)',
+      paymentPerformance: 'GET /api/v1/payments/performance (admin)',
       stripeWebhook: 'POST /api/v1/payments/webhook/stripe'
     }
   });

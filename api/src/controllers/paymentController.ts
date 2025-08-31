@@ -337,20 +337,8 @@ export class PaymentController {
         });
       }
 
-      // Get payment statistics
-      const pendingPayments = await PaymentService.getPaymentsByStatus('pending');
-      const completedPayments = await PaymentService.getPaymentsByStatus('completed');
-      const failedPayments = await PaymentService.getPaymentsByStatus('failed');
-      const refundedPayments = await PaymentService.getPaymentsByStatus('refunded');
-
-      const statistics = {
-        total: pendingPayments.length + completedPayments.length + failedPayments.length + refundedPayments.length,
-        pending: pendingPayments.length,
-        completed: completedPayments.length,
-        failed: failedPayments.length,
-        refunded: refundedPayments.length,
-        successRate: completedPayments.length / (completedPayments.length + failedPayments.length) * 100
-      };
+      // Get comprehensive payment statistics
+      const statistics = await PaymentService.getPaymentStatistics();
 
       return res.json({
         success: true,
@@ -362,6 +350,96 @@ export class PaymentController {
       return res.status(500).json({
         success: false,
         message: error.message || 'Failed to retrieve payment statistics'
+      });
+    }
+  }
+
+  /**
+   * Get detailed payment analytics (admin only)
+   */
+  static async getPaymentAnalytics(req: Request, res: Response) {
+    try {
+      // Check if user is admin
+      if ((req as any).user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          message: 'Access denied. Admin only.'
+        });
+      }
+
+      const { period = '30d' } = req.query; // 7d, 30d, 90d, 1y
+      
+      // Calculate date range based on period
+      const endDate = new Date();
+      const startDate = new Date();
+      
+      switch (period) {
+        case '7d':
+          startDate.setDate(endDate.getDate() - 7);
+          break;
+        case '30d':
+          startDate.setDate(endDate.getDate() - 30);
+          break;
+        case '90d':
+          startDate.setDate(endDate.getDate() - 90);
+          break;
+        case '1y':
+          startDate.setFullYear(endDate.getFullYear() - 1);
+          break;
+        default:
+          startDate.setDate(endDate.getDate() - 30);
+      }
+
+      // Get analytics data
+      const analytics = await PaymentService.getPaymentAnalytics(startDate, endDate);
+
+      return res.json({
+        success: true,
+        message: 'Payment analytics retrieved successfully',
+        data: {
+          period,
+          dateRange: {
+            start: startDate,
+            end: endDate
+          },
+          ...analytics
+        }
+      });
+    } catch (error: any) {
+      console.error('Get payment analytics error:', error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || 'Failed to retrieve payment analytics'
+      });
+    }
+  }
+
+  /**
+   * Get payment performance monitoring data (admin only)
+   */
+  static async getPaymentPerformance(req: Request, res: Response) {
+    try {
+      // Check if user is admin
+      if ((req as any).user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          message: 'Access denied. Admin only.'
+        });
+      }
+
+      // Get performance data
+      const performance = await PaymentService.getPaymentPerformance();
+
+      return res.json({
+        success: true,
+        message: 'Payment performance data retrieved successfully',
+        data: performance
+      });
+    } catch (error: any) {
+      console.error('Get payment performance error:', error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || 'Failed to retrieve payment performance data'
       });
     }
   }
