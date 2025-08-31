@@ -1,5 +1,5 @@
 {
-  "name": "review-system-api",
+  "name": "api",
   "version": "1.0.0",
   "description": "Comprehensive review system API with full test coverage",
   "main": "dist/app.js",
