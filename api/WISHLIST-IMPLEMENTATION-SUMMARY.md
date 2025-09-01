@@ -228,6 +228,101 @@ WISHLIST_EXPIRY_DAYS=365
 - Consistent response format
 - Seamless cart integration
 
+## 📁 **File Structure**
+
+```
+src/
+├── models/
+│   └── Wishlist.ts              # Mongoose schema and model
+├── services/
+│   └── wishlistService.ts       # Business logic layer
+├── controllers/
+│   └── wishlistController.ts    # HTTP request handlers
+├── routes/
+│   └── wishlist.ts              # API route definitions
+├── utils/
+│   └── validation.ts            # Joi validation schemas
+├── types/
+│   └── index.ts                 # TypeScript interfaces
+└── __tests__/
+    └── wishlist.test.ts         # Test suite
+```
+
+## 🔧 **Technical Specifications**
+
+### **Dependencies**
+- **MongoDB**: Database storage
+- **Mongoose**: ODM for MongoDB
+- **Express.js**: Web framework
+- **JWT**: Authentication tokens
+- **Joi**: Input validation
+- **TypeScript**: Type safety
+
+### **Database Collections**
+- **wishlists**: Main wishlist data
+- **products**: Product information
+- **users**: User authentication
+- **carts**: Shopping cart integration
+
+### **API Response Format**
+```typescript
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data?: T;
+  error?: string;
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}
+```
+
+## 🚨 **Error Handling**
+
+### **Error Types**
+- **Validation Errors**: Invalid input data
+- **Authentication Errors**: Missing or invalid tokens
+- **Database Errors**: Connection or query failures
+- **Business Logic Errors**: Invalid operations
+
+### **Error Response Format**
+```typescript
+{
+  success: false,
+  message: 'Error description',
+  error: 'Detailed error message'
+}
+```
+
+## 📈 **Performance Metrics**
+
+### **Database Performance**
+- **Index Usage**: Optimized queries with proper indexing
+- **Query Optimization**: Efficient aggregation and population
+- **Connection Pooling**: Managed database connections
+
+### **API Performance**
+- **Response Time**: Target < 200ms for most operations
+- **Throughput**: Support for concurrent requests
+- **Memory Usage**: Efficient data handling
+
+## 🔍 **Monitoring & Debugging**
+
+### **Logging Strategy**
+- **Request Logging**: Track all API calls
+- **Error Logging**: Detailed error information
+- **Performance Logging**: Response time tracking
+- **Database Logging**: Query performance monitoring
+
+### **Debug Information**
+- **Request IDs**: Unique identifiers for tracking
+- **User Context**: Authentication and authorization details
+- **Timestamps**: Precise timing information
+- **Stack Traces**: Detailed error information
+
 ## ✨ **Conclusion**
 
 The Wishlist & Favorites System has been successfully implemented with:
@@ -244,4 +339,5 @@ This implementation completes **Phase 5** of the e-commerce platform and provide
 **Implementation Date**: December 2024  
 **Phase**: 5 - Advanced Features  
 **Status**: ✅ Complete  
-**Next Phase**: 6 - Advanced Analytics & Reporting
+**Next Phase**: 6 - Advanced Analytics & Reporting  
+**Last Updated**: December 2024
