@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import { WishlistController } from '../controllers/wishlistController';
 import { authenticateToken } from '../middleware/auth';
 import { Request, Response, NextFunction } from 'express';
@@ -9,7 +9,7 @@ const router = express.Router();
 // Wrapper functions to handle type conversion
 const wrapHandler = (handler: (req: AuthenticatedRequest, res: Response) => Promise<any>) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    return handler(req as AuthenticatedRequest, res);
+    return handler(req as unknown as AuthenticatedRequest, res);
   };
 };
 
@@ -81,20 +81,20 @@ router.put('/update-notes/:productId', authenticateToken, wrapHandler(WishlistCo
  * @desc    Get wishlist recommendations
  * @access  Private
  */
-router.get('/recommendations', authenticateToken, WishlistController.getRecommendations);
+router.get('/recommendations', authenticateToken, wrapHandler(WishlistController.getRecommendations));
 
 /**
  * @route   POST /api/v1/wishlist/bulk-add
  * @desc    Bulk add products to wishlist
  * @access  Private
  */
-router.post('/bulk-add', authenticateToken, WishlistController.bulkAddToWishlist);
+router.post('/bulk-add', authenticateToken, wrapHandler(WishlistController.bulkAddToWishlist));
 
 /**
  * @route   DELETE /api/v1/wishlist/bulk-remove
  * @desc    Bulk remove products from wishlist
  * @access  Private
  */
-router.delete('/bulk-remove', authenticateToken, WishlistController.bulkRemoveFromWishlist);
+router.delete('/bulk-remove', authenticateToken, wrapHandler(WishlistController.bulkRemoveFromWishlist));
 
 export default router;

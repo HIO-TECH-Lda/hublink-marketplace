@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 
 // User registration validation schema
 export const registerSchema = Joi.object({

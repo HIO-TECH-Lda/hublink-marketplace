@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+timport { Request, Response } from 'express';
 import { WishlistService } from '../services/wishlistService';
 import { validateWishlistAdd, validateWishlistUpdate } from '../utils/validation';
 import { AuthenticatedRequest } from '../types';
@@ -13,13 +13,13 @@ export class WishlistController {
       const userId = req.user!.userId;
       const wishlist = await WishlistService.getUserWishlist(userId);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Wishlist retrieved successfully',
         data: wishlist
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to get wishlist',
         error: error.message
@@ -138,12 +138,12 @@ export class WishlistController {
 
       await WishlistService.clearWishlist(userId);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Wishlist cleared successfully'
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to clear wishlist',
         error: error.message
@@ -199,13 +199,13 @@ export class WishlistController {
       const userId = req.user!.userId;
       const stats = await WishlistService.getWishlistStats(userId);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Wishlist statistics retrieved successfully',
         data: stats
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to get wishlist statistics',
         error: error.message
@@ -225,14 +225,14 @@ export class WishlistController {
 
       const result = await WishlistService.getWishlistItems(userId, page, limit);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Wishlist items retrieved successfully',
         data: result.items,
         pagination: result.pagination
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to get wishlist items',
         error: error.message
@@ -293,13 +293,13 @@ export class WishlistController {
 
       const recommendations = await WishlistService.getRecommendations(userId, limit);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Recommendations retrieved successfully',
         data: recommendations
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to get recommendations',
         error: error.message
