@@ -1,4 +1,4 @@
-timport { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { WishlistService } from '../services/wishlistService';
 import { validateWishlistAdd, validateWishlistUpdate } from '../utils/validation';
 import { AuthenticatedRequest } from '../types';
