@@ -2,6 +2,7 @@ import Review, { IReview } from '../models/Review';
 import Product from '../models/Product';
 import Order from '../models/Order';
 import User from '../models/User';
+import { EmailService } from './emailService';
 
 export interface CreateReviewData {
   productId: string;
@@ -427,12 +428,8 @@ export class ReviewService {
         throw new Error('Order not found');
       }
 
-      // This would integrate with the email service
-      // For now, just log the request
-      console.log(`Review request sent for order ${orderId} to user ${(order.userId as any).email}`);
-      
-      // TODO: Implement email service integration
-      // await EmailService.sendReviewRequest(order);
+      // Send review request email
+      await EmailService.sendReviewRequest(order);
     } catch (error) {
       console.error('Error sending review request:', error);
       throw error;

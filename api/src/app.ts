@@ -14,6 +14,7 @@ import orderRoutes from './routes/orders';
 import paymentRoutes from './routes/payment';
 import reviewRoutes from './routes/reviews';
 import wishlistRoutes from './routes/wishlist';
+import emailRoutes from './routes/email';
 
 // Load environment variables
 dotenv.config();
@@ -162,6 +163,9 @@ app.use('/api/v1/reviews', reviewRoutes);
 
 // Wishlist routes
 app.use('/api/v1/wishlist', wishlistRoutes);
+
+// Email routes
+app.use('/api/v1/email', emailRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
