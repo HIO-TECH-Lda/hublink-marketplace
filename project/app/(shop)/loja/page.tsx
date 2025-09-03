@@ -80,7 +80,7 @@ export default function ShopPage() {
           {searchQuery && (
             <>
               <span> / </span>
-              <span className="text-primary">Busca: "{searchQuery}"</span>
+              <span className="text-primary">Busca: &quot;{searchQuery}&quot;</span>
             </>
           )}
         </nav>
@@ -89,11 +89,11 @@ export default function ShopPage() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">
-              {searchQuery ? `Resultados para "${searchQuery}"` : 'Comprar Agora'}
+              {searchQuery ? `Resultados para &quot;${searchQuery}&quot;` : 'Comprar Agora'}
             </h1>
             <p className="text-gray-6 text-sm sm:text-base">
               {searchQuery 
-                ? `Encontramos ${filteredProducts.length} produto${filteredProducts.length !== 1 ? 's' : ''} para "${searchQuery}"`
+                ? `Encontramos ${filteredProducts.length} produto${filteredProducts.length !== 1 ? 's' : ''} para &quot;${searchQuery}&quot;`
                 : `Encontramos ${filteredProducts.length} produtos para você`
               }
             </p>

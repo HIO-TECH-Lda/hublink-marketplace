@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   BarChart3, 
@@ -52,11 +52,7 @@ export default function AnalyticsPage() {
   const [topSellers, setTopSellers] = useState<TopSeller[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    loadAnalyticsData();
-  }, [timeRange]);
-
-  const loadAnalyticsData = async () => {
+  const loadAnalyticsData = useCallback(async () => {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -160,7 +156,11 @@ export default function AnalyticsPage() {
 
     setTopSellers(mockTopSellers);
     setIsLoading(false);
-  };
+  }, [timeRange]);
+
+  useEffect(() => {
+    loadAnalyticsData();
+  }, [loadAnalyticsData]);
 
   const calculateTotals = () => {
     const totalSales = salesData.reduce((sum, day) => sum + day.sales, 0);

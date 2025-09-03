@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CheckCircle, XCircle, Clock, DollarSign, Search, RefreshCw, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -63,11 +63,7 @@ export default function RefundManagement({
     search: ''
   });
 
-  useEffect(() => {
-    filterRefunds();
-  }, [refunds, filters]);
-
-  const filterRefunds = () => {
+  const filterRefunds = useCallback(() => {
     let filtered = [...refunds];
     
     if (filters.status !== 'all') {
@@ -88,7 +84,11 @@ export default function RefundManagement({
     }
     
     setFilteredRefunds(filtered);
-  };
+  }, [refunds, filters]);
+
+  useEffect(() => {
+    filterRefunds();
+  }, [filterRefunds]);
 
   const getRefundStatusColor = (status: string) => {
     switch (status) {

@@ -142,7 +142,7 @@ export default function BlogPostPage() {
               </p>
               
               <blockquote className="border-l-4 border-primary pl-6 italic text-gray-6 bg-gray-1 p-4 rounded-r-lg">
-                "A escolha por alimentos orgânicos é uma escolha pela saúde do planeta e das futuras gerações."
+                &quot;A escolha por alimentos orgânicos é uma escolha pela saúde do planeta e das futuras gerações.&quot;
               </blockquote>
               
               <p>

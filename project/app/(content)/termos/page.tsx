@@ -48,8 +48,8 @@ export default function TermosPage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">1. Aceitação dos Termos</h2>
                 <p className="text-gray-7 mb-4">
-                  Ao acessar e usar a plataforma Vitrine ("Plataforma"), você aceita e concorda 
-                  em cumprir estes Termos de Uso ("Termos"). Se você não concordar com qualquer 
+                  Ao acessar e usar a plataforma Vitrine (&quot;Plataforma&quot;), você aceita e concorda 
+                  em cumprir estes Termos de Uso (&quot;Termos&quot;). Se você não concordar com qualquer 
                   parte destes termos, não deve usar nossos serviços.
                 </p>
                 <p className="text-gray-7">
@@ -62,12 +62,12 @@ export default function TermosPage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">2. Definições</h2>
                 <ul className="list-disc list-inside space-y-2 text-gray-7">
-                  <li><strong>"Plataforma"</strong> - O website e aplicativo Vitrine</li>
-                  <li><strong>"Usuário"</strong> - Qualquer pessoa que acesse ou use a plataforma</li>
-                  <li><strong>"Comprador"</strong> - Usuário que adquire produtos através da plataforma</li>
-                  <li><strong>"Vendedor"</strong> - Usuário que vende produtos através da plataforma</li>
-                  <li><strong>"Produto"</strong> - Qualquer item listado para venda na plataforma</li>
-                  <li><strong>"Pedido"</strong> - Solicitação de compra de produtos</li>
+                  <li><strong>&quot;Plataforma&quot;</strong> - O website e aplicativo Vitrine</li>
+                  <li><strong>&quot;Usuário&quot;</strong> - Qualquer pessoa que acesse ou use a plataforma</li>
+                  <li><strong>&quot;Comprador&quot;</strong> - Usuário que adquire produtos através da plataforma</li>
+                  <li><strong>&quot;Vendedor&quot;</strong> - Usuário que vende produtos através da plataforma</li>
+                  <li><strong>&quot;Produto&quot;</strong> - Qualquer item listado para venda na plataforma</li>
+                  <li><strong>&quot;Pedido&quot;</strong> - Solicitação de compra de produtos</li>
                 </ul>
               </section>
 
@@ -305,7 +305,7 @@ export default function TermosPage() {
                 <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
                   <li>E-mail para o endereço registrado</li>
                   <li>Notificação na plataforma</li>
-                  <li>Atualização da data de "Última atualização"</li>
+                  <li>Atualização da data de &quot;Última atualização&quot;</li>
                 </ul>
                 
                 <p className="text-gray-7">

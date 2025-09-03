@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Package, 
@@ -53,13 +53,35 @@ export default function ProductManagementPage() {
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
 
+  const filterProducts = useCallback(() => {
+    let filtered = products;
+
+    if (searchTerm) {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.seller.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(product => product.status === statusFilter);
+    }
+
+    if (categoryFilter !== 'all') {
+      filtered = filtered.filter(product => product.category === categoryFilter);
+    }
+
+    setFilteredProducts(filtered);
+  }, [products, searchTerm, statusFilter, categoryFilter]);
+
   useEffect(() => {
     loadProducts();
   }, []);
 
   useEffect(() => {
     filterProducts();
-  }, [products, searchTerm, statusFilter, categoryFilter]);
+  }, [filterProducts]);
 
   const loadProducts = async () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -183,28 +205,6 @@ export default function ProductManagementPage() {
 
     setProducts(mockProducts);
     setIsLoading(false);
-  };
-
-  const filterProducts = () => {
-    let filtered = products;
-
-    if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.seller.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(product => product.status === statusFilter);
-    }
-
-    if (categoryFilter !== 'all') {
-      filtered = filtered.filter(product => product.category === categoryFilter);
-    }
-
-    setFilteredProducts(filtered);
   };
 
   const getStatusColor = (status: string) => {

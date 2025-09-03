@@ -45,6 +45,7 @@ export default function SignInPage() {
       email: formData.email,
       phone: '(+258) 99999-9999',
       isSeller: isSeller,
+      role: isSeller ? 'seller' as const : 'buyer' as const,
       sellerId: isSeller ? 'seller1' : undefined,
       profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
       billingAddress: {

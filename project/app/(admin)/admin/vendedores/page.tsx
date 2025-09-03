@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Shield, 
@@ -59,9 +59,28 @@ export default function VendorManagementPage() {
     loadVendors();
   }, []);
 
+  const filterVendors = useCallback(() => {
+    let filtered = vendors;
+
+    if (searchTerm) {
+      filtered = filtered.filter(vendor =>
+        vendor.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vendor.contactPerson.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vendor.contactPerson.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vendor.cnpj.includes(searchTerm)
+      );
+    }
+
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(vendor => vendor.status === statusFilter);
+    }
+
+    setFilteredVendors(filtered);
+  }, [vendors, searchTerm, statusFilter]);
+
   useEffect(() => {
     filterVendors();
-  }, [vendors, searchTerm, statusFilter]);
+  }, [filterVendors]);
 
   const loadVendors = async () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -197,25 +216,6 @@ export default function VendorManagementPage() {
 
     setVendors(mockVendors);
     setIsLoading(false);
-  };
-
-  const filterVendors = () => {
-    let filtered = vendors;
-
-    if (searchTerm) {
-      filtered = filtered.filter(vendor =>
-        vendor.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vendor.contactPerson.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vendor.contactPerson.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vendor.cnpj.includes(searchTerm)
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(vendor => vendor.status === statusFilter);
-    }
-
-    setFilteredVendors(filtered);
   };
 
   const getStatusColor = (status: string) => {

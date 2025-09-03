@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Tag, 
@@ -43,13 +43,26 @@ export default function CategoryManagementPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
 
+  const filterCategories = useCallback(() => {
+    let filtered = categories;
+
+    if (searchTerm) {
+      filtered = filtered.filter(category =>
+        category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        category.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredCategories(filtered);
+  }, [categories, searchTerm]);
+
   useEffect(() => {
     loadCategories();
   }, []);
 
   useEffect(() => {
     filterCategories();
-  }, [categories, searchTerm]);
+  }, [filterCategories]);
 
   const loadCategories = async () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -139,19 +152,6 @@ export default function CategoryManagementPage() {
 
     setCategories(mockCategories);
     setIsLoading(false);
-  };
-
-  const filterCategories = () => {
-    let filtered = categories;
-
-    if (searchTerm) {
-      filtered = filtered.filter(category =>
-        category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        category.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredCategories(filtered);
   };
 
   const getStatusColor = (status: string) => {

@@ -273,7 +273,7 @@ export default function AboutPage() {
                 
                 <blockquote className="text-gray-7 italic text-sm sm:text-base">
                   <Quote size={16} className="sm:w-5 sm:h-5 text-primary mb-2" />
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </blockquote>
               </div>
             ))}

@@ -48,7 +48,7 @@ export default function PrivacidadePage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">1. Introdução</h2>
                 <p className="text-gray-7 mb-4">
-                  O Vitrine ("nós", "nosso", "a empresa") está comprometido em proteger sua privacidade. 
+                  O Vitrine (&quot;nós&quot;, &quot;nosso&quot;, &quot;a empresa&quot;) está comprometido em proteger sua privacidade. 
                   Esta Política de Privacidade explica como coletamos, usamos, armazenamos e protegemos 
                   suas informações pessoais quando você usa nossa plataforma.
                 </p>
@@ -287,7 +287,7 @@ export default function PrivacidadePage() {
                 <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
                   <li>E-mail para o endereço registrado</li>
                   <li>Notificação na plataforma</li>
-                  <li>Atualização da data de "Última atualização"</li>
+                  <li>Atualização da data de &quot;Última atualização&quot;</li>
                 </ul>
                 
                 <p className="text-gray-7">

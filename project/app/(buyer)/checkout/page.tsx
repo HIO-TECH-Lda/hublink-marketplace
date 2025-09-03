@@ -71,6 +71,26 @@ export default function CheckoutPage() {
       status: 'pending' as const,
       items: state.cart,
       userId: state.user?.id || 'guest',
+      user: state.user || {
+        id: 'guest',
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        isSeller: false,
+        role: 'buyer' as const,
+        profileImage: '',
+        billingAddress: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          address: formData.address,
+          country: formData.country,
+          state: formData.state,
+          zipCode: formData.zipCode,
+          email: formData.email,
+          phone: formData.phone
+        }
+      },
       billingAddress: {
         firstName: formData.firstName,
         lastName: formData.lastName,

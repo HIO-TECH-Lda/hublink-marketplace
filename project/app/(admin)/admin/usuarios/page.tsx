@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Users, 
@@ -48,13 +48,40 @@ export default function UserManagementPage() {
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
 
+  const filterUsers = useCallback(() => {
+    let filtered = users;
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(user =>
+        user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Status filter
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(user => user.status === statusFilter);
+    }
+
+    // Role filter
+    if (roleFilter !== 'all') {
+      filtered = filtered.filter(user => 
+        roleFilter === 'seller' ? user.isSeller : !user.isSeller
+      );
+    }
+
+    setFilteredUsers(filtered);
+  }, [users, searchTerm, statusFilter, roleFilter]);
+
   useEffect(() => {
     loadUsers();
   }, []);
 
   useEffect(() => {
     filterUsers();
-  }, [users, searchTerm, statusFilter, roleFilter]);
+  }, [filterUsers]);
 
   const loadUsers = async () => {
     // Simulate API call delay
@@ -131,33 +158,6 @@ export default function UserManagementPage() {
 
     setUsers(mockUsers);
     setIsLoading(false);
-  };
-
-  const filterUsers = () => {
-    let filtered = users;
-
-    // Search filter
-    if (searchTerm) {
-      filtered = filtered.filter(user =>
-        user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Status filter
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(user => user.status === statusFilter);
-    }
-
-    // Role filter
-    if (roleFilter !== 'all') {
-      filtered = filtered.filter(user => 
-        roleFilter === 'seller' ? user.isSeller : !user.isSeller
-      );
-    }
-
-    setFilteredUsers(filtered);
   };
 
   const getStatusColor = (status: string) => {

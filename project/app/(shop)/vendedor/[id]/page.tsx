@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { 
   Building, 
@@ -65,11 +65,7 @@ export default function SellerProfilePage() {
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  useEffect(() => {
-    loadSeller();
-  }, [params.id]);
-
-  const loadSeller = async () => {
+  const loadSeller = useCallback(async () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Mock seller data
@@ -105,7 +101,11 @@ export default function SellerProfilePage() {
 
     setSeller(mockSeller);
     setIsLoading(false);
-  };
+  }, [params.id]);
+
+  useEffect(() => {
+    loadSeller();
+  }, [loadSeller]);
 
   // Get seller's products
   const sellerProducts = state.products.filter(product => product.sellerId === params.id);

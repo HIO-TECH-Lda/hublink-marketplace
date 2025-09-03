@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { 
   Mail, 
@@ -19,7 +19,7 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+// import { Progress } from '@/components/ui/progress';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 
 interface NewsletterCampaign {
@@ -51,11 +51,7 @@ export default function CampaignDetailsPage() {
   const [campaign, setCampaign] = useState<NewsletterCampaign | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    loadCampaign();
-  }, [params.id]);
-
-  const loadCampaign = async () => {
+  const loadCampaign = useCallback(async () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     const mockCampaign: NewsletterCampaign = {
@@ -82,7 +78,11 @@ export default function CampaignDetailsPage() {
 
     setCampaign(mockCampaign);
     setIsLoading(false);
-  };
+  }, [params.id]);
+
+  useEffect(() => {
+    loadCampaign();
+  }, [loadCampaign]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -264,24 +264,36 @@ export default function CampaignDetailsPage() {
                   {((campaign.stats.emailsDelivered / campaign.stats.emailsSent) * 100).toFixed(1)}%
                 </span>
               </div>
-              <Progress 
-                value={(campaign.stats.emailsDelivered / campaign.stats.emailsSent) * 100} 
-                className="h-2"
-              />
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-blue-600 h-2 rounded-full" 
+                  style={{ width: `${(campaign.stats.emailsDelivered / campaign.stats.emailsSent) * 100}%` }}
+                ></div>
+              </div>
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
                 <span className="text-gray-7">Taxa de Abertura</span>
                 <span className="text-gray-9 font-medium">{campaign.stats.openRate}%</span>
               </div>
-              <Progress value={campaign.stats.openRate} className="h-2" />
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-green-600 h-2 rounded-full" 
+                  style={{ width: `${campaign.stats.openRate}%` }}
+                ></div>
+              </div>
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
                 <span className="text-gray-7">Taxa de Clique</span>
                 <span className="text-gray-9 font-medium">{campaign.stats.clickRate}%</span>
               </div>
-              <Progress value={campaign.stats.clickRate} className="h-2" />
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-orange-600 h-2 rounded-full" 
+                  style={{ width: `${campaign.stats.clickRate}%` }}
+                ></div>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -295,7 +307,7 @@ export default function CampaignDetailsPage() {
         <CardContent>
           <div className="border rounded-lg p-4 bg-white">
             <div className="mb-4">
-                              <p className="font-medium text-gray-9">De: VITRINE &lt;noreply@vitrine.com&gt;</p>
+              <p className="font-medium text-gray-9">De: VITRINE &lt;noreply@vitrine.com&gt;</p>
               <p className="font-medium text-gray-9">Para: [Assinante]</p>
               <p className="font-medium text-gray-9">Assunto: {campaign.subject}</p>
             </div>

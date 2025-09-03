@@ -327,7 +327,7 @@ export default function HomePage() {
                     <Star key={i} size={16} className="text-warning fill-warning" />
                   ))}
                 </div>
-                <p className="text-gray-7 mb-4 italic">"{testimonial.comment}"</p>
+                <p className="text-gray-7 mb-4 italic">&quot;{testimonial.comment}&quot;</p>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                     <span className="text-primary font-semibold">

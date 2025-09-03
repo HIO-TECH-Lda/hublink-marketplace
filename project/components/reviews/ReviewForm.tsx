@@ -95,7 +95,7 @@ export default function ReviewForm({ productId, productName, onSubmit, onCancel 
           Avaliar Produto
         </CardTitle>
         <CardDescription>
-          Compartilhe sua experiência com "{productName}"
+          Compartilhe sua experiência com &quot;{productName}&quot;
         </CardDescription>
       </CardHeader>
       <CardContent>

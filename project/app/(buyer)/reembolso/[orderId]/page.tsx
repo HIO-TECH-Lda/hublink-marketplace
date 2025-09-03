@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, AlertCircle, CheckCircle, Clock, DollarSign, FileText, Upload, X, Image as ImageIcon } from 'lucide-react';
 import Header from '@/components/layout/Header';
@@ -35,11 +35,7 @@ export default function RefundPage() {
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    loadOrderData();
-  }, [orderId]);
-
-  const loadOrderData = async () => {
+  const loadOrderData = useCallback(async () => {
     try {
       const foundOrder = state.orders.find(o => o.id === orderId);
       if (!foundOrder) {
@@ -60,7 +56,11 @@ export default function RefundPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [orderId, state.orders]);
+
+  useEffect(() => {
+    loadOrderData();
+  }, [loadOrderData]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;

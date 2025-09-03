@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Users, 
@@ -58,11 +58,7 @@ export default function AdminDashboard() {
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
-
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -130,7 +126,11 @@ export default function AdminDashboard() {
 
     setRecentActivity(activity);
     setIsLoading(false);
-  };
+  }, [state.orders, state.products]);
+
+  useEffect(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
 
   const getActivityIcon = (type: string) => {
     switch (type) {

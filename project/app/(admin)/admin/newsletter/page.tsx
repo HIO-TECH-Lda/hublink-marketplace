@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Mail, 
@@ -86,13 +86,35 @@ export default function NewsletterManagementPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('subscribers');
 
+  const filterSubscribers = useCallback(() => {
+    let filtered = subscribers;
+
+    if (searchTerm) {
+      filtered = filtered.filter(subscriber =>
+        subscriber.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        subscriber.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        subscriber.lastName?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(subscriber => subscriber.status === statusFilter);
+    }
+
+    if (sourceFilter !== 'all') {
+      filtered = filtered.filter(subscriber => subscriber.source === sourceFilter);
+    }
+
+    setFilteredSubscribers(filtered);
+  }, [subscribers, searchTerm, statusFilter, sourceFilter]);
+
   useEffect(() => {
     loadData();
   }, []);
 
   useEffect(() => {
     filterSubscribers();
-  }, [subscribers, searchTerm, statusFilter, sourceFilter]);
+  }, [filterSubscribers]);
 
   const loadData = async () => {
     // Simulate API call delay
@@ -255,28 +277,6 @@ export default function NewsletterManagementPage() {
     setSubscribers(mockSubscribers);
     setCampaigns(mockCampaigns);
     setIsLoading(false);
-  };
-
-  const filterSubscribers = () => {
-    let filtered = subscribers;
-
-    if (searchTerm) {
-      filtered = filtered.filter(subscriber =>
-        subscriber.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        subscriber.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        subscriber.lastName?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(subscriber => subscriber.status === statusFilter);
-    }
-
-    if (sourceFilter !== 'all') {
-      filtered = filtered.filter(subscriber => subscriber.source === sourceFilter);
-    }
-
-    setFilteredSubscribers(filtered);
   };
 
   const getStatusColor = (status: string) => {

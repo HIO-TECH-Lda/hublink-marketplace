@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Package, Truck, CheckCircle, Clock, MapPin, Calendar, ArrowLeft, Download, Printer, RotateCcw, AlertCircle, X } from 'lucide-react';
 import Header from '@/components/layout/Header';
@@ -32,11 +32,7 @@ export default function OrderTrackingPage() {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [isSubmittingReturn, setIsSubmittingReturn] = useState(false);
 
-  useEffect(() => {
-    loadOrderData();
-  }, [orderId]);
-
-  const loadOrderData = async () => {
+  const loadOrderData = useCallback(async () => {
     try {
       // Find order from context
       const foundOrder = state.orders.find(o => o.id === orderId);
@@ -61,7 +57,11 @@ export default function OrderTrackingPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [orderId, state.orders]);
+
+  useEffect(() => {
+    loadOrderData();
+  }, [loadOrderData]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   ShoppingCart, 
@@ -42,13 +42,31 @@ export default function OrderManagementPage() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
 
+  const filterOrders = useCallback(() => {
+    let filtered = orders;
+
+    if (searchTerm) {
+      filtered = filtered.filter(order =>
+        order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.customer.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(order => order.status === statusFilter);
+    }
+
+    setFilteredOrders(filtered);
+  }, [orders, searchTerm, statusFilter]);
+
   useEffect(() => {
     loadOrders();
   }, []);
 
   useEffect(() => {
     filterOrders();
-  }, [orders, searchTerm, statusFilter]);
+  }, [filterOrders]);
 
   const loadOrders = async () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -97,24 +115,6 @@ export default function OrderManagementPage() {
 
     setOrders(mockOrders);
     setIsLoading(false);
-  };
-
-  const filterOrders = () => {
-    let filtered = orders;
-
-    if (searchTerm) {
-      filtered = filtered.filter(order =>
-        order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.customer.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(order => order.status === statusFilter);
-    }
-
-    setFilteredOrders(filtered);
   };
 
   const getStatusColor = (status: string) => {

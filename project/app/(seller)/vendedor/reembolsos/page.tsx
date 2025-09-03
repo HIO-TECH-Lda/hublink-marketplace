@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, XCircle, Clock, DollarSign, Search, RefreshCw, Eye } from 'lucide-react';
 import Header from '@/components/layout/Header';
@@ -29,13 +29,31 @@ export default function SellerRefundsPage() {
     search: ''
   });
 
+  const filterRefunds = useCallback(() => {
+    let filtered = [...refunds];
+    if (filters.status !== 'all') {
+      filtered = filtered.filter(refund => refund.status === filters.status);
+    }
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      filtered = filtered.filter(refund => 
+        refund.id.toLowerCase().includes(searchTerm) ||
+        refund.orderId.toLowerCase().includes(searchTerm) ||
+        refund.productName.toLowerCase().includes(searchTerm) ||
+        refund.customer.firstName.toLowerCase().includes(searchTerm) ||
+        refund.customer.lastName.toLowerCase().includes(searchTerm)
+      );
+    }
+    setFilteredRefunds(filtered);
+  }, [refunds, filters]);
+
   useEffect(() => {
     loadRefunds();
   }, []);
 
   useEffect(() => {
     filterRefunds();
-  }, [refunds, filters]);
+  }, [filterRefunds]);
 
   const loadRefunds = async () => {
     try {
@@ -77,24 +95,6 @@ export default function SellerRefundsPage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const filterRefunds = () => {
-    let filtered = [...refunds];
-    if (filters.status !== 'all') {
-      filtered = filtered.filter(refund => refund.status === filters.status);
-    }
-    if (filters.search) {
-      const searchTerm = filters.search.toLowerCase();
-      filtered = filtered.filter(refund => 
-        refund.id.toLowerCase().includes(searchTerm) ||
-        refund.orderId.toLowerCase().includes(searchTerm) ||
-        refund.productName.toLowerCase().includes(searchTerm) ||
-        refund.customer.firstName.toLowerCase().includes(searchTerm) ||
-        refund.customer.lastName.toLowerCase().includes(searchTerm)
-      );
-    }
-    setFilteredRefunds(filtered);
   };
 
   const getRefundStatusColor = (status: string) => {
