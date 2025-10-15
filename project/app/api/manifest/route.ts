@@ -15,51 +15,15 @@ export async function GET() {
     categories: ['shopping', 'business', 'lifestyle'],
     icons: [
       {
-        src: '/icons/icon-72x72.png',
-        sizes: '72x72',
-        type: 'image/png',
-        purpose: 'maskable any'
-      },
-      {
-        src: '/icons/icon-96x96.png',
-        sizes: '96x96',
-        type: 'image/png',
-        purpose: 'maskable any'
-      },
-      {
-        src: '/icons/icon-128x128.png',
-        sizes: '128x128',
-        type: 'image/png',
-        purpose: 'maskable any'
-      },
-      {
-        src: '/icons/icon-144x144.png',
-        sizes: '144x144',
-        type: 'image/png',
-        purpose: 'maskable any'
-      },
-      {
-        src: '/icons/icon-152x152.png',
-        sizes: '152x152',
-        type: 'image/png',
-        purpose: 'maskable any'
-      },
-      {
-        src: '/icons/icon-192x192.png',
+        src: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMyNTYzRUIiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyTDIgN3YxMGMwIDUuNTUgNC40NSAxMCAxMCAxMGg0YzUuNTUgMCAxMC00LjQ1IDEwLTEwVjdMMTIgMnpNMTIgMTVjLTEuNjYgMC0zLTEuMzQtMy0zczEuMzQtMyAzLTMgMyAxLjM0IDMgMy0xLjM0IDMtMyAzem0wLTJjLjU1IDAgMS0uNDUgMS0xcy0uNDUtMS0xLTEtMSAuNDUtMSAxIC40NSAxIDEgMXoiLz4KPC9zdmc+Cjwvc3ZnPgo=',
         sizes: '192x192',
-        type: 'image/png',
+        type: 'image/svg+xml',
         purpose: 'maskable any'
       },
       {
-        src: '/icons/icon-384x384.png',
-        sizes: '384x384',
-        type: 'image/png',
-        purpose: 'maskable any'
-      },
-      {
-        src: '/icons/icon-512x512.png',
+        src: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNjQiIGZpbGw9IiMyNTYzRUIiLz4KPHN2ZyB4PSIxMjgiIHk9IjEyOCIgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPgo8cGF0aCBkPSJNMTIgMkwyIDd2MTBjMCA1LjU1IDQuNDUgMTAgMTAgMTBoNGE1LjU1IDAgMCAwIDEwLTEwVjdMMTIgMnpNMTIgMTVjLTEuNjYgMC0zLTEuMzQtMy0zczEuMzQtMyAzLTMgMyAxLjM0IDMgMy0xLjM0IDMtMyAzem0wLTJjLjU1IDAgMS0uNDUgMS0xcy0uNDUtMS0xLTEtMSAuNDUtMSAxIC40NSAxIDEgMXoiLz4KPC9zdmc+Cjwvc3ZnPgo=',
         sizes: '512x512',
-        type: 'image/png',
+        type: 'image/svg+xml',
         purpose: 'maskable any'
       }
     ],
@@ -68,49 +32,31 @@ export async function GET() {
         name: 'Produtos em Destaque',
         short_name: 'Destaques',
         description: 'Veja os produtos em destaque',
-        url: '/loja',
-        icons: [
-          {
-            src: '/icons/icon-96x96.png',
-            sizes: '96x96'
-          }
-        ]
+        url: '/loja'
       },
       {
         name: 'Carrinho',
         short_name: 'Carrinho',
         description: 'Acesse seu carrinho de compras',
-        url: '/carrinho',
-        icons: [
-          {
-            src: '/icons/icon-96x96.png',
-            sizes: '96x96'
-          }
-        ]
+        url: '/carrinho'
       },
       {
         name: 'Minha Conta',
         short_name: 'Conta',
         description: 'Acesse sua conta',
-        url: '/conta',
-        icons: [
-          {
-            src: '/icons/icon-96x96.png',
-            sizes: '96x96'
-          }
-        ]
+        url: '/configuracoes'
       }
     ],
     screenshots: [
       {
-        src: '/screenshots/desktop-1.png',
+        src: '/screenshot-desktop.png',
         sizes: '1280x720',
         type: 'image/png',
         form_factor: 'wide',
         label: 'Tela inicial da VITRINE'
       },
       {
-        src: '/screenshots/mobile-1.png',
+        src: '/screenshot-mobile.png',
         sizes: '390x844',
         type: 'image/png',
         form_factor: 'narrow',
@@ -118,13 +64,7 @@ export async function GET() {
       }
     ],
     related_applications: [],
-    prefer_related_applications: false,
-    edge_side_panel: {
-      preferred_width: 400
-    },
-    launch_handler: {
-      client_mode: 'navigate-existing'
-    }
+    prefer_related_applications: false
   };
 
   return NextResponse.json(manifest);

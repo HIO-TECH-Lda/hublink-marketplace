@@ -6,8 +6,6 @@ const DYNAMIC_CACHE = 'vitrine-dynamic-v1.0.0';
 const STATIC_FILES = [
   '/',
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
   '/offline.html'
 ];
 

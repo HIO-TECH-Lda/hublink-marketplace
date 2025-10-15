@@ -137,7 +137,9 @@ export default function RootLayout({
       </head>
       <body>
         <MarketplaceProvider>
-          {children}
+          <PWAProvider>
+            {children}
+          </PWAProvider>
         </MarketplaceProvider>
       </body>
     </html>
