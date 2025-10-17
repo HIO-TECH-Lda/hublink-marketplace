@@ -15,6 +15,7 @@ import paymentRoutes from './routes/payment';
 import reviewRoutes from './routes/reviews';
 import wishlistRoutes from './routes/wishlist';
 import emailRoutes from './routes/email';
+import imaliRoutes from './routes/imali';
 
 // Load environment variables
 dotenv.config();
@@ -106,6 +107,13 @@ app.get('/api/v1', (req: Request, res: Response) => {
       paymentPerformance: 'GET /api/v1/payments/performance (admin)',
       stripeWebhook: 'POST /api/v1/payments/webhook/stripe'
     },
+    imaliEndpoints: {
+      generateTransaction: 'POST /api/v1/imali/generate-transaction',
+      getStaticQRCode: 'GET /api/v1/imali/qrcode/:storeAccountNumber',
+      generatePaymentPush: 'POST /api/v1/imali/generate-payment-push',
+      checkTransactionStatus: 'GET /api/v1/imali/check-transaction/:transactionId',
+      createPayByLink: 'POST /api/v1/imali/create-pay-by-link'
+    },
     reviewEndpoints: {
       createReview: 'POST /api/v1/reviews',
       getProductReviews: 'GET /api/v1/reviews/product/:productId',
@@ -166,6 +174,9 @@ app.use('/api/v1/wishlist', wishlistRoutes);
 
 // Email routes
 app.use('/api/v1/email', emailRoutes);
+
+// iMali routes
+app.use('/api/v1/imali', imaliRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
