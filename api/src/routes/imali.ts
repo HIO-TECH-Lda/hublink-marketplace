@@ -28,7 +28,7 @@ router.get('/check-transaction/:transactionId',
 
 // Create pay-by-link payment
 router.post('/create-pay-by-link', 
-  authenticateToken, 
+  // authenticateToken, 
   ImaliController.createPayByLink
 );
 

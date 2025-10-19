@@ -11,7 +11,8 @@ const imaliAxios = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'X-localization': 'en',
-    Authorization: `Bearer ${process.env.IMALI_API_KEY_DEV}`,
+    'X-Client-ID': process.env.IMALI_CLIENT_ID_DEV,
+    Authorization: `Bearer ${process.env.IMALI_PRIVATE_KEY_DEV}`,
     Accept: 'application/json',
   },
 });
@@ -258,8 +259,8 @@ export class ImaliController {
       send_to_phone: body.send_to_phone,
       partner_transaction_id: body.partner_transaction_id || uuidv4(),
       thumbnail_image: body.thumbnail_image,
-      payment_method: 'iMali',
-      payment_type: 'Link',
+      payment_method: 'imali',
+      payment_type: 'link',
       transaction_type: body.transaction_type || 'C2B'
     };
 
