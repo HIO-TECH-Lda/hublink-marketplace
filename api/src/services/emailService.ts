@@ -196,7 +196,7 @@ export class EmailService {
       const orderData: OrderConfirmationData = {
         orderNumber: order.orderNumber,
         customerName: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
-        orderDate: order.createdAt.toLocaleDateString(),
+        orderDate: order.createdAt?.toLocaleDateString() || new Date().toLocaleDateString(),
         totalAmount: order.total,
         items: order.items.map(item => ({
           name: (item.productId as any).name || 'Product',
@@ -278,7 +278,7 @@ export class EmailService {
       const reviewData: ReviewRequestData = {
         customerName: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
         orderNumber: order.orderNumber,
-        productName: order.items[0]?.productId?.name || 'Product',
+        productName: order.items[0]?.productName || 'Product',
         reviewLink: `${process.env.FRONTEND_URL}/review/${order._id}`
       };
 

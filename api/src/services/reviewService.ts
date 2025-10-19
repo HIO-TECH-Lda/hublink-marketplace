@@ -429,7 +429,10 @@ export class ReviewService {
       }
 
       // Send review request email
-      await EmailService.sendReviewRequest(order);
+      await EmailService.sendReviewRequest({
+        ...order.toObject(),
+        userId: order.userId.toString()
+      });
     } catch (error) {
       console.error('Error sending review request:', error);
       throw error;
