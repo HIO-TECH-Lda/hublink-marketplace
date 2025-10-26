@@ -5,17 +5,23 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Heart, ShoppingCart, User, Menu, X, Phone, Mail } from 'lucide-react';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/hooks/useWishlist';
 import { Button } from '@/components/ui/button';
 
 export default function Header() {
   const { state, dispatch } = useMarketplace();
+  const { user, logout } = useAuth();
+  const { data: cart } = useCart();
+  const { data: wishlist } = useWishlist();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const cartItemsCount = state.cart.reduce((total, item) => total + item.quantity, 0);
-  const wishlistCount = state.wishlist.length;
+  const cartItemsCount = cart?.totalItems || 0;
+  const wishlistCount = wishlist?.length || 0;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -160,24 +166,32 @@ export default function Header() {
 
               {/* User Menu */}
               <div className="relative">
-                {state.user ? (
+                {user ? (
                   <div className="flex items-center space-x-2">
                     <Link href="/painel" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
-                      {state.user.profileImage ? (
+                      {user.avatar ? (
                         <img 
-                          src={state.user.profileImage} 
-                          alt={state.user.firstName}
+                          src={user.avatar} 
+                          alt={user.firstName}
                           className="w-8 h-8 rounded-full"
                         />
                       ) : (
                         <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                           <span className="text-primary font-semibold text-sm">
-                            {state.user.firstName[0]}
+                            {user.firstName}
                           </span>
                         </div>
                       )}
-                      <span className="hidden sm:inline text-sm font-medium">{state.user.firstName}</span>
+                      <span className="hidden sm:inline text-sm font-medium">{user.firstName}</span>
                     </Link>
+                    <Button 
+                      onClick={logout}
+                      variant="outline"
+                      size="sm"
+                      className="hidden sm:inline"
+                    >
+                      Sair
+                    </Button>
                   </div>
                 ) : (
                   <Link href="/entrar" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">

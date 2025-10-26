@@ -12,13 +12,15 @@ import CartPopup from '@/components/popups/CartPopup';
 import QuickViewPopup from '@/components/popups/QuickViewPopup';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useFeaturedProducts, useBestSellers, useNewArrivals } from '@/hooks/useProducts';
 
 export default function HomePage() {
   const { state } = useMarketplace();
 
-  // Get featured products (first 8 products)
-  const featuredProducts = state.products.slice(0, 8);
-  const bestSellerProducts = state.products.slice(0, 4);
+  // Use API hooks for real data
+  const { data: featuredProducts, isLoading: featuredLoading } = useFeaturedProducts();
+  const { data: bestSellerProducts, isLoading: bestSellerLoading } = useBestSellers();
+  const { data: newArrivals, isLoading: newArrivalsLoading } = useNewArrivals();
 
   // Mock top sellers data
   const topSellers = [
@@ -79,6 +81,21 @@ export default function HomePage() {
       joinedDate: '2023-01-15'
     }
   ];
+
+  // Loading state
+  if (featuredLoading || bestSellerLoading || newArrivalsLoading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-gray-600">Carregando produtos...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -164,11 +181,11 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos em Destaque</h2>
             <p className="text-gray-6">Descubra nossa seleção especial de produtos orgânicos</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {featuredProducts?.slice(0, 8).map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
           <div className="text-center mt-12">
             <Link href="/loja">
               <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white">
@@ -226,11 +243,11 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos Mais Vendidos</h2>
             <p className="text-gray-6">Os favoritos dos nossos clientes</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bestSellerProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {bestSellerProducts?.slice(0, 4).map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
         </div>
       </section>
 

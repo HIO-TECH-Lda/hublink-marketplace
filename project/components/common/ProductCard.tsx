@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Heart, ShoppingCart, Eye, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAddToCart } from '@/hooks/useCart';
+import { useAddToWishlist, useRemoveFromWishlist, useCheckWishlistStatus } from '@/hooks/useWishlist';
 import { formatCurrency } from '@/lib/payment';
 
 interface Product {
@@ -39,16 +41,17 @@ interface ProductCardProps {
 export default function ProductCard({ product, showQuickView = true }: ProductCardProps) {
   const { state, dispatch } = useMarketplace();
   
-  const isInWishlist = state.wishlist.some(item => item.id === product.id);
+  // API hooks
+  const addToCart = useAddToCart();
+  const addToWishlist = useAddToWishlist();
+  const removeFromWishlist = useRemoveFromWishlist();
+  const { data: isInWishlist } = useCheckWishlistStatus(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    dispatch({ 
-      type: 'ADD_TO_CART', 
-      payload: { product, quantity: 1 } 
-    });
+    addToCart.mutate({ productId: product.id, quantity: 1 });
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
@@ -56,9 +59,9 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
     e.stopPropagation();
     
     if (isInWishlist) {
-      dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: product.id });
+      removeFromWishlist.mutate(product.id);
     } else {
-      dispatch({ type: 'ADD_TO_WISHLIST', payload: product });
+      addToWishlist.mutate(product.id);
     }
   };
 

@@ -1,6 +1,8 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { MarketplaceProvider } from '@/contexts/MarketplaceContext';
+import { AuthProvider } from '@/contexts/AuthContext';
+import QueryProvider from '@/components/providers/QueryProvider';
 import CartPopup from '@/components/popups/CartPopup';
 import PWAProvider from '@/components/pwa/PWAProvider';
 import StructuredData from '@/components/seo/StructuredData';
@@ -184,12 +186,16 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       </head>
       <body>
-        <MarketplaceProvider>
-          <PWAProvider>
-            {children}
-            <CartPopup />
-          </PWAProvider>
-        </MarketplaceProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <MarketplaceProvider>
+              <PWAProvider>
+                {children}
+                <CartPopup />
+              </PWAProvider>
+            </MarketplaceProvider>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

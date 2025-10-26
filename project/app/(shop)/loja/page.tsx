@@ -12,6 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useProducts } from '@/hooks/useProducts';
+import { useCategories } from '@/hooks/useCategories';
 
 export default function ShopPage() {
   const { state } = useMarketplace();
@@ -32,23 +34,32 @@ export default function ShopPage() {
     }
   }, [searchParams]);
 
-  const categories = ['Verduras', 'Legumes', 'Frutas', 'Grãos', 'Laticínios'];
-  const sellers = Array.from(new Set(state.products.map(p => p.sellerName)));
+  // Use API hooks for real data
+  const { data: productsData, isLoading: productsLoading, error: productsError } = useProducts({
+    search: searchQuery,
+    category: selectedCategories.length > 0 ? selectedCategories[0] : undefined,
+    page: 1,
+    limit: 50
+  });
 
-  const filteredProducts = state.products.filter(product => {
+  const { data: categoriesData, isLoading: categoriesLoading } = useCategories();
+
+  const products = productsData?.data || [];
+  const categories = categoriesData || [];
+  const sellers = Array.from(new Set(products.map(p => p.sellerName || 'Unknown Seller')));
+
+  const filteredProducts = products.filter(product => {
     // Search filter
     const searchMatch = !searchQuery || 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.sellerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      (product.sellerName && product.sellerName.toLowerCase().includes(searchQuery.toLowerCase()));
     
     const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
     const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
-    const ratingMatch = selectedRating === 0 || product.rating >= selectedRating;
-    const sellerMatch = selectedSellers.length === 0 || selectedSellers.includes(product.sellerName);
+    const ratingMatch = selectedRating === 0 || (product.averageRating && product.averageRating >= selectedRating);
+    const sellerMatch = selectedSellers.length === 0 || selectedSellers.includes(product.sellerName || 'Unknown Seller');
     
     return searchMatch && categoryMatch && priceMatch && ratingMatch && sellerMatch;
   });
@@ -68,6 +79,35 @@ export default function ShopPage() {
       setSelectedSellers(selectedSellers.filter(s => s !== seller));
     }
   };
+
+  // Loading state
+  if (productsLoading || categoriesLoading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="container py-8 px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-gray-600">Carregando produtos...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (productsError) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="container py-8 px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <p className="text-red-600">Erro ao carregar produtos. Tente novamente.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
