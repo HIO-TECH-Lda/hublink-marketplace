@@ -37,7 +37,7 @@ export const useFeaturedProducts = () => {
     queryKey: ['products', 'featured'],
     queryFn: async () => {
       const response = await apiClient.get('/products/featured');
-      return response.data.data as Product[];
+      return response.data.data.products as Product[];
     },
   });
 };
@@ -47,7 +47,7 @@ export const useBestSellers = () => {
     queryKey: ['products', 'best-sellers'],
     queryFn: async () => {
       const response = await apiClient.get('/products/best-sellers');
-      return response.data.data as Product[];
+      return response.data.data.products as Product[];
     },
   });
 };
@@ -57,7 +57,7 @@ export const useNewArrivals = () => {
     queryKey: ['products', 'new-arrivals'],
     queryFn: async () => {
       const response = await apiClient.get('/products/new-arrivals');
-      return response.data.data as Product[];
+      return response.data.data.products as Product[];
     },
   });
 };
@@ -69,7 +69,7 @@ export const useSearchProducts = (query: string) => {
       const response = await apiClient.get('/products/search', {
         params: { q: query }
       });
-      return response.data.data as Product[];
+      return response.data.data.products as Product[];
     },
     enabled: !!query && query.length > 2,
   });
