@@ -239,7 +239,7 @@ export default function SellerProductsPage() {
                             <div className="flex items-center">
                               <div className="w-10 h-10 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                                 <img
-                                  src={product.image}
+                                  src={product.primaryImage}
                                   alt={product.name}
                                   className="w-full h-full object-cover"
                                 />

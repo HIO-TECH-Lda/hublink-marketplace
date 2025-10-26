@@ -23,7 +23,7 @@ export default function QuickViewPopup() {
   // Use actual product images or fallback to main image
   const productImages = product.images && product.images.length > 0 
     ? product.images 
-    : [product.image];
+    : [product.primaryImage];
 
   const handleClose = () => {
     dispatch({ type: 'SET_QUICK_VIEW', payload: null });

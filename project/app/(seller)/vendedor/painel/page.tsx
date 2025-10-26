@@ -149,7 +149,7 @@ export default function SellerDashboardPage() {
                   <div key={product.id} className="border border-gray-2 rounded-lg p-4">
                     <div className="aspect-square bg-gray-1 rounded-lg overflow-hidden mb-3">
                       <img
-                        src={product.image}
+                        src={product.primaryImage}
                         alt={product.name}
                         className="w-full h-full object-cover"
                       />

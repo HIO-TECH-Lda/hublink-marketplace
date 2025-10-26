@@ -125,7 +125,7 @@ export default function ShoppingCartPage() {
                     {/* Product Image */}
                     <div className="w-20 h-20 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                       <img
-                        src={item.product.image}
+                        src={item.product.primaryImage}
                         alt={item.product.name}
                         className="w-full h-full object-cover"
                       />
@@ -203,7 +203,7 @@ export default function ShoppingCartPage() {
                         {/* Product Image */}
                         <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                           <img
-                            src={item.product.image}
+                            src={item.product.primaryImage}
                             alt={item.product.name}
                             className="w-full h-full object-cover"
                           />

@@ -197,7 +197,7 @@ export const getOrganizationData = (): OrganizationData => ({
 export const getProductData = (product: any): ProductData => ({
   name: product.name,
   description: product.description,
-  image: product.image,
+  image: product.primaryImage,
   price: product.price,
   priceCurrency: 'MZN',
   availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',

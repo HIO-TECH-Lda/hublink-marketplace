@@ -140,7 +140,7 @@ export default function WishlistPage() {
                         <div className="flex items-center space-x-4">
                           <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                             <img
-                              src={product.image}
+                              src={product.primaryImage}
                               alt={product.name}
                               className="w-full h-full object-cover"
                             />
@@ -243,7 +243,7 @@ export default function WishlistPage() {
                       {/* Product Image */}
                       <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                         <img
-                          src={product.image}
+                          src={product.primaryImage}
                           alt={product.name}
                           className="w-full h-full object-cover"
                         />

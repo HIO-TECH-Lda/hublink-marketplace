@@ -192,7 +192,7 @@ export default function ProductReviewPage() {
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                   <img
-                    src={product.image}
+                    src={product.primaryImage}
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />

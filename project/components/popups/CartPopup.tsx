@@ -71,7 +71,7 @@ export default function CartPopup() {
                 <div key={item.product.id} className="flex items-center space-x-4 pb-4 border-b border-gray-1 last:border-b-0">
                   {/* Product Image */}
                   <img
-                    src={item.product.image}
+                    src={item.product.primaryImage}
                     alt={item.product.name}
                     className="w-16 h-16 object-cover rounded-lg"
                   />

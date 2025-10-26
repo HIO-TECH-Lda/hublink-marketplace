@@ -93,7 +93,7 @@ export default function ProductPage() {
               {/* Main Image */}
               <div className="aspect-square bg-gray-1 rounded-lg overflow-hidden">
                 <img
-                  src={product.images?.[selectedImage] || product.image}
+                  src={product.images?.[selectedImage] || product.primaryImage}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
