@@ -164,7 +164,7 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             )}
             <span className="text-xs text-gray-6">por </span>
             <Link 
-              href={`/vendedor/${product.sellerId}`}
+              href={`/vendedor/${typeof product.sellerId === 'object' ? product.sellerId._id : product.sellerId}`}
               onClick={handleSellerClick}
               className="text-xs text-primary hover:text-primary-hard font-medium transition-colors"
             >

@@ -107,7 +107,7 @@ export default function QuickViewPopup() {
                 )}
                 <span className="text-sm text-gray-6">por </span>
                 <Link 
-                  href={`/vendedor/${product.sellerId}`}
+                  href={`/vendedor/${typeof product.sellerId === 'object' ? product.sellerId._id : product.sellerId}`}
                   className="text-sm text-primary hover:text-primary-hard font-medium transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
