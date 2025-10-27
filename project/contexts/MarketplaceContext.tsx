@@ -10,6 +10,13 @@ interface Product {
   image: string;
   description: string;
   category: string;
+  categoryId?: {
+    _id: string;
+    id: string;
+    name: string;
+    fullPath: string;
+    slug: string;
+  };
   brand: string;
   rating: number;
   reviews: number;
@@ -24,6 +31,7 @@ interface Product {
   stockStatus?: string;
   type?: string;
   images?: string[];
+  primaryImage?: string;
 }
 
 interface CartItem {

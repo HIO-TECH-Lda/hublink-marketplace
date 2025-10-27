@@ -20,10 +20,11 @@ export default function QuickViewPopup() {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
-  // Handle both image structures: array of objects or array of strings
-  const productImages = product.images && product.images.length > 0 
-    ? product.images.map(img => typeof img === 'string' ? img : (img as any).url)
-    : product.image ? [product.image] : [];
+  // Combine primaryImage and images array, handling both string and object formats
+  const productImages = [
+    ...(product.primaryImage ? [product.primaryImage] : []),
+    ...(product.images?.map(img => typeof img === 'string' ? img : (img as any).url) || [])
+  ].filter(Boolean);
 
   const handleClose = () => {
     dispatch({ type: 'SET_QUICK_VIEW', payload: null });
@@ -107,7 +108,7 @@ export default function QuickViewPopup() {
                 )}
                 <span className="text-sm text-gray-6">por </span>
                 <Link 
-                  href={`/vendedor/${product.sellerId}`}
+                  href={`/vendedor/${typeof product.sellerId === 'object' ? (product.sellerId as any)._id : product.sellerId || ''}`}
                   className="text-sm text-primary hover:text-primary-hard font-medium transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -235,7 +236,9 @@ export default function QuickViewPopup() {
             <div className="space-y-2 pt-4 border-t border-gray-2">
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium">Categoria:</span>
-                <span className="text-sm text-primary hover:underline cursor-pointer">{product.category}</span>
+                <span className="text-sm text-primary hover:underline cursor-pointer">
+                  {product.categoryId?.name || product.category}
+                </span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium">Tags:</span>

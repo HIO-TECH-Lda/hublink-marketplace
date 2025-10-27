@@ -8,11 +8,12 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function SignInPage() {
-  const { dispatch } = useMarketplace();
+  const { login, loading: authLoading, isAuthenticated } = useAuth();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -21,69 +22,45 @@ export default function SignInPage() {
     rememberMe: false
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Clear any existing tokens and redirect if already authenticated
+  useEffect(() => {
+    // Clear any potentially corrupted tokens
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('authToken');
+      const refreshToken = localStorage.getItem('refreshToken');
+      
+      // If we have tokens but auth is not loading, clear them to prevent loops
+      if (token && refreshToken && !authLoading) {
+        // Only clear if we're on the login page and not authenticated
+        if (!isAuthenticated) {
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('refreshToken');
+        }
+      }
+    }
+    
+    if (!authLoading && isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated, authLoading, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
-    // Validate mock credentials
-    const isValidEmail = formData.email === 'cliente@exemplo.com' || formData.email === 'vendedor@exemplo.com' || formData.email === 'admin@exemplo.com';
-    const isValidPassword = formData.password === 'qualquer coisa';
-    
-    if (!isValidEmail || !isValidPassword) {
-      setError('Email ou senha incorretos. Use as credenciais de demonstração.');
-      return;
-    }
+    setIsLoading(true);
 
-    // Create mock user based on email
-    const isSeller = formData.email === 'vendedor@exemplo.com';
-    const isAdmin = formData.email === 'admin@exemplo.com';
-    
-    const mockUser = {
-      id: isAdmin ? 'admin1' : isSeller ? 'seller1' : 'user1',
-      firstName: isAdmin ? 'Admin' : isSeller ? 'Maria' : 'João',
-      lastName: isAdmin ? 'Sistema' : isSeller ? 'Santos' : 'Silva',
-      email: formData.email,
-      phone: '(84) 99999-9999',
-      isSeller: isSeller,
-      sellerId: isSeller ? 'seller1' : undefined,
-      profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      role: (isAdmin ? 'admin' : isSeller ? 'seller' : 'buyer') as 'admin' | 'seller' | 'buyer',
-      billingAddress: {
-        firstName: isAdmin ? 'Admin' : isSeller ? 'Maria' : 'João',
-        lastName: isAdmin ? 'Sistema' : isSeller ? 'Santos' : 'Silva',
-        address: 'Rua das Flores, 123',
-        country: 'Moçambique',
-        state: 'Sofala',
-        zipCode: '2100',
-        email: formData.email,
-        phone: '(84) 99999-9999'
-      },
-      ...(isSeller && {
-        storeSettings: {
-          storeName: 'Fazenda Verde',
-          storeDescription: 'Produtos orgânicos frescos direto da fazenda',
-          storeEmail: 'vendedor@exemplo.com',
-          storePhone: '(84) 99999-9999',
-          bankName: 'M-Pesa',
-          accountNumber: '12345-6',
-          agencyNumber: '0001',
-          paymentKey: 'vendedor@exemplo.com',
-          paymentMethod: 'M-Pesa'
-        }
-      })
-    };
-
-    dispatch({ type: 'SET_USER', payload: mockUser });
-    dispatch({ type: 'SET_AUTHENTICATED', payload: true });
-    
-    // Redirect based on user type
-    if (isAdmin) {
-      router.push('/admin');
-    } else if (isSeller) {
-      router.push('/vendedor/painel');
-    } else {
-      router.push('/painel');
+    try {
+      await login(formData.email, formData.password);
+      
+      // Redirect based on user role will be handled by the auth context
+      // or you can add logic here to redirect based on user role
+      router.push('/');
+    } catch (err: any) {
+      setError(err.message || 'Erro ao fazer login. Tente novamente.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,14 +74,36 @@ export default function SignInPage() {
     if (error) setError('');
   };
 
-  const handleDemoLogin = (email: string) => {
+  const handleDemoLogin = async (email: string) => {
     setFormData({
       email: email,
       password: 'qualquer coisa',
       rememberMe: false
     });
     setError('');
+    setIsLoading(true);
+
+    try {
+      await login(email, 'qualquer coisa');
+      router.push('/');
+    } catch (err: any) {
+      setError(err.message || 'Erro ao fazer login com conta de demonstração.');
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-1 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Verificando autenticação...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-1">
@@ -191,9 +190,10 @@ export default function SignInPage() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-primary hover:bg-primary-hard text-white py-3"
+              disabled={isLoading || authLoading}
+              className="w-full bg-primary hover:bg-primary-hard text-white py-3 disabled:opacity-50"
             >
-              Entrar
+              {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
 
@@ -216,28 +216,31 @@ export default function SignInPage() {
                   type="button"
                   variant="outline"
                   size="sm"
+                  disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('cliente@exemplo.com')}
-                  className="flex-1 text-xs"
+                  className="flex-1 text-xs disabled:opacity-50"
                 >
-                  Login Cliente
+                  {isLoading ? 'Entrando...' : 'Login Cliente'}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
+                  disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('vendedor@exemplo.com')}
-                  className="flex-1 text-xs"
+                  className="flex-1 text-xs disabled:opacity-50"
                 >
-                  Login Vendedor
+                  {isLoading ? 'Entrando...' : 'Login Vendedor'}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
+                  disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('admin@exemplo.com')}
-                  className="flex-1 text-xs"
+                  className="flex-1 text-xs disabled:opacity-50"
                 >
-                  Login Admin
+                  {isLoading ? 'Entrando...' : 'Login Admin'}
                 </Button>
               </div>
               <div className="text-xs text-gray-7 space-y-1">

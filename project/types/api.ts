@@ -1,13 +1,30 @@
 // User Types
 export interface User {
   _id: string;
-  email: string;
   firstName: string;
   lastName: string;
-  role: 'user' | 'seller' | 'admin';
+  email: string;
+  phone: string;
+  role: 'buyer' | 'seller' | 'admin' | 'support';
+  status: 'active' | 'inactive' | 'suspended';
+  emailVerified: boolean;
+  phoneVerified: boolean;
   avatar?: string;
+  sellerId?: string;
+  preferences: {
+    notifications: {
+      email: boolean;
+      sms: boolean;
+      push: boolean;
+    };
+    language: string;
+    currency: string;
+  };
   createdAt: string;
   updatedAt: string;
+  __v: number;
+  fullName: string;
+  id: string;
 }
 
 // Product Image Types
@@ -187,6 +204,7 @@ export interface RegisterData {
 
 export interface AuthResponse {
   token: string;
+  refreshToken: string;
   user: User;
 }
 

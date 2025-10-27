@@ -251,6 +251,21 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* New Arrivals */}
+      <section className="py-16">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-9 mb-4">Novidades</h2>
+            <p className="text-gray-6">Os produtos mais recentes em nossa loja</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {newArrivals?.slice(0, 4).map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Top Sellers */}
       <section className="py-16">
         <div className="container">
