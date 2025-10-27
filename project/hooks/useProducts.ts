@@ -16,7 +16,7 @@ export const useProducts = (filters?: {
     queryKey: ['products', filters],
     queryFn: async () => {
       const response = await apiClient.get('/products', { params: filters });
-      return response.data as PaginatedResponse<Product>;
+      return response.data.data as { products: Product[]; pagination: any };
     },
   });
 };

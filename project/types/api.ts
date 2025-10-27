@@ -45,6 +45,7 @@ export interface Product {
   images: ProductImage[] | string[];
   primaryImage?: string;
   category: string;
+  categoryId?: { _id: string; name: string; slug: string };
   stock: number;
   isFeatured: boolean;
   isBestSeller: boolean;

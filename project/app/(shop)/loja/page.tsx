@@ -19,12 +19,13 @@ export default function ShopPage() {
   const { state } = useMarketplace();
   const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedRating, setSelectedRating] = useState(0);
   const [selectedSellers, setSelectedSellers] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('popular');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Get search query from URL parameters
   useEffect(() => {
@@ -34,18 +35,24 @@ export default function ShopPage() {
     }
   }, [searchParams]);
 
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategories, selectedRating, selectedSellers, priceRange]);
+
   // Use API hooks for real data
   const { data: productsData, isLoading: productsLoading, error: productsError } = useProducts({
     search: searchQuery,
     category: selectedCategories.length > 0 ? selectedCategories[0] : undefined,
-    page: 1,
-    limit: 50
+    page: currentPage,
+    limit: 12
   });
 
   const { data: categoriesData, isLoading: categoriesLoading } = useCategories();
 
-  const products = productsData?.data || [];
+  const products = productsData?.products || [];
   const categories = categoriesData || [];
+  const pagination = productsData?.pagination || { page: 1, pages: 1, total: 0 };
   const sellers = Array.from(new Set(products.map(p => p.sellerName || 'Unknown Seller')));
 
   const filteredProducts = products.filter(product => {
@@ -53,10 +60,11 @@ export default function ShopPage() {
     const searchMatch = !searchQuery || 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (product.categoryId?.name && product.categoryId.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (product.sellerName && product.sellerName.toLowerCase().includes(searchQuery.toLowerCase()));
     
-    const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+    const categoryMatch = selectedCategories.length === 0 || 
+      selectedCategories.includes(product.categoryId?.name || product.category || '');
     const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
     const ratingMatch = selectedRating === 0 || (product.averageRating && product.averageRating >= selectedRating);
     const sellerMatch = selectedSellers.length === 0 || selectedSellers.includes(product.sellerName || 'Unknown Seller');
@@ -133,8 +141,8 @@ export default function ShopPage() {
             </h1>
             <p className="text-gray-6 text-sm sm:text-base">
               {searchQuery 
-                ? `Encontramos ${filteredProducts.length} produto${filteredProducts.length !== 1 ? 's' : ''} para "${searchQuery}"`
-                : `Encontramos ${filteredProducts.length} produtos para você`
+                ? `Encontramos ${pagination.total} produto${pagination.total !== 1 ? 's' : ''} para "${searchQuery}"`
+                : `Encontramos ${pagination.total} produtos para você`
               }
             </p>
           </div>
@@ -178,14 +186,14 @@ export default function ShopPage() {
                 <h3 className="font-semibold text-gray-9 mb-4">Categorias</h3>
                 <div className="space-y-3">
                   {categories.map((category) => (
-                    <div key={category} className="flex items-center space-x-2">
+                    <div key={category._id} className="flex items-center space-x-2">
                       <Checkbox
-                        id={category}
-                        checked={selectedCategories.includes(category)}
-                        onCheckedChange={(checked) => handleCategoryChange(category, checked as boolean)}
+                        id={category._id}
+                        checked={selectedCategories.includes(category.name)}
+                        onCheckedChange={(checked) => handleCategoryChange(category.name, checked as boolean)}
                       />
-                      <label htmlFor={category} className="text-sm text-gray-7 cursor-pointer">
-                        {category}
+                      <label htmlFor={category._id} className="text-sm text-gray-7 cursor-pointer">
+                        {category.name}
                       </label>
                     </div>
                   ))}
@@ -199,7 +207,7 @@ export default function ShopPage() {
                   <Slider
                     value={priceRange}
                     onValueChange={setPriceRange}
-                    max={1000}
+                    max={10000}
                     step={1}
                     className="w-full"
                   />
@@ -286,24 +294,49 @@ export default function ShopPage() {
           <div className="lg:col-span-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product._id} product={product} />
               ))}
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center mt-12">
-              <div className="flex items-center space-x-2">
-                <button className="px-3 py-2 border border-gray-3 rounded hover:bg-gray-1 transition-colors">
-                  Anterior
-                </button>
-                <button className="px-3 py-2 bg-primary text-white rounded">1</button>
-                <button className="px-3 py-2 border border-gray-3 rounded hover:bg-gray-1 transition-colors">2</button>
-                <button className="px-3 py-2 border border-gray-3 rounded hover:bg-gray-1 transition-colors">3</button>
-                <button className="px-3 py-2 border border-gray-3 rounded hover:bg-gray-1 transition-colors">
-                  Próximo
-                </button>
+            {pagination.pages > 1 && (
+              <div className="flex justify-center mt-12">
+                <div className="flex items-center space-x-2">
+                  <button 
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-2 border border-gray-3 rounded hover:bg-gray-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Anterior
+                  </button>
+                  
+                  {Array.from({ length: Math.min(5, pagination.pages) }, (_, i) => {
+                    const pageNum = i + 1;
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`px-3 py-2 rounded transition-colors ${
+                          currentPage === pageNum
+                            ? 'bg-primary text-white'
+                            : 'border border-gray-3 hover:bg-gray-1'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                  
+                  <button 
+                    onClick={() => setCurrentPage(Math.min(pagination.pages, currentPage + 1))}
+                    disabled={currentPage === pagination.pages}
+                    className="px-3 py-2 border border-gray-3 rounded hover:bg-gray-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Próximo
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

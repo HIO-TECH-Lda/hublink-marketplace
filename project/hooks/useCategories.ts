@@ -7,7 +7,7 @@ export const useCategories = () => {
     queryKey: ['categories'],
     queryFn: async () => {
       const response = await apiClient.get('/categories');
-      return response.data.data as Category[];
+      return response.data.data.categories as Category[];
     },
   });
 };
