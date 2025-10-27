@@ -5,7 +5,7 @@ export interface IProductDocument extends Omit<IProduct, '_id'>, Document {
   // Virtual properties
   averageRating: number;
   totalReviews: number;
-  isInStock: boolean;
+  inStock: boolean;
   discountedPrice: number;
   discountPercentage: number;
   
@@ -321,11 +321,11 @@ productSchema.virtual('calculatedDiscountPercentage').get(function(this: IProduc
 });
 
 // Virtual for stock status
-productSchema.virtual('isInStock').get(function(this: IProductDocument) {
+productSchema.virtual('inStock').get(function(this: IProductDocument) {
   try {
     return (this.stock || 0) > 0;
   } catch (error) {
-    console.error('Error in isInStock virtual:', error);
+    console.error('Error in inStock virtual:', error);
     return false;
   }
 });

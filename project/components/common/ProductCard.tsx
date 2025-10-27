@@ -5,33 +5,11 @@ import Link from 'next/link';
 import { Heart, ShoppingCart, Eye, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { Product } from '@/types/api';
 import { useAddToCart } from '@/hooks/useCart';
 import { useAddToWishlist, useRemoveFromWishlist, useCheckWishlistStatus } from '@/hooks/useWishlist';
 import { formatCurrency } from '@/lib/payment';
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  description: string;
-  category: string;
-  brand: string;
-  rating: number;
-  reviews: number;
-  inStock: boolean;
-  sellerId: string;
-  sellerName: string;
-  sellerLogo?: string;
-  tags: string[];
-  sku: string;
-  weight?: string;
-  color?: string;
-  stockStatus?: string;
-  type?: string;
-  images?: string[];
-}
 
 interface ProductCardProps {
   product: Product;
@@ -45,13 +23,13 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
   const addToCart = useAddToCart();
   const addToWishlist = useAddToWishlist();
   const removeFromWishlist = useRemoveFromWishlist();
-  const { data: isInWishlist } = useCheckWishlistStatus(product.id);
+  const { data: isInWishlist } = useCheckWishlistStatus(product._id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    addToCart.mutate({ productId: product.id, quantity: 1 });
+    addToCart.mutate({ productId: product._id, quantity: 1 });
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
@@ -59,9 +37,9 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
     e.stopPropagation();
     
     if (isInWishlist) {
-      removeFromWishlist.mutate(product.id);
+      removeFromWishlist.mutate(product._id);
     } else {
-      addToWishlist.mutate(product.id);
+      addToWishlist.mutate(product._id);
     }
   };
 
@@ -69,7 +47,39 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
     e.preventDefault();
     e.stopPropagation();
     
-    dispatch({ type: 'SET_QUICK_VIEW', payload: product });
+    // Convert API Product to Context Product format
+    const productImages = [
+      ...(product.primaryImage ? [product.primaryImage] : []),
+      ...(product.images?.map(img => typeof img === 'string' ? img : img.url) || [])
+    ].filter(Boolean);
+    
+    const contextProduct = {
+      id: product._id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: productImages[0] || '/placeholder.jpg',
+      description: product.description,
+      category: product.category,
+      categoryId: (product as any).categoryId,
+      brand: product.brand || '',
+      rating: (product as any).averageRating || product.rating || 0,
+      reviews: (product as any).totalReviews || product.reviews || 0,
+      inStock: product.inStock || false,
+      sellerId: typeof product.sellerId === 'object' ? (product.sellerId as any)._id : product.sellerId || '',
+      sellerName: product.sellerName || '',
+      sellerLogo: product.sellerLogo,
+      tags: product.tags || [],
+      sku: product.sku || '',
+      weight: product.weight,
+      color: product.color,
+      stockStatus: product.stockStatus,
+      type: product.type,
+      images: productImages,
+      primaryImage: product.primaryImage
+    };
+    
+    dispatch({ type: 'SET_QUICK_VIEW', payload: contextProduct });
   };
 
   const handleSellerClick = (e: React.MouseEvent) => {
@@ -78,13 +88,21 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
     // Navigation will be handled by the Link component
   };
 
+  // Ensure product._id is a string
+  const productId = typeof product._id === 'string' ? product._id : String(product._id);
+  
+  // Get primary image from combined sources
+  const primaryImage = product.primaryImage || 
+    (product.images?.[0] ? (typeof product.images[0] === 'string' ? product.images[0] : product.images[0].url) : null) || 
+    '/placeholder.jpg';
+  
   return (
-    <Link href={`/produto/${product.id}`}>
+    <Link href={`/produto/${productId}`}>
       <div className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden relative">
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden">
           <img
-            src={product.primaryImage}
+            src={primaryImage}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
@@ -164,7 +182,7 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             )}
             <span className="text-xs text-gray-6">por </span>
             <Link 
-              href={`/vendedor/${typeof product.sellerId === 'object' ? product.sellerId._id : product.sellerId}`}
+              href={`/vendedor/${typeof product.sellerId === 'object' ? (product.sellerId as any)._id : product.sellerId || ''}`}
               onClick={handleSellerClick}
               className="text-xs text-primary hover:text-primary-hard font-medium transition-colors"
             >
@@ -184,11 +202,11 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
                 <Star
                   key={i}
                   size={14}
-                  className={i < Math.floor(product.rating) ? 'text-warning fill-warning' : 'text-gray-3'}
+                  className={i < Math.floor((product as any).averageRating || 0) ? 'text-warning fill-warning' : 'text-gray-3'}
                 />
               ))}
             </div>
-            <span className="text-sm text-gray-6">({product.reviews})</span>
+            <span className="text-sm text-gray-6">({(product as any).totalReviews || 0})</span>
           </div>
 
           {/* Price and Mobile Add to Cart */}

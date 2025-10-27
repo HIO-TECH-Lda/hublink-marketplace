@@ -203,7 +203,10 @@ export class ProductService {
 
       return await Product.find({
         status: 'active',
-        createdAt: { $gte: thirtyDaysAgo }
+        $or: [
+          { createdAt: { $gte: thirtyDaysAgo } },
+          { isNewArrival: true }
+        ]
       })
         .populate('categoryId', 'name slug')
         .populate('sellerId', 'firstName lastName businessName')

@@ -10422,7 +10422,7 @@ export interface IProductDocument extends Omit<IProduct, '_id'>, Document {
   // Virtual properties
   averageRating: number;
   totalReviews: number;
-  isInStock: boolean;
+  inStock: boolean;
   discountedPrice: number;
   discountPercentage: number;
 }
@@ -10724,7 +10724,7 @@ productSchema.virtual('calculatedDiscountPercentage').get(function() {
 });
 
 // Virtual for stock status
-productSchema.virtual('isInStock').get(function() {
+productSchema.virtual('inStock').get(function() {
   return this.stock > 0;
 });
 
@@ -13284,7 +13284,7 @@ export interface IProductDocument extends Omit<IProduct, '_id'>, Document {
   // Virtual properties
   averageRating: number;
   totalReviews: number;
-  isInStock: boolean;
+  inStock: boolean;
   discountedPrice: number;
   discountPercentage: number;
 }
@@ -13295,7 +13295,7 @@ export interface IProductDocument extends Omit<IProduct, '_id'>, Document {
   // Virtual properties
   averageRating: number;
   totalReviews: number;
-  isInStock: boolean;
+  inStock: boolean;
   discountedPrice: number;
   discountPercentage: number;
   
@@ -13392,7 +13392,7 @@ productSchema.virtual('calculatedDiscountPercentage').get(function() {
 });
 
 // Virtual for stock status
-productSchema.virtual('isInStock').get(function() {
+productSchema.virtual('inStock').get(function() {
   return this.stock > 0;
 });
 
@@ -13423,7 +13423,7 @@ productSchema.virtual('calculatedDiscountPercentage').get(function(this: IProduc
 });
 
 // Virtual for stock status
-productSchema.virtual('isInStock').get(function(this: IProductDocument) {
+productSchema.virtual('inStock').get(function(this: IProductDocument) {
   return this.stock > 0;
 });
 

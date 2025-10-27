@@ -6,7 +6,7 @@ import { Product } from '@/types/api';
 import { useAddToCart } from '@/hooks/useCart';
 import { useAddToWishlist } from '@/hooks/useWishlist';
 import { Button } from '@/components/ui/button';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingCart, Star } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -33,7 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/produto/${product._id}`}>
         <div className="relative">
           <Image
-            src={product.images[0] || '/placeholder.jpg'}
+            src={product.primaryImage || product.images?.[0] || '/placeholder.jpg'}
             alt={product.name}
             width={300}
             height={200}
@@ -58,6 +58,24 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.name}
           </h3>
         </Link>
+        
+        {/* Rating */}
+        {(product.averageRating || product.rating) && (
+          <div className="flex items-center space-x-1 mb-2">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={14}
+                  className={i < Math.floor(product.averageRating || product.rating || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}
+                />
+              ))}
+            </div>
+            <span className="text-sm text-gray-600">
+              ({product.totalReviews || product.reviews || 0})
+            </span>
+          </div>
+        )}
         
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">

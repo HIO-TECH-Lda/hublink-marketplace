@@ -10,6 +10,14 @@ export interface User {
   updatedAt: string;
 }
 
+// Product Image Types
+export interface ProductImage {
+  url: string;
+  alt: string;
+  isPrimary: boolean;
+  order: number;
+}
+
 // Product Types
 export interface Product {
   _id: string;
@@ -17,7 +25,8 @@ export interface Product {
   description: string;
   price: number;
   originalPrice?: number;
-  images: string[];
+  images: ProductImage[] | string[];
+  primaryImage?: string;
   category: string;
   stock: number;
   isFeatured: boolean;
@@ -25,6 +34,24 @@ export interface Product {
   isNewArrival: boolean;
   status: 'draft' | 'active' | 'inactive';
   specifications?: Record<string, any>;
+  // Rating fields
+  rating?: number;
+  averageRating?: number;
+  reviews?: number;
+  totalReviews?: number;
+  // Seller fields
+  sellerId?: string | { _id: string; firstName: string; lastName: string; fullName: string };
+  sellerName?: string;
+  sellerLogo?: string;
+  // Additional fields
+  brand?: string;
+  tags?: string[];
+  sku?: string;
+  weight?: string;
+  color?: string;
+  stockStatus?: string;
+  type?: string;
+  inStock?: boolean;
   createdAt: string;
   updatedAt: string;
 }

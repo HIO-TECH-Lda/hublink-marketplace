@@ -20,10 +20,10 @@ export default function QuickViewPopup() {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
-  // Use actual product images or fallback to main image
+  // Handle both image structures: array of objects or array of strings
   const productImages = product.images && product.images.length > 0 
-    ? product.images 
-    : [product.primaryImage];
+    ? product.images.map(img => typeof img === 'string' ? img : (img as any).url)
+    : product.image ? [product.image] : [];
 
   const handleClose = () => {
     dispatch({ type: 'SET_QUICK_VIEW', payload: null });
@@ -107,7 +107,7 @@ export default function QuickViewPopup() {
                 )}
                 <span className="text-sm text-gray-6">por </span>
                 <Link 
-                  href={`/vendedor/${typeof product.sellerId === 'object' ? product.sellerId._id : product.sellerId}`}
+                  href={`/vendedor/${product.sellerId}`}
                   className="text-sm text-primary hover:text-primary-hard font-medium transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -124,11 +124,11 @@ export default function QuickViewPopup() {
                     <Star
                       key={i}
                       size={16}
-                      className={i < Math.floor(product.rating) ? 'text-warning fill-warning' : 'text-gray-3'}
+                      className={i < Math.floor(product.rating || 0) ? 'text-warning fill-warning' : 'text-gray-3'}
                     />
                   ))}
                 </div>
-                <span className="text-sm text-gray-6">({product.reviews} avaliações)</span>
+                <span className="text-sm text-gray-6">({product.reviews || 0} avaliações)</span>
               </div>
 
               {/* Price */}

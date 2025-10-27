@@ -28,8 +28,11 @@ interface SellerCardProps {
 }
 
 export default function SellerCard({ seller, showStats = true }: SellerCardProps) {
+  // Ensure seller.id is a string
+  const sellerId = typeof seller.id === 'string' ? seller.id : String(seller.id);
+  
   return (
-    <Link href={`/vendedor/${seller.id}`}>
+    <Link href={`/vendedor/${sellerId}`}>
       <Card className="group hover:shadow-xl transition-all duration-300 cursor-pointer h-full relative overflow-hidden border-0 shadow-md hover:shadow-xl hover:-translate-y-1 bg-white">
         {/* Subtle background pattern */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
