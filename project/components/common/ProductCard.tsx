@@ -29,7 +29,15 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
     e.preventDefault();
     e.stopPropagation();
     
-    addToCart.mutate({ productId: product._id, quantity: 1 });
+    addToCart.mutate(
+      { productId: product._id, quantity: 1 },
+      {
+        onSuccess: () => {
+          // Show cart popup after successful add to cart
+          dispatch({ type: 'SHOW_CART_POPUP' });
+        }
+      }
+    );
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {

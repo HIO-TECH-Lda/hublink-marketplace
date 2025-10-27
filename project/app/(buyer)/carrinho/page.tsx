@@ -8,6 +8,7 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useCart, useUpdateCartItem, useRemoveFromCart } from '@/hooks/useCart';
 import { formatCurrency } from '@/lib/payment';
 
 export default function ShoppingCartPage() {
@@ -15,6 +16,11 @@ export default function ShoppingCartPage() {
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  
+  // Use API data instead of context state
+  const { data: cartData, isLoading } = useCart();
+  const updateCartItem = useUpdateCartItem();
+  const removeFromCart = useRemoveFromCart();
 
   if (!state.isAuthenticated || !state.user) {
     return (
@@ -34,22 +40,24 @@ export default function ShoppingCartPage() {
     );
   }
 
-  const subtotal = state.cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  // Use API data for calculations
+  const cartItems = cartData?.items || [];
+  const subtotal = (cartData as any)?.summary?.subtotal || cartData?.totalPrice || 0;
   const shipping = subtotal >= 500 ? 0 : 100; // Free shipping over 500 MZN
   const discount = appliedCoupon ? subtotal * 0.1 : 0; // 10% discount for demo
   const total = subtotal + shipping - discount;
-  const totalItems = state.cart.reduce((total, item) => total + item.quantity, 0);
+  const totalItems = (cartData as any)?.summary?.itemCount || cartData?.totalItems || 0;
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity <= 0) {
-      dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+      removeFromCart.mutate(productId);
     } else {
-      dispatch({ type: 'UPDATE_CART_QUANTITY', payload: { productId, quantity: newQuantity } });
+      updateCartItem.mutate({ productId, quantity: newQuantity });
     }
   };
 
   const handleRemoveItem = (productId: string) => {
-    dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+    removeFromCart.mutate(productId);
   };
 
   const handleApplyCoupon = () => {
@@ -74,7 +82,7 @@ export default function ShoppingCartPage() {
     setExpandedItems(newExpanded);
   };
 
-  if (state.cart.length === 0) {
+  if (cartItems.length === 0 && !isLoading) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
@@ -120,56 +128,68 @@ export default function ShoppingCartPage() {
               
               {/* Desktop View */}
               <div className="hidden md:block space-y-6">
-                {state.cart.map((item) => (
-                  <div key={item.product.id} className="flex items-center space-x-4 p-4 border border-gray-2 rounded-lg">
-                    {/* Product Image */}
-                    <div className="w-20 h-20 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
-                        src={item.product.primaryImage}
-                        alt={item.product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    {/* Product Info */}
-                    <div className="flex-1 min-w-0 space-y-2">
-                      <h3 className="font-medium text-gray-9 line-clamp-2">{item.product.name}</h3>
-                      
-                      {/* Seller Info */}
-                      <div className="flex items-center space-x-2">
+                {isLoading ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                    <p className="text-gray-6 mt-2">Carregando carrinho...</p>
+                  </div>
+                ) : cartItems.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-gray-6">Seu carrinho está vazio</p>
+                  </div>
+                ) : (
+                  cartItems.map((item: any) => (
+                    <div key={item.productId?._id || item._id} className="flex items-center space-x-4 p-4 border border-gray-2 rounded-lg">
+                      {/* Product Image */}
+                      <div className="w-20 h-20 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                         <img
-                          src={item.product.sellerLogo || 'https://placehold.co/20x20/cccccc/000000?text=S'}
-                          alt={item.product.sellerName}
-                          className="w-4 h-4 rounded-full object-cover"
+                          src={item.productImage || item.productId?.primaryImage || item.product?.primaryImage || '/placeholder.jpg'}
+                          alt={item.productName || item.product?.name}
+                          className="w-full h-full object-cover"
                         />
-                        <span className="text-xs text-gray-6">Vendido por {item.product.sellerName}</span>
                       </div>
 
-                      {/* Price */}
-                      <div className="flex items-center space-x-2">
-                        {item.product.originalPrice && (
-                          <span className="text-sm text-gray-6 line-through">
-                            {formatCurrency(item.product.originalPrice)}
+                      {/* Product Info */}
+                      <div className="flex-1 min-w-0 space-y-2">
+                        <h3 className="font-medium text-gray-9 line-clamp-2">{item.productName || item.product?.name}</h3>
+                        
+                        {/* Seller Info */}
+                        <div className="flex items-center space-x-2">
+                          <img
+                            src={item.sellerLogo || item.product?.sellerLogo || 'https://placehold.co/20x20/cccccc/000000?text=S'}
+                            alt={item.sellerName || item.product?.sellerName}
+                            className="w-4 h-4 rounded-full object-cover"
+                          />
+                          <span className="text-xs text-gray-6">Vendido por {item.sellerName || item.product?.sellerName}</span>
+                        </div>
+
+                        {/* Price */}
+                        <div className="flex items-center space-x-2">
+                          {item.originalPrice && (
+                            <span className="text-sm text-gray-6 line-through">
+                              {formatCurrency(item.originalPrice)}
+                            </span>
+                          )}
+                          <span className="font-medium text-primary">
+                            {formatCurrency(item.unitPrice || item.price || item.product?.price)}
                           </span>
-                        )}
-                        <span className="font-medium text-primary">
-                          {formatCurrency(item.product.price)}
-                        </span>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Quantity Controls */}
-                    <div className="flex items-center space-x-2 flex-shrink-0">
-                      <button
-                        onClick={() => handleQuantityChange(item.product.id, item.quantity - 1)}
-                        className="p-1 hover:bg-gray-1 rounded transition-colors"
-                      >
+                      {/* Quantity Controls */}
+                      <div className="flex items-center space-x-2 flex-shrink-0">
+                        <button
+                          onClick={() => handleQuantityChange(item.productId?._id || item.product?._id, item.quantity - 1)}
+                          className="p-1 hover:bg-gray-1 rounded transition-colors"
+                          disabled={updateCartItem.isPending}
+                        >
                         <Minus size={16} />
                       </button>
                       <span className="w-12 text-center font-medium">{item.quantity}</span>
                       <button
-                        onClick={() => handleQuantityChange(item.product.id, item.quantity + 1)}
+                        onClick={() => handleQuantityChange(item.productId?._id || item.product?._id, item.quantity + 1)}
                         className="p-1 hover:bg-gray-1 rounded transition-colors"
+                        disabled={updateCartItem.isPending}
                       >
                         <Plus size={16} />
                       </button>
@@ -178,62 +198,74 @@ export default function ShoppingCartPage() {
                     {/* Subtotal */}
                     <div className="text-right min-w-0 flex-shrink-0">
                       <div className="font-medium text-gray-9">
-                        {formatCurrency(item.product.price * item.quantity)}
+                        {formatCurrency((item.unitPrice || item.price || item.product?.price) * item.quantity)}
                       </div>
                     </div>
 
                     {/* Remove Button */}
                     <button
-                      onClick={() => handleRemoveItem(item.product.id)}
+                      onClick={() => handleRemoveItem(item.productId?._id || item.product?._id)}
                       className="p-2 text-gray-6 hover:text-danger hover:bg-danger/5 rounded transition-colors flex-shrink-0"
+                      disabled={removeFromCart.isPending}
                     >
                       <X size={16} />
                     </button>
                   </div>
-                ))}
+                  ))
+                )}
               </div>
 
               {/* Mobile View */}
               <div className="md:hidden space-y-4">
-                {state.cart.map((item) => (
-                  <div key={item.product.id} className="border border-gray-2 rounded-lg overflow-hidden">
+                {isLoading ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                    <p className="text-gray-6 mt-2">Carregando carrinho...</p>
+                  </div>
+                ) : cartItems.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-gray-6">Seu carrinho está vazio</p>
+                  </div>
+                ) : (
+                  cartItems.map((item: any) => (
+                  <div key={item.productId?._id || item._id} className="border border-gray-2 rounded-lg overflow-hidden">
                     {/* Compact Header */}
                     <div className="p-4">
                       <div className="flex items-start space-x-3">
                         {/* Product Image */}
                         <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                           <img
-                            src={item.product.primaryImage}
-                            alt={item.product.name}
+                            src={item.productImage || item.productId?.primaryImage || item.product?.primaryImage || '/placeholder.jpg'}
+                            alt={item.productName || item.product?.name}
                             className="w-full h-full object-cover"
                           />
                         </div>
 
                         {/* Product Info */}
                         <div className="flex-1 min-w-0 space-y-2">
-                          <h3 className="font-medium text-gray-9 line-clamp-2">{item.product.name}</h3>
+                          <h3 className="font-medium text-gray-9 line-clamp-2">{item.productName || item.product?.name}</h3>
                           
                           {/* Seller Info */}
                           <div className="flex items-center space-x-2">
                             <img
-                              src={item.product.sellerLogo || 'https://placehold.co/16x16/cccccc/000000?text=S'}
-                              alt={item.product.sellerName}
+                              src={item.sellerLogo || item.product?.sellerLogo || 'https://placehold.co/16x16/cccccc/000000?text=S'}
+                              alt={item.sellerName || item.product?.sellerName}
                               className="w-3 h-3 rounded-full object-cover"
                             />
-                            <span className="text-xs text-gray-6">Vendido por {item.product.sellerName}</span>
+                            <span className="text-xs text-gray-6">Vendido por {item.sellerName || item.product?.sellerName}</span>
                           </div>
 
                           {/* Price and Quantity */}
                           <div className="space-y-2">
                             {/* Price Section */}
                             <div className="flex items-center space-x-2">
-                              {item.product.originalPrice && (
+                              {item.originalPrice && (
                                 <span className="text-xs text-gray-6 line-through">
-                                  {formatCurrency(item.product.originalPrice)}
+                                  {formatCurrency(item.originalPrice)}
                                 </span>
                               )}
                               <span className="font-medium text-primary text-sm">
-                                {formatCurrency(item.product.price)}
+                                {formatCurrency(item.unitPrice || item.price || item.product?.price)}
                               </span>
                             </div>
                             
@@ -241,7 +273,7 @@ export default function ShoppingCartPage() {
                             <div className="flex items-center justify-between">
                               <div className="text-xs text-gray-6">Qtd: {item.quantity}</div>
                               <div className="font-medium text-gray-9 text-sm">
-                                {formatCurrency(item.product.price * item.quantity)}
+                                {formatCurrency((item.unitPrice || item.price || item.product?.price) * item.quantity)}
                               </div>
                             </div>
                           </div>
@@ -249,10 +281,10 @@ export default function ShoppingCartPage() {
 
                         {/* Expand/Collapse Button */}
                         <button
-                          onClick={() => toggleItemExpansion(item.product.id)}
+                          onClick={() => toggleItemExpansion(item.productId?._id || item._id)}
                           className="p-1 text-gray-6 hover:text-gray-9 transition-colors"
                         >
-                          {expandedItems.has(item.product.id) ? (
+                          {expandedItems.has(item.productId?._id || item._id) ? (
                             <ChevronUp size={16} />
                           ) : (
                             <ChevronDown size={16} />
@@ -262,7 +294,7 @@ export default function ShoppingCartPage() {
                     </div>
 
                     {/* Expanded Details */}
-                    {expandedItems.has(item.product.id) && (
+                    {expandedItems.has(item.productId?._id || item._id) && (
                       <div className="border-t border-gray-2 p-4 bg-gray-1">
                         <div className="space-y-4">
                           {/* Quantity Controls */}
@@ -270,15 +302,17 @@ export default function ShoppingCartPage() {
                             <span className="text-sm font-medium text-gray-7">Quantidade:</span>
                             <div className="flex items-center space-x-2">
                               <button
-                                onClick={() => handleQuantityChange(item.product.id, item.quantity - 1)}
+                                onClick={() => handleQuantityChange(item.productId?._id || item.product?._id, item.quantity - 1)}
                                 className="p-2 hover:bg-white rounded transition-colors border border-gray-2"
+                                disabled={updateCartItem.isPending}
                               >
                                 <Minus size={14} />
                               </button>
                               <span className="w-8 text-center font-medium text-sm">{item.quantity}</span>
                               <button
-                                onClick={() => handleQuantityChange(item.product.id, item.quantity + 1)}
+                                onClick={() => handleQuantityChange(item.productId?._id || item.product?._id, item.quantity + 1)}
                                 className="p-2 hover:bg-white rounded transition-colors border border-gray-2"
+                                disabled={updateCartItem.isPending}
                               >
                                 <Plus size={14} />
                               </button>
@@ -287,8 +321,9 @@ export default function ShoppingCartPage() {
 
                           {/* Remove Button */}
                           <button
-                            onClick={() => handleRemoveItem(item.product.id)}
+                            onClick={() => handleRemoveItem(item.productId?._id || item.product?._id)}
                             className="w-full py-2 px-4 text-danger hover:bg-danger/5 rounded-lg border border-danger/20 transition-colors text-sm font-medium"
+                            disabled={removeFromCart.isPending}
                           >
                             Remover do Carrinho
                           </button>
@@ -296,7 +331,8 @@ export default function ShoppingCartPage() {
                       </div>
                     )}
                   </div>
-                ))}
+                  ))
+                )}
               </div>
 
               {/* Cart Actions */}
