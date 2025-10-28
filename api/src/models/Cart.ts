@@ -237,7 +237,7 @@ cartSchema.methods.addItem = async function(this: ICart, productId: string, quan
 
 cartSchema.methods.removeItem = async function(this: ICart, productId: string, variantId?: string): Promise<void> {
   this.items = this.items.filter(item => 
-    item.productId.toString() !== productId || 
+    item.productId._id.toString() !== productId || 
     (variantId && item.variantId !== variantId)
   );
   
