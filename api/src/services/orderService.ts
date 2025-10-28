@@ -162,8 +162,10 @@ export class OrderService {
       }
 
       // Calculate totals
-      const tax = subtotal * 0.1; // 10% tax
-      const shipping = subtotal >= 50 ? 0 : 5; // Free shipping over $50
+      // const tax = subtotal * 0.1; // 10% tax
+      const tax = 0;
+      // const shipping = subtotal >= 50 ? 0 : 5; // Free shipping over $50
+      const shipping = 0;
       const discount = 0;
       const total = subtotal + tax + shipping - discount;
 

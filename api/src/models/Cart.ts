@@ -273,10 +273,12 @@ cartSchema.methods.calculateTotals = async function(this: ICart): Promise<void> 
   this.subtotal = this.items.reduce((total, item) => total + item.totalPrice, 0);
   
   // Calculate tax (example: 10% tax rate)
-  this.tax = this.subtotal * 0.1;
+  // this.tax = this.subtotal * 0.1;
+  this.tax = 0;
   
   // Calculate shipping (example: free shipping over $50, otherwise $5)
-  this.shipping = this.subtotal >= 50 ? 0 : 5;
+  // this.shipping = this.subtotal >= 50 ? 0 : 5;
+  this.shipping = 0;
   
   // Calculate discount (placeholder for future discount logic)
   this.discount = 0;
