@@ -10,12 +10,14 @@ import { Input } from '@/components/ui/input';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useCart, useUpdateCartItem, useRemoveFromCart } from '@/hooks/useCart';
 import { formatCurrency } from '@/lib/payment';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ShoppingCartPage() {
   const { state, dispatch } = useMarketplace();
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const { toast } = useToast();
   
   // Use API data instead of context state
   const { data: cartData, isLoading } = useCart();
@@ -50,14 +52,59 @@ export default function ShoppingCartPage() {
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity <= 0) {
-      removeFromCart.mutate(productId);
+      removeFromCart.mutate(productId, {
+        onSuccess: () => {
+          toast({
+            title: "Item removido",
+            description: "Produto removido do carrinho com sucesso.",
+            variant: "default",
+          });
+        },
+        onError: (error: any) => {
+          toast({
+            title: "Erro",
+            description: error?.response?.data?.error || error?.response?.data?.message || "Erro ao remover item do carrinho.",
+            variant: "destructive",
+          });
+        }
+      });
     } else {
-      updateCartItem.mutate({ productId, quantity: newQuantity });
+      updateCartItem.mutate({ productId, quantity: newQuantity }, {
+        onSuccess: () => {
+          toast({
+            title: "Quantidade atualizada",
+            description: "Quantidade do produto atualizada com sucesso.",
+            variant: "default",
+          });
+        },
+        onError: (error: any) => {
+          toast({
+            title: "Erro",
+            description: error?.response?.data?.error || error?.response?.data?.message || "Erro ao atualizar quantidade.",
+            variant: "destructive",
+          });
+        }
+      });
     }
   };
 
   const handleRemoveItem = (productId: string) => {
-    removeFromCart.mutate(productId);
+    removeFromCart.mutate(productId, {
+      onSuccess: () => {
+        toast({
+          title: "Item removido",
+          description: "Produto removido do carrinho com sucesso.",
+          variant: "default",
+        });
+      },
+      onError: (error: any) => {
+        toast({
+          title: "Erro",
+          description: error?.response?.data?.error || error?.response?.data?.message || "Erro ao remover item do carrinho.",
+          variant: "destructive",
+        });
+      }
+    });
   };
 
   const handleApplyCoupon = () => {

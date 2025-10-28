@@ -7,6 +7,7 @@ import CartPopup from '@/components/popups/CartPopup';
 import PWAProvider from '@/components/pwa/PWAProvider';
 import StructuredData from '@/components/seo/StructuredData';
 import { getOrganizationData } from '@/components/seo/StructuredData';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: {
@@ -192,6 +193,7 @@ export default function RootLayout({
               <PWAProvider>
                 {children}
                 <CartPopup />
+                <Toaster />
               </PWAProvider>
             </MarketplaceProvider>
           </AuthProvider>

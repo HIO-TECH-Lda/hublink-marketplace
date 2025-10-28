@@ -247,7 +247,7 @@ cartSchema.methods.removeItem = async function(this: ICart, productId: string, v
 
 cartSchema.methods.updateQuantity = async function(this: ICart, productId: string, quantity: number, variantId?: string): Promise<void> {
   const item = this.getItem(productId, variantId);
-  
+  console.log('Updating cart item quantity:', productId, quantity, variantId, item);
   if (!item) {
     throw new Error('Item not found in cart');
   }
@@ -287,7 +287,7 @@ cartSchema.methods.calculateTotals = async function(this: ICart): Promise<void> 
 
 cartSchema.methods.getItem = function(this: ICart, productId: string, variantId?: string): ICartItem | undefined {
   return this.items.find(item => 
-    item.productId.toString() === productId && 
+    item.productId._id.toString() === productId && 
     (!variantId || item.variantId === variantId)
   );
 };

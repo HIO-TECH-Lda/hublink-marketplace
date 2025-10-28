@@ -9,6 +9,7 @@ import { Product } from '@/types/api';
 import { useAddToCart } from '@/hooks/useCart';
 import { useAddToWishlist, useRemoveFromWishlist, useCheckWishlistStatus } from '@/hooks/useWishlist';
 import { formatCurrency } from '@/lib/payment';
+import { useToast } from '@/hooks/use-toast';
 
 
 interface ProductCardProps {
@@ -18,6 +19,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, showQuickView = true }: ProductCardProps) {
   const { state, dispatch } = useMarketplace();
+  const { toast } = useToast();
   
   // API hooks
   const addToCart = useAddToCart();
@@ -33,8 +35,20 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
       { productId: product._id, quantity: 1 },
       {
         onSuccess: () => {
+          toast({
+            title: "Produto adicionado",
+            description: `${product.name} foi adicionado ao carrinho com sucesso.`,
+            variant: "default",
+          });
           // Show cart popup after successful add to cart
           dispatch({ type: 'SHOW_CART_POPUP' });
+        },
+        onError: (error: any) => {
+          toast({
+            title: "Erro",
+            description: error?.response?.data?.error || error?.response?.data?.message || "Erro ao adicionar produto ao carrinho.",
+            variant: "destructive",
+          });
         }
       }
     );

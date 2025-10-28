@@ -652,7 +652,9 @@ export const addToCartSchema = Joi.object({
 });
 
 export const updateCartItemSchema = Joi.object({
-  quantity: Joi.number().min(1).max(100).required()
+  productId: Joi.string().required(),
+  quantity: Joi.number().min(1).max(100).required(),
+  variantId: Joi.string().optional()
 });
 
 export const removeFromCartSchema = Joi.object({

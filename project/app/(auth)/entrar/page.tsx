@@ -17,8 +17,8 @@ export default function SignInPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: 'helton@test.com',
+    password: 'H2Furau2711@',
     rememberMe: false
   });
   const [error, setError] = useState('');
