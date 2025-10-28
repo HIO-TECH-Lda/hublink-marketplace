@@ -35,3 +35,15 @@ export const useCreateManualPayment = () => {
     },
   });
 };
+
+export const useProcessPayment = () => {
+  return useMutation({
+    mutationFn: async (paymentData: {
+      orderId: string;
+      paymentDetails?: any;
+    }) => {
+      const response = await apiClient.post('/payments/process', paymentData);
+      return response.data.data;
+    },
+  });
+};

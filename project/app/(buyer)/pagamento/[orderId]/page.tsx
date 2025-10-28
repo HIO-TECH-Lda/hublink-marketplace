@@ -15,8 +15,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useOrder } from '@/hooks/useOrders';
-import { useCreateManualPayment } from '@/hooks/usePayments';
-import { PaymentService, formatCurrency } from '@/lib/payment';
+import { useProcessPayment } from '@/hooks/usePayments';
+import { formatCurrency } from '@/lib/payment';
 
 export default function PaymentPage() {
   const params = useParams();
@@ -26,11 +26,11 @@ export default function PaymentPage() {
   const orderId = params.orderId as string;
   
   const { data: order, isLoading: orderLoading, error: orderError } = useOrder(orderId);
-  const createPaymentMutation = useCreateManualPayment();
+  const processPaymentMutation = useProcessPayment();
   
-  const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [paymentResult, setPaymentResult] = useState<any>(null);
   const [formData, setFormData] = useState({
     paymentMethod: 'mpesa',
     phoneNumber: '',
@@ -48,42 +48,114 @@ export default function PaymentPage() {
     }
   }, [orderError]);
 
+  const processPayment = async (paymentDetails = {}) => {
+    try {
+      const result = await processPaymentMutation.mutateAsync({
+        orderId: orderId,
+        paymentDetails: paymentDetails
+      });
+      
+      return result;
+    } catch (error: any) {
+      console.error('Payment processing failed:', error);
+      throw new Error(error.message || 'Payment processing failed');
+    }
+  };
+
+  const handlePaymentResponse = async (data: any) => {
+    switch (data.type) {
+      case 'stripe':
+        await handleStripePayment(data);
+        break;
+      case 'manual':
+        handleManualPayment(data);
+        break;
+      default:
+        // Imali payment (M-Pesa, eMola, etc.)
+        handleImaliPayment(data);
+    }
+  };
+
+  const handleStripePayment = async (data: any) => {
+    // For now, show success message
+    // In a real implementation, you would integrate Stripe.js here
+    setPaymentResult({
+      type: 'stripe',
+      message: 'Stripe payment integration required. Please contact support.',
+      clientSecret: data.clientSecret
+    });
+  };
+
+  const handleImaliPayment = (data: any) => {
+    if (data.status === 'success' && data.data?.paymentLink) {
+      // Show pay-by-link
+      setPaymentResult({
+        type: 'imali_link',
+        paymentLink: data.data.paymentLink.link_url,
+        linkId: data.data.paymentLink.link_id
+      });
+    } else if (data.status === 'success' && data.data?.data?.qrcode) {
+      // Show QR code
+      setPaymentResult({
+        type: 'imali_qr',
+        qrCode: data.data.data.qrcode,
+        transactionId: data.data.data.transaction
+      });
+    }
+  };
+
+  const handleManualPayment = (data: any) => {
+    setPaymentResult({
+      type: 'manual',
+      method: data.method,
+      amount: data.amount,
+      currency: data.currency,
+      message: data.message
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsProcessing(true);
     setError('');
+    setPaymentResult(null);
 
     try {
-      let result;
+      const paymentDetails: any = {};
       
-      const orderTotal = order?.total || 0;
-      
-      if (formData.paymentMethod === 'mpesa') {
-        result = await PaymentService.initiateMpesaPayment(formData.phoneNumber, orderTotal);
-      } else if (formData.paymentMethod === 'emola') {
-        result = await PaymentService.initiateEmolaPayment(formData.phoneNumber, orderTotal);
-      } else if (formData.paymentMethod === 'debit_card') {
-        const cardDetails = {
+      // Add method-specific details
+      if (formData.paymentMethod === 'mpesa' || formData.paymentMethod === 'emola') {
+        paymentDetails.send_to_phone = formData.phoneNumber;
+        paymentDetails.title = `Pagamento Pedido #${orderId}`;
+        paymentDetails.short_description = 'Pagamento do pedido';
+        paymentDetails.type = 'DIRECT';
+      } else if (formData.paymentMethod === 'imali') {
+        paymentDetails.send_to_phone = formData.phoneNumber;
+        paymentDetails.title = `Pagamento Pedido #${orderId}`;
+        paymentDetails.short_description = 'Pagamento do pedido';
+        paymentDetails.type = 'DIRECT';
+      } else if (formData.paymentMethod === 'debit_card' || formData.paymentMethod === 'credit_card') {
+        // For card payments, we'll need to handle Stripe integration
+        paymentDetails.cardDetails = {
           number: formData.cardNumber,
           expiryMonth: formData.expiryMonth,
           expiryYear: formData.expiryYear,
           cvv: formData.cvv,
           holderName: formData.cardholderName
         };
-        result = await PaymentService.processDebitCardPayment(cardDetails, orderTotal);
+      } else if (formData.paymentMethod === 'bank_transfer' || formData.paymentMethod === 'cash_on_delivery') {
+        // Manual payment methods don't need additional details
+        // paymentDetails remains empty
       }
       
-      if (result && (result.status === 'pending_confirmation' || result.status === 'processing')) {
-        // Clear cart after successful payment initiation
-        dispatch({ type: 'CLEAR_CART' });
-        setIsSuccess(true);
-      } else {
-        setError('Pagamento falhou. Tente novamente.');
-      }
-    } catch (err) {
-      setError('Erro ao processar pagamento. Tente novamente.');
-    } finally {
-      setIsProcessing(false);
+      const result = await processPayment(paymentDetails);
+      await handlePaymentResponse(result);
+      
+      // Clear cart after successful payment initiation
+      dispatch({ type: 'CLEAR_CART' });
+      setIsSuccess(true);
+      
+    } catch (err: any) {
+      setError(err.message || 'Erro ao processar pagamento. Tente novamente.');
     }
   };
 
@@ -130,13 +202,60 @@ export default function PaymentPage() {
                   <CheckCircle className="w-8 h-8 text-green-600" />
                 </div>
                 <CardTitle className="text-2xl font-bold text-gray-9">
-                  Pagamento Iniciado!
+                  {paymentResult?.type === 'manual' ? 'Pagamento Criado!' : 'Pagamento Iniciado!'}
                 </CardTitle>
                 <CardDescription className="text-gray-6">
-                  Seu pagamento foi processado com sucesso.
+                  {paymentResult?.type === 'manual' 
+                    ? 'Instruções de pagamento foram geradas.' 
+                    : 'Seu pagamento foi processado com sucesso.'
+                  }
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                {/* Payment Link */}
+                {paymentResult?.type === 'imali_link' && (
+                  <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+                    <p className="text-sm text-gray-7 mb-3">Clique no link abaixo para completar o pagamento:</p>
+                    <Button 
+                      onClick={() => window.open(paymentResult.paymentLink, '_blank')}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Pagar Agora
+                    </Button>
+                  </div>
+                )}
+
+                {/* QR Code */}
+                {paymentResult?.type === 'imali_qr' && (
+                  <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                    <p className="text-sm text-gray-7 mb-3">Escaneie o QR code com seu app de pagamento:</p>
+                    <div className="flex justify-center">
+                      <img 
+                        src={paymentResult.qrCode} 
+                        alt="QR Code de Pagamento" 
+                        className="w-48 h-48 border rounded"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Manual Payment Instructions */}
+                {paymentResult?.type === 'manual' && (
+                  <div className="mb-6 p-4 bg-yellow-50 rounded-lg">
+                    <p className="text-sm text-gray-7 mb-2">{paymentResult.message}</p>
+                    <p className="text-sm font-medium text-gray-9">
+                      Valor: {formatCurrency(paymentResult.amount)} {paymentResult.currency}
+                    </p>
+                  </div>
+                )}
+
+                {/* Stripe Payment */}
+                {paymentResult?.type === 'stripe' && (
+                  <div className="mb-6 p-4 bg-purple-50 rounded-lg">
+                    <p className="text-sm text-gray-7">{paymentResult.message}</p>
+                  </div>
+                )}
+
                 <p className="text-sm text-gray-6 mb-6">
                   Você receberá um email de confirmação em breve.
                 </p>
@@ -240,7 +359,7 @@ export default function PaymentPage() {
                           className="text-primary"
                         />
                         <Smartphone size={20} className="text-primary" />
-                        <Label htmlFor="mpesa" className="flex-1 cursor-pointer">M-Pesa</Label>
+                        <Label htmlFor="mpesa" className="flex-1 cursor-pointer">M-Pesa (QR Code)</Label>
                       </div>
                       
                       <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
@@ -254,7 +373,21 @@ export default function PaymentPage() {
                           className="text-primary"
                         />
                         <Smartphone size={20} className="text-primary" />
-                        <Label htmlFor="emola" className="flex-1 cursor-pointer">E-Mola</Label>
+                        <Label htmlFor="emola" className="flex-1 cursor-pointer">E-Mola (QR Code)</Label>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
+                        <input
+                          type="radio"
+                          id="imali"
+                          name="paymentMethod"
+                          value="imali"
+                          checked={formData.paymentMethod === 'imali'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                          className="text-primary"
+                        />
+                        <Smartphone size={20} className="text-primary" />
+                        <Label htmlFor="imali" className="flex-1 cursor-pointer">Imali (Link de Pagamento)</Label>
                       </div>
                       
                       <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
@@ -270,11 +403,53 @@ export default function PaymentPage() {
                         <CreditCard size={20} className="text-primary" />
                         <Label htmlFor="debit_card" className="flex-1 cursor-pointer">Cartão de Débito</Label>
                       </div>
+                      
+                      <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
+                        <input
+                          type="radio"
+                          id="credit_card"
+                          name="paymentMethod"
+                          value="credit_card"
+                          checked={formData.paymentMethod === 'credit_card'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                          className="text-primary"
+                        />
+                        <CreditCard size={20} className="text-primary" />
+                        <Label htmlFor="credit_card" className="flex-1 cursor-pointer">Cartão de Crédito</Label>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
+                        <input
+                          type="radio"
+                          id="bank_transfer"
+                          name="paymentMethod"
+                          value="bank_transfer"
+                          checked={formData.paymentMethod === 'bank_transfer'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                          className="text-primary"
+                        />
+                        <CreditCard size={20} className="text-primary" />
+                        <Label htmlFor="bank_transfer" className="flex-1 cursor-pointer">Transferência Bancária</Label>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
+                        <input
+                          type="radio"
+                          id="cash_on_delivery"
+                          name="paymentMethod"
+                          value="cash_on_delivery"
+                          checked={formData.paymentMethod === 'cash_on_delivery'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                          className="text-primary"
+                        />
+                        <CreditCard size={20} className="text-primary" />
+                        <Label htmlFor="cash_on_delivery" className="flex-1 cursor-pointer">Pagamento na Entrega</Label>
+                      </div>
                     </div>
                   </div>
 
                   {/* Mobile Money Payment Fields */}
-                  {(formData.paymentMethod === 'mpesa' || formData.paymentMethod === 'emola') && (
+                  {(formData.paymentMethod === 'mpesa' || formData.paymentMethod === 'emola' || formData.paymentMethod === 'imali') && (
                     <div>
                       <Label htmlFor="phoneNumber">Número de Telefone *</Label>
                       <Input
@@ -286,13 +461,16 @@ export default function PaymentPage() {
                         required
                       />
                       <p className="text-sm text-gray-6 mt-1">
-                        Você receberá uma notificação no seu telefone para confirmar o pagamento.
+                        {formData.paymentMethod === 'imali' 
+                          ? 'Você receberá um link de pagamento via SMS.' 
+                          : 'Você receberá uma notificação no seu telefone para confirmar o pagamento.'
+                        }
                       </p>
                     </div>
                   )}
 
-                  {/* Debit Card Payment Fields */}
-                  {formData.paymentMethod === 'debit_card' && (
+                  {/* Card Payment Fields */}
+                  {(formData.paymentMethod === 'debit_card' || formData.paymentMethod === 'credit_card') && (
                     <>
                       <div>
                         <Label htmlFor="cardNumber">Número do Cartão</Label>
@@ -385,9 +563,9 @@ export default function PaymentPage() {
                 <Button
                   type="submit"
                   className="w-full bg-primary hover:bg-primary-hard text-white py-3"
-                  disabled={isProcessing}
+                  disabled={processPaymentMutation.isPending}
                 >
-                  {isProcessing ? (
+                  {processPaymentMutation.isPending ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                       Processando...

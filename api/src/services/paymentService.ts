@@ -44,7 +44,7 @@ export class PaymentService {
       if (!order) {
         throw new Error('Order not found');
       }
-
+      console.log(order.userId.toString(), data.userId);
       if (order.userId.toString() !== data.userId) {
         throw new Error('Order does not belong to user');
       }

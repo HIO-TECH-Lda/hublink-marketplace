@@ -10,7 +10,7 @@ export class PaymentController {
   static async processPayment(req: Request, res: Response) {
     try {
       const { orderId, paymentDetails } = req.body;
-      const userId = (req as any).user.id;
+      const userId = (req as any).user.userId;
 
       const result = await PaymentService.processPayment({
         orderId,
