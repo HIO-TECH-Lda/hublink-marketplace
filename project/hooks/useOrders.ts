@@ -59,3 +59,14 @@ export const useCancelOrder = () => {
     },
   });
 };
+
+export const useOrderTracking = (orderId: string) => {
+  return useQuery({
+    queryKey: ['order-tracking', orderId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/orders/${orderId}/tracking`);
+      return response.data.data;
+    },
+    enabled: !!orderId,
+  });
+};
