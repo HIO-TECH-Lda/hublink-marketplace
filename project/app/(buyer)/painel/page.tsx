@@ -4,31 +4,16 @@ import React from 'react';
 import { Package, Heart, ShoppingCart, Settings, LogOut, User, Edit, Eye } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import BuyerLayout from '@/components/layout/BuyerLayout';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import Link from 'next/link';
 import BuyerSidebar from '../components/BuyerSidebar';
 
 export default function UserDashboardPage() {
+  const { user } = useAuth();
   const { state, dispatch } = useMarketplace();
-
-  if (!state.isAuthenticated || !state.user) {
-    return (
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
-          <Link href="/entrar">
-            <Button className="bg-primary hover:bg-primary-hard text-white">
-              Fazer Login
-            </Button>
-          </Link>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   const handleLogout = () => {
     dispatch({ type: 'SET_USER', payload: null });
@@ -61,10 +46,11 @@ export default function UserDashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-1">
-      <Header />
-      
-      <div className="container py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
+    <BuyerLayout>
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        
+        <div className="container py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-4 sm:mb-6">
           <span>Início</span> / <span className="text-primary">Meu Painel</span>
@@ -81,7 +67,7 @@ export default function UserDashboardPage() {
             {/* Welcome Header */}
             <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
               <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9 mb-2">
-                Bem-vindo, {state.user.firstName}!
+                Bem-vindo, {user?.firstName}!
               </h1>
               <p className="text-gray-6 text-sm sm:text-base">
                 Gerencie seus pedidos e configurações de conta aqui.
@@ -133,19 +119,19 @@ export default function UserDashboardPage() {
                 <div>
                   <h4 className="font-medium text-gray-9 mb-2 text-sm sm:text-base">Informações Pessoais</h4>
                   <div className="space-y-1 text-xs sm:text-sm text-gray-6">
-                    <p><strong>Nome:</strong> {state.user.firstName} {state.user.lastName}</p>
-                    <p><strong>E-mail:</strong> {state.user.email}</p>
-                    <p><strong>Telefone:</strong> {state.user.phone || 'Não informado'}</p>
+                    <p><strong>Nome:</strong> {user?.firstName} {user?.lastName}</p>
+                    <p><strong>E-mail:</strong> {user?.email}</p>
+                    <p><strong>Telefone:</strong> {user?.phone || 'Não informado'}</p>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-medium text-gray-9 mb-2 text-sm sm:text-base">Endereço</h4>
                   <div className="space-y-1 text-xs sm:text-sm text-gray-6">
-                    {state.user.billingAddress ? (
+                    {user?.billingAddress ? (
                       <>
-                        <p>{state.user.billingAddress.address}</p>
-                        <p>{state.user.billingAddress.state}, {state.user.billingAddress.zipCode}</p>
-                        <p>{state.user.billingAddress.country}</p>
+                        <p>{user.billingAddress.address}</p>
+                        <p>{user.billingAddress.state}, {user.billingAddress.zipCode}</p>
+                        <p>{user.billingAddress.country}</p>
                       </>
                     ) : (
                       <p className="text-gray-5 italic">Endereço não cadastrado</p>
@@ -215,5 +201,6 @@ export default function UserDashboardPage() {
 
       <Footer />
     </div>
+    </BuyerLayout>
   );
 }
