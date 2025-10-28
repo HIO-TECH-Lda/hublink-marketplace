@@ -31,6 +31,199 @@ export interface RefundRequest {
 
 export class PaymentService {
   /**
+   * Unified payment processing - handles all payment methods based on order.payment.method
+   */
+  static async processPayment(data: {
+    orderId: string;
+    userId: string;
+    paymentDetails?: any;
+  }): Promise<any> {
+    try {
+      // Get the order to determine payment method
+      const order = await Order.findById(data.orderId);
+      if (!order) {
+        throw new Error('Order not found');
+      }
+
+      if (order.userId.toString() !== data.userId) {
+        throw new Error('Order does not belong to user');
+      }
+
+      if (order.payment.status === 'completed') {
+        throw new Error('Order is already paid');
+      }
+
+      // Route to appropriate payment method based on order.payment.method
+      switch (order.payment.method) {
+        case 'credit_card':
+        case 'debit_card':
+          return await this.processStripePayment(order, data.paymentDetails);
+        
+        case 'mpesa':
+        case 'emola':
+        case 'imali':
+          return await this.processImaliPayment(order, data.paymentDetails);
+        
+        case 'bank_transfer':
+        case 'cash_on_delivery':
+          return await this.processManualPayment(order, data.paymentDetails);
+        
+        default:
+          throw new Error(`Unsupported payment method: ${order.payment.method}`);
+      }
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Process Stripe payment
+   */
+  private static async processStripePayment(order: any, paymentDetails?: any): Promise<any> {
+    // If paymentIntentId is provided, confirm the payment
+    if (paymentDetails?.paymentIntentId) {
+      return await this.confirmPayment(paymentDetails.paymentIntentId);
+    }
+
+    // Otherwise, create a new payment intent
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(order.total * 100), // Convert to cents
+      currency: order.currency.toLowerCase(),
+      payment_method_types: ['card'],
+      metadata: {
+        orderId: order._id.toString(),
+        userId: order.userId.toString()
+      }
+    });
+
+    // Create payment record
+    const payment = new Payment({
+      orderId: order._id,
+      userId: order.userId,
+      amount: order.total,
+      currency: order.currency,
+      method: 'stripe',
+      gateway: 'stripe',
+      status: 'pending',
+      gatewayTransactionId: paymentIntent.id,
+      gatewayResponse: paymentIntent
+    });
+
+    await payment.save();
+
+    // Update order with payment information
+    await Order.findByIdAndUpdate(
+      order._id,
+      {
+        'payment.transactionId': paymentIntent.id,
+        'payment.status': 'pending',
+        'payment.method': order.payment.method
+      },
+      { new: true, runValidators: true }
+    );
+
+    return {
+      type: 'stripe',
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
+      amount: order.total,
+      currency: order.currency
+    };
+  }
+
+  /**
+   * Process Imali payment
+   */
+  private static async processImaliPayment(order: any, paymentDetails?: any): Promise<any> {
+    const { ImaliController } = await import('../controllers/imaliController');
+    
+    // Create a mock request object for ImaliController
+    const mockReq = {
+      body: {
+        orderId: order._id.toString(),
+        // Set default values for pay-by-link
+        title: paymentDetails?.title || `Payment for Order #${order.orderNumber || order._id.toString().slice(-8)}`,
+        short_description: paymentDetails?.short_description || `Order payment - ${order.orderNumber || order._id.toString().slice(-8)}`,
+        send_to_phone: paymentDetails?.send_to_phone,
+        type: paymentDetails?.type || 'DIRECT',
+        payment_frequence: paymentDetails?.payment_frequence,
+        expiration_datetime: paymentDetails?.expiration_datetime,
+        customer_link_id: paymentDetails?.customer_link_id,
+        partner_transaction_id: paymentDetails?.partner_transaction_id,
+        thumbnail_image: paymentDetails?.thumbnail_image,
+        transaction_type: paymentDetails?.transaction_type || 'C2B',
+        ...paymentDetails
+      }
+    } as any;
+
+    const mockRes = {
+      status: (code: number) => ({
+        json: (data: any) => {
+          if (code >= 400) {
+            throw new Error(data.message || 'Imali payment failed');
+          }
+          return data;
+        }
+      }),
+      json: (data: any) => data
+    } as any;
+
+    // Use pay-by-link for all Imali payments by default
+    if (order.payment.method === 'imali') {
+      const result = await ImaliController.createPayByLink(mockReq, mockRes, () => {});
+      
+      // The ImaliController already updates the order, so we just return the result
+      return result;
+    } else {
+      // M-Pesa or eMola - generate transaction (QR code)
+      const result = await ImaliController.generateTransaction(mockReq, mockRes, () => {});
+      
+      // The ImaliController already updates the order, so we just return the result
+      return result;
+    }
+  }
+
+  /**
+   * Process manual payment
+   */
+  private static async processManualPayment(order: any, paymentDetails?: any): Promise<any> {
+    // Create manual payment record
+    const payment = new Payment({
+      orderId: order._id,
+      userId: order.userId,
+      amount: order.total,
+      currency: order.currency,
+      method: order.payment.method,
+      gateway: 'manual',
+      status: 'pending'
+    });
+
+    await payment.save();
+
+    // Update order with payment information
+    await Order.findByIdAndUpdate(
+      order._id,
+      {
+        'payment.transactionId': payment._id.toString(),
+        'payment.status': 'pending',
+        'payment.method': order.payment.method
+      },
+      { new: true, runValidators: true }
+    );
+
+    return {
+      type: 'manual',
+      paymentId: payment._id,
+      method: order.payment.method,
+      amount: order.total,
+      currency: order.currency,
+      status: 'pending',
+      message: `Payment created for ${order.payment.method}. Admin will mark as completed when payment is received.`
+    };
+  }
+
+  /**
    * Create a payment intent for an order
    */
   static async createPaymentIntent(data: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {

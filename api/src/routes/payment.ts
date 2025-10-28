@@ -6,10 +6,18 @@ import {
   createPaymentIntentSchema, 
   confirmPaymentSchema, 
   refundPaymentSchema, 
-  createManualPaymentSchema 
+  createManualPaymentSchema,
+  processPaymentSchema
 } from '../utils/validation';
 
 const router = express.Router();
+
+// Unified payment processing (requires authentication)
+router.post('/process', 
+  authenticateToken, 
+  validateRequest(processPaymentSchema), 
+  PaymentController.processPayment
+);
 
 // Payment intent creation (requires authentication)
 router.post('/create-intent', 

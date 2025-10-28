@@ -1,9 +1,37 @@
 import { Request, Response } from 'express';
 import Stripe from 'stripe';
 import { PaymentService } from '../services/paymentService';
-import { createPaymentIntentSchema, confirmPaymentSchema, refundPaymentSchema, createManualPaymentSchema } from '../utils/validation';
+import { createPaymentIntentSchema, confirmPaymentSchema, refundPaymentSchema, createManualPaymentSchema, processPaymentSchema } from '../utils/validation';
 
 export class PaymentController {
+  /**
+   * Unified payment processing - handles all payment methods based on order.payment.method
+   */
+  static async processPayment(req: Request, res: Response) {
+    try {
+      const { orderId, paymentDetails } = req.body;
+      const userId = (req as any).user.id;
+
+      const result = await PaymentService.processPayment({
+        orderId,
+        userId,
+        paymentDetails
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: 'Payment processed successfully',
+        data: result
+      });
+    } catch (error: any) {
+      console.error('Process payment error:', error);
+      return res.status(400).json({
+        success: false,
+        message: error.message || 'Failed to process payment'
+      });
+    }
+  }
+
   /**
    * Create payment intent for Stripe payment
    */

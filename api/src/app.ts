@@ -93,8 +93,9 @@ app.get('/api/v1', (req: Request, res: Response) => {
       orderStatistics: 'GET /api/v1/orders/statistics/user'
     },
     paymentEndpoints: {
-      createPaymentIntent: 'POST /api/v1/payments/create-intent',
-      confirmPayment: 'POST /api/v1/payments/confirm',
+      processPayment: 'POST /api/v1/payments/process (UNIFIED - handles all payment methods)',
+      createPaymentIntent: 'POST /api/v1/payments/create-intent (Stripe only)',
+      confirmPayment: 'POST /api/v1/payments/confirm (Stripe only)',
       processRefund: 'POST /api/v1/payments/refund (admin/seller)',
       getPayment: 'GET /api/v1/payments/:paymentId',
       getUserPayments: 'GET /api/v1/payments/user/payments',

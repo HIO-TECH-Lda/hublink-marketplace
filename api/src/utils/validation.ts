@@ -208,6 +208,38 @@ export const createManualPaymentSchema = Joi.object({
     })
 });
 
+// Unified payment schema - handles all payment methods
+export const processPaymentSchema = Joi.object({
+  orderId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Order ID is required'
+    }),
+  
+  // Optional parameters for specific payment methods
+  paymentDetails: Joi.object({
+    // For Imali pay-by-link
+    title: Joi.string().max(100).optional(),
+    short_description: Joi.string().max(200).optional(),
+    send_to_phone: Joi.string().pattern(/^\+?[\d\s\-\(\)]+$/).optional(),
+    type: Joi.string().valid('RECURRING', 'DIRECT', 'DONATION').optional(),
+    payment_frequence: Joi.string().valid('DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY').optional(),
+    expiration_datetime: Joi.string().isoDate().optional(),
+    customer_link_id: Joi.string().optional(),
+    partner_transaction_id: Joi.string().optional(),
+    thumbnail_image: Joi.string().uri().optional(),
+    transaction_type: Joi.string().valid('C2B', 'B2C', 'B2B', 'C2C').optional(),
+    
+    // For manual payments
+    mPesaPhoneNumber: Joi.string().pattern(/^\+?[\d\s\-\(\)]+$/).optional(),
+    eMolaPhoneNumber: Joi.string().pattern(/^\+?[\d\s\-\(\)]+$/).optional(),
+    imaliLinkId: Joi.string().optional(),
+    
+    // For Stripe
+    paymentIntentId: Joi.string().optional()
+  }).optional()
+});
+
 // User profile update validation schema
 export const updateProfileSchema = Joi.object({
   firstName: Joi.string()
