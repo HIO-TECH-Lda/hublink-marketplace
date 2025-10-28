@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Package, Truck, CheckCircle, Clock, MapPin, Calendar, ArrowLeft, Download, Printer, RotateCcw, AlertCircle, X } from 'lucide-react';
+import { Package, Truck, CheckCircle, Clock, MapPin, Calendar, ArrowLeft, Download, Printer, RotateCcw, AlertCircle, X, CreditCard } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useOrder, useOrderTracking } from '@/hooks/useOrders';
-import { InvoiceService, formatCurrency, formatDate } from '@/lib/payment';
+import { formatCurrency, formatDate } from '@/lib/payment';
+import { generateInvoiceHTML, InvoiceData } from '@/lib/invoice-generator';
 
 export default function OrderTrackingPage() {
   const params = useParams();
@@ -32,13 +33,13 @@ export default function OrderTrackingPage() {
   const [isSubmittingReturn, setIsSubmittingReturn] = useState(false);
 
 
-  const generateInvoice = () => {
+  const generateInvoice = (): InvoiceData | null => {
     if (!order) return null;
     
     return {
       id: `inv_${orderId}`,
       orderNumber: order.orderNumber || order._id,
-      date: order.createdAt || order.date,
+      date: order.createdAt || order.date || new Date().toISOString(),
       status: order.payment?.status || 'pending',
       customer: {
         name: `${order.shippingAddress?.firstName || ''} ${order.shippingAddress?.lastName || ''}`.trim(),
@@ -113,82 +114,9 @@ export default function OrderTrackingPage() {
     const invoice = generateInvoice();
     if (!invoice) return;
 
-    // Create invoice HTML
-    const invoiceHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Fatura - ${invoice.orderNumber}</title>
-        <style>
-          body { font-family: Arial, sans-serif; margin: 20px; }
-          .header { text-align: center; margin-bottom: 30px; }
-          .invoice-details { margin-bottom: 20px; }
-          .customer-info { margin-bottom: 20px; }
-          .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-          .items-table th, .items-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-          .items-table th { background-color: #f2f2f2; }
-          .totals { text-align: right; margin-top: 20px; }
-          .status { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-          .status.paid { background-color: #d4edda; color: #155724; }
-          .status.pending { background-color: #fff3cd; color: #856404; }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1>TXOVA</h1>
-          <h2>Fatura #${invoice.orderNumber}</h2>
-          <p>Data: ${formatDate(invoice.date)}</p>
-        </div>
-        
-        <div class="invoice-details">
-          <h3>Informações do Cliente</h3>
-          <p><strong>Nome:</strong> ${invoice.customer.name}</p>
-          <p><strong>Email:</strong> ${invoice.customer.email}</p>
-          <p><strong>Endereço:</strong> ${invoice.customer.address}</p>
-          <p><strong>Cidade:</strong> ${invoice.customer.city}, ${invoice.customer.state} ${invoice.customer.zipCode}</p>
-          <p><strong>País:</strong> ${invoice.customer.country}</p>
-        </div>
+    const invoiceHTML = generateInvoiceHTML(invoice);
 
-        <table class="items-table">
-          <thead>
-            <tr>
-              <th>Produto</th>
-              <th>Quantidade</th>
-              <th>Preço Unitário</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${invoice.items.map(item => `
-              <tr>
-                <td>${item.product?.name || item.productName}</td>
-                <td>${item.quantity}</td>
-                <td>${formatCurrency(item.unitPrice || item.product?.price || 0)}</td>
-                <td>${formatCurrency((item.unitPrice || item.product?.price || 0) * item.quantity)}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-
-        <div class="totals">
-          <p><strong>Subtotal:</strong> ${formatCurrency(invoice.subtotal)}</p>
-          <p><strong>Frete:</strong> ${formatCurrency(invoice.shipping)}</p>
-          <p><strong>Desconto:</strong> ${formatCurrency(invoice.discount)}</p>
-          <p><strong>Impostos:</strong> ${formatCurrency(invoice.tax)}</p>
-          <p><strong>Total:</strong> ${formatCurrency(invoice.total)}</p>
-        </div>
-
-        <div class="payment-info">
-          <p><strong>Método de Pagamento:</strong> ${invoice.paymentMethod.toUpperCase()}</p>
-          <p><strong>Status:</strong> <span class="status ${invoice.status}">${getStatusText(invoice.status)}</span></p>
-        </div>
-
-        ${invoice.notes ? `<div class="notes"><p><strong>Notas:</strong> ${invoice.notes}</p></div>` : ''}
-      </body>
-      </html>
-    `;
-
-    // Create and download PDF
+    // Create and download HTML file
     const blob = new Blob([invoiceHTML], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -205,80 +133,7 @@ export default function OrderTrackingPage() {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
-    const invoiceHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Fatura - ${invoice.orderNumber}</title>
-        <style>
-          body { font-family: Arial, sans-serif; margin: 20px; }
-          .header { text-align: center; margin-bottom: 30px; }
-          .invoice-details { margin-bottom: 20px; }
-          .customer-info { margin-bottom: 20px; }
-          .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-          .items-table th, .items-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-          .items-table th { background-color: #f2f2f2; }
-          .totals { text-align: right; margin-top: 20px; }
-          .status { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-          .status.paid { background-color: #d4edda; color: #155724; }
-          .status.pending { background-color: #fff3cd; color: #856404; }
-          @media print { body { margin: 0; } }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1>TXOVA</h1>
-          <h2>Fatura #${invoice.orderNumber}</h2>
-          <p>Data: ${formatDate(invoice.date)}</p>
-        </div>
-        
-        <div class="invoice-details">
-          <h3>Informações do Cliente</h3>
-          <p><strong>Nome:</strong> ${invoice.customer.name}</p>
-          <p><strong>Email:</strong> ${invoice.customer.email}</p>
-          <p><strong>Endereço:</strong> ${invoice.customer.address}</p>
-          <p><strong>Cidade:</strong> ${invoice.customer.city}, ${invoice.customer.state} ${invoice.customer.zipCode}</p>
-          <p><strong>País:</strong> ${invoice.customer.country}</p>
-        </div>
-
-        <table class="items-table">
-          <thead>
-            <tr>
-              <th>Produto</th>
-              <th>Quantidade</th>
-              <th>Preço Unitário</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${invoice.items.map(item => `
-              <tr>
-                <td>${item.product?.name || item.productName}</td>
-                <td>${item.quantity}</td>
-                <td>${formatCurrency(item.unitPrice || item.product?.price || 0)}</td>
-                <td>${formatCurrency((item.unitPrice || item.product?.price || 0) * item.quantity)}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-
-        <div class="totals">
-          <p><strong>Subtotal:</strong> ${formatCurrency(invoice.subtotal)}</p>
-          <p><strong>Frete:</strong> ${formatCurrency(invoice.shipping)}</p>
-          <p><strong>Desconto:</strong> ${formatCurrency(invoice.discount)}</p>
-          <p><strong>Impostos:</strong> ${formatCurrency(invoice.tax)}</p>
-          <p><strong>Total:</strong> ${formatCurrency(invoice.total)}</p>
-        </div>
-
-        <div class="payment-info">
-          <p><strong>Método de Pagamento:</strong> ${invoice.paymentMethod.toUpperCase()}</p>
-          <p><strong>Status:</strong> <span class="status ${invoice.status}">${getStatusText(invoice.status)}</span></p>
-        </div>
-
-        ${invoice.notes ? `<div class="notes"><p><strong>Notas:</strong> ${invoice.notes}</p></div>` : ''}
-      </body>
-      </html>
-    `;
+    const invoiceHTML = generateInvoiceHTML(invoice);
 
     printWindow.document.write(invoiceHTML);
     printWindow.document.close();
@@ -299,7 +154,7 @@ export default function OrderTrackingPage() {
 
       // Create return request
       const returnRequest = {
-        orderId: order.id,
+        orderId: order?._id || order?.id || '',
         items: selectedItems,
         reason: returnReason,
         description: returnDescription,
@@ -310,14 +165,6 @@ export default function OrderTrackingPage() {
 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Update order status
-      const updatedOrder = {
-        ...order,
-        status: 'return_requested',
-        returnRequest
-      };
-      setOrder(updatedOrder);
       
       // Close modal and show success message
       setShowReturnModal(false);
@@ -344,7 +191,7 @@ export default function OrderTrackingPage() {
 
   // Generate unique item ID for order items
   const getItemUniqueId = (item: any, index: number) => {
-    return `${order._id || order.id}-${item.product?.id || item.productId}-${index}`;
+    return `${order?._id || order?.id || ''}-${item.product?.id || item.productId}-${index}`;
   };
 
   const canRequestReturn = () => {
@@ -442,16 +289,16 @@ export default function OrderTrackingPage() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <CardTitle className="text-2xl font-bold text-gray-9">
-                    Pedido #{order.orderNumber || order._id?.slice(-6)}
+                    Pedido #{order?.orderNumber || order?._id?.slice(-6)}
                   </CardTitle>
                   <CardDescription className="text-gray-6">
-                    Realizado em {formatDate(order.createdAt || order.date)}
+                    Realizado em {formatDate(order?.createdAt || order?.date || '')}
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
-                  {getStatusIcon(order.status)}
-                  <Badge className={getStatusColor(order.status)}>
-                    {getStatusText(order.status)}
+                  {getStatusIcon(order?.status || '')}
+                  <Badge className={getStatusColor(order?.status || '')}>
+                    {getStatusText(order?.status || '')}
                   </Badge>
                   {getReturnStatus() && (
                     <Badge className={getReturnStatus()?.color}>
@@ -460,6 +307,25 @@ export default function OrderTrackingPage() {
                   )}
                 </div>
               </div>
+              
+              {/* Payment Action for Pending Orders */}
+              {order?.payment?.status === 'pending' && (
+                <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-yellow-800">Pagamento Pendente</h3>
+                      <p className="text-sm text-yellow-700">Complete o pagamento para processar seu pedido</p>
+                    </div>
+                    <Button 
+                      onClick={() => router.push(`/pagamento/${orderId}`)}
+                      className="bg-yellow-600 hover:bg-yellow-700 text-white"
+                    >
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      Pagar Agora
+                    </Button>
+                  </div>
+                </div>
+              )}
               {canRequestReturn() && (
                 <div className="mt-4">
                   <Button 
@@ -546,7 +412,7 @@ export default function OrderTrackingPage() {
               ) : null}
 
               {/* Order Notes */}
-              {order.notes && (
+              {order?.notes && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg font-semibold text-gray-9">
@@ -554,7 +420,7 @@ export default function OrderTrackingPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-6">{order.notes}</p>
+                    <p className="text-gray-6">{order?.notes}</p>
                   </CardContent>
                 </Card>
               )}
@@ -570,17 +436,17 @@ export default function OrderTrackingPage() {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-gray-6">Método:</span>
-                      <span className="font-medium">{order.payment?.method?.toUpperCase() || 'N/A'}</span>
+                      <span className="font-medium">{order?.payment?.method?.toUpperCase() || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-6">Status:</span>
-                      <Badge className={getStatusColor(order.payment?.status || order.status)}>
-                        {getStatusText(order.payment?.status || order.status)}
+                      <Badge className={getStatusColor(order?.payment?.status || order?.status || '')}>
+                        {getStatusText(order?.payment?.status || order?.status || '')}
                       </Badge>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-6">Valor:</span>
-                      <span className="font-medium">{formatCurrency(order.payment?.amount || order.totalAmount || 0)}</span>
+                      <span className="font-medium">{formatCurrency(order?.payment?.amount || order?.totalAmount || 0)}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -595,28 +461,28 @@ export default function OrderTrackingPage() {
                 </CardHeader>
                 <CardContent>
                                      <div className="space-y-4">
-                     {(order.items || []).map((item: any, index: number) => {
+                    {(order?.items || []).map((item: any, index: number) => {
                        const uniqueItemId = getItemUniqueId(item, index);
                        return (
                          <div key={uniqueItemId} className="flex items-center gap-4">
                            <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                              <img
-                               src={item.product?.primaryImage || item.productImage || '/placeholder.jpg'}
-                               alt={item.product?.name || item.productName}
+                              src={item.product?.primaryImage || item.productImage || '/placeholder.jpg'}
+                              alt={item.product?.name || item.productName}
                                className="w-full h-full object-cover"
                              />
                            </div>
                            <div className="flex-1 min-w-0">
-                             <h4 className="font-medium text-gray-9 truncate">{item.product?.name || item.productName}</h4>
+                            <h4 className="font-medium text-gray-9 truncate">{item.product?.name || item.productName}</h4>
                              <p className="text-sm text-gray-6">Qtd: {item.quantity}</p>
-                             {order.returnRequest && order.returnRequest.items.includes(uniqueItemId) && (
+                            {order?.returnRequest && order?.returnRequest.items.includes(uniqueItemId) && (
                                <Badge variant="outline" className="mt-1 text-xs">
                                  Retorno Solicitado
                                </Badge>
                              )}
                            </div>
                            <div className="text-right">
-                             <p className="font-medium text-gray-9">{formatCurrency((item.unitPrice || item.product?.price || 0) * item.quantity)}</p>
+                            <p className="font-medium text-gray-9">{formatCurrency((item.unitPrice || item.product?.price || 0) * item.quantity)}</p>
                            </div>
                          </div>
                        );
@@ -626,7 +492,7 @@ export default function OrderTrackingPage() {
               </Card>
 
               {/* Return Request Information */}
-              {order.returnRequest && (
+              {order?.returnRequest && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg font-semibold text-gray-9 flex items-center gap-2">
@@ -641,17 +507,17 @@ export default function OrderTrackingPage() {
                     <div className="space-y-4">
                       <div>
                         <h4 className="font-medium text-gray-9 mb-2">Motivo do Retorno:</h4>
-                        <p className="text-sm text-gray-6">{getReturnReasonText(order.returnRequest.reason)}</p>
+                        <p className="text-sm text-gray-6">{getReturnReasonText(order?.returnRequest.reason)}</p>
                       </div>
-                      {order.returnRequest.description && (
+                      {order?.returnRequest.description && (
                         <div>
                           <h4 className="font-medium text-gray-9 mb-2">Descrição:</h4>
-                          <p className="text-sm text-gray-6">{order.returnRequest.description}</p>
+                          <p className="text-sm text-gray-6">{order?.returnRequest.description}</p>
                         </div>
                       )}
                       <div>
                         <h4 className="font-medium text-gray-9 mb-2">Data da Solicitação:</h4>
-                        <p className="text-sm text-gray-6">{formatDate(order.returnRequest.createdAt)}</p>
+                        <p className="text-sm text-gray-6">{formatDate(order?.returnRequest.createdAt)}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -672,25 +538,25 @@ export default function OrderTrackingPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-6">Subtotal:</span>
-                      <span className="text-gray-9">{formatCurrency(order.subtotal || order.totalAmount || 0)}</span>
+                      <span className="text-gray-9">{formatCurrency(order?.subtotal || order?.totalAmount || 0)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-6">Frete:</span>
-                      <span className="text-gray-9">{formatCurrency(order.shipping || 0)}</span>
+                      <span className="text-gray-9">{formatCurrency(order?.shipping || 0)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-6">Desconto:</span>
-                      <span className="text-gray-9">{formatCurrency(order.discount || 0)}</span>
+                      <span className="text-gray-9">{formatCurrency(order?.discount || 0)}</span>
                     </div>
-                    {(order.tax || 0) > 0 && (
+                    {(order?.tax || 0) > 0 && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-6">Impostos:</span>
-                        <span className="text-gray-9">{formatCurrency(order.tax || 0)}</span>
+                        <span className="text-gray-9">{formatCurrency(order?.tax || 0)}</span>
                       </div>
                     )}
                     <div className="flex justify-between text-lg font-semibold border-t border-gray-2 pt-3">
                       <span className="text-gray-9">Total:</span>
-                      <span className="text-primary">{formatCurrency(order.totalAmount || order.total || 0)}</span>
+                      <span className="text-primary">{formatCurrency(order?.totalAmount || order?.total || 0)}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -706,48 +572,48 @@ export default function OrderTrackingPage() {
                 <CardContent>
                   <div className="text-sm text-gray-6 space-y-1">
                     <p className="font-medium text-gray-9">
-                      {order.shippingAddress?.firstName} {order.shippingAddress?.lastName}
+                      {order?.shippingAddress?.firstName} {order?.shippingAddress?.lastName}
                     </p>
-                    <p>{order.shippingAddress?.address}</p>
-                    <p>{order.shippingAddress?.city}, {order.shippingAddress?.state} {order.shippingAddress?.zipCode}</p>
-                    <p>{order.shippingAddress?.country}</p>
+                    <p>{order?.shippingAddress?.address}</p>
+                    <p>{order?.shippingAddress?.city}, {order?.shippingAddress?.state} {order?.shippingAddress?.zipCode}</p>
+                    <p>{order?.shippingAddress?.country}</p>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Invoice Actions */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold text-gray-9">
-                    Fatura
-                  </CardTitle>
-                  <CardDescription>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold text-gray-9">
+                      Fatura
+                    </CardTitle>
+                    <CardDescription>
                     Status: <Badge variant="outline" className="ml-1">{getStatusText(order?.payment?.status || 'pending')}</Badge>
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <Button 
-                      onClick={downloadInvoice}
-                      variant="outline" 
-                      className="w-full"
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <Button 
+                        onClick={downloadInvoice}
+                        variant="outline" 
+                        className="w-full"
                       disabled={!order?.payment?.status}
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Baixar Fatura
-                    </Button>
-                    <Button 
-                      onClick={printInvoice}
-                      variant="outline" 
-                      className="w-full"
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Baixar Fatura
+                      </Button>
+                      <Button 
+                        onClick={printInvoice}
+                        variant="outline" 
+                        className="w-full"
                       disabled={!order?.payment?.status}
-                    >
-                      <Printer className="w-4 h-4 mr-2" />
-                      Imprimir
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                      >
+                        <Printer className="w-4 h-4 mr-2" />
+                        Imprimir
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
             </div>
           </div>
         </div>
@@ -782,7 +648,7 @@ export default function OrderTrackingPage() {
                     Selecione os itens para retorno *
                   </label>
                                      <div className="space-y-3">
-                     {(order.items || []).map((item: any, index: number) => {
+                    {(order?.items || []).map((item: any, index: number) => {
                        const uniqueItemId = getItemUniqueId(item, index);
                        return (
                          <div key={uniqueItemId} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">

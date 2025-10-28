@@ -12,19 +12,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useAuth } from '@/contexts/AuthContext';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useOrder } from '@/hooks/useOrders';
+import { useCreateManualPayment } from '@/hooks/usePayments';
 import { PaymentService, formatCurrency } from '@/lib/payment';
 
 export default function PaymentPage() {
   const params = useParams();
   const router = useRouter();
-  const { state, dispatch } = useMarketplace();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { dispatch } = useMarketplace();
   const orderId = params.orderId as string;
+  
+  const { data: order, isLoading: orderLoading, error: orderError } = useOrder(orderId);
+  const createPaymentMutation = useCreateManualPayment();
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [order, setOrder] = useState<any>(null);
   const [formData, setFormData] = useState({
     paymentMethod: 'mpesa',
     phoneNumber: '',
@@ -37,13 +43,10 @@ export default function PaymentPage() {
   });
 
   useEffect(() => {
-    const foundOrder = state.orders.find(o => o.id === orderId);
-    if (foundOrder) {
-      setOrder(foundOrder);
-    } else {
-      setError('Pedido não encontrado.');
+    if (orderError) {
+      setError('Erro ao carregar pedido. Tente novamente.');
     }
-  }, [orderId, state.orders]);
+  }, [orderError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,10 +56,12 @@ export default function PaymentPage() {
     try {
       let result;
       
+      const orderTotal = order?.total || 0;
+      
       if (formData.paymentMethod === 'mpesa') {
-        result = await PaymentService.initiateMpesaPayment(formData.phoneNumber, order.total);
+        result = await PaymentService.initiateMpesaPayment(formData.phoneNumber, orderTotal);
       } else if (formData.paymentMethod === 'emola') {
-        result = await PaymentService.initiateEmolaPayment(formData.phoneNumber, order.total);
+        result = await PaymentService.initiateEmolaPayment(formData.phoneNumber, orderTotal);
       } else if (formData.paymentMethod === 'debit_card') {
         const cardDetails = {
           number: formData.cardNumber,
@@ -65,7 +70,7 @@ export default function PaymentPage() {
           cvv: formData.cvv,
           holderName: formData.cardholderName
         };
-        result = await PaymentService.processDebitCardPayment(cardDetails, order.total);
+        result = await PaymentService.processDebitCardPayment(cardDetails, orderTotal);
       }
       
       if (result && (result.status === 'pending_confirmation' || result.status === 'processing')) {
@@ -82,7 +87,22 @@ export default function PaymentPage() {
     }
   };
 
-  if (!state.isAuthenticated || !state.user) {
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-gray-6 mt-2">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show access denied if not authenticated
+  if (!isAuthenticated || !user) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
@@ -144,13 +164,29 @@ export default function PaymentPage() {
     );
   }
 
-  if (!order) {
+  if (orderLoading) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-gray-6">Carregando pedido...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!order) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Pedido não encontrado</h1>
+          <p className="text-gray-6 mb-8">O pedido solicitado não foi encontrado.</p>
+          <Button onClick={() => router.push('/historico-pedidos')} className="bg-primary hover:bg-primary-hard text-white">
+            Ver Meus Pedidos
+          </Button>
         </div>
         <Footer />
       </div>
@@ -359,7 +395,7 @@ export default function PaymentPage() {
                   ) : (
                     <>
                       <Lock className="w-4 h-4 mr-2" />
-                      Pagar {formatCurrency(order.total)}
+                      Pagar {formatCurrency(order.total || 0)}
                     </>
                   )}
                 </Button>
@@ -376,34 +412,46 @@ export default function PaymentPage() {
             <CardContent>
               <div className="space-y-4">
                 <div className="space-y-3">
-                  {order.items.map((item: any) => (
-                    <div key={item.id} className="flex items-center gap-3">
+                  {order.items?.map((item: any, index: number) => (
+                    <div key={item.id || index} className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                         <img
-                          src={item.product.primaryImage}
-                          alt={item.product.name}
+                          src={item.productImage || '/placeholder-product.jpg'}
+                          alt={item.productName || 'Produto'}
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-gray-9 truncate">{item.product.name}</h4>
+                        <h4 className="font-medium text-gray-9 truncate">{item.productName || 'Produto'}</h4>
                         <p className="text-sm text-gray-6">Qtd: {item.quantity}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-gray-9">{formatCurrency(item.product.price * item.quantity)}</p>
+                        <p className="font-medium text-gray-9">{formatCurrency(item.totalPrice)}</p>
                       </div>
                     </div>
-                  ))}
+                  )) || []}
                 </div>
 
                 <div className="border-t border-gray-2 pt-4 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-6">Subtotal:</span>
-                    <span className="text-gray-9">{formatCurrency(order.total)}</span>
+                    <span className="text-gray-9">{formatCurrency(order.total || 0)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-6">Frete:</span>
+                    <span className="text-gray-9">{formatCurrency(order.shipping || 0)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-6">Desconto:</span>
+                    <span className="text-gray-9">{formatCurrency(order.discount || 0)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-6">Impostos:</span>
+                    <span className="text-gray-9">{formatCurrency(order.tax || 0)}</span>
                   </div>
                   <div className="flex justify-between text-lg font-semibold border-t border-gray-2 pt-2">
                     <span className="text-gray-9">Total:</span>
-                    <span className="text-primary">{formatCurrency(order.total)}</span>
+                    <span className="text-primary">{formatCurrency(order.total || 0)}</span>
                   </div>
                 </div>
               </div>

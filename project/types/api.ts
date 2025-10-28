@@ -95,9 +95,24 @@ export interface Cart {
 // Order Types
 export interface OrderItem {
   _id: string;
-  product: Product;
+  productId?: {
+    _id: string;
+    name: string;
+    primaryImage?: string;
+    price: number;
+  };
+  product?: {
+    _id: string;
+    name: string;
+    primaryImage?: string;
+    price: number;
+  };
+  productName?: string;
+  productImage?: string;
   quantity: number;
-  price: number;
+  unitPrice: number;
+  price?: number;
+  sellerName?: string;
 }
 
 export interface Address {
@@ -105,6 +120,7 @@ export interface Address {
   lastName: string;
   company?: string;
   address: string;
+  city: string;
   country: string;
   state: string;
   zipCode: string;
@@ -112,21 +128,55 @@ export interface Address {
   phone: string;
 }
 
+export interface Payment {
+  method: string;
+  status: 'pending' | 'paid' | 'failed' | 'refunded';
+  amount: number;
+  currency: string;
+}
+
+export interface ReturnRequest {
+  _id: string;
+  orderId: string;
+  items: string[];
+  reason: string;
+  description?: string;
+  status: 'pending' | 'approved' | 'rejected' | 'completed';
+  createdAt: string;
+}
+
 export interface Order {
   _id: string;
+  id?: string;
   orderNumber: string;
-  user: string;
+  user: string | {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    fullName: string;
+  };
   items: OrderItem[];
   shippingAddress: Address;
   billingAddress: Address;
-  paymentMethod: string;
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
-  orderStatus: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+  payment: Payment;
+  paymentMethod?: string;
+  paymentStatus?: 'pending' | 'paid' | 'failed' | 'refunded';
+  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+  orderStatus?: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
   totalAmount: number;
-  shippingCost: number;
-  taxAmount: number;
+  total?: number;
+  subtotal: number;
+  shipping: number;
+  shippingCost?: number;
+  tax: number;
+  taxAmount?: number;
+  discount: number;
+  notes?: string;
+  currency: string;
+  returnRequest?: ReturnRequest;
   createdAt: string;
   updatedAt: string;
+  date?: string;
 }
 
 // Category Types
