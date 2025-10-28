@@ -17,7 +17,7 @@ export const useOrder = (orderId: string) => {
     queryKey: ['order', orderId],
     queryFn: async () => {
       const response = await apiClient.get(`/orders/${orderId}`);
-      return response.data.data as Order;
+      return response.data.data.order as Order;
     },
     enabled: !!orderId,
   });

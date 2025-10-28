@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useOrder } from '@/hooks/useOrders';
 import { OrderTrackingService, InvoiceService, formatCurrency, formatDate } from '@/lib/payment';
 
 export default function OrderTrackingPage() {
@@ -19,11 +20,9 @@ export default function OrderTrackingPage() {
   const { state } = useMarketplace();
   const orderId = params.orderId as string;
   
-  const [order, setOrder] = useState<any>(null);
+  const { data: order, isLoading, error } = useOrder(orderId);
   const [tracking, setTracking] = useState<any>(null);
   const [invoice, setInvoice] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
   
   // Return request state
   const [showReturnModal, setShowReturnModal] = useState(false);
@@ -33,21 +32,13 @@ export default function OrderTrackingPage() {
   const [isSubmittingReturn, setIsSubmittingReturn] = useState(false);
 
   useEffect(() => {
-    loadOrderData();
-  }, [orderId]);
+    if (order) {
+      loadTrackingAndInvoice();
+    }
+  }, [order]);
 
-  const loadOrderData = async () => {
+  const loadTrackingAndInvoice = async () => {
     try {
-      // Find order from context
-      const foundOrder = state.orders.find(o => o.id === orderId);
-      if (!foundOrder) {
-        setError('Pedido não encontrado.');
-        setIsLoading(false);
-        return;
-      }
-      
-      setOrder(foundOrder);
-
       // Load tracking information
       const trackingData = await OrderTrackingService.getOrderTracking(orderId);
       setTracking(trackingData);
@@ -55,11 +46,8 @@ export default function OrderTrackingPage() {
       // Load invoice
       const invoiceData = await InvoiceService.getInvoice(`inv_${orderId}`);
       setInvoice(invoiceData);
-
     } catch (err) {
-      setError('Erro ao carregar dados do pedido.');
-    } finally {
-      setIsLoading(false);
+      console.error('Error loading tracking/invoice:', err);
     }
   };
 
@@ -183,7 +171,7 @@ export default function OrderTrackingPage() {
 
   // Generate unique item ID for order items
   const getItemUniqueId = (item: any, index: number) => {
-    return `${order.id}-${item.product.id}-${index}`;
+    return `${order._id || order.id}-${item.product?.id || item.productId}-${index}`;
   };
 
   const canRequestReturn = () => {
@@ -231,21 +219,6 @@ export default function OrderTrackingPage() {
     }
   };
 
-  if (!state.isAuthenticated || !state.user) {
-    return (
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
-          <Button onClick={() => router.push('/entrar')} className="bg-primary hover:bg-primary-hard text-white">
-            Fazer Login
-          </Button>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   if (isLoading) {
     return (
@@ -260,13 +233,13 @@ export default function OrderTrackingPage() {
     );
   }
 
-  if (error || !order) {
+  if (error || (!isLoading && !order)) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-2xl font-bold text-gray-9 mb-4">Erro</h1>
-          <p className="text-gray-6 mb-8">{error || 'Pedido não encontrado.'}</p>
+          <p className="text-gray-6 mb-8">Pedido não encontrado.</p>
           <Button onClick={() => router.push('/historico-pedidos')} className="bg-primary hover:bg-primary-hard text-white">
             Voltar aos Pedidos
           </Button>
@@ -296,10 +269,10 @@ export default function OrderTrackingPage() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <CardTitle className="text-2xl font-bold text-gray-9">
-                    Pedido #{order.id}
+                    Pedido #{order.orderNumber || order._id?.slice(-6)}
                   </CardTitle>
                   <CardDescription className="text-gray-6">
-                    Realizado em {formatDate(order.createdAt)}
+                    Realizado em {formatDate(order.createdAt || order.date)}
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
@@ -391,19 +364,19 @@ export default function OrderTrackingPage() {
                 </CardHeader>
                 <CardContent>
                                      <div className="space-y-4">
-                     {order.items.map((item: any, index: number) => {
+                     {(order.items || []).map((item: any, index: number) => {
                        const uniqueItemId = getItemUniqueId(item, index);
                        return (
                          <div key={uniqueItemId} className="flex items-center gap-4">
                            <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                              <img
-                               src={item.product.primaryImage}
-                               alt={item.product.name}
+                               src={item.product?.primaryImage || item.productImage || '/placeholder.jpg'}
+                               alt={item.product?.name || item.productName}
                                className="w-full h-full object-cover"
                              />
                            </div>
                            <div className="flex-1 min-w-0">
-                             <h4 className="font-medium text-gray-9 truncate">{item.product.name}</h4>
+                             <h4 className="font-medium text-gray-9 truncate">{item.product?.name || item.productName}</h4>
                              <p className="text-sm text-gray-6">Qtd: {item.quantity}</p>
                              {order.returnRequest && order.returnRequest.items.includes(uniqueItemId) && (
                                <Badge variant="outline" className="mt-1 text-xs">
@@ -412,7 +385,7 @@ export default function OrderTrackingPage() {
                              )}
                            </div>
                            <div className="text-right">
-                             <p className="font-medium text-gray-9">{formatCurrency(item.product.price * item.quantity * 100)}</p>
+                             <p className="font-medium text-gray-9">{formatCurrency((item.unitPrice || item.product?.price || 0) * item.quantity)}</p>
                            </div>
                          </div>
                        );
@@ -468,21 +441,21 @@ export default function OrderTrackingPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-6">Subtotal:</span>
-                      <span className="text-gray-9">{formatCurrency(order.subtotal * 100)}</span>
+                      <span className="text-gray-9">{formatCurrency(order.subtotal || order.totalAmount || 0)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-6">Frete:</span>
-                      <span className="text-gray-9">{formatCurrency(order.shipping * 100)}</span>
+                      <span className="text-gray-9">{formatCurrency(order.shipping || 0)}</span>
                     </div>
-                    {order.tax > 0 && (
+                    {(order.tax || 0) > 0 && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-6">Impostos:</span>
-                        <span className="text-gray-9">{formatCurrency(order.tax * 100)}</span>
+                        <span className="text-gray-9">{formatCurrency(order.tax || 0)}</span>
                       </div>
                     )}
                     <div className="flex justify-between text-lg font-semibold border-t border-gray-2 pt-3">
                       <span className="text-gray-9">Total:</span>
-                      <span className="text-primary">{formatCurrency(order.total * 100)}</span>
+                      <span className="text-primary">{formatCurrency(order.totalAmount || order.total || 0)}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -498,11 +471,11 @@ export default function OrderTrackingPage() {
                 <CardContent>
                   <div className="text-sm text-gray-6 space-y-1">
                     <p className="font-medium text-gray-9">
-                      {order.shippingAddress.firstName} {order.shippingAddress.lastName}
+                      {order.shippingAddress?.firstName} {order.shippingAddress?.lastName}
                     </p>
-                    <p>{order.shippingAddress.address}</p>
-                    <p>{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
-                    <p>{order.shippingAddress.country}</p>
+                    <p>{order.shippingAddress?.address}</p>
+                    <p>{order.shippingAddress?.city}, {order.shippingAddress?.state} {order.shippingAddress?.zipCode}</p>
+                    <p>{order.shippingAddress?.country}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -574,7 +547,7 @@ export default function OrderTrackingPage() {
                     Selecione os itens para retorno *
                   </label>
                                      <div className="space-y-3">
-                     {order.items.map((item: any, index: number) => {
+                     {(order.items || []).map((item: any, index: number) => {
                        const uniqueItemId = getItemUniqueId(item, index);
                        return (
                          <div key={uniqueItemId} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
@@ -587,19 +560,19 @@ export default function OrderTrackingPage() {
                            />
                            <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                              <img
-                               src={item.product.primaryImage}
-                               alt={item.product.name}
+                               src={item.product?.primaryImage || item.productImage || '/placeholder.jpg'}
+                               alt={item.product?.name || item.productName}
                                className="w-full h-full object-cover"
                              />
                            </div>
                            <div className="flex-1">
                              <label htmlFor={`item-${uniqueItemId}`} className="font-medium text-gray-900 cursor-pointer">
-                               {item.product.name}
+                               {item.product?.name || item.productName}
                              </label>
                              <p className="text-sm text-gray-600">Qtd: {item.quantity}</p>
                            </div>
                            <div className="text-right">
-                             <p className="font-medium text-gray-900">{formatCurrency(item.product.price * item.quantity * 100)}</p>
+                             <p className="font-medium text-gray-900">{formatCurrency((item.unitPrice || item.product?.price || 0) * item.quantity)}</p>
                            </div>
                          </div>
                        );
