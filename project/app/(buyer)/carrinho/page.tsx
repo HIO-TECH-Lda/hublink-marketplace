@@ -12,7 +12,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCart, useUpdateCartItem, useRemoveFromCart } from '@/hooks/useCart';
 import { formatCurrency } from '@/lib/payment';
 import { useToast } from '@/hooks/use-toast';
-import BuyerLayout from '@/components/layout/BuyerLayout';
 
 export default function ShoppingCartPage() {
   const { state, dispatch } = useMarketplace();
@@ -141,9 +140,8 @@ export default function ShoppingCartPage() {
   }
 
   return (
-    <BuyerLayout>
-      <div className="min-h-screen bg-gray-1">
-        <Header />
+    <div className="min-h-screen bg-gray-1">
+      <Header />
 
       <div className="container py-8 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
@@ -493,6 +491,5 @@ export default function ShoppingCartPage() {
 
       <Footer />
     </div>
-    </BuyerLayout>
   );
 } 

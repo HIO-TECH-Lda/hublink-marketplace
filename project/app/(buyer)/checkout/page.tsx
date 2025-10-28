@@ -18,7 +18,6 @@ import { useCreateOrderFromCart } from '@/hooks/useOrders';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/payment';
-import BuyerLayout from '@/components/layout/BuyerLayout';
 
 export default function CheckoutPage() {
   const { state, dispatch } = useMarketplace();
@@ -155,28 +154,25 @@ export default function CheckoutPage() {
 
   if (cartItems.length === 0 && !isLoading) {
     return (
-      <BuyerLayout>
-        <div className="min-h-screen bg-gray-1">
-          <Header />
-          <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-9 mb-4">Carrinho vazio</h1>
-            <p className="text-gray-6 mb-8">Adicione produtos ao carrinho para continuar.</p>
-            <Link href="/loja">
-              <Button className="bg-primary hover:bg-primary-hard text-white">
-                Ir para as Compras
-              </Button>
-            </Link>
-          </div>
-          <Footer />
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Carrinho vazio</h1>
+          <p className="text-gray-6 mb-8">Adicione produtos ao carrinho para continuar.</p>
+          <Link href="/loja">
+            <Button className="bg-primary hover:bg-primary-hard text-white">
+              Ir para as Compras
+            </Button>
+          </Link>
         </div>
-      </BuyerLayout>
+        <Footer />
+      </div>
     );
   }
 
   return (
-    <BuyerLayout>
-      <div className="min-h-screen bg-gray-1">
-        <Header />
+    <div className="min-h-screen bg-gray-1">
+      <Header />
 
       <div className="container py-8 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
@@ -484,6 +480,5 @@ export default function CheckoutPage() {
 
       <Footer />
     </div>
-    </BuyerLayout>
   );
 } 

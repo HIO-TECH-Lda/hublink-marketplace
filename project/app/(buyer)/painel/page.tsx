@@ -4,7 +4,6 @@ import React from 'react';
 import { Package, Heart, ShoppingCart, Settings, LogOut, User, Edit, Eye } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import BuyerLayout from '@/components/layout/BuyerLayout';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
@@ -46,11 +45,10 @@ export default function UserDashboardPage() {
   ];
 
   return (
-    <BuyerLayout>
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        
-        <div className="container py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-1">
+      <Header />
+      
+      <div className="container py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-4 sm:mb-6">
           <span>Início</span> / <span className="text-primary">Meu Painel</span>
@@ -201,6 +199,5 @@ export default function UserDashboardPage() {
 
       <Footer />
     </div>
-    </BuyerLayout>
   );
 }

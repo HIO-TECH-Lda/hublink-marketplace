@@ -4,14 +4,14 @@ import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import Header from './Header';
-import Footer from './Footer';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
-interface BuyerLayoutProps {
+export default function BuyerLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-export default function BuyerLayout({ children }: BuyerLayoutProps) {
+}) {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
 
   // Show loading while checking authentication
