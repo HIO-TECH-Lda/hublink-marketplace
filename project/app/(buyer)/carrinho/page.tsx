@@ -8,12 +8,14 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useCart, useUpdateCartItem, useRemoveFromCart } from '@/hooks/useCart';
 import { formatCurrency } from '@/lib/payment';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ShoppingCartPage() {
   const { state, dispatch } = useMarketplace();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -24,7 +26,21 @@ export default function ShoppingCartPage() {
   const updateCartItem = useUpdateCartItem();
   const removeFromCart = useRemoveFromCart();
 
-  if (!state.isAuthenticated || !state.user) {
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-gray-6 mt-2">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
@@ -390,7 +406,7 @@ export default function ShoppingCartPage() {
                     Voltar para as Compras
                   </Button>
                 </Link>
-                <Button
+                {/* <Button
                   onClick={() => {
                     // Update cart functionality
                     alert('Carrinho atualizado!');
@@ -399,7 +415,7 @@ export default function ShoppingCartPage() {
                   className="border-gray-3 text-gray-7 hover:bg-gray-1"
                 >
                   Atualizar Carrinho
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -489,14 +505,16 @@ export default function ShoppingCartPage() {
               </Link>
 
               {/* Continue Shopping */}
-              <Link href="/loja">
-                <Button
-                  variant="outline"
-                  className="w-full border-dashed border-primary text-primary hover:bg-primary hover:text-white"
-                >
-                  Adicione mais {formatCurrency(500 - subtotal)} para frete grátis!
-                </Button>
-              </Link>
+              {shipping > 0 && (
+                <Link href="/loja">
+                  <Button
+                    variant="outline"
+                    className="w-full border-dashed border-primary text-primary hover:bg-primary hover:text-white"
+                  >
+                    Adicione mais {formatCurrency(500 - subtotal)} para frete grátis!
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
