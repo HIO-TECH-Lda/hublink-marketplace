@@ -34,7 +34,7 @@ export interface IOrderAddress {
 }
 
 export interface IOrderPayment {
-  method: 'credit_card' | 'debit_card' | 'paypal' | 'bank_transfer' | 'cash_on_delivery';
+  method: 'credit_card' | 'debit_card' | 'paypal' | 'bank_transfer' | 'cash_on_delivery' | 'mpesa' | 'emola' | 'imali';
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
   transactionId?: string;
   amount: number;
@@ -46,6 +46,9 @@ export interface IOrderPayment {
     cardLast4?: string;
     cardBrand?: string;
     paypalEmail?: string;
+    imaliLinkId?: string;
+    mPesaPhoneNumber?: string;
+    eMolaPhoneNumber?: string;
   };
 }
 
@@ -223,7 +226,7 @@ const orderAddressSchema = new Schema<IOrderAddress>({
 const orderPaymentSchema = new Schema<IOrderPayment>({
   method: {
     type: String,
-    enum: ['credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash_on_delivery'],
+    enum: ['credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash_on_delivery', 'mpesa', 'emola', 'imali'],
     required: true
   },
   status: {
@@ -242,7 +245,7 @@ const orderPaymentSchema = new Schema<IOrderPayment>({
   },
   currency: {
     type: String,
-    default: 'USD'
+    default: 'MZM'
   },
   paidAt: {
     type: Date,
@@ -260,7 +263,10 @@ const orderPaymentSchema = new Schema<IOrderPayment>({
   paymentDetails: {
     cardLast4: String,
     cardBrand: String,
-    paypalEmail: String
+    paypalEmail: String,
+    imaliLinkId: String,
+    mPesaPhoneNumber: String,
+    eMolaPhoneNumber: String,
   }
 });
 
@@ -307,7 +313,7 @@ const orderSchema = new Schema<IOrder>({
   },
   currency: {
     type: String,
-    default: 'USD'
+    default: 'MZM'
   },
   shippingAddress: {
     type: orderAddressSchema,

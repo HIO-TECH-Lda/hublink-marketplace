@@ -127,9 +127,9 @@ export const createPaymentIntentSchema = Joi.object({
   currency: Joi.string()
     .length(3)
     .uppercase()
-    .default('USD')
+    .default('MZM')
     .messages({
-      'string.length': 'Currency must be 3 characters (e.g., USD, EUR)',
+      'string.length': 'Currency must be 3 characters (e.g., MZM, USD, EUR)',
       'string.uppercase': 'Currency must be uppercase'
     }),
   
@@ -193,17 +193,17 @@ export const createManualPaymentSchema = Joi.object({
   currency: Joi.string()
     .length(3)
     .uppercase()
-    .default('USD')
+    .default('MZM')
     .messages({
-      'string.length': 'Currency must be 3 characters (e.g., USD, EUR)',
+      'string.length': 'Currency must be 3 characters (e.g., MZM, USD, EUR)',
       'string.uppercase': 'Currency must be uppercase'
     }),
   
   method: Joi.string()
-    .valid('bank_transfer', 'cash_on_delivery', 'm_pesa', 'e_mola')
+    .valid('bank_transfer', 'cash_on_delivery', 'mpesa', 'emola', 'imali')
     .required()
     .messages({
-      'any.only': 'Method must be bank_transfer, cash_on_delivery, m_pesa, or e_mola',
+      'any.only': 'Method must be bank_transfer, cash_on_delivery, mpesa, emola, or imali',
       'any.required': 'Payment method is required'
     })
 });
@@ -732,11 +732,14 @@ export const createOrderFromCartSchema = Joi.object({
     isDefault: Joi.boolean().optional()
   }).required(),
   payment: Joi.object({
-    method: Joi.string().valid('credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash_on_delivery').required(),
+    method: Joi.string().valid('credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash_on_delivery', 'mpesa', 'emola', 'imali').required(),
     paymentDetails: Joi.object({
       cardLast4: Joi.string().length(4).optional(),
       cardBrand: Joi.string().optional(),
-      paypalEmail: Joi.string().email().optional()
+      paypalEmail: Joi.string().email().optional(),
+      imaliLinkId: Joi.string().optional(),
+      mPesaPhoneNumber: Joi.string().optional(),
+      eMolaPhoneNumber: Joi.string().optional(),
     }).optional()
   }).required(),
   notes: Joi.string().max(500).optional()

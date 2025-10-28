@@ -184,7 +184,7 @@ export class OrderService {
         shipping,
         discount,
         total,
-        currency: 'USD'
+        currency: 'MZM'
       });
 
       await order.save();

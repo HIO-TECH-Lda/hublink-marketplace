@@ -5,9 +5,9 @@ export interface IPayment extends Document {
   userId: mongoose.Types.ObjectId;
   amount: number;
   currency: string;
-  method: 'stripe' | 'paypal' | 'bank_transfer' | 'cash_on_delivery';
+  method: 'stripe' | 'paypal' | 'bank_transfer' | 'cash_on_delivery' | 'mpesa' | 'emola' | 'imali';
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
-  gateway: 'stripe' | 'paypal' | 'manual';
+  gateway: 'stripe' | 'paypal' | 'manual' | 'mpesa' | 'emola' | 'imali';
   gatewayTransactionId?: string;
   gatewayResponse?: any;
   refundAmount?: number;
@@ -56,7 +56,7 @@ const paymentSchema = new Schema<IPayment>({
   currency: {
     type: String,
     required: [true, 'Currency is required'],
-    default: 'USD',
+    default: 'MZM',
     uppercase: true,
     trim: true
   },
@@ -64,7 +64,7 @@ const paymentSchema = new Schema<IPayment>({
     type: String,
     required: [true, 'Payment method is required'],
     enum: {
-      values: ['stripe', 'paypal', 'bank_transfer', 'cash_on_delivery', 'm_pesa', 'e_mola'],
+      values: ['stripe', 'paypal', 'bank_transfer', 'cash_on_delivery', 'mpesa', 'emola', 'imali'],
       message: 'Invalid payment method'
     }
   },
@@ -81,7 +81,7 @@ const paymentSchema = new Schema<IPayment>({
     type: String,
     required: [true, 'Payment gateway is required'],
     enum: {
-      values: ['stripe', 'paypal', 'manual', 'm_pesa', 'e_mola'],
+      values: ['stripe', 'paypal', 'manual', 'mpesa', 'emola', 'imali'],
       message: 'Invalid payment gateway'
     }
   },

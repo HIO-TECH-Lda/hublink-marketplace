@@ -301,7 +301,12 @@ export class PaymentService {
     userId: string;
     amount: number;
     currency: string;
-    method: 'bank_transfer' | 'cash_on_delivery' | 'm_pesa' | 'e_mola';
+    method: 'bank_transfer' | 'cash_on_delivery' | 'mpesa' | 'emola' | 'imali';
+    paymentDetails?: {
+      imaliLinkId?: string;
+      mPesaPhoneNumber?: string;
+      eMolaPhoneNumber?: string;
+    };
   }): Promise<IPayment> {
     try {
       // Validate order exists and belongs to user

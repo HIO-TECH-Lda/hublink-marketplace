@@ -30,10 +30,14 @@ export const useCreateOrderFromCart = () => {
     mutationFn: async (orderData: {
       shippingAddress: any;
       billingAddress: any;
-      paymentMethod: string;
+      payment: {
+        method: string;
+        paymentDetails?: any;
+      };
+      notes?: string;
     }) => {
       const response = await apiClient.post('/orders/create-from-cart', orderData);
-      return response.data.data as Order;
+      return response.data.data.order as Order;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });

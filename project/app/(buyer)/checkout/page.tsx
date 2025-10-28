@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, CreditCard, DollarSign, ShoppingBag, Smartphone } from 'lucide-react';
 import Header from '@/components/layout/Header';
@@ -12,17 +12,26 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/hooks/useCart';
+import { useCreateOrderFromCart } from '@/hooks/useOrders';
+import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/payment';
 
 export default function CheckoutPage() {
   const { state, dispatch } = useMarketplace();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { data: cartData, isLoading } = useCart();
   const router = useRouter();
+  const { toast } = useToast();
+  const createOrder = useCreateOrderFromCart();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     company: '',
     address: '',
+    city: '',
     email: '',
     phone: '',
     country: 'Moçambique',
@@ -33,10 +42,64 @@ export default function CheckoutPage() {
     paymentMethod: 'mpesa'
   });
 
-  const subtotal = state.cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  // Prefill form with authenticated user's data
+  useEffect(() => {
+    if (!user) return;
+
+    const billing: any = (user as any).billingAddress || {};
+
+    setFormData(prev => ({
+      ...prev,
+      firstName: user.firstName || prev.firstName,
+      lastName: user.lastName || prev.lastName,
+      email: user.email || prev.email,
+      phone: user.phone || prev.phone,
+      address: billing.address || prev.address,
+      city: billing.city || prev.city,
+      country: billing.country || prev.country,
+      state: billing.state || prev.state,
+      zipCode: billing.zipCode || prev.zipCode,
+    }));
+  }, [user]);
+
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-gray-6 mt-2">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
+          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
+          <Link href="/entrar">
+            <Button className="bg-primary hover:bg-primary-hard text-white">
+              Fazer Login
+            </Button>
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Use API data instead of context state
+  const cartItems = cartData?.items || [];
+  const subtotal = (cartData as any)?.summary?.subtotal || cartData?.totalPrice || 0;
   const shipping = subtotal >= 500 ? 0 : 100; // Free shipping above 500 MZN
   const total = subtotal + shipping;
-  const totalItems = state.cart.reduce((total, item) => total + item.quantity, 0);
+  const totalItems = (cartData as any)?.summary?.itemCount || cartData?.totalItems || 0;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -63,36 +126,64 @@ export default function CheckoutPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create order
-    const order = {
-      id: `ORD${Date.now()}`,
-      date: new Date().toISOString(),
-      total,
-      status: 'pending' as const,
-      items: state.cart,
-      userId: state.user?.id || 'guest',
-      billingAddress: {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        company: formData.company,
-        address: formData.address,
-        country: formData.country,
-        state: formData.state,
-        zipCode: formData.zipCode,
-        email: formData.email,
-        phone: formData.phone
-      },
-      paymentMethod: formData.paymentMethod,
-      orderNotes: formData.orderNotes
+    const billingAddress = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      address: formData.address,
+      city: formData.city,
+      country: formData.country,
+      state: formData.state,
+      zipCode: formData.zipCode,
+      email: formData.email,
+      phone: formData.phone,
     };
 
-    dispatch({ type: 'ADD_ORDER', payload: order });
-    
-    // Redirect to payment page
-    router.push(`/pagamento/${order.id}`);
+    const shippingAddress = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      address: formData.address,
+      city: formData.city,
+      country: formData.country,
+      state: formData.state,
+      zipCode: formData.zipCode,
+      email: formData.email,
+      phone: formData.phone,
+    };
+
+    createOrder.mutate(
+      {
+        billingAddress,
+        shippingAddress,
+        payment: {
+          method: formData.paymentMethod,
+        },
+        notes: formData.orderNotes,
+      },
+      {
+        onSuccess: (order: any) => {
+          toast({
+            title: 'Pedido criado',
+            description: 'Seu pedido foi criado com sucesso. Continue para o pagamento.',
+          });
+          const orderId = order?._id || order?.id;
+          if (orderId) {
+            router.push(`/pagamento/${orderId}`);
+          }
+        },
+        onError: (error: any) => {
+          const api = error?.response?.data || {};
+          const details = Array.isArray(api.errors) ? api.errors.join(' | ') : (api.error || api.message);
+          toast({
+            title: 'Erro ao criar pedido',
+            description: details || 'Tente novamente.',
+            variant: 'destructive',
+          });
+        },
+      }
+    );
   };
 
-  if (state.cart.length === 0) {
+  if (cartItems.length === 0 && !isLoading) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
@@ -156,17 +247,6 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="company">Nome da Empresa</Label>
-                    <Input
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
-                  </div>
-                  
-                  <div>
                     <Label htmlFor="email">E-mail *</Label>
                     <Input
                       id="email"
@@ -193,24 +273,11 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="country">País/Região *</Label>
+                    <Label htmlFor="country">País *</Label>
                     <Input
                       id="country"
                       name="country"
                       value={formData.country}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="address">Endereço *</Label>
-                    <Input
-                      id="address"
-                      name="address"
-                      placeholder="Avenida 25 de Setembro, 123"
-                      value={formData.address}
                       onChange={handleInputChange}
                       required
                       className="mt-1"
@@ -229,6 +296,33 @@ export default function CheckoutPage() {
                       className="mt-1"
                     />
                   </div>
+
+                  <div>
+                    <Label htmlFor="city">Cidade *</Label>
+                    <Input
+                      id="city"
+                      name="city"
+                      placeholder="Beira"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="address">Endereço *</Label>
+                    <Input
+                      id="address"
+                      name="address"
+                      placeholder="Avenida 25 de Setembro, 123"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+
                   
                   <div>
                     <Label htmlFor="zipCode">Código Postal *</Label>
@@ -244,7 +338,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                <div className="mt-6">
+                {/* <div className="mt-6">
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="shipToDifferentAddress"
@@ -255,7 +349,7 @@ export default function CheckoutPage() {
                       Enviar para um endereço diferente
                     </Label>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Back to Cart Button */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6 pt-6 border-t border-gray-2">
@@ -329,25 +423,32 @@ export default function CheckoutPage() {
                 
                 {/* Order Items */}
                 <div className="space-y-4 mb-6">
-                  {state.cart.map((item) => (
-                    <div key={item.product.id} className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
-                        <img
-                          src={item.product.primaryImage}
-                          alt={item.product.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-gray-9 text-sm line-clamp-2">{item.product.name}</h4>
-                        <p className="text-xs text-gray-6">Vendido por {item.product.sellerName}</p>
-                        <p className="text-xs text-gray-6">Qtd: {item.quantity}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-medium text-sm">{formatCurrency(item.product.price * item.quantity)}</p>
-                      </div>
+                  {isLoading ? (
+                    <div className="text-center py-4">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
+                      <p className="text-gray-6 mt-2 text-sm">Carregando carrinho...</p>
                     </div>
-                  ))}
+                  ) : (
+                    cartItems.map((item: any) => (
+                      <div key={item.productId?._id || item._id} className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
+                          <img
+                            src={item.productImage || item.productId?.primaryImage || '/placeholder.jpg'}
+                            alt={item.productName || item.product?.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-gray-9 text-sm line-clamp-2">{item.productName || item.product?.name}</h4>
+                          <p className="text-xs text-gray-6">Vendido por {item.sellerName || item.product?.sellerName}</p>
+                          <p className="text-xs text-gray-6">Qtd: {item.quantity}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-medium text-sm">{formatCurrency((item.unitPrice || item.price || item.product?.price) * item.quantity)}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
 
                 {/* Order Summary */}
@@ -380,9 +481,19 @@ export default function CheckoutPage() {
                 <Button
                   type="submit"
                   className="w-full bg-primary hover:bg-primary-hard text-white py-3 mt-6"
+                  disabled={createOrder.isPending}
                 >
-                  <ShoppingBag size={16} className="mr-2" />
-                  Fazer Pedido
+                  {createOrder.isPending ? (
+                    <>
+                      <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+                      Processando...
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag size={16} className="mr-2" />
+                      Fazer Pedido
+                    </>
+                  )}
                 </Button>
 
                 {/* Terms */}

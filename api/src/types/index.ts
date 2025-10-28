@@ -233,7 +233,7 @@ export interface IOrderAddress {
 }
 
 export interface IOrderPayment {
-  method: 'credit_card' | 'debit_card' | 'paypal' | 'bank_transfer' | 'cash_on_delivery';
+  method: 'credit_card' | 'debit_card' | 'paypal' | 'bank_transfer' | 'cash_on_delivery' | 'mpesa' | 'emola' | 'imali';
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
   transactionId?: string;
   amount: number;
@@ -245,6 +245,9 @@ export interface IOrderPayment {
     cardLast4?: string;
     cardBrand?: string;
     paypalEmail?: string;
+    imaliLinkId?: string;
+    mPesaPhoneNumber?: string;
+    eMolaPhoneNumber?: string;
   };
 }
 
@@ -283,9 +286,9 @@ export interface IPayment {
   userId: string;
   amount: number;
   currency: string;
-  method: 'stripe' | 'paypal' | 'bank_transfer' | 'cash_on_delivery' | 'm_pesa' | 'e_mola';
+  method: 'stripe' | 'paypal' | 'bank_transfer' | 'cash_on_delivery' | 'mpesa' | 'emola' | 'imali';
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
-  gateway: 'stripe' | 'paypal' | 'manual' | 'm_pesa' | 'e_mola';
+  gateway: 'stripe' | 'paypal' | 'manual' | 'mpesa' | 'emola' | 'imali';
   gatewayTransactionId?: string;
   gatewayResponse?: any;
   refundAmount?: number;

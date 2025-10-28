@@ -155,7 +155,7 @@ const cartSchema = new Schema<ICart>({
   },
   currency: {
     type: String,
-    default: 'USD'
+    default: 'MZM'
   },
   expiresAt: {
     type: Date,
