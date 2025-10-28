@@ -7,7 +7,7 @@ export const useUserOrders = () => {
     queryKey: ['orders', 'user'],
     queryFn: async () => {
       const response = await apiClient.get('/orders/my-orders');
-      return response.data.data as Order[];
+      return response.data.data.orders as Order[];
     },
   });
 };
