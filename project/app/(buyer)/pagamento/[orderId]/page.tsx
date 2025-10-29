@@ -88,11 +88,12 @@ export default function PaymentPage() {
 
   const handleImaliPayment = (data: any) => {
     if (data.status === 'success' && data.data?.paymentLink) {
-      // Show pay-by-link
+      // Show pay-by-link - use customer_link_id for the payment URL
       setPaymentResult({
         type: 'imali_link',
-        paymentLink: data.data.paymentLink.link_url,
-        linkId: data.data.paymentLink.link_id
+        paymentLink: data.data.paymentLink.customer_link_id || data.data.paymentLink.link_url,
+        linkId: data.data.paymentLink.link_id,
+        orderId: data.data.order?._id
       });
     } else if (data.status === 'success' && data.data?.data?.qrcode) {
       // Show QR code
@@ -217,7 +218,11 @@ export default function PaymentPage() {
                   <div className="mb-6 p-4 bg-blue-50 rounded-lg">
                     <p className="text-sm text-gray-7 mb-3">Clique no link abaixo para completar o pagamento:</p>
                     <Button 
-                      onClick={() => window.open(paymentResult.paymentLink, '_blank')}
+                      onClick={() => {
+                        if (paymentResult.paymentLink) {
+                          window.open(paymentResult.paymentLink, '_blank', 'noopener,noreferrer');
+                        }
+                      }}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       Pagar Agora
@@ -261,7 +266,10 @@ export default function PaymentPage() {
                 </p>
                 <div className="space-y-2">
                   <Button 
-                    onClick={() => router.push(`/pedido/${orderId}`)}
+                    onClick={() => {
+                      const targetOrderId = paymentResult?.orderId || orderId;
+                      router.push(`/pedido/${targetOrderId}`);
+                    }}
                     className="w-full bg-primary hover:bg-primary-hard text-white"
                   >
                     Ver Detalhes do Pedido

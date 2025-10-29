@@ -39,12 +39,31 @@ export class PaymentService {
     paymentDetails?: any;
   }): Promise<any> {
     try {
+      const normalizeImaliPhone = (phone?: string): string | undefined => {
+        if (!phone) return undefined;
+        const digits = String(phone).replace(/\D/g, '');
+        if (digits.startsWith('00258')) return digits.slice(5);
+        if (digits.startsWith('258')) return digits.slice(3);
+        if (digits.startsWith('0') && digits.length > 9) return digits.replace(/^0+/, '');
+        return digits.length > 9 ? digits.slice(-9) : digits;
+      };
+
+      console.log('PaymentService.processPayment called with:', data);
+      
       // Get the order to determine payment method
       const order = await Order.findById(data.orderId);
       if (!order) {
         throw new Error('Order not found');
       }
-      console.log(order.userId.toString(), data.userId);
+      
+      console.log('Order found:', {
+        orderId: order._id,
+        userId: order.userId.toString(),
+        requestedUserId: data.userId,
+        paymentMethod: order.payment.method,
+        paymentStatus: order.payment.status
+      });
+      
       if (order.userId.toString() !== data.userId) {
         throw new Error('Order does not belong to user');
       }
@@ -53,24 +72,33 @@ export class PaymentService {
         throw new Error('Order is already paid');
       }
 
+      console.log('Routing to payment method:', order.payment.method);
+
       // Route to appropriate payment method based on order.payment.method
+      let result;
       switch (order.payment.method) {
         case 'credit_card':
         case 'debit_card':
-          return await this.processStripePayment(order, data.paymentDetails);
+          result = await this.processStripePayment(order, data.paymentDetails);
+          break;
         
         case 'mpesa':
         case 'emola':
         case 'imali':
-          return await this.processImaliPayment(order, data.paymentDetails);
+          result = await this.processImaliPayment(order, data.paymentDetails);
+          break;
         
         case 'bank_transfer':
         case 'cash_on_delivery':
-          return await this.processManualPayment(order, data.paymentDetails);
+          result = await this.processManualPayment(order, data.paymentDetails);
+          break;
         
         default:
           throw new Error(`Unsupported payment method: ${order.payment.method}`);
       }
+
+      console.log('Payment processing result:', result);
+      return result;
     } catch (error) {
       console.error('Error processing payment:', error);
       throw error;
@@ -136,51 +164,93 @@ export class PaymentService {
    * Process Imali payment
    */
   private static async processImaliPayment(order: any, paymentDetails?: any): Promise<any> {
-    const { ImaliController } = await import('../controllers/imaliController');
-    
-    // Create a mock request object for ImaliController
-    const mockReq = {
-      body: {
-        orderId: order._id.toString(),
-        // Set default values for pay-by-link
-        title: paymentDetails?.title || `Payment for Order #${order.orderNumber || order._id.toString().slice(-8)}`,
-        short_description: paymentDetails?.short_description || `Order payment - ${order.orderNumber || order._id.toString().slice(-8)}`,
-        send_to_phone: paymentDetails?.send_to_phone,
+    const axios = require('axios');
+    const { v4: uuidv4 } = require('uuid');
+    const QRCode = require('qrcode');
+
+    // Create axios instance for Imali API
+    const imaliAxios = axios.create({
+      headers: {
+        'Content-Type': 'application/json',
+        'X-localization': 'en',
+        'X-Client-ID': process.env.IMALI_CLIENT_ID_DEV,
+        Authorization: `Bearer ${process.env.IMALI_PRIVATE_KEY_DEV}`,
+        Accept: 'application/json',
+      },
+    });
+
+    try {
+      const normalizeImaliPhone = (phone?: string): string | undefined => {
+        if (!phone) return undefined;
+        const digits = String(phone).replace(/\D/g, '');
+        if (digits.startsWith('00258')) return digits.slice(5);
+        if (digits.startsWith('258')) return digits.slice(3);
+        if (digits.startsWith('0') && digits.length > 9) return digits.replace(/^0+/, '');
+        return digits.length > 9 ? digits.slice(-9) : digits;
+      };
+
+      // Create pay-by-link for Imali/M-pesa/E-Mola
+      const payByLinkData = {
+        short_description: `Pedido #${order.orderNumber || order._id.toString().slice(-8)}`.slice(0, 255),
+        title:  order.items.map((item: any) => `${item.quantity}x ${item.productName || 'Item'}`).join(', '),
+        amount: order.total.toFixed(2),
         type: paymentDetails?.type || 'DIRECT',
         payment_frequence: paymentDetails?.payment_frequence,
+        store_account_number: process.env.IMALI_STORE_ACCOUNT_NUMBER_DEV,
         expiration_datetime: paymentDetails?.expiration_datetime,
-        customer_link_id: paymentDetails?.customer_link_id,
-        partner_transaction_id: paymentDetails?.partner_transaction_id,
+        customer_link_id: (paymentDetails?.customer_link_id || `ORDER_${String(order._id).slice(-8)}_${Date.now()}`).toString().slice(0, 30),
+        send_to_phone: normalizeImaliPhone(paymentDetails?.send_to_phone),
+        partner_transaction_id: paymentDetails?.partner_transaction_id || uuidv4(),
         thumbnail_image: paymentDetails?.thumbnail_image,
-        transaction_type: paymentDetails?.transaction_type || 'C2B',
-        ...paymentDetails
+        payment_method: 'imali',
+        payment_type: 'link',
+        transaction_type: paymentDetails?.transaction_type || 'C2B'
+      };
+
+
+      const response = await imaliAxios.post(
+        `${process.env.IMALI_API_URL_DEV}/partners/imaliway/v2/payments`,
+        payByLinkData
+      );
+
+      console.log('Imali API response:', JSON.stringify(response.data, null, 2));
+
+      // Check if response has the expected structure
+      if (!response.data || !response.data.data) {
+        throw new Error('Invalid Imali API response structure');
       }
-    } as any;
 
-    const mockRes = {
-      status: (code: number) => ({
-        json: (data: any) => {
-          if (code >= 400) {
-            throw new Error(data.message || 'Imali payment failed');
-          }
-          return data;
-        }
-      }),
-      json: (data: any) => data
-    } as any;
+      const linkData = response.data.data;
+      if (!linkData.link_id) {
+        throw new Error('Missing link_id in Imali response');
+      }
 
-    // Use pay-by-link for all Imali payments by default
-    if (order.payment.method === 'imali') {
-      const result = await ImaliController.createPayByLink(mockReq, mockRes, () => {});
-      
-      // The ImaliController already updates the order, so we just return the result
-      return result;
-    } else {
-      // M-Pesa or eMola - generate transaction (QR code)
-      const result = await ImaliController.generateTransaction(mockReq, mockRes, () => {});
-      
-      // The ImaliController already updates the order, so we just return the result
-      return result;
+      // Update order with payment link information
+      const updatedOrder = await Order.findByIdAndUpdate(
+        order._id,
+        {
+          'payment.transactionId': linkData.link_id,
+          'payment.method': 'imali',
+          'payment.linkId': linkData.link_id,
+          'payment.customerLinkId': linkData.customer_link_id || linkData.link_id,
+          'payment.status': 'pending'
+        },
+        { new: true, runValidators: true }
+      );
+
+      return {
+        type: 'imali_pay_by_link',
+        status: 'success',
+        data: {
+          paymentLink: linkData,
+          order: updatedOrder
+        },
+        paymentLink: linkData,
+        order: updatedOrder
+      }; 
+    } catch (error: any) {
+      console.error('Imali payment error:', error);
+      throw new Error(error.response?.data?.message || 'Imali payment failed');
     }
   }
 

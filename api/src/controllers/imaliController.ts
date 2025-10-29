@@ -232,6 +232,15 @@ export class ImaliController {
   static createPayByLink = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const body = req.body as CreatePayByLinkBody;
 
+    const normalizeImaliPhone = (phone?: string): string | undefined => {
+      if (!phone) return undefined;
+      const digits = String(phone).replace(/\D/g, '');
+      if (digits.startsWith('00258')) return digits.slice(5);
+      if (digits.startsWith('258')) return digits.slice(3);
+      if (digits.startsWith('0') && digits.length > 9) return digits.replace(/^0+/, '');
+      return digits.length > 9 ? digits.slice(-9) : digits;
+    };
+
     if (!body.orderId) {
       return next(new ApiError(400, 'Please provide orderId'));
     }
@@ -247,16 +256,16 @@ export class ImaliController {
     }
 
     // Set default values and prepare request body for iMali API
-    const payByLinkData = {
-      short_description: body.short_description || 'Payment for Order',
-      title: body.title || `Order Payment - ${order._id}`,
-      amount: order.total.toString(),
+      const payByLinkData = {
+      short_description: `Pedido #${order.orderNumber || order._id.toString().slice(-8)}`.slice(0, 255),
+      title:  order.items.map((item: any) => `${item.quantity}x ${item.productName || 'Item'}`).join(', '),
+      amount: order.total.toFixed(2),
       type: body.type || 'DIRECT',
       payment_frequence: body.payment_frequence,
       store_account_number: process.env.IMALI_STORE_ACCOUNT_NUMBER_DEV,
       expiration_datetime: body.expiration_datetime,
       customer_link_id: body.customer_link_id || `ORDER_${order._id}_${Date.now()}`,
-      send_to_phone: body.send_to_phone,
+      send_to_phone: normalizeImaliPhone(body.send_to_phone),
       partner_transaction_id: body.partner_transaction_id || uuidv4(),
       thumbnail_image: body.thumbnail_image,
       payment_method: 'imali',
