@@ -8,13 +8,24 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function SejaVendedorPage() {
+  const { toast } = useToast();
+  const { register } = useAuth();
+  const router = useRouter();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    telefone: '',
+    phone: '+258',
+    password: '',
+    confirmPassword: '',
     nomeLoja: '',
     descricao: '',
     endereco: '',
@@ -33,14 +44,39 @@ export default function SejaVendedorPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Seller registration submitted:', formData);
-    alert('Obrigado pelo interesse! Entraremos em contato em breve para discutir os próximos passos.');
-    setFormData({
-      firstName: '', lastName: '', email: '', telefone: '', nomeLoja: '', descricao: '', 
-      endereco: '', cidade: '', estado: '', cep: '', tipoProduto: '', experiencia: ''
-    });
+    try {
+      setIsSubmitting(true);
+      const payload = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        role: 'seller' as const,
+        sellerProfile: {
+          storeName: formData.nomeLoja,
+          storeDescription: formData.descricao,
+          address: formData.endereco,
+          city: formData.cidade,
+          province: formData.estado,
+          postalCode: formData.cep,
+          productTypes: formData.tipoProduto,
+          experience: formData.experiencia || undefined,
+        },
+      };
+
+      await register(payload as any);
+      toast({ title: 'Cadastro realizado', description: 'Sua conta de vendedor foi criada com sucesso.' });
+      router.push('/vendedor/painel');
+    } catch (error: any) {
+      const apiError = error?.message || 'Falha no cadastro. Verifique os dados e tente novamente.';
+      toast({ title: 'Erro no cadastro', description: apiError, variant: 'destructive' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const beneficios = [
@@ -241,11 +277,38 @@ export default function SejaVendedorPage() {
                     Telefone *
                   </label>
                   <Input
-                    name="telefone"
-                    value={formData.telefone}
+                    name="phone"
+                    value={formData.phone}
                     onChange={handleInputChange}
                     required
-                    placeholder="(84) 99999-9999"
+                    pattern="^\+258[0-9]{9}$"
+                    placeholder="+25884XXXXXXXX"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-9 mb-2">Senha *</label>
+                  <Input
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    required
+                    minLength={8}
+                    placeholder="Crie uma senha forte"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-9 mb-2">Confirmar Senha *</label>
+                  <Input
+                    name="confirmPassword"
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Repita a senha"
                   />
                 </div>
               </div>
@@ -254,7 +317,7 @@ export default function SejaVendedorPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
-                    Nome da Loja *
+                    Nome da Banca *
                   </label>
                   <Input
                     name="nomeLoja"
@@ -268,7 +331,7 @@ export default function SejaVendedorPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-9 mb-2">
-                  Descrição da Loja
+                  Descrição da Banca
                 </label>
                 <Textarea
                   name="descricao"
@@ -361,9 +424,10 @@ export default function SejaVendedorPage() {
               
               <Button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full bg-primary hover:bg-primary-hard text-white py-3"
               >
-                Enviar Cadastro
+                {isSubmitting ? 'Enviando...' : 'Enviar Cadastro'}
               </Button>
             </form>
 

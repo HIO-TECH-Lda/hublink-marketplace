@@ -271,7 +271,20 @@ export interface RegisterData {
   firstName: string;
   lastName: string;
   email: string;
+  phone?: string;
   password: string;
+  confirmPassword?: string;
+  role?: 'buyer' | 'seller';
+  sellerProfile?: {
+    storeName: string;
+    storeDescription: string;
+    address: string;
+    city: string;
+    province: string;
+    postalCode: string;
+    productTypes: string;
+    experience?: string;
+  };
 }
 
 export interface AuthResponse {
