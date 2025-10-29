@@ -7,13 +7,15 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import SellerSidebar from '../../components/SellerSidebar';
 import { formatCurrency } from '@/lib/payment';
 
 export default function SellerDashboardPage() {
   const { state, dispatch } = useMarketplace();
+  const { isAuthenticated, user } = useAuth();
 
-  if (!state.isAuthenticated || !state.user || !state.user.isSeller) {
+  if (!isAuthenticated || user?.role !== 'seller') {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
