@@ -11,7 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 
 export default function SejaVendedorPage() {
   const [formData, setFormData] = useState({
-    nome: '',
+    firstName: '',
+    lastName: '',
     email: '',
     telefone: '',
     nomeLoja: '',
@@ -37,7 +38,7 @@ export default function SejaVendedorPage() {
     console.log('Seller registration submitted:', formData);
     alert('Obrigado pelo interesse! Entraremos em contato em breve para discutir os próximos passos.');
     setFormData({
-      nome: '', email: '', telefone: '', nomeLoja: '', descricao: '', 
+      firstName: '', lastName: '', email: '', telefone: '', nomeLoja: '', descricao: '', 
       endereco: '', cidade: '', estado: '', cep: '', tipoProduto: '', experiencia: ''
     });
   };
@@ -197,19 +198,31 @@ export default function SejaVendedorPage() {
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
-                    Nome Completo *
+                    Nome *
                   </label>
                   <Input
-                    name="nome"
-                    value={formData.nome}
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleInputChange}
                     required
-                    placeholder="Seu nome completo"
+                    placeholder="Seu nome"
                   />
                 </div>
-                
+                <div>
+                  <label className="block text-sm font-medium text-gray-9 mb-2">
+                    Sobrenome *
+                  </label>
+                  <Input
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Seu sobrenome"
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
                     E-mail *
@@ -223,9 +236,6 @@ export default function SejaVendedorPage() {
                     placeholder="seu@email.com"
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
                     Telefone *
@@ -238,7 +248,10 @@ export default function SejaVendedorPage() {
                     placeholder="(84) 99999-9999"
                   />
                 </div>
-                
+              </div>
+
+              <div className="grid">
+
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
                     Nome da Loja *
