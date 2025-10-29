@@ -61,7 +61,23 @@ export const registerSchema = Joi.object({
     .default('buyer')
     .messages({
       'any.only': 'Role must be either buyer or seller'
-    })
+    }),
+
+  // Extra seller info (required when role is seller)
+  sellerProfile: Joi.when('role', {
+    is: 'seller',
+    then: Joi.object({
+      storeName: Joi.string().min(2).max(100).required(),
+      storeDescription: Joi.string().min(10).max(1000).required(),
+      address: Joi.string().min(5).max(200).required(),
+      city: Joi.string().min(2).max(100).required(),
+      province: Joi.string().min(2).max(100).required(),
+      postalCode: Joi.string().min(3).max(20).required(),
+      productTypes: Joi.string().min(3).max(200).required(),
+      experience: Joi.string().max(2000).optional()
+    }).required(),
+    otherwise: Joi.forbidden()
+  })
 });
 
 // User login validation schema

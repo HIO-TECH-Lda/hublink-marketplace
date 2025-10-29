@@ -14,6 +14,7 @@ export interface IUser {
   billingAddress?: IAddress;
   shippingAddress?: IAddress;
   preferences?: IUserPreferences;
+  sellerProfile?: ISellerProfile;
   sellerId?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -36,6 +37,18 @@ export interface IUserPreferences {
     sms: boolean;
     push: boolean;
   };
+}
+
+// Seller profile information stored on User when role is 'seller'
+export interface ISellerProfile {
+  storeName: string;
+  storeDescription: string;
+  address: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  productTypes: string;
+  experience?: string;
 }
 
 // Seller Types

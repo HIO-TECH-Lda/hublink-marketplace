@@ -88,6 +88,19 @@ const userSchema = new Schema<IUserDocument>({
     type: userPreferencesSchema,
     default: () => ({})
   },
+  sellerProfile: {
+    type: new Schema({
+      storeName: { type: String },
+      storeDescription: { type: String },
+      address: { type: String },
+      city: { type: String },
+      province: { type: String },
+      postalCode: { type: String },
+      productTypes: { type: String },
+      experience: { type: String }
+    }, { _id: false }),
+    default: null
+  },
   sellerId: {
     type: Schema.Types.ObjectId,
     ref: 'Seller',

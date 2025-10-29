@@ -73,6 +73,16 @@ export class AuthService {
     phone: string;
     password: string;
     role?: string;
+    sellerProfile?: {
+      storeName: string;
+      storeDescription: string;
+      address: string;
+      city: string;
+      province: string;
+      postalCode: string;
+      productTypes: string;
+      experience?: string;
+    };
   }): Promise<{ user: IUserDocument; token: string }> {
     try {
       // Check if user already exists
