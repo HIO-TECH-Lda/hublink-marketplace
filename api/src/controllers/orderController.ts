@@ -320,33 +320,33 @@ export class OrderController {
           {
             status: 'pending',
             date: order.createdAt,
-            description: 'Order placed'
+            description: 'Pedido criado'
           },
           ...(order.confirmedAt ? [{
             status: 'confirmed',
             date: order.confirmedAt,
-            description: 'Order confirmed'
+            description: 'Pedido confirmado'
           }] : []),
           ...(order.processedAt ? [{
             status: 'processing',
             date: order.processedAt,
-            description: 'Order being processed'
+            description: 'Pedido sendo processado'
           }] : []),
           ...(order.shippedAt ? [{
             status: 'shipped',
             date: order.shippedAt,
-            description: 'Order shipped',
+            description: 'Pedido enviado',
             trackingNumber: order.items[0]?.trackingNumber
           }] : []),
           ...(order.deliveredAt ? [{
             status: 'delivered',
             date: order.deliveredAt,
-            description: 'Order delivered'
+            description: 'Pedido entregue'
           }] : []),
           ...(order.cancelledAt ? [{
             status: 'cancelled',
             date: order.cancelledAt,
-            description: 'Order cancelled',
+            description: 'Pedido cancelado',
             reason: order.cancelReason
           }] : [])
         ]
