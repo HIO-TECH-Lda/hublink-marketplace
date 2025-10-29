@@ -4,21 +4,15 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Package, Heart, ShoppingCart, Settings, LogOut, User, TrendingUp } from 'lucide-react';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface BuyerSidebarProps {
   className?: string;
 }
 
 export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
-  const { state, dispatch } = useMarketplace();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
-
-  const handleLogout = () => {
-    dispatch({ type: 'SET_USER', payload: null });
-    dispatch({ type: 'SET_AUTHENTICATED', payload: false });
-    dispatch({ type: 'CLEAR_CART' });
-  };
 
   const navigationItems = [
     {
@@ -46,9 +40,9 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
       {/* User Profile */}
       <div className="flex items-center space-x-3 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-2">
         <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-          {state.user?.profileImage ? (
+          {user?.profileImage || user?.avatar ? (
             <img
-              src={state.user.profileImage}
+              src={user.profileImage || user.avatar}
               alt="Profile"
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
             />
@@ -58,9 +52,9 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="font-semibold text-gray-9 text-sm sm:text-base truncate">
-            {state.user?.firstName} {state.user?.lastName}
+            {user?.firstName} {user?.lastName}
           </h3>
-          <p className="text-xs sm:text-sm text-gray-6 truncate">{state.user?.email}</p>
+          <p className="text-xs sm:text-sm text-gray-6 truncate">{user?.email}</p>
           <p className="text-xs text-primary font-medium">Cliente</p>
         </div>
       </div>
@@ -87,7 +81,7 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
       </nav>
 
       {/* Seller Link (if user is also a seller) */}
-      {state.user?.isSeller && (
+      {user?.role === 'seller' && (
         <div className="mt-4 pt-4 border-t border-gray-2">
           <Link
             href="/vendedor/painel"
@@ -102,7 +96,7 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
       {/* Logout Button */}
       <div className="mt-6 pt-4 border-t border-gray-2">
         <button
-          onClick={handleLogout}
+          onClick={logout}
           className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-gray-7 hover:text-danger hover:bg-danger/5 rounded-lg transition-colors w-full text-left text-sm sm:text-base"
         >
           <LogOut size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />

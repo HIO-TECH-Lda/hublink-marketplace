@@ -6,22 +6,18 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useUserOrders } from '@/hooks/useOrders';
+import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/hooks/useWishlist';
 import { formatCurrency } from '@/lib/payment';
 import Link from 'next/link';
 import BuyerSidebar from '../components/BuyerSidebar';
 
 export default function UserDashboardPage() {
   const { user } = useAuth();
-  const { state, dispatch } = useMarketplace();
   const { data: orders, isLoading: ordersLoading } = useUserOrders();
-
-  const handleLogout = () => {
-    dispatch({ type: 'SET_USER', payload: null });
-    dispatch({ type: 'SET_AUTHENTICATED', payload: false });
-    dispatch({ type: 'CLEAR_CART' });
-  };
+  const { data: cart } = useCart();
+  const { data: wishlist } = useWishlist();
 
   // Get recent orders (last 3)
   const recentOrders = orders?.slice(0, 3) || [];
@@ -82,21 +78,21 @@ export default function UserDashboardPage() {
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
                   <Package className="text-primary" size={20} />
                 </div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9">{state.orders.length}</h3>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9">{orders?.length || 0}</h3>
                 <p className="text-gray-6 text-xs sm:text-sm lg:text-base">Total de Pedidos</p>
               </div>
               <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-danger/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
                   <Heart className="text-danger" size={20} />
                 </div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9">{state.wishlist.length}</h3>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9">{wishlist?.length || 0}</h3>
                 <p className="text-gray-6 text-xs sm:text-sm lg:text-base">Itens na Lista</p>
               </div>
               <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center sm:col-span-2 lg:col-span-1">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-warning/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
                   <ShoppingCart className="text-warning" size={20} />
                 </div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9">{state.cart.length}</h3>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9">{cart?.totalItems || cart?.items?.length || 0}</h3>
                 <p className="text-gray-6 text-xs sm:text-sm lg:text-base">Itens no Carrinho</p>
               </div>
             </div>

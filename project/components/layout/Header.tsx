@@ -13,15 +13,25 @@ import { Button } from '@/components/ui/button';
 export default function Header() {
   const { state, dispatch } = useMarketplace();
   const { user, logout } = useAuth();
-  const { data: cart } = useCart();
+  const { data: cart, isLoading: cartLoading } = useCart();
   const { data: wishlist } = useWishlist();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const cartItemsCount = cart?.totalItems || 0;
+  const cartItemsCount = cart?.totalItems || cart?.items?.length || 0;
   const wishlistCount = wishlist?.length || 0;
+
+  // Debug cart data
+  React.useEffect(() => {
+    if (cart) {
+      console.log('Cart data:', cart);
+      console.log('Cart totalItems:', cart.totalItems);
+      console.log('Cart items length:', cart.items?.length);
+      console.log('Cart items count:', cartItemsCount);
+    }
+  }, [cart, cartItemsCount]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,7 +168,7 @@ export default function Header() {
               >
                 <ShoppingCart size={20} />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-danger text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                     {cartItemsCount}
                   </span>
                 )}
