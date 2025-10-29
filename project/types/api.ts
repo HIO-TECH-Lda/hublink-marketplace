@@ -10,7 +10,28 @@ export interface User {
   emailVerified: boolean;
   phoneVerified: boolean;
   avatar?: string;
+  profileImage?: string;
   sellerId?: string;
+  billingAddress?: {
+    street?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    zipCode?: string;
+    country?: string;
+    isDefault?: boolean;
+  };
+  shippingAddress?: {
+    street?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    zipCode?: string;
+    country?: string;
+    isDefault?: boolean;
+  };
   preferences: {
     notifications: {
       email: boolean;

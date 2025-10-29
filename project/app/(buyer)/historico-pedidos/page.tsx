@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserOrders } from '@/hooks/useOrders';
 import { ArrowLeft, Eye, Package, Calendar, DollarSign, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -11,40 +12,36 @@ import BuyerSidebar from '../components/BuyerSidebar';
 import { formatCurrency } from '@/lib/payment';
 
 export default function OrderHistoryPage() {
-  const { state } = useMarketplace();
-  const { orders, user } = state;
+  const { user } = useAuth();
+  const { data: orders, isLoading } = useUserOrders();
 
-  if (!state.isAuthenticated || !state.user) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
-          <Link href="/entrar">
-            <Button className="bg-primary hover:bg-primary-hard text-white">
-              Fazer Login
-            </Button>
-          </Link>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-6">Carregando pedidos...</p>
         </div>
         <Footer />
       </div>
     );
   }
 
-  // Filter orders for the current user
-  const userOrders = orders.filter((order: any) => order.userId === user?.id);
+  const userOrders = orders || [];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Entregue':
+      case 'delivered':
         return 'text-green-600 bg-green-50';
-      case 'Em Trânsito':
+      case 'shipped':
         return 'text-blue-600 bg-blue-50';
-      case 'Processando':
+      case 'processing':
         return 'text-yellow-600 bg-yellow-50';
-      case 'Cancelado':
+      case 'canceled':
         return 'text-red-600 bg-red-50';
+      case 'pending':
+        return 'text-orange-600 bg-orange-50';
       default:
         return 'text-gray-600 bg-gray-50';
     }
@@ -52,16 +49,39 @@ export default function OrderHistoryPage() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'Entregue':
+      case 'delivered':
         return <Package className="w-4 h-4" />;
-      case 'Em Trânsito':
+      case 'shipped':
         return <Package className="w-4 h-4" />;
-      case 'Processando':
+      case 'processing':
         return <Clock className="w-4 h-4" />;
-      case 'Cancelado':
+      case 'canceled':
         return <Package className="w-4 h-4" />;
+      case 'pending':
+        return <Clock className="w-4 h-4" />;
       default:
         return <Package className="w-4 h-4" />;
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return 'Pendente';
+      case 'confirmed':
+        return 'Confirmado';
+      case 'processing':
+        return 'Em Processamento';
+      case 'shipped':
+        return 'Enviado';
+      case 'delivered':
+        return 'Entregue';
+      case 'canceled':
+        return 'Cancelado';
+      case 'refunded':
+        return 'Reembolsado';
+      default:
+        return status;
     }
   };
 
@@ -106,7 +126,7 @@ export default function OrderHistoryPage() {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">Total Gasto</p>
-                    <p className="text-2xl font-bold text-gray-900">{formatCurrency(userOrders.reduce((total: number, order: any) => total + order.total, 0))}</p>
+                    <p className="text-2xl font-bold text-gray-900">{formatCurrency(userOrders.reduce((total: number, order: any) => total + (order.totalAmount || order.total || 0), 0))}</p>
                   </div>
                 </div>
               </div>
@@ -119,7 +139,7 @@ export default function OrderHistoryPage() {
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">Em Processamento</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      {userOrders.filter((order: any) => order.status === 'Processando').length}
+                      {userOrders.filter((order: any) => order.status === 'processing').length}
                     </p>
                   </div>
                 </div>
@@ -133,7 +153,7 @@ export default function OrderHistoryPage() {
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">Valor Total</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      MTn {userOrders.reduce((total: number, order: any) => total + order.total, 0).toFixed(2)}
+                      {formatCurrency(userOrders.reduce((total: number, order: any) => total + (order.totalAmount || order.total || 0), 0))}
                     </p>
                   </div>
                 </div>
@@ -185,51 +205,51 @@ export default function OrderHistoryPage() {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {userOrders.map((order: any) => (
-                        <tr key={order.id} className="hover:bg-gray-50">
+                        <tr key={order._id || order.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">
-                              #{order.id}
+                              #{order.orderNumber || order._id?.slice(-6)}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center text-sm text-gray-900">
                               <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-                              {new Date(order.date).toLocaleDateString('pt-MZ')}
+                              {new Date(order.createdAt || order.date).toLocaleDateString('pt-MZ')}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
                               {getStatusIcon(order.status)}
-                              <span className="ml-1">{order.status}</span>
+                              <span className="ml-1">{getStatusText(order.status)}</span>
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {formatCurrency(order.total)}
+                            {formatCurrency(order.totalAmount || order.total || 0)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {order.items.length} {order.items.length === 1 ? 'item' : 'itens'}
+                            {order.items?.length || 0} {(order.items?.length || 0) === 1 ? 'item' : 'itens'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div className="flex items-center justify-end space-x-2">
                               <Link 
-                                href={`/pedido/${order.id}`}
+                                href={`/pedido/${order._id || order.id}`}
                                 className="inline-flex items-center text-green-600 hover:text-green-900"
                               >
                                 <Eye className="w-4 h-4 mr-1" />
                                 Ver
                               </Link>
-                              {order.status === 'Pendente' && (
+                              {order.status === 'pending' && (
                                 <Link 
-                                  href={`/pagamento/${order.id}`}
+                                  href={`/pagamento/${order._id || order.id}`}
                                   className="inline-flex items-center text-blue-600 hover:text-blue-900"
                                 >
                                   <DollarSign className="w-4 h-4 mr-1" />
                                   Pagar
                                 </Link>
                               )}
-                              {(order.status === 'Entregue' || order.status === 'Em Trânsito') && (
+                              {(order.status === 'delivered' || order.status === 'shipped') && (
                                 <Link 
-                                  href={`/reembolso/${order.id}`}
+                                  href={`/reembolso/${order._id || order.id}`}
                                   className="inline-flex items-center text-orange-600 hover:text-orange-900"
                                 >
                                   <ArrowLeft className="w-4 h-4 mr-1" />

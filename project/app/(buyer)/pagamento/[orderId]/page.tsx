@@ -367,7 +367,7 @@ export default function PaymentPage() {
                           className="text-primary"
                         />
                         <Smartphone size={20} className="text-primary" />
-                        <Label htmlFor="mpesa" className="flex-1 cursor-pointer">M-Pesa (QR Code)</Label>
+                        <Label htmlFor="mpesa" className="flex-1 cursor-pointer">M-Pesa</Label>
                       </div>
                       
                       <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
@@ -381,7 +381,7 @@ export default function PaymentPage() {
                           className="text-primary"
                         />
                         <Smartphone size={20} className="text-primary" />
-                        <Label htmlFor="emola" className="flex-1 cursor-pointer">E-Mola (QR Code)</Label>
+                        <Label htmlFor="emola" className="flex-1 cursor-pointer">E-Mola</Label>
                       </div>
                       
                       <div className="flex items-center space-x-3 p-3 border border-gray-2 rounded-lg">
