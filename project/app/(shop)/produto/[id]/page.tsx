@@ -2,7 +2,11 @@
 
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useAddToCart, useUpdateCartItem, useRemoveFromCart, useCart } from '@/hooks/useCart';
+import { useAddToWishlist, useRemoveFromWishlist, useCheckWishlistStatus } from '@/hooks/useWishlist';
+import { useProduct } from '@/hooks/useProducts';
+import { useToast } from '@/hooks/use-toast';
 import { Heart, ShoppingCart, Star, Share2, Truck, Shield, ArrowLeft, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -10,20 +14,51 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/common/ProductCard';
 import { formatCurrency } from '@/lib/payment';
+// API calls are encapsulated in hooks (useProduct, useAddToCart, useAddToWishlist)
 
 export default function ProductPage() {
   const params = useParams();
-  const { state, dispatch } = useMarketplace();
+  const { isAuthenticated } = useAuth();
   const productId = params.id as string;
   
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
 
-  // Find the product
-  const product = state.products.find(p => p.id === productId);
+  // Fetch product data from API via hook
+  const { data: product, isLoading, error } = useProduct(productId);
 
-  if (!product) {
+  // Cart and wishlist hooks
+  const addToCart = useAddToCart();
+  const updateCartItem = useUpdateCartItem();
+  const removeFromCart = useRemoveFromCart();
+  const { data: cart } = useCart();
+  const addToWishlist = useAddToWishlist();
+  const removeFromWishlist = useRemoveFromWishlist();
+  const { toast } = useToast();
+
+  // Check wishlist status via hook - must be called before any early returns
+  const { data: isInWishlist = false } = useCheckWishlistStatus(productId);
+
+  // Check if product is in cart and get current quantity
+  const cartItem = cart?.items?.find((item: any) => item.productId?._id === product?._id);
+  const isInCart = !!cartItem;
+  const currentCartQuantity = cartItem?.quantity || 0;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-6">Carregando produto...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
@@ -43,19 +78,80 @@ export default function ProductPage() {
   }
 
   const handleAddToCart = () => {
-    dispatch({ 
-      type: 'ADD_TO_CART', 
-      payload: { product, quantity } 
-    });
-    dispatch({ type: 'SHOW_CART_POPUP' });
+    if (!isAuthenticated) {
+      toast({
+        title: 'Login necessário',
+        description: 'Você precisa estar logado para adicionar itens ao carrinho.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    addToCart.mutate(
+      { productId: product._id, quantity },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Adicionado ao carrinho',
+            description: `${product.name} foi adicionado ao seu carrinho.`,
+          });
+        },
+        onError: (error: any) => {
+          const apiError = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao adicionar ao carrinho';
+          toast({
+            title: 'Erro',
+            description: apiError,
+            variant: 'destructive',
+          });
+        },
+      }
+    );
   };
 
-  const handleAddToWishlist = () => {
-    const isInWishlist = state.wishlist.some(item => item.id === product.id);
+  const handleToggleWishlist = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: 'Login necessário',
+        description: 'Você precisa estar logado para gerenciar sua lista de desejos.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     if (isInWishlist) {
-      dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: product.id });
+      removeFromWishlist.mutate(product._id, {
+        onSuccess: () => {
+          toast({
+            title: 'Removido da lista de desejos',
+            description: `${product.name} foi removido da sua lista de desejos.`,
+          });
+        },
+        onError: (error: any) => {
+          const apiError = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao remover da lista de desejos';
+          toast({
+            title: 'Erro',
+            description: apiError,
+            variant: 'destructive',
+          });
+        },
+      });
     } else {
-      dispatch({ type: 'ADD_TO_WISHLIST', payload: product });
+      addToWishlist.mutate(product._id, {
+        onSuccess: () => {
+          toast({
+            title: 'Adicionado à lista de desejos',
+            description: `${product.name} foi adicionado à sua lista de desejos.`,
+          });
+        },
+        onError: (error: any) => {
+          const apiError = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao adicionar à lista de desejos';
+          toast({
+            title: 'Erro',
+            description: apiError,
+            variant: 'destructive',
+          });
+        },
+      });
     }
   };
 
@@ -65,12 +161,82 @@ export default function ProductPage() {
     }
   };
 
-  const isInWishlist = state.wishlist.some(item => item.id === product.id);
+  const handleUpdateCartQuantity = (newQuantity: number) => {
+    if (!isAuthenticated) {
+      toast({
+        title: 'Login necessário',
+        description: 'Você precisa estar logado para atualizar o carrinho.',
+        variant: 'destructive',
+      });
+      return;
+    }
 
-  // Get related products (same category, excluding current product)
-  const relatedProducts = state.products
-    .filter(p => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+    if (newQuantity <= 0) {
+      handleRemoveFromCart();
+      return;
+    }
+
+    updateCartItem.mutate(
+      { productId: product._id, quantity: newQuantity },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Carrinho atualizado',
+            description: `Quantidade de ${product.name} atualizada para ${newQuantity}.`,
+          });
+        },
+        onError: (error: any) => {
+          const apiError = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao atualizar carrinho';
+          toast({
+            title: 'Erro',
+            description: apiError,
+            variant: 'destructive',
+          });
+        },
+      }
+    );
+  };
+
+  const handleRemoveFromCart = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: 'Login necessário',
+        description: 'Você precisa estar logado para remover itens do carrinho.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    removeFromCart.mutate(product._id, {
+      onSuccess: () => {
+        toast({
+          title: 'Removido do carrinho',
+          description: `${product.name} foi removido do seu carrinho.`,
+        });
+      },
+      onError: (error: any) => {
+        const apiError = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao remover do carrinho';
+        toast({
+          title: 'Erro',
+          description: apiError,
+          variant: 'destructive',
+        });
+      },
+    });
+  };
+
+  // For now, we'll show an empty related products section
+  // This could be enhanced with a separate API call for related products
+  const relatedProducts: any[] = [];
+
+  // Combine primaryImage and images array, handling both string and object formats
+  const allImages = [
+    ...(product?.primaryImage ? [product.primaryImage] : []),
+    ...(product?.images?.map(img => typeof img === 'string' ? img : (img as any).url) || [])
+  ].filter(Boolean);
+
+  // Get current selected image
+  const currentImage = allImages[selectedImage] || product?.primaryImage || '/placeholder-product.jpg';
 
   return (
     <div className="min-h-screen bg-gray-1">
@@ -81,7 +247,7 @@ export default function ProductPage() {
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
           <Link href="/loja" className="hover:text-primary"> Comprar Agora</Link> / 
-          <Link href={`/loja?category=${product.category}`} className="hover:text-primary"> {product.category}</Link> / 
+          <Link href={`/loja?category=${product.category}`} className="hover:text-primary"> {product.category}</Link> 
           <span className="text-primary">{product.name}</span>
         </nav>
 
@@ -93,16 +259,16 @@ export default function ProductPage() {
               {/* Main Image */}
               <div className="aspect-square bg-gray-1 rounded-lg overflow-hidden">
                 <img
-                  src={product.images?.[selectedImage] || product.primaryImage}
+                  src={currentImage}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
               </div>
               
               {/* Thumbnail Images */}
-              {product.images && product.images.length > 1 && (
+              {allImages.length > 0 && (
                 <div className="grid grid-cols-4 gap-2">
-                  {product.images.map((image, index) => (
+                  {allImages.map((image: string, index: number) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
@@ -175,9 +341,9 @@ export default function ProductPage() {
 
                 {/* Stock Status */}
                 <div className="flex items-center space-x-2 mb-6">
-                  <div className={`w-3 h-3 rounded-full ${product.inStock ? 'bg-primary' : 'bg-danger'}`}></div>
-                  <span className={`font-medium ${product.inStock ? 'text-primary' : 'text-danger'}`}>
-                    {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
+                  <div className={`w-3 h-3 rounded-full ${(product.stock > 0 || product.inStock) ? 'bg-primary' : 'bg-danger'}`}></div>
+                  <span className={`font-medium ${(product.stock > 0 || product.inStock) ? 'text-primary' : 'text-danger'}`}>
+                    {(product.stock > 0 || product.inStock) ? 'Em Estoque' : 'Fora de Estoque'}
                   </span>
                 </div>
               </div>
@@ -188,15 +354,16 @@ export default function ProductPage() {
                 <div className="flex items-center space-x-3">
                   <div className="flex items-center border border-gray-3 rounded-lg">
                     <button
-                      onClick={() => handleQuantityChange(quantity - 1)}
-                      disabled={quantity <= 1}
+                      onClick={() => handleUpdateCartQuantity(currentCartQuantity - 1)}
+                      disabled={addToCart.isPending || updateCartItem.isPending || removeFromCart.isPending}
                       className="p-2 hover:bg-gray-1 transition-colors disabled:opacity-50"
                     >
                       <Minus size={16} />
                     </button>
-                    <span className="px-4 py-2 font-medium">{quantity}</span>
+                    <span className="px-4 py-2 font-medium">{currentCartQuantity}</span>
                     <button
-                      onClick={() => handleQuantityChange(quantity + 1)}
+                      onClick={() => handleUpdateCartQuantity(currentCartQuantity + 1)}
+                      disabled={addToCart.isPending || updateCartItem.isPending || removeFromCart.isPending}
                       className="p-2 hover:bg-gray-1 transition-colors"
                     >
                       <Plus size={16} />
@@ -210,16 +377,32 @@ export default function ProductPage() {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                {isInCart ? (
+                  <div className="flex-1 space-y-2">
+                    <Button
+                      onClick={handleRemoveFromCart}
+                      disabled={addToCart.isPending || updateCartItem.isPending || removeFromCart.isPending}
+                      variant="outline"
+                      className="w-full border-danger text-danger hover:bg-danger hover:text-white"
+                    >
+                      <ShoppingCart size={20} className="mr-2" />
+                      Remover do Carrinho
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={handleAddToCart}
+                    disabled={!(product.stock > 0 || product.inStock) || addToCart.isPending}
+                    className="flex-1 bg-primary hover:bg-primary-hard text-white py-3"
+                  >
+                    <ShoppingCart size={20} className="mr-2" />
+                    {addToCart.isPending ? 'Adicionando...' : 'Adicionar ao Carrinho'}
+                  </Button>
+                )}
+                
                 <Button
-                  onClick={handleAddToCart}
-                  disabled={!product.inStock}
-                  className="flex-1 bg-primary hover:bg-primary-hard text-white py-3"
-                >
-                  <ShoppingCart size={20} className="mr-2" />
-                  Adicionar ao Carrinho
-                </Button>
-                <Button
-                  onClick={handleAddToWishlist}
+                  onClick={handleToggleWishlist}
+                  disabled={addToWishlist.isPending || removeFromWishlist.isPending}
                   variant="outline"
                   className={`border-2 ${
                     isInWishlist 
@@ -228,7 +411,12 @@ export default function ProductPage() {
                   }`}
                 >
                   <Heart size={20} className={`mr-2 ${isInWishlist ? 'fill-current' : ''}`} />
-                  {isInWishlist ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
+                  {addToWishlist.isPending || removeFromWishlist.isPending 
+                    ? 'Processando...' 
+                    : isInWishlist 
+                      ? 'Remover dos Favoritos' 
+                      : 'Adicionar aos Favoritos'
+                  }
                 </Button>
               </div>
 
@@ -322,10 +510,10 @@ export default function ProductPage() {
                       <span className="text-gray-6">Avaliação:</span>
                       <span className="text-gray-9">4.8/5.0</span>
                     </div>
-                    <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                       <span className="text-gray-6">Tempo de Entrega:</span>
                       <span className="text-gray-9">1-3 dias úteis</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -342,8 +530,8 @@ export default function ProductPage() {
                       <span className="text-gray-6">(12 avaliações)</span>
                     </div>
                   </div>
-                  {state.isAuthenticated && (
-                    <Link href={`/produto/${product.id}/avaliar`}>
+                  {isAuthenticated && (
+                    <Link href={`/produto/${product._id}/avaliar`}>
                       <Button className="bg-primary hover:bg-primary-hard text-white">
                         Avaliar Produto
                       </Button>

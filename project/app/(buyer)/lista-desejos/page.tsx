@@ -7,41 +7,39 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
 import { Button } from '@/components/ui/button';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useWishlist, useRemoveFromWishlist } from '@/hooks/useWishlist';
+import { useAddToCart } from '@/hooks/useCart';
 import { formatCurrency } from '@/lib/payment';
+import { useToast } from '@/hooks/use-toast';
 
 export default function WishlistPage() {
-  const { state, dispatch } = useMarketplace();
+  const { isAuthenticated } = useAuth();
+  const { data: wishlist } = useWishlist();
+  const removeFromWishlist = useRemoveFromWishlist();
+  const addToCart = useAddToCart();
+  const { toast } = useToast();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
-  if (!state.isAuthenticated || !state.user) {
-    return (
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
-          <Link href="/entrar">
-            <Button className="bg-primary hover:bg-primary-hard text-white">
-              Fazer Login
-            </Button>
-          </Link>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
   const handleAddToCart = (product: any) => {
-    dispatch({ 
-      type: 'ADD_TO_CART', 
-      payload: { product, quantity: 1 } 
-    });
-    dispatch({ type: 'SHOW_CART_POPUP' });
+    if (!isAuthenticated) return;
+    addToCart.mutate(
+      { productId: product._id, quantity: 1 },
+      {
+        onSuccess: () => {
+          toast({ title: 'Produto adicionado', description: `${product.name} adicionado ao carrinho.` });
+        },
+        onError: (error: any) => {
+          const apiError = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao adicionar ao carrinho';
+          toast({ title: 'Erro', description: apiError, variant: 'destructive' });
+        },
+      }
+    );
   };
 
   const handleRemoveFromWishlist = (productId: string) => {
-    dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: productId });
+    if (!isAuthenticated) return;
+    removeFromWishlist.mutate(productId);
   };
 
   const handleShare = (product: any, platform: string) => {
@@ -77,7 +75,7 @@ export default function WishlistPage() {
     setExpandedItems(newExpanded);
   };
 
-  if (state.wishlist.length === 0) {
+  if (!wishlist || wishlist.length === 0) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
@@ -120,7 +118,7 @@ export default function WishlistPage() {
           {/* Desktop Table View */}
           <div className="hidden lg:block bg-white rounded-lg shadow-sm">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h1 className="text-2xl font-bold text-gray-9">Lista de Desejos ({state.wishlist.length} itens)</h1>
+              <h1 className="text-2xl font-bold text-gray-9">Lista de Desejos ({wishlist?.length || 0} itens)</h1>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full divide-y divide-gray-200">
@@ -134,8 +132,10 @@ export default function WishlistPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {state.wishlist.map((product) => (
-                    <tr key={product.id} className="hover:bg-gray-1/50">
+                  {wishlist?.map((item) => {
+                    const product = item.product;
+                    return (
+                    <tr key={item._id} className="hover:bg-gray-1/50">
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-4">
                           <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
@@ -172,9 +172,9 @@ export default function WishlistPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-2">
-                          <div className={`w-2 h-2 rounded-full ${product.inStock ? 'bg-primary' : 'bg-danger'}`}></div>
+                          <div className={`w-2 h-2 rounded-full ${product.stock > 0 ? 'bg-primary' : 'bg-danger'}`}></div>
                           <span className="text-sm font-medium">
-                            {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
+                            {product.stock > 0 ? 'Em Estoque' : 'Fora de Estoque'}
                           </span>
                         </div>
                       </td>
@@ -182,7 +182,7 @@ export default function WishlistPage() {
                         <div className="flex items-center space-x-2">
                           <Button
                             onClick={() => handleAddToCart(product)}
-                            disabled={!product.inStock}
+                            disabled={product.stock <= 0}
                             size="sm"
                             className="bg-primary hover:bg-primary-hard text-white"
                           >
@@ -190,7 +190,7 @@ export default function WishlistPage() {
                             Adicionar ao Carrinho
                           </Button>
                           <Button
-                            onClick={() => handleRemoveFromWishlist(product.id)}
+                            onClick={() => handleRemoveFromWishlist(product._id)}
                             size="sm"
                             variant="outline"
                             className="border-danger text-danger hover:bg-danger hover:text-white"
@@ -225,7 +225,7 @@ export default function WishlistPage() {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  )})}
                 </tbody>
               </table>
             </div>
@@ -233,52 +233,52 @@ export default function WishlistPage() {
 
           {/* Mobile Card View */}
           <div className="lg:hidden bg-white rounded-lg shadow-sm">
-            <h1 className="text-2xl font-bold text-gray-9 mb-6">Lista de Desejos ({state.wishlist.length} itens)</h1>
+            <h1 className="text-2xl font-bold text-gray-9 mb-6">Lista de Desejos ({wishlist?.length || 0} itens)</h1>
             <div className="space-y-4">
-              {state.wishlist.map((product) => (
-                <div key={product.id} className="border border-gray-2 rounded-lg overflow-hidden">
+              {wishlist?.map((item) => (
+                <div key={item._id} className="border border-gray-2 rounded-lg overflow-hidden">
                   {/* Compact Header */}
                   <div className="p-4">
                     <div className="flex items-start space-x-3">
                       {/* Product Image */}
                       <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                         <img
-                          src={product.primaryImage}
-                          alt={product.name}
+                          src={item.product.primaryImage}
+                          alt={item.product.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
 
                       {/* Product Info */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-9 mb-1 line-clamp-2">{product.name}</h3>
+                        <h3 className="font-medium text-gray-9 mb-1 line-clamp-2">{item.product.name}</h3>
                         
                         {/* Seller Info */}
                         <div className="flex items-center space-x-2 mb-2">
                           <img
-                            src={product.sellerLogo || 'https://placehold.co/16x16/cccccc/000000?text=S'}
-                            alt={product.sellerName}
+                            src={item.product.sellerLogo || 'https://placehold.co/16x16/cccccc/000000?text=S'}
+                            alt={item.product.sellerName}
                             className="w-3 h-3 rounded-full object-cover"
                           />
-                          <span className="text-xs text-gray-6">Vendido por {product.sellerName}</span>
+                          <span className="text-xs text-gray-6">Vendido por {item.product.sellerName}</span>
                         </div>
 
                         {/* Price and Stock Status */}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
-                            {product.originalPrice && (
+                            {item.product.originalPrice && (
                               <span className="text-xs text-gray-6 line-through">
-                                {formatCurrency(product.originalPrice)}
+                                {formatCurrency(item.product.originalPrice)}
                               </span>
                             )}
                             <span className="font-medium text-primary text-sm">
-                              {formatCurrency(product.price)}
+                              {formatCurrency(item.product.price)}
                             </span>
                           </div>
                           <div className="flex items-center space-x-1">
-                            <div className={`w-2 h-2 rounded-full ${product.inStock ? 'bg-primary' : 'bg-danger'}`}></div>
+                            <div className={`w-2 h-2 rounded-full ${item.product.stock > 0 ? 'bg-primary' : 'bg-danger'}`}></div>
                             <span className="text-xs font-medium">
-                              {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
+                              {item.product.stock > 0 ? 'Em Estoque' : 'Fora de Estoque'}
                             </span>
                           </div>
                         </div>
@@ -286,10 +286,10 @@ export default function WishlistPage() {
 
                       {/* Expand/Collapse Button */}
                       <button
-                        onClick={() => toggleItemExpansion(product.id)}
+                        onClick={() => toggleItemExpansion(item._id)}
                         className="p-1 text-gray-6 hover:text-gray-9 transition-colors"
                       >
-                        {expandedItems.has(product.id) ? (
+                        {expandedItems.has(item._id) ? (
                           <ChevronUp size={16} />
                         ) : (
                           <ChevronDown size={16} />
@@ -299,21 +299,21 @@ export default function WishlistPage() {
                   </div>
 
                   {/* Expanded Details */}
-                  {expandedItems.has(product.id) && (
+                  {expandedItems.has(item._id) && (
                     <div className="border-t border-gray-2 p-4 bg-gray-1">
                       <div className="space-y-4">
                         {/* Action Buttons */}
                         <div className="flex flex-col space-y-2">
                           <Button
-                            onClick={() => handleAddToCart(product)}
-                            disabled={!product.inStock}
+                            onClick={() => handleAddToCart(item.product)}
+                            disabled={item.product.stock <= 0}
                             className="w-full bg-primary hover:bg-primary-hard text-white"
                           >
                             <ShoppingCart size={14} className="mr-2" />
                             Adicionar ao Carrinho
                           </Button>
                           <Button
-                            onClick={() => handleRemoveFromWishlist(product.id)}
+                            onClick={() => handleRemoveFromWishlist(item.product._id)}
                             variant="outline"
                             className="w-full border-danger text-danger hover:bg-danger hover:text-white"
                           >
@@ -328,19 +328,19 @@ export default function WishlistPage() {
                             <span className="text-sm font-medium text-gray-7">Compartilhar:</span>
                             <div className="flex items-center space-x-2">
                               <button
-                                onClick={() => handleShare(product, 'facebook')}
+                                onClick={() => handleShare(item.product, 'facebook')}
                                 className="p-2 text-gray-6 hover:text-blue-600 transition-colors bg-white rounded"
                               >
                                 <Facebook size={14} />
                               </button>
                               <button
-                                onClick={() => handleShare(product, 'twitter')}
+                                onClick={() => handleShare(item.product, 'twitter')}
                                 className="p-2 text-gray-6 hover:text-blue-400 transition-colors bg-white rounded"
                               >
                                 <Twitter size={14} />
                               </button>
                               <button
-                                onClick={() => handleShare(product, 'instagram')}
+                                onClick={() => handleShare(item.product, 'instagram')}
                                 className="p-2 text-gray-6 hover:text-pink-600 transition-colors bg-white rounded"
                               >
                                 <Instagram size={14} />

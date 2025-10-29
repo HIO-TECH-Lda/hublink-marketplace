@@ -26,7 +26,7 @@ export const useProduct = (id: string) => {
     queryKey: ['product', id],
     queryFn: async () => {
       const response = await apiClient.get(`/products/${id}`);
-      return response.data.data as Product;
+      return response.data.data.product as Product;
     },
     enabled: !!id,
   });

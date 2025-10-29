@@ -10,7 +10,15 @@ export const useWishlist = () => {
     queryKey: ['wishlist'],
     queryFn: async () => {
       const response = await apiClient.get('/wishlist');
-      return response.data.data as WishlistItem[];
+      // API returns { data: { items: [{ productId: Product, addedAt, _id }] } }
+      const items = response.data.data?.items || [];
+      // Normalize to { _id, product, addedAt }
+      const normalized: WishlistItem[] = items.map((it: any) => ({
+        _id: it._id || it.productId?._id,
+        product: it.productId,
+        addedAt: it.addedAt || it.updatedAt || it.createdAt,
+      }));
+      return normalized;
     },
     enabled: isAuthenticated, // Only fetch when user is authenticated
   });
