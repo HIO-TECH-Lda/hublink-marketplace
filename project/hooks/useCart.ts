@@ -22,7 +22,7 @@ export const useAddToCart = () => {
   return useMutation({
     mutationFn: async ({ productId, quantity }: { productId: string; quantity: number }) => {
       const response = await apiClient.post('/cart/add', { productId, quantity });
-      return response.data.data;
+      return response.data.data.cart;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
@@ -36,7 +36,7 @@ export const useUpdateCartItem = () => {
   return useMutation({
     mutationFn: async ({ productId, quantity }: { productId: string; quantity: number }) => {
       const response = await apiClient.put('/cart/update', { productId, quantity });
-      return response.data.data;
+      return response.data.data.cart;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
@@ -52,7 +52,7 @@ export const useRemoveFromCart = () => {
       const response = await apiClient.delete('/cart/remove', {
         data: { productId }
       });
-      return response.data.data;
+      return response.data.data.cart;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
@@ -66,7 +66,7 @@ export const useClearCart = () => {
   return useMutation({
     mutationFn: async () => {
       const response = await apiClient.delete('/cart/clear');
-      return response.data.data;
+      return response.data.data.cart;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });

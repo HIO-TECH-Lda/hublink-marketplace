@@ -48,21 +48,11 @@ export class PaymentService {
         return digits.length > 9 ? digits.slice(-9) : digits;
       };
 
-      console.log('PaymentService.processPayment called with:', data);
-      
       // Get the order to determine payment method
       const order = await Order.findById(data.orderId);
       if (!order) {
         throw new Error('Order not found');
       }
-      
-      console.log('Order found:', {
-        orderId: order._id,
-        userId: order.userId.toString(),
-        requestedUserId: data.userId,
-        paymentMethod: order.payment.method,
-        paymentStatus: order.payment.status
-      });
       
       if (order.userId.toString() !== data.userId) {
         throw new Error('Order does not belong to user');
@@ -71,8 +61,6 @@ export class PaymentService {
       if (order.payment.status === 'completed') {
         throw new Error('Order is already paid');
       }
-
-      console.log('Routing to payment method:', order.payment.method);
 
       // Route to appropriate payment method based on order.payment.method
       let result;
@@ -97,7 +85,6 @@ export class PaymentService {
           throw new Error(`Unsupported payment method: ${order.payment.method}`);
       }
 
-      console.log('Payment processing result:', result);
       return result;
     } catch (error) {
       console.error('Error processing payment:', error);
@@ -212,8 +199,6 @@ export class PaymentService {
         `${process.env.IMALI_API_URL_DEV}/partners/imaliway/v2/payments`,
         payByLinkData
       );
-
-      console.log('Imali API response:', JSON.stringify(response.data, null, 2));
 
       // Check if response has the expected structure
       if (!response.data || !response.data.data) {

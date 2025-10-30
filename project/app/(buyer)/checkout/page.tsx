@@ -134,7 +134,8 @@ export default function CheckoutPage() {
             title: 'Pedido criado',
             description: 'Seu pedido foi criado com sucesso. Continue para o pagamento.',
           });
-          const orderId = order?._id || order?.id;
+
+          const orderId = order.orderId;
           if (orderId) {
             router.push(`/pagamento/${orderId}`);
           }

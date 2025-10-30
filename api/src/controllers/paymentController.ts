@@ -18,8 +18,6 @@ export class PaymentController {
         paymentDetails
       });
 
-      console.log('Payment result:', result);
-
       return res.status(201).json({
         success: true,
         message: 'Payment processed successfully',

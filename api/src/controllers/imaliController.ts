@@ -149,7 +149,7 @@ export class ImaliController {
     body.terminalCompanyName = process.env.COMPANY_NAME;
     body.amount = order.total;
     body.description = process.env.IMALI_PUSHPAYMENT_DESCRIPTION_DEV;
-    console.log(body.description);
+    // console.log(body.description);
     
     try {
       const response = await imaliAxios.post(

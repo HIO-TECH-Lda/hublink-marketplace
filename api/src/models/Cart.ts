@@ -247,7 +247,7 @@ cartSchema.methods.removeItem = async function(this: ICart, productId: string, v
 
 cartSchema.methods.updateQuantity = async function(this: ICart, productId: string, quantity: number, variantId?: string): Promise<void> {
   const item = this.getItem(productId, variantId);
-  console.log('Updating cart item quantity:', productId, quantity, variantId, item);
+
   if (!item) {
     throw new Error('Item not found in cart');
   }
