@@ -14,11 +14,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { formatCurrency, formatDate } from '@/lib/payment';
 
 export default function SellerRefundsPage() {
   const router = useRouter();
   const { state } = useMarketplace();
+  const { isAuthenticated, user, loading } = useAuth();
   const [refunds, setRefunds] = useState<any[]>([]);
   const [filteredRefunds, setFilteredRefunds] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -133,7 +135,20 @@ export default function SellerRefundsPage() {
     totalAmount: refunds.reduce((sum, r) => sum + r.amount, 0)
   };
 
-  if (!state.isAuthenticated || !state.user) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-6">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || user?.role !== 'seller') {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />

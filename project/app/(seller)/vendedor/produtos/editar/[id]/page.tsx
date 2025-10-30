@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -18,6 +19,7 @@ export default function EditProductPage() {
   const params = useParams();
   const router = useRouter();
   const { state, dispatch } = useMarketplace();
+  const { isAuthenticated, user: authUser, loading: authLoading } = useAuth();
   const productId = params.id as string;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -137,7 +139,20 @@ export default function EditProductPage() {
     }
   };
 
-  if (!state.isAuthenticated || !state.user?.isSeller) {
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-gray-6">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || authUser?.role !== 'seller') {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />

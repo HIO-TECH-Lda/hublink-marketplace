@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { ArrowLeft, DollarSign, Calendar, CheckCircle, Clock, AlertCircle, TrendingUp, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -12,13 +13,27 @@ import SellerSidebar from '../../components/SellerSidebar';
 
 export default function PayoutsPage() {
   const { state } = useMarketplace();
+  const { isAuthenticated, user: authUser, loading } = useAuth();
   const { payouts, user } = state;
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [payoutAmount, setPayoutAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('M-Pesa');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (!state.isAuthenticated || !state.user || !state.user.isSeller) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-6">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || authUser?.role !== 'seller') {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />

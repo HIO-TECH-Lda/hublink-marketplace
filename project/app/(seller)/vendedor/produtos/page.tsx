@@ -8,14 +8,16 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import SellerSidebar from '../../components/SellerSidebar';
 
 export default function SellerProductsPage() {
   const { state, dispatch } = useMarketplace();
+  const { isAuthenticated, user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  if (!state.isAuthenticated || !state.user || !state.user.isSeller) {
+  if (!isAuthenticated || user?.role !== 'seller') {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />

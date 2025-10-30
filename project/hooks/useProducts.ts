@@ -74,3 +74,18 @@ export const useSearchProducts = (query: string) => {
     enabled: !!query && query.length > 2,
   });
 };
+
+// Create product
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      const response = await apiClient.post('/products', data);
+      return response.data.data as Product;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+};

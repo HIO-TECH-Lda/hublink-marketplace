@@ -77,14 +77,14 @@ export default function SignInPage() {
   const handleDemoLogin = async (email: string) => {
     setFormData({
       email: email,
-      password: 'qualquer coisa',
+      password: 'H2Furau2711@',
       rememberMe: false
     });
     setError('');
     setIsLoading(true);
 
     try {
-      await login(email, 'qualquer coisa');
+      await login(email, 'H2Furau2711@');
       router.push('/');
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login com conta de demonstração.');
@@ -217,7 +217,7 @@ export default function SignInPage() {
                   variant="outline"
                   size="sm"
                   disabled={isLoading || authLoading}
-                  onClick={() => handleDemoLogin('cliente@exemplo.com')}
+                  onClick={() => handleDemoLogin('helton@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
                 >
                   {isLoading ? 'Entrando...' : 'Login Cliente'}
@@ -227,7 +227,7 @@ export default function SignInPage() {
                   variant="outline"
                   size="sm"
                   disabled={isLoading || authLoading}
-                  onClick={() => handleDemoLogin('vendedor@exemplo.com')}
+                  onClick={() => handleDemoLogin('vendedor@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
                 >
                   {isLoading ? 'Entrando...' : 'Login Vendedor'}
@@ -237,7 +237,7 @@ export default function SignInPage() {
                   variant="outline"
                   size="sm"
                   disabled={isLoading || authLoading}
-                  onClick={() => handleDemoLogin('admin@exemplo.com')}
+                  onClick={() => handleDemoLogin('admin@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
                 >
                   {isLoading ? 'Entrando...' : 'Login Admin'}
@@ -247,7 +247,7 @@ export default function SignInPage() {
                 <p><strong>Cliente:</strong> cliente@exemplo.com</p>
                 <p><strong>Vendedor:</strong> vendedor@exemplo.com</p>
                 <p><strong>Admin:</strong> admin@exemplo.com</p>
-                <p><strong>Senha:</strong> qualquer coisa</p>
+                <p><strong>Senha:</strong> H2Furau2711@</p>
               </div>
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Save, Store, CreditCard, User, Shield, Bell, FileText, Upload, X, CheckCircle } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -156,6 +157,7 @@ const DocumentUpload = ({
 
 export default function SellerSettingsPage() {
   const { state, dispatch } = useMarketplace();
+  const { isAuthenticated, user: authUser, loading } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('store');
   
@@ -367,7 +369,20 @@ export default function SellerSettingsPage() {
     }
   };
 
-  if (!state.isAuthenticated || !state.user?.isSeller) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-gray-6">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || authUser?.role !== 'seller') {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />

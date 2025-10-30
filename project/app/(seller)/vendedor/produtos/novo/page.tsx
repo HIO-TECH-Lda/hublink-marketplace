@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -13,23 +14,33 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import ImageUpload from '@/components/ui/image-upload';
 import SellerSidebar from '@/app/(seller)/components/SellerSidebar';
+import { useCreateProduct } from '@/hooks/useProducts';
+import { useToast } from '@/hooks/use-toast';
+import { useCategories } from '@/hooks/useCategories';
 
 export default function NewProductPage() {
   const router = useRouter();
   const { state, dispatch } = useMarketplace();
+  const { isAuthenticated, user, loading } = useAuth();
+  const createProduct = useCreateProduct();
+  const { toast } = useToast();
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    shortDescription: '',
     price: '',
     originalPrice: '',
-    category: '',
+    categoryId: '',
     brand: '',
     sku: '',
+    barcode: '',
     weight: '',
     color: '',
     type: '',
     inStock: true,
+    stock: '0',
     tags: [] as string[],
     images: [] as string[]
   });
@@ -79,45 +90,55 @@ export default function NewProductPage() {
     setIsSubmitting(true);
 
     try {
-      // Create new product
-      const newProduct = {
-        id: Date.now().toString(), // Simple ID generation
+      const payload: any = {
         name: formData.name,
         description: formData.description,
+        shortDescription: formData.shortDescription || undefined,
+        categoryId: formData.categoryId,
+        brand: formData.brand || undefined,
         price: parseFloat(formData.price),
         originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : undefined,
-        image: formData.images[0] || 'https://placehold.co/400x400/cccccc/000000?text=Produto',
-        images: formData.images.length > 0 ? formData.images : undefined,
-        category: formData.category,
-        brand: formData.brand,
-        rating: 0,
-        reviews: 0,
-        inStock: formData.inStock,
-        sellerId: state.user?.sellerId || 'seller1',
-        sellerName: state.user?.storeSettings?.storeName || 'Minha Banca',
-        sellerLogo: state.user?.storeSettings?.storeName ? 
-          `https://placehold.co/40x40/00BE27/ffffff?text=${state.user.storeSettings.storeName.charAt(0)}` : 
-          'https://placehold.co/40x40/00BE27/ffffff?text=S',
-        tags: formData.tags,
-        sku: formData.sku,
-        weight: formData.weight,
-        color: formData.color,
-        stockStatus: formData.inStock ? 'Em estoque' : 'Fora de estoque',
-        type: formData.type
+        stock: parseInt(formData.stock || '0', 10),
+        sku: formData.sku || undefined,
+        barcode: formData.barcode || undefined,
+        images: (formData.images || []).map((url, idx) => ({
+          url,
+          alt: formData.name,
+          isPrimary: idx === 0,
+          order: idx,
+        })),
+        weight: formData.weight ? Number(formData.weight) : undefined,
+        specifications: undefined,
+        variants: undefined,
+        tags: formData.tags?.length ? formData.tags : undefined,
+        labels: undefined,
       };
 
-      dispatch({ type: 'ADD_PRODUCT', payload: newProduct });
-      
-      // Redirect to products page
+      await createProduct.mutateAsync(payload);
+      toast({ title: 'Produto criado', description: 'Seu produto foi criado com sucesso.' });
       router.push('/vendedor/produtos');
-    } catch (error) {
-      console.error('Error creating product:', error);
+    } catch (error: any) {
+      const apiError = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao criar produto';
+      toast({ title: 'Erro', description: apiError, variant: 'destructive' });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (!state.isAuthenticated || !state.user?.isSeller) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-gray-6">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || user?.role !== 'seller') {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
@@ -190,18 +211,20 @@ export default function NewProductPage() {
                         Categoria *
                       </label>
                       <select
-                        name="category"
-                        value={formData.category}
+                        name="categoryId"
+                        value={formData.categoryId}
                         onChange={handleInputChange}
                         required
                         className="w-full px-3 py-2 border border-gray-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       >
-                        <option value="">Selecione uma categoria</option>
-                        <option value="Legumes">Legumes</option>
-                        <option value="Frutas">Frutas</option>
-                        <option value="Verduras">Verduras</option>
-                        <option value="Temperos">Temperos</option>
-                        <option value="Grãos">Grãos</option>
+                        <option value="" disabled>
+                          {categoriesLoading ? 'Carregando categorias...' : 'Selecione uma categoria'}
+                        </option>
+                        {categories?.map((cat: any) => (
+                          <option key={cat._id} value={cat._id}>
+                            {cat.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div>
@@ -228,6 +251,16 @@ export default function NewProductPage() {
                         placeholder="Ex: TOM-ORG-001"
                       />
                     </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-7 mb-2">Código de Barras</label>
+                      <Input
+                        type="text"
+                        name="barcode"
+                        value={formData.barcode}
+                        onChange={handleInputChange}
+                        placeholder="Opcional"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -246,7 +279,7 @@ export default function NewProductPage() {
                   />
                 </div>
 
-                {/* Pricing */}
+                {/* Pricing & Stock */}
                 <div>
                   <h2 className="text-lg font-semibold text-gray-9 mb-4">Preços</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -277,6 +310,18 @@ export default function NewProductPage() {
                         placeholder="0.00"
                         step="0.01"
                         min="0"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-7 mb-2">Estoque *</label>
+                      <Input
+                        type="number"
+                        name="stock"
+                        value={formData.stock}
+                        onChange={handleInputChange}
+                        placeholder="0"
+                        min="0"
+                        required
                       />
                     </div>
                   </div>
@@ -386,9 +431,11 @@ export default function NewProductPage() {
                 <div>
                   <h2 className="text-lg font-semibold text-gray-9 mb-4">Imagens</h2>
                   <ImageUpload
-                    images={formData.images}
-                    onImagesChange={handleImagesChange}
-                    maxImages={5}
+                    value={formData.images[0] || ''}
+                    onChange={(value) => {
+                      setFormData(prev => ({ ...prev, images: value ? [value] : [] }));
+                    }}
+                    label="Imagem Principal"
                   />
                 </div>
 
