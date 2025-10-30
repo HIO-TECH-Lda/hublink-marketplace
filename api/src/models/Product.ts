@@ -203,7 +203,7 @@ const productSchema = new Schema<IProductDocument>({
   status: {
     type: String,
     enum: ['draft', 'active', 'inactive', 'archived'],
-    default: 'draft'
+    default: 'active'
   },
   isFeatured: {
     type: Boolean,
@@ -215,7 +215,7 @@ const productSchema = new Schema<IProductDocument>({
   },
   isNewArrival: {
     type: Boolean,
-    default: false
+    default: true
   },
 
   // Shipping and Returns
@@ -250,7 +250,7 @@ const productSchema = new Schema<IProductDocument>({
   },
   averageRating: {
     type: Number,
-    default: 0,
+    default: 4.5,
     min: 0,
     max: 5
   },

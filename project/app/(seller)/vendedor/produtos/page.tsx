@@ -10,12 +10,17 @@ import { Input } from '@/components/ui/input';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import SellerSidebar from '../../components/SellerSidebar';
+import { useMyProducts, useDeleteProduct } from '@/hooks/useProducts';
+import { useToast } from '@/hooks/use-toast';
 
 export default function SellerProductsPage() {
-  const { state, dispatch } = useMarketplace();
+  const { state } = useMarketplace();
   const { isAuthenticated, user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const { data: products, isLoading: productsLoading } = useMyProducts();
+  const deleteProduct = useDeleteProduct();
+  const { toast } = useToast();
 
   if (!isAuthenticated || user?.role !== 'seller') {
     return (
@@ -35,20 +40,29 @@ export default function SellerProductsPage() {
     );
   }
 
-  const sellerProducts = state.products.filter(p => p.sellerId === state.user?.sellerId);
-  const categories = ['all', ...Array.from(new Set(sellerProducts.map(p => p.category)))];
+  const sellerProducts = products || [];
+  const categories = ['all', ...Array.from(new Set(sellerProducts.map((p: any) => p.category || p.categoryId?.name || 'Sem Categoria')))] as string[];
 
-  const filteredProducts = sellerProducts.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+  const filteredProducts = sellerProducts.filter((product: any) => {
+    const name = (product.name || '').toLowerCase();
+    const desc = (product.description || '').toLowerCase();
+    const cat = (product.category || product.categoryId?.name || '').toLowerCase();
+    const matchesSearch = name.includes(searchTerm.toLowerCase()) || desc.includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || cat === selectedCategory.toLowerCase();
     return matchesSearch && matchesCategory;
   });
 
   const handleDeleteProduct = (productId: string) => {
-    if (confirm('Tem certeza que deseja excluir este produto?')) {
-      dispatch({ type: 'DELETE_PRODUCT', payload: productId });
-    }
+    if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+    deleteProduct.mutate(productId, {
+      onSuccess: () => {
+        toast({ title: 'Produto excluído', description: 'O produto foi removido com sucesso.' });
+      },
+      onError: (error: any) => {
+        const apiError = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao excluir produto';
+        toast({ title: 'Erro', description: apiError, variant: 'destructive' });
+      },
+    });
   };
 
   return (
@@ -91,7 +105,7 @@ export default function SellerProductsPage() {
                     <div>
                       <p className="text-sm text-gray-6">Em Estoque</p>
                       <p className="text-2xl font-bold text-gray-9">
-                        {sellerProducts.filter(p => p.inStock).length}
+                        {sellerProducts.filter((p: any) => p.inStock || (p.stock ?? 0) > 0).length}
                       </p>
                     </div>
                     <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
@@ -105,7 +119,7 @@ export default function SellerProductsPage() {
                     <div>
                       <p className="text-sm text-gray-6">Fora de Estoque</p>
                       <p className="text-2xl font-bold text-gray-9">
-                        {sellerProducts.filter(p => !p.inStock).length}
+                        {sellerProducts.filter((p: any) => !(p.inStock || (p.stock ?? 0) > 0)).length}
                       </p>
                     </div>
                     <div className="w-12 h-12 bg-danger/10 rounded-lg flex items-center justify-center">
@@ -119,7 +133,7 @@ export default function SellerProductsPage() {
                     <div>
                       <p className="text-sm text-gray-6">Categorias</p>
                       <p className="text-2xl font-bold text-gray-9">
-                        {Array.from(new Set(sellerProducts.map(p => p.category))).length}
+                        {Array.from(new Set(sellerProducts.map((p: any) => p.category || p.categoryId?.name))).length}
                       </p>
                     </div>
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -190,7 +204,12 @@ export default function SellerProductsPage() {
                 </Link>
               </div>
               
-              {filteredProducts.length === 0 ? (
+              {productsLoading ? (
+                <div className="px-6 py-12 text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-gray-6">Carregando produtos...</p>
+                </div>
+              ) : filteredProducts.length === 0 ? (
                 <div className="px-6 py-12 text-center">
                   <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -235,13 +254,13 @@ export default function SellerProductsPage() {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {filteredProducts.map((product) => (
+                      {filteredProducts.map((product: any) => (
                         <tr key={product.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
                               <div className="w-10 h-10 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                                 <img
-                                  src={product.primaryImage}
+                                  src={product.primaryImage || product.images?.[0]?.url}
                                   alt={product.name}
                                   className="w-full h-full object-cover"
                                 />
@@ -251,7 +270,7 @@ export default function SellerProductsPage() {
                                   {product.name}
                                 </div>
                                 <div className="text-sm text-gray-500">
-                                  {product.description.length > 50 
+                                  {(product.description || '').length > 50 
                                     ? `${product.description.substring(0, 50)}...` 
                                     : product.description
                                   }
@@ -261,44 +280,44 @@ export default function SellerProductsPage() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              {product.category}
+                              {product.category || product.categoryId?.name || '—'}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-900">
                               {product.originalPrice && (
                                 <div className="text-gray-500 line-through">
-                                  MTn {product.originalPrice.toFixed(2)}
+                                  MTn {Number(product.originalPrice).toFixed(2)}
                                 </div>
                               )}
                               <div className="font-medium text-green-600">
-                                MTn {product.price.toFixed(2)}
+                                MTn {Number(product.price).toFixed(2)}
                               </div>
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className={`w-2 h-2 rounded-full mr-2 ${product.inStock ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                              <div className={`w-2 h-2 rounded-full mr-2 ${(product.inStock || (product.stock ?? 0) > 0) ? 'bg-green-400' : 'bg-red-400'}`}></div>
                               <span className="text-sm text-gray-900">
-                                {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
+                                {(product.inStock || (product.stock ?? 0) > 0) ? 'Em Estoque' : 'Fora de Estoque'}
                               </span>
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                              (product.inStock || (product.stock ?? 0) > 0) ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                             }`}>
-                              {product.inStock ? 'Ativo' : 'Inativo'}
+                              {(product.inStock || (product.stock ?? 0) > 0) ? 'Ativo' : 'Inativo'}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div className="flex items-center justify-end space-x-2">
-                              <Link href={`/produto/${product.id}`}>
+                              <Link href={`/produto/${product.id || product._id}`}>
                                 <Button size="sm" variant="outline" className="w-8 h-8 p-0 border-gray-3 text-gray-7 hover:bg-gray-1 flex items-center justify-center">
                                   <Eye size={14} />
                                 </Button>
                               </Link>
-                              <Link href={`/vendedor/produtos/editar/${product.id}`}>
+                              <Link href={`/vendedor/produtos/editar/${product.id || product._id}`}>
                                 <Button size="sm" variant="outline" className="w-8 h-8 p-0 border-green-600 text-green-600 hover:bg-green-600 hover:text-white flex items-center justify-center">
                                   <Edit size={14} />
                                 </Button>
@@ -307,7 +326,7 @@ export default function SellerProductsPage() {
                                 size="sm"
                                 variant="outline"
                                 className="w-8 h-8 p-0 border-red-600 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center"
-                                onClick={() => handleDeleteProduct(product.id)}
+                                onClick={() => handleDeleteProduct(product.id || product._id)}
                               >
                                 <Trash2 size={14} />
                               </Button>

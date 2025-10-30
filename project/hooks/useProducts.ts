@@ -89,3 +89,78 @@ export const useCreateProduct = () => {
     },
   });
 };
+
+// List products for the authenticated seller
+export const useMyProducts = () => {
+  return useQuery({
+    queryKey: ['products', 'my'],
+    queryFn: async () => {
+      const response = await apiClient.get('/products/seller/my-products');
+      return response.data.data.products as Product[];
+    },
+  });
+};
+
+// Delete product
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (productId: string) => {
+      const response = await apiClient.delete(`/products/${productId}`);
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products', 'my'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+};
+
+// Update product status (e.g., active/inactive)
+export const useUpdateProductStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ productId, status }: { productId: string; status: string }) => {
+      const response = await apiClient.patch(`/products/${productId}/status`, { status });
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products', 'my'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+};
+
+// Update product stock
+export const useUpdateProductStock = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ productId, stock }: { productId: string; stock: number }) => {
+      const response = await apiClient.patch(`/products/${productId}/stock`, { stock });
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products', 'my'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+};
+
+// Update product details
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ productId, data }: { productId: string; data: any }) => {
+      const response = await apiClient.put(`/products/${productId}`, data);
+      return response.data.data as Product;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products', 'my'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+};
