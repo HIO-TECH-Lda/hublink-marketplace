@@ -397,6 +397,57 @@ export class OrderService {
     }
   }
 
+  // Get seller's orders (only items belonging to the seller)
+  static async getSellerOrders(
+    sellerId: string,
+    options: {
+      page?: number;
+      limit?: number;
+      status?: string;
+      sortBy?: string;
+      sortOrder?: 'asc' | 'desc';
+    } = {}
+  ): Promise<{
+    orders: IOrder[];
+    pagination: { page: number; limit: number; total: number; pages: number };
+  }> {
+    try {
+      const { page = 1, limit = 10, status, sortBy = 'createdAt', sortOrder = 'desc' } = options;
+
+      // Base query finds orders that contain at least one item for this seller
+      const baseQuery: any = { 'items.sellerId': sellerId };
+      if (status) baseQuery.status = status;
+
+      const sort: any = {};
+      sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
+
+      const total = await Order.countDocuments(baseQuery);
+      const pages = Math.ceil(total / limit);
+
+      const rawOrders = await Order.find(baseQuery)
+        .sort(sort)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .populate('userId', 'firstName lastName email');
+
+      // Filter items to only those belonging to the seller
+      const orders = rawOrders.map((order: any) => {
+        const filteredItems = order.items.filter((it: any) => (it.sellerId?.toString?.() || it.sellerId) === sellerId);
+        return {
+          ...order.toObject(),
+          items: filteredItems
+        } as IOrder;
+      });
+
+      return {
+        orders,
+        pagination: { page, limit, total, pages }
+      };
+    } catch (error) {
+      throw new Error(`Failed to get seller orders: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
   // Cancel order
   static async cancelOrder(orderId: string, cancelledBy: string, reason: string): Promise<IOrder> {
     try {

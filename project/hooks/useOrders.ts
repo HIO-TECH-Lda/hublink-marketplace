@@ -70,3 +70,14 @@ export const useOrderTracking = (orderId: string) => {
     enabled: !!orderId,
   });
 };
+
+// Seller - my orders (orders containing seller's products)
+export const useSellerOrders = () => {
+  return useQuery({
+    queryKey: ['orders', 'seller', 'my'],
+    queryFn: async () => {
+      const response = await apiClient.get('/orders/seller/my-orders');
+      return response.data.data.orders as Order[];
+    },
+  });
+};

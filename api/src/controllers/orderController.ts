@@ -247,6 +247,40 @@ export class OrderController {
     }
   }
 
+  // Get seller's orders (only their items from multi-seller orders)
+  static async getSellerOrders(req: Request, res: Response) {
+    try {
+      const sellerId = req.user!.sellerId || req.user!.userId; // fallback
+      const { page, limit, status, sortBy, sortOrder } = req.query;
+
+      const options = {
+        page: page ? parseInt(page as string) : 1,
+        limit: limit ? parseInt(limit as string) : 10,
+        status: status as string,
+        sortBy: sortBy as string,
+        sortOrder: sortOrder as 'asc' | 'desc'
+      };
+
+      const result = await OrderService.getSellerOrders(sellerId!, options);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Seller orders retrieved successfully',
+        data: {
+          orders: result.orders,
+          pagination: result.pagination
+        }
+      });
+    } catch (error) {
+      console.error('Get seller orders error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve seller orders',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
   // Cancel order
   static async cancelOrder(req: Request, res: Response) {
     try {

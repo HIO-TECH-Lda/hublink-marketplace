@@ -43,4 +43,7 @@ router.patch('/:orderId/status', authorizeRoles('admin', 'seller'), validateRequ
 // Get order statistics (admin can see all statistics)
 router.get('/statistics/all', authorizeRoles('admin'), OrderController.getOrderStatistics);
 
+// Seller own orders (only their items)
+router.get('/seller/my-orders', authorizeRoles('seller'), OrderController.getSellerOrders);
+
 export default router;
