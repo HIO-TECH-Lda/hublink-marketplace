@@ -90,7 +90,7 @@ export default function SellerOrdersPage() {
   };
 
   const getSellerTotalFromOrder = (order: any) => {
-    const sellerItems = getSellerItemsFromOrder(order);
+    const sellerItems = order.items || [];
     return sellerItems.reduce((total: number, item: any) => total + (item.totalPrice ?? (Number(item.unitPrice) * Number(item.quantity))), 0);
   };
 
@@ -254,7 +254,7 @@ export default function SellerOrdersPage() {
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              {sellerItems.length} {sellerItems.length === 1 ? 'item' : 'itens'}
+                              {order.items.length} {order.items.length === 1 ? 'item' : 'itens'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               MTn {Number(sellerTotal).toFixed(2)}
