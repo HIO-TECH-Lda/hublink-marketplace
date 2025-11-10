@@ -9,6 +9,18 @@ export interface Balance {
   totalEarned: number;
 }
 
+export interface PayoutOrder {
+  _id: string;
+  orderNumber: string;
+  total: number;
+  periodStart?: string;
+  periodEnd?: string;
+  sellerId?: string;
+  status?: string;
+  updatedAt?: string;
+  __v?: number;
+}
+
 export interface Payout {
   _id: string;
   sellerId: string;
@@ -18,7 +30,7 @@ export interface Payout {
   method: 'mpesa' | 'bank_transfer' | 'emola';
   periodStart: string;
   periodEnd: string;
-  orderIds: string[];
+  orderIds: string[] | PayoutOrder[];
   commissionRate: number;
   commissionAmount: number;
   netAmount: number;

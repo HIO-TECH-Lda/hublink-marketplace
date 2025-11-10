@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePayoutBalance, usePayoutHistory, useRequestPayout } from '@/hooks/usePayouts';
-import { DollarSign, Calendar, CheckCircle, Clock, AlertCircle, TrendingUp, Plus, X } from 'lucide-react';
+import { DollarSign, Calendar, CheckCircle, Clock, AlertCircle, TrendingUp, Plus, X, Eye } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -21,6 +21,7 @@ export default function PayoutsPage() {
   const [showPayoutModal, setShowPayoutModal] = useState(false);
   const [payoutAmount, setPayoutAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'mpesa' | 'bank_transfer' | 'emola'>('mpesa');
+  const [selectedPayout, setSelectedPayout] = useState<any | null>(null);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -307,6 +308,9 @@ export default function PayoutsPage() {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Status
                         </th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Ações
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -337,6 +341,130 @@ export default function PayoutsPage() {
                               {getStatusIcon(payout.status)}
                               <span className="ml-1">{getStatusText(payout.status)}</span>
                             </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <button
+                                  onClick={() => setSelectedPayout(payout)}
+                                  className="inline-flex items-center text-green-600 hover:text-green-900"
+                                >
+                                  <Eye className="w-4 h-4 mr-1" />
+                                  Ver Detalhes
+                                </button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                                <DialogHeader>
+                                  <DialogTitle>Detalhes do Repasse #{payout._id.slice(-8)}</DialogTitle>
+                                  <DialogDescription>Informações completas sobre este repasse</DialogDescription>
+                                </DialogHeader>
+                                <div className="space-y-4">
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                    <div>
+                                      <p className="text-gray-6">Status</p>
+                                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${getStatusColor(payout.status)}`}>
+                                        {getStatusIcon(payout.status)}
+                                        <span className="ml-1">{getStatusText(payout.status)}</span>
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <p className="text-gray-6">Método</p>
+                                      <p className="font-medium text-gray-9 mt-1">{getMethodText(payout.method)}</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-gray-6">Valor</p>
+                                      <p className="font-medium text-gray-9 mt-1">MTn {payout.netAmount.toFixed(2)}</p>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                      <p className="text-gray-6">Período Início</p>
+                                      <p className="font-medium text-gray-9 mt-1">
+                                        {new Date(payout.periodStart).toLocaleString('pt-MZ')}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p className="text-gray-6">Período Fim</p>
+                                      <p className="font-medium text-gray-9 mt-1">
+                                        {new Date(payout.periodEnd).toLocaleString('pt-MZ')}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                    <div>
+                                      <p className="text-gray-6">Taxa de Comissão</p>
+                                      <p className="font-medium text-gray-9 mt-1">{payout.commissionRate}%</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-gray-6">Comissão</p>
+                                      <p className="font-medium text-gray-9 mt-1">MTn {payout.commissionAmount.toFixed(2)}</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-gray-6">Data de Criação</p>
+                                      <p className="font-medium text-gray-9 mt-1">
+                                        {new Date(payout.createdAt).toLocaleString('pt-MZ')}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  {payout.processedAt && (
+                                    <div>
+                                      <p className="text-gray-6">Processado em</p>
+                                      <p className="font-medium text-gray-9 mt-1">
+                                        {new Date(payout.processedAt).toLocaleString('pt-MZ')}
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  {payout.failureReason && (
+                                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                                      <p className="text-sm font-medium text-red-900">Motivo da Falha</p>
+                                      <p className="text-sm text-red-700 mt-1">{payout.failureReason}</p>
+                                    </div>
+                                  )}
+
+                                  {payout.orderIds && payout.orderIds.length > 0 && (
+                                    <div>
+                                      <h4 className="text-md font-medium text-gray-9 mb-3">
+                                        Pedidos Incluídos ({payout.orderIds.length})
+                                      </h4>
+                                      <div className="overflow-x-auto">
+                                        <table className="min-w-full text-sm">
+                                          <thead>
+                                            <tr className="border-b border-gray-2">
+                                              <th className="text-left py-2 px-2">Número do Pedido</th>
+                                              <th className="text-left py-2 px-2">Valor</th>
+                                              <th className="text-left py-2 px-2">Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {payout.orderIds.map((order: any, index: number) => (
+                                              <tr key={order._id || index} className="border-b border-gray-1">
+                                                <td className="py-2 px-2">
+                                                  {typeof order === 'string' ? order : order.orderNumber || order._id}
+                                                </td>
+                                                <td className="py-2 px-2">
+                                                  {typeof order === 'string' ? '—' : `MTn ${(order.total || 0).toFixed(2)}`}
+                                                </td>
+                                                <td className="py-2 px-2">
+                                                  {typeof order === 'string' ? '—' : (
+                                                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs ${getStatusColor(order.status || 'pending')}`}>
+                                                      {getStatusText(order.status || 'pending')}
+                                                    </span>
+                                                  )}
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              </DialogContent>
+                            </Dialog>
                           </td>
                         </tr>
                       ))}
