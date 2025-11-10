@@ -332,6 +332,29 @@ export interface IPayout {
   updatedAt?: Date;
 }
 
+// Refund Types
+export interface IRefund {
+  _id?: string;
+  orderId: string;
+  orderItemId?: string;
+  sellerId: string;
+  buyerId: string;
+  productId: string;
+  productName: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'approved' | 'rejected';
+  reason: string;
+  description: string;
+  images?: string[];
+  requestedAt?: Date;
+  processedAt?: Date;
+  processedBy?: string;
+  rejectionReason?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 // Review Types
 export interface IReview {
   _id?: string;

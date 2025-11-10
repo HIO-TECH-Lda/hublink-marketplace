@@ -890,6 +890,63 @@ export const validateWishlistUpdate = Joi.object({
     })
 });
 
+// Refund validation schemas
+export const createRefundRequestSchema = Joi.object({
+  orderId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Order ID is required'
+    }),
+  orderItemId: Joi.string()
+    .optional(),
+  productId: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Product ID is required'
+    }),
+  reason: Joi.string()
+    .min(3)
+    .max(100)
+    .required()
+    .messages({
+      'string.min': 'Reason must be at least 3 characters',
+      'string.max': 'Reason cannot exceed 100 characters',
+      'any.required': 'Reason is required'
+    }),
+  description: Joi.string()
+    .min(10)
+    .max(1000)
+    .required()
+    .messages({
+      'string.min': 'Description must be at least 10 characters',
+      'string.max': 'Description cannot exceed 1000 characters',
+      'any.required': 'Description is required'
+    }),
+  images: Joi.array()
+    .items(
+      Joi.alternatives().try(
+        Joi.string().uri(),
+        Joi.string().pattern(/^data:image\/(jpeg|jpg|png|gif|webp);base64,/)
+      )
+    )
+    .optional()
+    .messages({
+      'alternatives.match': 'Images must be valid URLs or base64 encoded images'
+    })
+});
+
+export const rejectRefundSchema = Joi.object({
+  rejectionReason: Joi.string()
+    .min(10)
+    .max(500)
+    .required()
+    .messages({
+      'string.min': 'Rejection reason must be at least 10 characters',
+      'string.max': 'Rejection reason cannot exceed 500 characters',
+      'any.required': 'Rejection reason is required'
+    })
+});
+
 // Payout validation schemas
 export const requestPayoutSchema = Joi.object({
   amount: Joi.number()

@@ -17,6 +17,7 @@ import wishlistRoutes from './routes/wishlist';
 import emailRoutes from './routes/email';
 import imaliRoutes from './routes/imali';
 import payoutRoutes from './routes/payouts';
+import refundRoutes from './routes/refunds';
 
 // Load environment variables
 dotenv.config();
@@ -149,6 +150,21 @@ app.get('/api/v1', (req: Request, res: Response) => {
       getHistory: 'GET /api/v1/payouts/history (seller)',
       requestPayout: 'POST /api/v1/payouts/request (seller)',
       getPayoutById: 'GET /api/v1/payouts/:payoutId (seller)'
+    },
+    refundEndpoints: {
+      createRefundRequest: 'POST /api/v1/refunds/request (buyer)',
+      getBuyerRefunds: 'GET /api/v1/refunds/my-refunds (buyer)',
+      getBuyerRefundById: 'GET /api/v1/refunds/my-refunds/:refundId (buyer)',
+      getStatistics: 'GET /api/v1/refunds/statistics (seller)',
+      getRefunds: 'GET /api/v1/refunds (seller)',
+      getRefundById: 'GET /api/v1/refunds/:refundId (seller)',
+      approveRefund: 'PATCH /api/v1/refunds/:refundId/approve (seller)',
+      rejectRefund: 'PATCH /api/v1/refunds/:refundId/reject (seller)',
+      getAllRefunds: 'GET /api/v1/refunds/admin/all (admin)',
+      getAllStatistics: 'GET /api/v1/refunds/admin/statistics (admin)',
+      getAnyRefundById: 'GET /api/v1/refunds/admin/:refundId (admin)',
+      approveRefundByAdmin: 'PATCH /api/v1/refunds/admin/:refundId/approve (admin)',
+      rejectRefundByAdmin: 'PATCH /api/v1/refunds/admin/:refundId/reject (admin)'
     }
   });
 });
@@ -188,6 +204,9 @@ app.use('/api/v1/imali', imaliRoutes);
 
 // Payout routes (seller only)
 app.use('/api/v1/payouts', payoutRoutes);
+
+// Refund routes (seller only)
+app.use('/api/v1/refunds', refundRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {

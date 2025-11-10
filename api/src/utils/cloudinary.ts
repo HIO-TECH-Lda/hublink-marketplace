@@ -12,14 +12,14 @@ export interface UploadedImage {
   publicId: string;
 }
 
-export async function uploadBase64Image(base64OrUrl: string, folder = `${process.env.CLOUDINARY_FOLDER_NAMECLOUDINARY_FOLDER_NAME}/products`): Promise<UploadedImage> {
+export async function uploadBase64Image(base64OrUrl: string, folder = 'products'): Promise<UploadedImage> {
   // If it's already a URL, return it as-is with empty publicId
   if (/^https?:\/\//i.test(base64OrUrl)) {
     return { url: base64OrUrl, publicId: '' };
   }
 
   const res = await cloudinary.uploader.upload(base64OrUrl, {
-    folder,
+    folder: `${process.env.CLOUDINARY_FOLDER_NAME}/${folder}`,
     resource_type: 'image'
   });
 
