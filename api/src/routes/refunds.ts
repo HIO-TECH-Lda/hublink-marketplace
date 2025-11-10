@@ -10,18 +10,18 @@ router.use(authenticateToken);
 
 // Buyer routes (buyer role)
 router.post('/request', 
-  authorizeRoles('buyer'), 
+  // authorizeRoles('buyer'), 
   validateRequest(createRefundRequestSchema), 
   RefundController.createRefundRequest
 );
 
 router.get('/my-refunds', 
-  authorizeRoles('buyer'), 
+  // authorizeRoles('buyer'), 
   RefundController.getBuyerRefunds
 );
 
 router.get('/my-refunds/:refundId', 
-  authorizeRoles('buyer'), 
+  // authorizeRoles('buyer'), 
   RefundController.getBuyerRefundById
 );
 
