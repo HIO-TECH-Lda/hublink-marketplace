@@ -36,6 +36,16 @@ export const useUpdateProfile = () => {
           push: boolean;
         };
       };
+      sellerProfile?: {
+        storeName: string;
+        storeDescription: string;
+        address: string;
+        city: string;
+        province: string;
+        postalCode: string;
+        productTypes: string;
+        experience?: string;
+      };
     }) => {
       const response = await apiClient.put('/auth/me', profileData);
       return response.data.data;

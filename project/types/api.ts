@@ -32,14 +32,24 @@ export interface User {
     country?: string;
     isDefault?: boolean;
   };
-  preferences: {
-    notifications: {
-      email: boolean;
-      sms: boolean;
-      push: boolean;
+  preferences?: {
+    notifications?: {
+      email?: boolean;
+      sms?: boolean;
+      push?: boolean;
     };
-    language: string;
-    currency: string;
+    language?: string;
+    currency?: string;
+  };
+  sellerProfile?: {
+    storeName?: string;
+    storeDescription?: string;
+    address?: string;
+    city?: string;
+    province?: string;
+    postalCode?: string;
+    productTypes?: string;
+    experience?: string;
   };
   createdAt: string;
   updatedAt: string;
