@@ -2,18 +2,35 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Package, ShoppingBag, DollarSign, TrendingUp, Eye, Edit, Plus, ArrowRight } from 'lucide-react';
+import { Package, ShoppingBag, DollarSign, TrendingUp, ArrowRight } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import SellerSidebar from '../../components/SellerSidebar';
 import { formatCurrency } from '@/lib/payment';
+import { useMyProducts } from '@/hooks/useProducts';
+import { useSellerOrders } from '@/hooks/useOrders';
+import RecentProductsTable from '@/components/seller/RecentProductsTable';
+import RecentOrdersTable from '@/components/seller/RecentOrdersTable';
 
 export default function SellerDashboardPage() {
-  const { state, dispatch } = useMarketplace();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
+  const { data: products, isLoading: productsLoading } = useMyProducts();
+  const { data: orders, isLoading: ordersLoading } = useSellerOrders();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-6">Verificando autenticação...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!isAuthenticated || user?.role !== 'seller') {
     return (
@@ -33,22 +50,17 @@ export default function SellerDashboardPage() {
     );
   }
 
-  // Mock data for seller dashboard
-  const sellerProducts = state.products.filter(p => p.sellerId === state.user?.sellerId);
-  const sellerOrders = state.orders.filter(order => 
-    order.items.some(item => item.product.sellerId === state.user?.sellerId)
-  );
+  const sellerProducts = products || [];
+  const sellerOrders = orders || [];
 
-  const totalSales = sellerOrders.reduce((total, order) => {
-    const sellerItems = order.items.filter(item => item.product.sellerId === state.user?.sellerId);
-    return total + sellerItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-  }, 0);
+  const getSellerTotalFromOrder = (order: any) => {
+    const sellerItems = order.items || [];
+    return sellerItems.reduce((total: number, item: any) => total + (item.totalPrice ?? (Number(item.unitPrice) * Number(item.quantity))), 0);
+  };
 
+  const totalSales = sellerOrders.reduce((total, order) => total + getSellerTotalFromOrder(order), 0);
   const pendingOrders = sellerOrders.filter(order => order.status === 'pending').length;
-  const totalBalance = state.payouts.reduce((total, payout) => total + payout.amount, 0);
-
-  const recentProducts = sellerProducts.slice(0, 4);
-  const recentOrders = sellerOrders.slice(0, 5);
+  const totalBalance = 0; // TODO: Integrate with payouts API when available
 
   return (
     <div className="min-h-screen bg-gray-1">
@@ -84,7 +96,7 @@ export default function SellerDashboardPage() {
                 </div>
                 <div className="mt-4 flex items-center text-sm">
                   <TrendingUp size={16} className="text-primary mr-1" />
-                  <span className="text-primary">+12% este mês</span>
+                  {/* <span className="text-primary">+12% este mês</span> */}
                 </div>
               </div>
 
@@ -146,35 +158,12 @@ export default function SellerDashboardPage() {
                 </Link>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {recentProducts.map((product) => (
-                  <div key={product.id} className="border border-gray-2 rounded-lg p-4">
-                    <div className="aspect-square bg-gray-1 rounded-lg overflow-hidden mb-3">
-                      <img
-                        src={product.primaryImage}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <h3 className="font-medium text-gray-9 mb-1 line-clamp-2">{product.name}</h3>
-                    <p className="text-sm text-gray-6 mb-2">{formatCurrency(product.price)}</p>
-                    <div className="flex items-center justify-between">
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        product.inStock 
-                          ? 'bg-success/10 text-success' 
-                          : 'bg-danger/10 text-danger'
-                      }`}>
-                        {product.inStock ? 'Em Estoque' : 'Fora de Estoque'}
-                      </span>
-                      <Link href={`/vendedor/produtos/editar/${product.id}`}>
-                        <Button variant="ghost" size="sm">
-                          <Edit size={14} />
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <RecentProductsTable
+                products={sellerProducts}
+                isLoading={productsLoading}
+                limit={5}
+                showActions={true}
+              />
             </div>
 
             {/* Recent Orders */}
@@ -189,52 +178,12 @@ export default function SellerDashboardPage() {
                 </Link>
               </div>
               
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-2">
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">ID do Pedido</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Cliente</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Data</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Total</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentOrders.map((order) => {
-                      const sellerItems = order.items.filter(item => item.product.sellerId === state.user?.sellerId);
-                      const sellerTotal = sellerItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-                      
-                      return (
-                        <tr key={order.id} className="border-b border-gray-1">
-                          <td className="px-4 py-3 text-sm font-medium text-gray-9">{order.id}</td>
-                          <td className="px-4 py-3 text-sm text-gray-6">
-                            {order.billingAddress?.firstName} {order.billingAddress?.lastName}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-6">{order.date}</td>
-                          <td className="px-4 py-3">
-                            <span className={`text-xs px-2 py-1 rounded-full ${
-                              order.status === 'delivered' ? 'bg-success/10 text-success' :
-                              order.status === 'shipped' ? 'bg-warning/10 text-warning' :
-                              order.status === 'processing' ? 'bg-info/10 text-info' :
-                              'bg-gray-1 text-gray-6'
-                            }`}>
-                              {order.status}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 text-sm font-medium text-primary">{formatCurrency(sellerTotal)}</td>
-                          <td className="px-4 py-3">
-                            <Button variant="ghost" size="sm">
-                              <Eye size={14} />
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+              <RecentOrdersTable
+                orders={sellerOrders}
+                isLoading={ordersLoading}
+                limit={5}
+                showDetails={true}
+              />
             </div>
           </div>
         </div>
