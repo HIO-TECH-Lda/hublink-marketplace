@@ -1,6 +1,7 @@
 import Product, { IProductDocument } from '../models/Product';
 import Category from '../models/Category';
 import { IProduct, IProductImage } from '../types';
+import { uploadBase64Image } from '../utils/cloudinary';
 
 export class ProductService {
   // Create new product
@@ -12,17 +13,38 @@ export class ProductService {
         throw new Error('Category not found');
       }
 
-      // Set primary image if not provided
-      if (productData.images && productData.images.length > 0 && !productData.primaryImage) {
-        const primaryImage = productData.images.find(img => img.isPrimary) || productData.images[0];
-        productData.primaryImage = primaryImage.url;
+      // Normalize and upload images (base64 or URLs)
+      const normalizedImages: IProductImage[] = [];
+      if (productData.images && productData.images.length > 0) {
+        for (const [index, img] of productData.images.entries()) {
+          const source = (img as any).url || (img as any);
+          const uploaded = await uploadBase64Image(source as unknown as string, 'products');
+          normalizedImages.push({
+            url: uploaded.url,
+            publicId: uploaded.publicId,
+            alt: (img as any).alt,
+            isPrimary: (img as any).isPrimary || index === 0,
+            order: (img as any).order ?? index
+          });
+        }
+      }
+
+      // Primary image
+      let primaryImageUrl = productData.primaryImage;
+      if (!primaryImageUrl && normalizedImages.length > 0) {
+        primaryImageUrl = normalizedImages.find(i => i.isPrimary)?.url || normalizedImages[0].url;
+      } else if (primaryImageUrl) {
+        const uploadedPrimary = await uploadBase64Image(primaryImageUrl as string, 'products');
+        primaryImageUrl = uploadedPrimary.url;
       }
 
       const product = new Product({
         ...productData,
+        images: normalizedImages,
+        primaryImage: primaryImageUrl,
         sellerId,
         sellerName,
-        status: productData.status || 'draft' // Use provided status or default to draft
+        // status: productData.status || 'draft' // Use provided status or default to draft
       });
 
       await product.save();
@@ -226,10 +248,29 @@ export class ProductService {
         throw new Error('Product not found or access denied');
       }
 
-      // Set primary image if not provided
-      if (updateData.images && updateData.images.length > 0 && !updateData.primaryImage) {
-        const primaryImage = updateData.images.find(img => img.isPrimary) || updateData.images[0];
-        updateData.primaryImage = primaryImage.url;
+      // Normalize and upload images if provided
+      if (updateData.images && updateData.images.length > 0) {
+        const normalizedImages: IProductImage[] = [];
+        for (const [index, img] of updateData.images.entries()) {
+          const source = (img as any).url || (img as any);
+          const uploaded = await uploadBase64Image(source as unknown as string, 'products');
+          normalizedImages.push({
+            url: uploaded.url,
+            publicId: uploaded.publicId,
+            alt: (img as any).alt,
+            isPrimary: (img as any).isPrimary || index === 0,
+            order: (img as any).order ?? index
+          });
+        }
+        updateData.images = normalizedImages;
+        if (!updateData.primaryImage && normalizedImages.length > 0) {
+          updateData.primaryImage = normalizedImages.find(i => i.isPrimary)?.url || normalizedImages[0].url;
+        }
+      }
+
+      if (typeof updateData.primaryImage === 'string') {
+        const uploadedPrimary = await uploadBase64Image(updateData.primaryImage as string, 'products');
+        updateData.primaryImage = uploadedPrimary.url;
       }
 
       const updatedProduct = await Product.findByIdAndUpdate(

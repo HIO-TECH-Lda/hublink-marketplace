@@ -78,6 +78,7 @@ export interface IProductImage {
   alt?: string;
   isPrimary?: boolean;
   order?: number;
+  publicId?: string;
 }
 
 export interface IProductVariant {
