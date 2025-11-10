@@ -312,6 +312,26 @@ export interface IPayment {
   updatedAt?: Date;
 }
 
+// Payout Types
+export interface IPayout {
+  _id?: string;
+  sellerId: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  method: 'mpesa' | 'bank_transfer' | 'emola';
+  periodStart: Date;
+  periodEnd: Date;
+  orderIds: string[];
+  commissionRate?: number;
+  commissionAmount?: number;
+  netAmount: number;
+  processedAt?: Date;
+  failureReason?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 // Review Types
 export interface IReview {
   _id?: string;

@@ -16,6 +16,7 @@ import reviewRoutes from './routes/reviews';
 import wishlistRoutes from './routes/wishlist';
 import emailRoutes from './routes/email';
 import imaliRoutes from './routes/imali';
+import payoutRoutes from './routes/payouts';
 
 // Load environment variables
 dotenv.config();
@@ -142,6 +143,12 @@ app.get('/api/v1', (req: Request, res: Response) => {
       getRecommendations: 'GET /api/v1/wishlist/recommendations',
       bulkAddToWishlist: 'POST /api/v1/wishlist/bulk-add',
       bulkRemoveFromWishlist: 'DELETE /api/v1/wishlist/bulk-remove'
+    },
+    payoutEndpoints: {
+      getBalance: 'GET /api/v1/payouts/balance (seller)',
+      getHistory: 'GET /api/v1/payouts/history (seller)',
+      requestPayout: 'POST /api/v1/payouts/request (seller)',
+      getPayoutById: 'GET /api/v1/payouts/:payoutId (seller)'
     }
   });
 });
@@ -178,6 +185,9 @@ app.use('/api/v1/email', emailRoutes);
 
 // iMali routes
 app.use('/api/v1/imali', imaliRoutes);
+
+// Payout routes (seller only)
+app.use('/api/v1/payouts', payoutRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {

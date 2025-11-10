@@ -890,6 +890,24 @@ export const validateWishlistUpdate = Joi.object({
     })
 });
 
+// Payout validation schemas
+export const requestPayoutSchema = Joi.object({
+  amount: Joi.number()
+    .min(0.01)
+    .required()
+    .messages({
+      'number.min': 'Amount must be at least 0.01',
+      'any.required': 'Amount is required'
+    }),
+  method: Joi.string()
+    .valid('mpesa', 'bank_transfer', 'emola')
+    .required()
+    .messages({
+      'any.only': 'Method must be mpesa, bank_transfer, or emola',
+      'any.required': 'Payment method is required'
+    })
+});
+
 // Validation middleware factory
 export const validateRequest = (schema: Joi.ObjectSchema) => {
   return (req: any, res: any, next: any) => {
