@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Package, Truck, CheckCircle, Clock, MapPin, Calendar, ArrowLeft, Download, Printer, RotateCcw, AlertCircle, X, CreditCard, Upload } from 'lucide-react';
 import Header from '@/components/layout/Header';
@@ -9,37 +9,29 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useOrder, useOrderTracking } from '@/hooks/useOrders';
-import { useBuyerRefunds, useCreateRefundRequest } from '@/hooks/useRefunds';
+import { useCreateRefundRequest } from '@/hooks/useRefunds';
 import { formatCurrency, formatDate } from '@/lib/payment';
 import { generateInvoiceHTML, InvoiceData } from '@/lib/invoice-generator';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { RefundableItemsList } from '@/components/refund/RefundableItemsList';
+import { RefundRequestsList } from '@/components/refund/RefundRequestsList';
+import type { OrderItem, Refund } from '@/types/api';
 
 export default function OrderTrackingPage() {
   const params = useParams();
   const router = useRouter();
-  const { state } = useMarketplace();
   const orderId = params.orderId as string;
   
   const { data: order, isLoading, error } = useOrder(orderId);
   const { data: tracking, isLoading: trackingLoading } = useOrderTracking(orderId);
-  const { data: refundsData } = useBuyerRefunds({ limit: 100 });
   const createRefundRequest = useCreateRefundRequest();
   const [invoice, setInvoice] = useState<any>(null);
-  
-  // Return request state
-  const [showReturnModal, setShowReturnModal] = useState(false);
-  const [returnReason, setReturnReason] = useState('');
-  const [returnDescription, setReturnDescription] = useState('');
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [isSubmittingReturn, setIsSubmittingReturn] = useState(false);
 
   // Refund request state
   const [showRefundModal, setShowRefundModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [selectedItem, setSelectedItem] = useState<OrderItem | null>(null);
   const [refundReason, setRefundReason] = useState('');
   const [refundDescription, setRefundDescription] = useState('');
   const [refundImages, setRefundImages] = useState<File[]>([]);
@@ -153,99 +145,27 @@ export default function OrderTrackingPage() {
     printWindow.print();
   };
 
-  // Return request functions
-  const handleReturnRequest = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmittingReturn(true);
+  // Generate unique item ID for order items
+  const getItemUniqueId = (item: OrderItem, index: number) => {
+    const rawItem = item as OrderItem & { id?: string; product?: { id?: string } };
+    const productIdentifier =
+      item.product?._id ||
+      (typeof item.productId === 'object'
+        ? item.productId._id
+        : (rawItem as any)?.productId) ||
+      (rawItem.product as any)?.id ||
+      '';
 
-    try {
-      // Validate form
-      if (!returnReason || selectedItems.length === 0) {
-        alert('Por favor, selecione um motivo e pelo menos um item para retorno.');
-        return;
-      }
-
-      // Create return request
-      const returnRequest = {
-        orderId: order?._id || order?.id || '',
-        items: selectedItems,
-        reason: returnReason,
-        description: returnDescription,
-        status: 'pending',
-        createdAt: new Date().toISOString(),
-        userId: state.user?.id
-      };
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Close modal and show success message
-      setShowReturnModal(false);
-      setReturnReason('');
-      setReturnDescription('');
-      setSelectedItems([]);
-      alert('Solicitação de retorno enviada com sucesso!');
-      
-    } catch (error) {
-      console.error('Error submitting return request:', error);
-      alert('Erro ao enviar solicitação de retorno. Tente novamente.');
-    } finally {
-      setIsSubmittingReturn(false);
-    }
-  };
-
-  const handleItemSelection = (itemId: string) => {
-    setSelectedItems(prev => 
-      prev.includes(itemId) 
-        ? prev.filter(id => id !== itemId)
-        : [...prev, itemId]
+    return (
+      item?._id ||
+      rawItem?.id ||
+      `${order?._id || order?.id || ''}-${productIdentifier}-${index}`
     );
   };
 
-  // Generate unique item ID for order items
-  const getItemUniqueId = (item: any, index: number) => {
-    return `${order?._id || order?.id || ''}-${item.product?.id || item.productId}-${index}`;
-  };
-
-  const canRequestReturn = () => {
-    return order?.status === 'delivered' // && !order?.returnRequest;
-  };
-
-  // Get refunds for this order
-  const orderRefunds = refundsData?.refunds?.filter(
-    (refund) => {
-      const refundOrderId = typeof refund.orderId === 'object' ? refund.orderId._id : refund.orderId;
-      return refundOrderId === (order?._id || order?.id);
-    }
-  ) || [];
-
-  // Check if item has refund request
-  const getItemRefund = (productId: string) => {
-    return orderRefunds.find((refund) => {
-      const refundProductId = typeof refund.productId === 'object' ? refund.productId._id : refund.productId;
-      return refundProductId === productId;
-    });
-  };
-
-  // Check if item can request refund
-  const canRequestRefund = (item: any) => {
-    if (!order) return false;
-    
-    const productId = item.productId?._id || item.productId || item.product?._id || item.product?.id;
-    const existingRefund = getItemRefund(productId);
-    
-    // Can request if order is delivered/confirmed and no existing pending/approved refund
-    const orderEligible = order.status === 'delivered' || order.status === 'confirmed';
-    const paymentStatus = order.payment?.status as string;
-    const paymentEligible = !order.payment || paymentStatus === 'completed' || paymentStatus === 'paid';
-    
-    return orderEligible && paymentEligible && (!existingRefund || existingRefund.status === 'rejected');
-  };
-
-  // Check if any item can be refunded
-  const hasRefundableItems = () => {
-    return (order?.items || []).some((item: any) => canRequestRefund(item));
-  };
+  // Refunds associated with this order (from API response)
+  const orderRefunds: Refund[] = (order?.refunds as Refund[] | undefined) ?? [];
+  const orderItems: OrderItem[] = (order?.items as OrderItem[] | undefined) ?? [];
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -292,7 +212,17 @@ export default function OrderTrackingPage() {
     e.preventDefault();
     if (!selectedItem || !refundReason || !refundDescription) return;
 
-    const productId = selectedItem.productId?._id || selectedItem.productId || selectedItem.product?._id || selectedItem.product?.id;
+    const productId =
+      selectedItem.productId?._id ||
+      selectedItem.productId ||
+      selectedItem.product?._id ||
+      (selectedItem.product as any)?.id;
+    const orderItemId = selectedItem._id || (selectedItem as any)?.id;
+
+    if (!productId) {
+      alert('Não foi possível identificar o produto para o reembolso.');
+      return;
+    }
     
     // Convert images to base64 URLs
     const imageUrls = refundImages.length > 0 
@@ -306,7 +236,7 @@ export default function OrderTrackingPage() {
         reason: refundReason,
         description: refundDescription,
         images: imageUrls,
-        orderItemId: selectedItem._id,
+        orderItemId,
       },
       {
         onSuccess: () => {
@@ -439,7 +369,7 @@ export default function OrderTrackingPage() {
                       <h3 className="text-lg font-semibold text-yellow-800">Pagamento Pendente</h3>
                       <p className="text-sm text-yellow-700">Complete o pagamento para processar seu pedido</p>
                     </div>
-                    <Button 
+                  <Button 
                       onClick={() => router.push(`/pagamento/${orderId}`)}
                       className="bg-yellow-600 hover:bg-yellow-700 text-white"
                     >
@@ -449,35 +379,6 @@ export default function OrderTrackingPage() {
                   </div>
                 </div>
               )}
-              <div className="mt-4 flex gap-3 flex-wrap">
-                {canRequestReturn() && (
-                  <Button 
-                    onClick={() => setShowReturnModal(true)}
-                    variant="outline"
-                    className="text-orange-600 border-orange-200 hover:bg-orange-50"
-                  >
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Solicitar Retorno
-                  </Button>
-                )}
-                {hasRefundableItems() && (
-                  <Button 
-                    onClick={() => {
-                      // Open refund modal with first refundable item
-                      const firstRefundableItem = (order?.items || []).find((item: any) => canRequestRefund(item));
-                      if (firstRefundableItem) {
-                        setSelectedItem(firstRefundableItem);
-                        setShowRefundModal(true);
-                      }
-                    }}
-                    variant="outline"
-                    className="text-blue-600 border-blue-200 hover:bg-blue-50"
-                  >
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Solicitar Reembolso
-                  </Button>
-                )}
-              </div>
             </CardHeader>
           </Card>
 
@@ -588,6 +489,12 @@ export default function OrderTrackingPage() {
                       <span className="text-gray-6">Valor:</span>
                       <span className="font-medium">{formatCurrency(order?.payment?.amount || order?.totalAmount || 0)}</span>
                     </div>
+                    {order?.payment?.transactionId && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-6">Transação:</span>
+                        <span className="font-medium">{order.payment.transactionId}</span>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -600,65 +507,30 @@ export default function OrderTrackingPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {(order?.items || []).map((item: any, index: number) => {
-                      const uniqueItemId = getItemUniqueId(item, index);
-                      const productId = item.productId?._id || item.productId || item.product?._id || item.product?.id;
-                      const itemRefund = getItemRefund(productId);
-                      const canRefund = canRequestRefund(item);
-                      
-                      return (
-                        <div key={uniqueItemId} className="flex items-center gap-4 p-3 border border-gray-2 rounded-lg">
-                          <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
-                            <img
-                              src={item.product?.primaryImage || item.productImage || '/placeholder.jpg'}
-                              alt={item.product?.name || item.productName}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-medium text-gray-9 truncate">{item.product?.name || item.productName}</h4>
-                            <p className="text-sm text-gray-6">Qtd: {item.quantity}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              {order?.returnRequest && order?.returnRequest.items.includes(uniqueItemId) && (
-                                <Badge variant="outline" className="text-xs">
-                                  Retorno Solicitado
-                                </Badge>
-                              )}
-                              {itemRefund && (
-                                <Badge className={`text-xs ${
-                                  itemRefund.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                  itemRefund.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                  'bg-red-100 text-red-800'
-                                }`}>
-                                  {itemRefund.status === 'approved' ? 'Reembolso Aprovado' :
-                                   itemRefund.status === 'pending' ? 'Reembolso Pendente' :
-                                   'Reembolso Rejeitado'}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="font-medium text-gray-9">{formatCurrency((item.unitPrice || item.product?.price || 0) * item.quantity)}</p>
-                            {canRefund && !itemRefund && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="mt-2 text-xs whitespace-nowrap"
-                                onClick={() => {
-                                  setSelectedItem(item);
-                                  setShowRefundModal(true);
-                                }}
-                              >
-                                <RotateCcw className="w-3 h-3 mr-1" />
-                                Solicitar Reembolso
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <RefundableItemsList
+                    order={order!}
+                    items={orderItems}
+                    refunds={orderRefunds}
+                    onRequest={(item) => {
+                      setSelectedItem(item);
+                      setShowRefundModal(true);
+                    }}
+                    statusPlacement="details"
+                    buttonProps={{ size: 'sm' }}
+                    renderItemExtras={(item, _refund, index) => {
+                      if (
+                        order?.returnRequest &&
+                        order.returnRequest.items.includes(getItemUniqueId(item, index))
+                      ) {
+                        return (
+                          <Badge variant="outline" className="text-xs">
+                            Retorno Solicitado
+                          </Badge>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
                 </CardContent>
               </Card>
 
@@ -672,69 +544,7 @@ export default function OrderTrackingPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
-                      {orderRefunds.map((refund) => {
-                        const product = typeof refund.productId === 'object' ? refund.productId : null;
-                        return (
-                          <div key={refund._id} className="p-4 border border-gray-2 rounded-lg">
-                            <div className="flex items-start justify-between mb-3">
-                              <div className="flex items-center gap-3">
-                                {product?.primaryImage && (
-                                  <img
-                                    src={product.primaryImage}
-                                    alt={refund.productName}
-                                    className="w-12 h-12 rounded-lg object-cover"
-                                  />
-                                )}
-                                <div>
-                                  <h4 className="font-medium text-gray-9">{refund.productName}</h4>
-                                  <p className="text-sm text-gray-6">MTn {refund.amount.toFixed(2)}</p>
-                                </div>
-                              </div>
-                              <Badge className={
-                                refund.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                refund.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-red-100 text-red-800'
-                              }>
-                                {refund.status === 'approved' ? 'Aprovado' :
-                                 refund.status === 'pending' ? 'Pendente' :
-                                 'Rejeitado'}
-                              </Badge>
-                            </div>
-                            <div className="space-y-2 text-sm">
-                              <div>
-                                <span className="text-gray-6">Motivo: </span>
-                                <span className="font-medium text-gray-9">{refund.reason}</span>
-                              </div>
-                              <div>
-                                <span className="text-gray-6">Descrição: </span>
-                                <span className="text-gray-9">{refund.description}</span>
-                              </div>
-                              <div>
-                                <span className="text-gray-6">Solicitado em: </span>
-                                <span className="text-gray-9">
-                                  {new Date(refund.requestedAt || refund.createdAt).toLocaleString('pt-MZ')}
-                                </span>
-                              </div>
-                              {refund.processedAt && (
-                                <div>
-                                  <span className="text-gray-6">Processado em: </span>
-                                  <span className="text-gray-9">
-                                    {new Date(refund.processedAt).toLocaleString('pt-MZ')}
-                                  </span>
-                                </div>
-                              )}
-                              {refund.rejectionReason && (
-                                <div className="p-2 bg-red-50 border border-red-200 rounded text-red-700">
-                                  <span className="font-medium">Motivo da Rejeição: </span>
-                                  {refund.rejectionReason}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    <RefundRequestsList refunds={orderRefunds} />
                   </CardContent>
                 </Card>
               )}
@@ -887,9 +697,9 @@ export default function OrderTrackingPage() {
                   <img
                     src={selectedItem.product?.primaryImage || selectedItem.productImage || '/placeholder.jpg'}
                     alt={selectedItem.product?.name || selectedItem.productName}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                               className="w-full h-full object-cover"
+                             />
+                           </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-gray-9 truncate">
                     {selectedItem.product?.name || selectedItem.productName}
@@ -898,22 +708,22 @@ export default function OrderTrackingPage() {
                     <span>Quantidade: <strong className="text-gray-9">{selectedItem.quantity}</strong></span>
                     <span>Preço unitário: <strong className="text-gray-9">{formatCurrency(selectedItem.unitPrice || selectedItem.product?.price || 0)}</strong></span>
                   </div>
-                </div>
-                <div className="text-right">
+                           </div>
+                           <div className="text-right">
                   <p className="text-sm text-gray-6">Total</p>
                   <p className="text-lg font-semibold text-primary">
                     {formatCurrency((selectedItem.unitPrice || selectedItem.product?.price || 0) * selectedItem.quantity)}
                   </p>
-                </div>
-              </div>
-            </div>
+                           </div>
+                         </div>
+                   </div>
           )}
 
           <form onSubmit={handleRefundRequest} className="space-y-4">
-            <div>
+                <div>
               <label className="block text-sm font-medium text-gray-7 mb-2">
                 Motivo do Reembolso *
-              </label>
+                  </label>
               <select
                 value={refundReason}
                 onChange={(e) => setRefundReason(e.target.value)}
@@ -928,16 +738,16 @@ export default function OrderTrackingPage() {
                 <option value="Produto incorreto">Produto incorreto</option>
                 <option value="Outro">Outro</option>
               </select>
-            </div>
-            <div>
+                </div>
+                <div>
               <label className="block text-sm font-medium text-gray-7 mb-2">
                 Descrição Detalhada *
-              </label>
-              <Textarea
+                  </label>
+                  <Textarea
                 value={refundDescription}
                 onChange={(e) => setRefundDescription(e.target.value)}
                 placeholder="Descreva detalhadamente o motivo do reembolso..."
-                rows={4}
+                    rows={4}
                 minLength={10}
                 maxLength={1000}
                 required
@@ -1002,22 +812,22 @@ export default function OrderTrackingPage() {
                   </div>
                 )}
               </div>
-            </div>
-
-            {/* Return Policy Info */}
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="text-sm font-medium text-blue-900 mb-1">Política de Retorno</h4>
-                  <ul className="text-xs text-blue-800 space-y-1">
-                    <li>• Retornos devem ser solicitados dentro de 30 dias após a entrega</li>
-                    <li>• Produtos devem estar em condições originais e com embalagem intacta</li>
-                    <li>• Custos de envio do retorno podem ser cobrados</li>
-                    <li>• Reembolso será processado após aprovação e recebimento do item</li>
-                  </ul>
                 </div>
-              </div>
+
+                {/* Return Policy Info */}
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="text-sm font-medium text-blue-900 mb-1">Política de Retorno</h4>
+                      <ul className="text-xs text-blue-800 space-y-1">
+                        <li>• Retornos devem ser solicitados dentro de 30 dias após a entrega</li>
+                        <li>• Produtos devem estar em condições originais e com embalagem intacta</li>
+                        <li>• Custos de envio do retorno podem ser cobrados</li>
+                        <li>• Reembolso será processado após aprovação e recebimento do item</li>
+                      </ul>
+                    </div>
+                  </div>
             </div>
 
             <div className="flex justify-end space-x-3 pt-4 border-t border-gray-2">
@@ -1046,141 +856,6 @@ export default function OrderTrackingPage() {
           </form>
         </DialogContent>
       </Dialog>
-
-      {/* Return Request Modal */}
-      {showReturnModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50 p-4">
-          <div className="relative bg-white rounded-lg shadow-xl w-full max-w-2xl mx-auto max-h-[90vh] overflow-hidden">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <RotateCcw className="w-5 h-5" />
-                Solicitar Retorno
-              </h3>
-              <button 
-                onClick={() => setShowReturnModal(false)} 
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
-              <form onSubmit={handleReturnRequest} className="space-y-6">
-                {/* Select Items */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Selecione os itens para retorno *
-                  </label>
-                                     <div className="space-y-3">
-                    {(order?.items || []).map((item: any, index: number) => {
-                       const uniqueItemId = getItemUniqueId(item, index);
-                       return (
-                         <div key={uniqueItemId} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
-                           <input
-                             type="checkbox"
-                             id={`item-${uniqueItemId}`}
-                             checked={selectedItems.includes(uniqueItemId)}
-                             onChange={() => handleItemSelection(uniqueItemId)}
-                             className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                           />
-                           <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                             <img
-                               src={item.product?.primaryImage || item.productImage || '/placeholder.jpg'}
-                               alt={item.product?.name || item.productName}
-                               className="w-full h-full object-cover"
-                             />
-                           </div>
-                           <div className="flex-1">
-                             <label htmlFor={`item-${uniqueItemId}`} className="font-medium text-gray-900 cursor-pointer">
-                               {item.product?.name || item.productName}
-                             </label>
-                             <p className="text-sm text-gray-600">Qtd: {item.quantity}</p>
-                           </div>
-                           <div className="text-right">
-                             <p className="font-medium text-gray-900">{formatCurrency((item.unitPrice || item.product?.price || 0) * item.quantity)}</p>
-                           </div>
-                         </div>
-                       );
-                     })}
-                   </div>
-                </div>
-
-                {/* Return Reason */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Motivo do Retorno *
-                  </label>
-                  <Select value={returnReason} onValueChange={setReturnReason}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione um motivo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="defective">Produto com defeito</SelectItem>
-                      <SelectItem value="wrong_item">Item incorreto recebido</SelectItem>
-                      <SelectItem value="damaged">Produto danificado</SelectItem>
-                      <SelectItem value="not_as_described">Não corresponde à descrição</SelectItem>
-                      <SelectItem value="size_issue">Problema com tamanho</SelectItem>
-                      <SelectItem value="quality_issue">Problema de qualidade</SelectItem>
-                      <SelectItem value="changed_mind">Mudei de ideia</SelectItem>
-                      <SelectItem value="other">Outro motivo</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Description */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Descrição Adicional
-                  </label>
-                  <Textarea
-                    value={returnDescription}
-                    onChange={(e) => setReturnDescription(e.target.value)}
-                    placeholder="Descreva detalhadamente o problema ou motivo do retorno..."
-                    rows={4}
-                  />
-                </div>
-
-                {/* Return Policy Info */}
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h4 className="text-sm font-medium text-blue-900 mb-1">Política de Retorno</h4>
-                      <ul className="text-xs text-blue-800 space-y-1">
-                        <li>• Retornos devem ser solicitados dentro de 30 dias após a entrega</li>
-                        <li>• Produtos devem estar em condições originais e com embalagem intacta</li>
-                        <li>• Custos de envio do retorno podem ser cobrados</li>
-                        <li>• Reembolso será processado após aprovação e recebimento do item</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50">
-              <Button
-                type="button"
-                onClick={() => setShowReturnModal(false)}
-                variant="outline"
-                className="px-4 py-2 text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
-              >
-                Cancelar
-              </Button>
-              <Button
-                onClick={handleReturnRequest}
-                disabled={isSubmittingReturn || selectedItems.length === 0 || !returnReason}
-                className="px-4 py-2 text-sm font-medium bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmittingReturn ? 'Enviando...' : 'Solicitar Retorno'}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 } 

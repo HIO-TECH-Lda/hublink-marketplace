@@ -2,46 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-
-export interface Refund {
-  _id: string;
-  orderId: string | {
-    _id: string;
-    orderNumber: string;
-    createdAt: string;
-    total?: number;
-  };
-  sellerId: string | {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email?: string;
-  };
-  buyerId: string | {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email?: string;
-  };
-  productId: string | {
-    _id: string;
-    name: string;
-    primaryImage?: string;
-  };
-  productName: string;
-  amount: number;
-  currency: string;
-  status: 'pending' | 'approved' | 'rejected';
-  reason: string;
-  description: string;
-  images?: string[];
-  requestedAt: string;
-  processedAt?: string;
-  processedBy?: string;
-  rejectionReason?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import type { Refund } from '@/types/api';
 
 export interface RefundStatistics {
   total: number;
@@ -172,7 +133,9 @@ export const useCreateRefundRequest = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['refunds', 'my-refunds'] });
-      queryClient.invalidateQueries({ queryKey: ['order'] });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === 'order',
+      });
       toast({
         title: 'Solicitação de reembolso criada',
         description: 'Sua solicitação de reembolso foi enviada com sucesso.',

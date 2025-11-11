@@ -161,9 +161,52 @@ export interface Address {
 
 export interface Payment {
   method: string;
-  status: 'pending' | 'paid' | 'failed' | 'refunded';
+  status: 'pending' | 'paid' | 'completed' | 'failed' | 'refunded';
   amount: number;
   currency: string;
+  transactionId?: string;
+}
+
+export interface RefundParticipant {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  fullName?: string;
+  id?: string;
+}
+
+export interface RefundProduct {
+  _id: string;
+  name: string;
+  primaryImage?: string;
+  productImage?: string;
+  calculatedDiscountPercentage?: number;
+  inStock?: boolean;
+  hasActiveDiscount?: boolean;
+  id?: string;
+}
+
+export interface Refund {
+  _id: string;
+  orderId: string | { _id: string; orderNumber?: string; createdAt?: string; total?: number };
+  orderItemId?: string | { _id: string };
+  sellerId?: string | RefundParticipant;
+  buyerId?: string | RefundParticipant;
+  productId: string | RefundProduct;
+  productName: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'approved' | 'rejected';
+  reason: string;
+  description: string;
+  images?: string[];
+  requestedAt: string;
+  processedAt?: string;
+  processedBy?: string;
+  rejectionReason?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ReturnRequest {
@@ -191,7 +234,7 @@ export interface Order {
   billingAddress: Address;
   payment: Payment;
   paymentMethod?: string;
-  paymentStatus?: 'pending' | 'paid' | 'failed' | 'refunded';
+  paymentStatus?: 'pending' | 'paid' | 'completed' | 'failed' | 'refunded';
   status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
   orderStatus?: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
   totalAmount: number;
@@ -205,6 +248,17 @@ export interface Order {
   notes?: string;
   currency: string;
   returnRequest?: ReturnRequest;
+  refunds?: Refund[];
+  itemCount?: number;
+  isPending?: boolean;
+  isConfirmed?: boolean;
+  isProcessing?: boolean;
+  isShipped?: boolean;
+  isDelivered?: boolean;
+  isCancelled?: boolean;
+  isRefunded?: boolean;
+  canCancel?: boolean;
+  canRefund?: boolean;
   createdAt: string;
   updatedAt: string;
   date?: string;
