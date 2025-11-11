@@ -1,8 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import apiClient from '@/lib/api-client';
 import { Order } from '@/types/api';
 
-export const useUserOrders = (params?: { limit?: number }) => {
+export const useUserOrders = (
+  params?: { limit?: number; page?: number },
+  options?: Pick<UseQueryOptions<Order[]>, 'enabled'>,
+) => {
   return useQuery({
     queryKey: ['orders', 'user', params],
     queryFn: async () => {
@@ -11,6 +14,7 @@ export const useUserOrders = (params?: { limit?: number }) => {
       });
       return response.data.data.orders as Order[];
     },
+    enabled: options?.enabled ?? true,
   });
 };
 

@@ -1,79 +1,87 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Star, CheckCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Package } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import ReviewForm from '@/components/reviews/ReviewForm';
+import ReviewForm, { ReviewFormValues } from '@/components/reviews/ReviewForm';
 import StarRating from '@/components/reviews/StarRating';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
-
-interface ReviewData {
-  rating: number;
-  title: string;
-  comment: string;
-  images: File[];
-}
+import { useAuth } from '@/contexts/AuthContext';
+import { useProduct } from '@/hooks/useProducts';
+import { useUserOrders } from '@/hooks/useOrders';
+import { useCreateReview } from '@/hooks/useReviews';
+import { formatCurrency } from '@/lib/payment';
 
 export default function ProductReviewPage() {
   const params = useParams();
   const router = useRouter();
-  const { state } = useMarketplace();
   const productId = params.id as string;
-  
-  const [product, setProduct] = useState<any>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { loading: authLoading, isAuthenticated } = useAuth();
+  const { data: product, isLoading: productLoading, error: productError } = useProduct(productId);
+  const {
+    data: orders,
+    isLoading: ordersLoading,
+  } = useUserOrders({ limit: 50 }, { enabled: isAuthenticated });
+  const createReview = useCreateReview();
+
   const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState('');
 
-  useEffect(() => {
-    // Find product from context
-    const foundProduct = state.products.find(p => p.id === productId);
-    if (foundProduct) {
-      setProduct(foundProduct);
-    } else {
-      setError('Produto não encontrado.');
-    }
-  }, [productId, state.products]);
+  const eligibleOrders = useMemo(() => {
+    if (!orders || !product) return [];
 
-  // Check if user is authenticated
-  if (!state.isAuthenticated || !state.user) {
-    return (
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para avaliar produtos.</p>
-          <Link href="/entrar">
-            <Button className="bg-primary hover:bg-primary-hard text-white">
-              Fazer Login
-            </Button>
-          </Link>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
+    const normalizedProductId = product._id || productId;
+    return orders.filter((order) => {
+      const status = (order.status || '').toLowerCase();
+      const isDeliveredOrCompleted = status === 'delivered' || status === 'completed';
+      if (!isDeliveredOrCompleted) return false;
 
-  const handleSubmitReview = async (reviewData: ReviewData) => {
-    setIsSubmitting(true);
-    setError('');
+      const containsProduct = (order.items || []).some((item) => {
+        const itemProductId =
+          item.productId?._id ||
+          (typeof item.productId === 'string' ? item.productId : undefined) ||
+          item.product?._id ||
+          (item.product as any)?.id;
+        return itemProductId === normalizedProductId;
+      });
+
+      return containsProduct;
+    });
+  }, [orders, product, productId]);
+
+  const orderOptions = useMemo(() => {
+    return eligibleOrders.map((order) => {
+      const id = order._id || (order as any).id;
+      const label = `Pedido #${order.orderNumber || (order._id || '').slice(-6)}`;
+      const description = `${new Date(order.createdAt || order.date || '').toLocaleDateString('pt-BR')} • ${formatCurrency(
+        order.totalAmount || order.total || 0,
+      )}`;
+      return { id, label, description };
+    });
+  }, [eligibleOrders]);
+
+  const isLoadingState = authLoading || productLoading || (isAuthenticated && ordersLoading);
+
+  const handleSubmitReview = async (formValues: ReviewFormValues) => {
+    if (!product) return;
 
     try {
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Mock success
+      await createReview.mutateAsync({
+        productId: product._id,
+        orderId: formValues.orderId,
+        rating: formValues.rating,
+        title: formValues.title,
+        content: formValues.content,
+        images: formValues.images,
+      });
       setIsSuccess(true);
-    } catch (err) {
-      setError('Erro ao enviar avaliação. Tente novamente.');
-    } finally {
-      setIsSubmitting(false);
+    } catch (error) {
+      // mutation already displays toast; no further action
     }
   };
 
@@ -81,32 +89,75 @@ export default function ProductReviewPage() {
     router.back();
   };
 
+  if (isLoadingState) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-primary" />
+          <p className="text-gray-6">Carregando informações...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="mb-4 text-2xl font-bold text-gray-9">Acesso Negado</h1>
+          <p className="mb-8 text-gray-6">Você precisa estar logado para avaliar produtos.</p>
+          <Link href="/entrar">
+            <Button className="bg-primary text-white hover:bg-primary-hard">Fazer Login</Button>
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (productError || !product) {
+    return (
+      <div className="min-h-screen bg-gray-1">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="mb-4 text-2xl font-bold text-gray-9">Erro</h1>
+          <p className="mb-8 text-gray-6">Não foi possível carregar as informações do produto.</p>
+          <Link href="/loja">
+            <Button className="bg-primary text-white hover:bg-primary-hard">Voltar para a loja</Button>
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
-        
+
         <div className="container py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-md mx-auto">
+          <div className="mx-auto max-w-md">
             <Card className="text-center">
               <CardHeader>
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                  <CheckCircle className="h-8 w-8 text-green-600" />
                 </div>
-                <CardTitle className="text-2xl font-bold text-gray-9">
-                  Avaliação Enviada!
-                </CardTitle>
+                <CardTitle className="text-2xl font-bold text-gray-9">Avaliação Enviada!</CardTitle>
                 <CardDescription className="text-gray-6">
                   Obrigado por compartilhar sua experiência.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-6 mb-6">
+                <p className="mb-6 text-sm text-gray-6">
                   Sua avaliação foi enviada com sucesso e será revisada em breve.
                 </p>
                 <div className="space-y-2">
-                  <Link href={`/produto/${productId}`}>
-                    <Button className="w-full bg-primary hover:bg-primary-hard text-white">
+                  <Link href={`/produto/${product._id}`}>
+                    <Button className="w-full bg-primary text-white hover:bg-primary-hard">
                       Voltar ao Produto
                     </Button>
                   </Link>
@@ -120,101 +171,78 @@ export default function ProductReviewPage() {
             </Card>
           </div>
         </div>
-        
+
         <Footer />
       </div>
     );
   }
 
-  if (error && !product) {
-    return (
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Erro</h1>
-          <p className="text-gray-6 mb-8">{error}</p>
-          <Link href="/loja">
-            <Button className="bg-primary hover:bg-primary-hard text-white">
-              Voltar para as Compras
-            </Button>
-          </Link>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-gray-1">
-        <Header />
-        <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-6">Carregando produto...</p>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
+  const primaryImage = product.primaryImage || (Array.isArray(product.images) ? product.images[0] : undefined);
 
   return (
     <div className="min-h-screen bg-gray-1">
       <Header />
-      
+
       <div className="container py-8 px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="text-sm text-gray-6 mb-6">
-          <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/loja" className="hover:text-primary"> Loja</Link> / 
-          <Link href={`/produto/${product.id}`} className="hover:text-primary"> {product.name}</Link> / 
+        <nav className="mb-6 text-sm text-gray-6">
+          <Link href="/" className="hover:text-primary">
+            Início
+          </Link>{' '}
+          /
+          <Link href="/loja" className="hover:text-primary">
+            {' '}
+            Loja
+          </Link>{' '}
+          /
+          <Link href={`/produto/${product._id}`} className="hover:text-primary">
+            {' '}
+            {product.name}
+          </Link>{' '}
+          /
           <span className="text-primary">Avaliar</span>
         </nav>
 
-        <div className="max-w-2xl mx-auto">
-          {/* Header */}
+        <div className="mx-auto max-w-2xl">
           <div className="mb-8">
-            <Link 
-              href={`/produto/${product.id}`}
-              className="inline-flex items-center text-sm text-gray-6 hover:text-primary mb-4"
+            <Link
+              href={`/produto/${product._id}`}
+              className="mb-4 inline-flex items-center text-sm text-gray-6 hover:text-primary"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Voltar ao Produto
             </Link>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Avaliar Produto</h1>
-            <p className="text-gray-6">
-              Compartilhe sua experiência com outros compradores
-            </p>
+            <h1 className="mb-2 text-3xl font-bold text-gray-9">Avaliar Produto</h1>
+            <p className="text-gray-6">Compartilhe sua experiência com outros compradores</p>
           </div>
 
-          {/* Product Info */}
           <Card className="mb-8">
             <CardContent className="p-4">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
-                  <img
-                    src={product.primaryImage}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-1">
+                  {primaryImage ? (
+                    <img src={typeof primaryImage === 'string' ? primaryImage : primaryImage.url} alt={product.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <Package className="h-8 w-8 text-gray-400" />
+                  )}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-gray-9 mb-1 truncate">{product.name}</h3>
+                <div className="min-w-0 flex-1">
+                  <h3 className="mb-1 truncate font-medium text-gray-9">{product.name}</h3>
                   <div className="flex items-center gap-2">
-                    <img
-                      src={product.sellerLogo || 'https://placehold.co/16x16/cccccc/000000?text=S'}
-                      alt={product.sellerName}
-                      className="w-4 h-4 rounded-full object-cover flex-shrink-0"
-                    />
-                    <span className="text-sm text-gray-6 truncate">Vendido por {product.sellerName}</span>
+                    {product.sellerLogo && (
+                      <img
+                        src={product.sellerLogo}
+                        alt={product.sellerName}
+                        className="h-4 w-4 flex-shrink-0 rounded-full object-cover"
+                      />
+                    )}
+                    {product.sellerName && (
+                      <span className="truncate text-sm text-gray-6">Vendido por {product.sellerName}</span>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2 mt-2">
-                    <StarRating
-                      rating={product.rating || 0}
-                      size="sm"
-                      showValue={true}
-                    />
+                  <div className="mt-2 flex items-center gap-2">
+                    <StarRating rating={product.rating || product.averageRating || 0} size="sm" showValue />
                     <span className="text-sm text-gray-5">
-                      ({product.reviewCount || 0} avaliações)
+                      ({product.totalReviews || product.reviews || 0} avaliações)
                     </span>
                   </div>
                 </div>
@@ -222,53 +250,42 @@ export default function ProductReviewPage() {
             </CardContent>
           </Card>
 
-          {/* Review Form */}
           <div className="mb-8">
             <ReviewForm
-              productId={product.id}
               productName={product.name}
+              orders={orderOptions}
               onSubmit={handleSubmitReview}
               onCancel={handleCancel}
+              isSubmitting={createReview.isPending}
             />
           </div>
 
-          {/* Guidelines */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-9">
-                Diretrizes para Avaliações
-              </CardTitle>
+              <CardTitle className="text-lg font-semibold text-gray-9">Diretrizes para Avaliações</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-sm text-gray-6">
-                  Seja honesto e objetivo sobre sua experiência com o produto
-                </p>
+                <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-primary"></div>
+                <p className="text-sm text-gray-6">Seja honesto e objetivo sobre sua experiência com o produto.</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-sm text-gray-6">
-                  Inclua detalhes específicos sobre qualidade, entrega e atendimento
-                </p>
+                <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-primary"></div>
+                <p className="text-sm text-gray-6">Inclua detalhes específicos sobre qualidade, entrega e atendimento.</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-sm text-gray-6">
-                  Evite linguagem ofensiva ou comentários pessoais sobre vendedores
-                </p>
+                <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-primary"></div>
+                <p className="text-sm text-gray-6">Evite linguagem ofensiva ou comentários pessoais sobre vendedores.</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-sm text-gray-6">
-                  Fotos ajudam outros compradores a entender melhor o produto
-                </p>
+                <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-primary"></div>
+                <p className="text-sm text-gray-6">Fotos ajudam outros compradores a entender melhor o produto.</p>
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

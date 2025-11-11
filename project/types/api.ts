@@ -281,19 +281,24 @@ export interface Category {
 // Review Types
 export interface Review {
   _id: string;
-  user: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    avatar?: string;
-  };
-  product: string;
-  order: string;
+  productId: string | { _id: string; name: string };
+  orderId: string | { _id: string; orderNumber?: string };
+  userId:
+    | string
+    | {
+        _id: string;
+        firstName: string;
+        lastName: string;
+        fullName?: string;
+        avatar?: string;
+      };
   rating: number;
   title: string;
   content: string;
-  isVerified: boolean;
-  isHelpful: number;
+  images?: string[];
+  isVerified?: boolean;
+  helpfulVotes?: number;
+  notHelpfulVotes?: number;
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
   updatedAt: string;

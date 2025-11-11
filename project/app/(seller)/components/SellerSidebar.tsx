@@ -3,21 +3,19 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Package, ShoppingBag, DollarSign, Settings, LogOut, User, TrendingUp, RotateCcw } from 'lucide-react';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { Package, ShoppingBag, DollarSign, Settings, LogOut, User, TrendingUp, RotateCcw, Star } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface SellerSidebarProps {
   className?: string;
 }
 
 export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
-  const { state, dispatch } = useMarketplace();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
 
   const handleLogout = () => {
-    dispatch({ type: 'SET_USER', payload: null });
-    dispatch({ type: 'SET_AUTHENTICATED', payload: false });
-    dispatch({ type: 'CLEAR_CART' });
+    logout();
   };
 
   const navigationItems = [
@@ -38,6 +36,12 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
       label: 'Meus Pedidos',
       icon: ShoppingBag,
       active: pathname === '/vendedor/pedidos'
+    },
+    {
+      href: '/vendedor/avaliacoes',
+      label: 'Avaliações',
+      icon: Star,
+      active: pathname === '/vendedor/avaliacoes'
     },
     {
       href: '/vendedor/reembolsos',
@@ -64,9 +68,9 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
       {/* User Profile */}
       <div className="flex items-center space-x-3 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-2">
         <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-          {state.user?.profileImage ? (
+          {user?.avatar ? (
             <img
-              src={state.user.profileImage}
+              src={user.avatar}
               alt="Profile"
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
             />
@@ -76,20 +80,20 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="font-semibold text-gray-9 text-sm sm:text-base truncate">
-            {state.user?.firstName} {state.user?.lastName}
+            {user?.firstName} {user?.lastName}
           </h3>
-          <p className="text-xs sm:text-sm text-gray-6 truncate">{state.user?.email}</p>
+          <p className="text-xs sm:text-sm text-gray-6 truncate">{user?.email}</p>
           <p className="text-xs text-primary font-medium">Vendedor</p>
         </div>
       </div>
 
       {/* Store Info */}
-      {state.user?.storeSettings && (
+      {user?.sellerProfile && (
         <div className="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-2">
           <h4 className="font-medium text-gray-9 text-sm sm:text-base mb-2">Minha Banca</h4>
           <div className="space-y-1 text-xs sm:text-sm text-gray-6">
-            <p className="font-medium text-gray-9">{state.user.storeSettings.storeName}</p>
-            <p className="text-gray-6">{state.user.storeSettings.storeEmail}</p>
+            <p className="font-medium text-gray-9">{user.sellerProfile.storeName || 'Minha Loja'}</p>
+            <p className="text-gray-6">{user.email}</p>
           </div>
         </div>
       )}

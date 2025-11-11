@@ -6,7 +6,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useAddToCart, useUpdateCartItem, useRemoveFromCart, useCart } from '@/hooks/useCart';
 import { useAddToWishlist, useRemoveFromWishlist, useCheckWishlistStatus } from '@/hooks/useWishlist';
 import { useProduct } from '@/hooks/useProducts';
+import { useProductReviews, useReviewStatistics, useMarkReviewHelpful } from '@/hooks/useReviews';
 import { useToast } from '@/hooks/use-toast';
+import ReviewList from '@/components/reviews/ReviewList';
 import { Heart, ShoppingCart, Star, Share2, Truck, Shield, ArrowLeft, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -27,6 +29,17 @@ export default function ProductPage() {
 
   // Fetch product data from API via hook
   const { data: product, isLoading, error } = useProduct(productId);
+
+  // Review hooks
+  const { data: reviewsData, isLoading: reviewsLoading } = useProductReviews(productId, {
+    page: 1,
+    limit: 10,
+    status: 'approved',
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+  });
+  const { data: reviewStats } = useReviewStatistics(productId);
+  const markHelpful = useMarkReviewHelpful();
 
   // Cart and wishlist hooks
   const addToCart = useAddToCart();
@@ -315,11 +328,18 @@ export default function ProductPage() {
                       <Star
                         key={i}
                         size={16}
-                        className={`${i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-3'}`}
+                        className={`${
+                          i < Math.round(reviewStats?.averageRating || product.rating || product.averageRating || 0)
+                            ? 'text-yellow-400 fill-current'
+                            : 'text-gray-3'
+                        }`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-6">(4.0 - 12 avaliações)</span>
+                  <span className="text-sm text-gray-6">
+                    ({(reviewStats?.averageRating || product.rating || product.averageRating || 0).toFixed(1)} -{' '}
+                    {reviewStats?.totalReviews || product.totalReviews || product.reviews || 0} avaliações)
+                  </span>
                 </div>
 
                 {/* Price */}
@@ -526,8 +546,12 @@ export default function ProductPage() {
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                       <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                      <span className="text-lg font-semibold text-gray-9">4.8</span>
-                      <span className="text-gray-6">(12 avaliações)</span>
+                      <span className="text-lg font-semibold text-gray-9">
+                        {(reviewStats?.averageRating || product.rating || product.averageRating || 0).toFixed(1)}
+                      </span>
+                      <span className="text-gray-6">
+                        ({reviewStats?.totalReviews || product.totalReviews || product.reviews || 0} avaliações)
+                      </span>
                     </div>
                   </div>
                   {isAuthenticated && (
@@ -539,111 +563,29 @@ export default function ProductPage() {
                   )}
                 </div>
 
-                {/* Mock Reviews */}
-                <div className="space-y-4">
-                  {/* Review 1 */}
-                  <div className="border border-gray-2 rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-2 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-gray-6">JS</span>
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-gray-9">João Silva</h4>
-                          <div className="flex items-center gap-2">
-                            <div className="flex">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Star
-                                  key={star}
-                                  className={`w-4 h-4 ${star <= 5 ? 'text-yellow-400 fill-current' : 'text-gray-3'}`}
-                                />
-                              ))}
-                            </div>
-                            <span className="text-sm text-gray-5">há 2 dias</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
-                        Compra Verificada
-                      </div>
-                    </div>
-                    <h5 className="font-medium text-gray-9 mb-2">Produto excelente!</h5>
-                    <p className="text-gray-7 text-sm">
-                      O tomate orgânico chegou muito fresco e com ótima qualidade. 
-                      Superou minhas expectativas. Recomendo!
-                    </p>
+                {/* Reviews List */}
+                {reviewsLoading ? (
+                  <div className="py-8 text-center">
+                    <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-primary" />
+                    <p className="text-gray-6">Carregando avaliações...</p>
                   </div>
-
-                  {/* Review 2 */}
-                  <div className="border border-gray-2 rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-2 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-gray-6">MS</span>
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-gray-9">Maria Santos</h4>
-                          <div className="flex items-center gap-2">
-                            <div className="flex">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Star
-                                  key={star}
-                                  className={`w-4 h-4 ${star <= 4 ? 'text-yellow-400 fill-current' : 'text-gray-3'}`}
-                                />
-                              ))}
-                            </div>
-                            <span className="text-sm text-gray-5">há 1 semana</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <h5 className="font-medium text-gray-9 mb-2">Boa qualidade</h5>
-                    <p className="text-gray-7 text-sm">
-                      Produto de boa qualidade, entrega rápida. 
-                      O sabor é muito bom e fresco.
-                    </p>
-                  </div>
-
-                  {/* Review 3 */}
-                  <div className="border border-gray-2 rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-2 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-gray-6">PS</span>
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-gray-9">Pedro Souza</h4>
-                          <div className="flex items-center gap-2">
-                            <div className="flex">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Star
-                                  key={star}
-                                  className={`w-4 h-4 ${star <= 5 ? 'text-yellow-400 fill-current' : 'text-gray-3'}`}
-                                />
-                              ))}
-                            </div>
-                            <span className="text-sm text-gray-5">há 2 semanas</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
-                        Compra Verificada
-                      </div>
-                    </div>
-                    <h5 className="font-medium text-gray-9 mb-2">Perfeito!</h5>
-                    <p className="text-gray-7 text-sm">
-                      Tomates orgânicos deliciosos! Muito saborosos e frescos. 
-                      Vou comprar novamente.
-                    </p>
-                  </div>
-                </div>
+                ) : (
+                  <ReviewList
+                    reviews={reviewsData?.reviews || []}
+                    onHelpful={(reviewId, isHelpful) => {
+                      markHelpful.mutate({ reviewId, isHelpful });
+                    }}
+                  />
+                )}
 
                 {/* Load More Reviews */}
-                <div className="text-center pt-4">
-                  <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-                    Ver Todas as Avaliações
-                  </Button>
-                </div>
+                {reviewsData && reviewsData.totalPages > 1 && (
+                  <div className="text-center pt-4">
+                    <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                      Ver Todas as Avaliações
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
           </div>

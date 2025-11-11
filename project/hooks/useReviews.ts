@@ -1,13 +1,34 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '@/lib/api-client';
+import { useToast } from '@/hooks/use-toast';
 import { Review } from '@/types/api';
 
-export const useProductReviews = (productId: string) => {
+export interface ProductReviewsResponse {
+  reviews: Review[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  averageRating: number;
+}
+
+export const useProductReviews = (
+  productId: string,
+  params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+  },
+) => {
   return useQuery({
-    queryKey: ['reviews', 'product', productId],
+    queryKey: ['reviews', 'product', productId, params],
     queryFn: async () => {
-      const response = await apiClient.get(`/reviews/product/${productId}`);
-      return response.data.data as Review[];
+      const response = await apiClient.get(`/reviews/product/${productId}`, {
+        params,
+      });
+      return response.data.data as ProductReviewsResponse;
     },
     enabled: !!productId,
   });
@@ -26,7 +47,8 @@ export const useReviewStatistics = (productId: string) => {
 
 export const useCreateReview = () => {
   const queryClient = useQueryClient();
-  
+  const { toast } = useToast();
+
   return useMutation({
     mutationFn: async (reviewData: {
       productId: string;
@@ -34,26 +56,72 @@ export const useCreateReview = () => {
       rating: number;
       title: string;
       content: string;
+      images?: string[];
     }) => {
       const response = await apiClient.post('/reviews', reviewData);
       return response.data.data;
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['reviews', 'product', data.product] });
+    onSuccess: (_, variables) => {
+      toast({
+        title: 'Avaliação enviada',
+        description: 'Sua avaliação foi enviada para revisão.',
+      });
+      queryClient.invalidateQueries({ queryKey: ['reviews', 'product', variables.productId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews', 'statistics', variables.productId] });
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.message || error?.message || 'Não foi possível enviar a avaliação.';
+      toast({
+        title: 'Erro ao enviar avaliação',
+        description: message,
+        variant: 'destructive',
+      });
+      throw error;
     },
   });
 };
 
 export const useMarkReviewHelpful = () => {
   const queryClient = useQueryClient();
-  
+  const { toast } = useToast();
+
   return useMutation({
-    mutationFn: async (reviewId: string) => {
-      const response = await apiClient.post(`/reviews/${reviewId}/helpful`);
+    mutationFn: async ({ reviewId, isHelpful }: { reviewId: string; isHelpful: boolean }) => {
+      const response = await apiClient.post(`/reviews/${reviewId}/helpful`, { isHelpful });
       return response.data.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['reviews', 'product'] });
+      toast({
+        title: 'Feedback registrado',
+        description: variables.isHelpful
+          ? 'Obrigado por marcar esta avaliação como útil.'
+          : 'Seu feedback foi registrado.',
+      });
+    },
+  });
+};
+
+export const useSellerReviews = (params?: {
+  page?: number;
+  limit?: number;
+  status?: string;
+  productId?: string;
+}) => {
+  return useQuery({
+    queryKey: ['reviews', 'seller', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/reviews/seller/my-reviews', { params });
+      return response.data.data as {
+        reviews: Review[];
+        pagination?: {
+          page: number;
+          limit: number;
+          total: number;
+          pages: number;
+        };
+      };
     },
   });
 };
