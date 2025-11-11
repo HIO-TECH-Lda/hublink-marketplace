@@ -210,7 +210,16 @@ export class OrderService {
 
       const order = await Order.findOne(query)
         .populate('userId', 'firstName lastName email')
-        .populate('cancelledBy', 'firstName lastName');
+        .populate('cancelledBy', 'firstName lastName')
+        .populate({
+          path: 'refunds',
+          options: { sort: { requestedAt: -1 } },
+          populate: [
+            { path: 'buyerId', select: 'firstName lastName email' },
+            { path: 'sellerId', select: 'firstName lastName email' },
+            { path: 'productId', select: 'name primaryImage' }
+          ]
+        });
 
       return order;
     } catch (error) {
@@ -228,7 +237,16 @@ export class OrderService {
 
       const order = await Order.findOne(query)
         .populate('userId', 'firstName lastName email')
-        .populate('cancelledBy', 'firstName lastName');
+        .populate('cancelledBy', 'firstName lastName')
+        .populate({
+          path: 'refunds',
+          options: { sort: { requestedAt: -1 } },
+          populate: [
+            { path: 'buyerId', select: 'firstName lastName email' },
+            { path: 'sellerId', select: 'firstName lastName email' },
+            { path: 'productId', select: 'name primaryImage' }
+          ]
+        });
 
       return order;
     } catch (error) {

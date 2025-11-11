@@ -365,7 +365,15 @@ const orderSchema = new Schema<IOrder>({
     required: false
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+orderSchema.virtual('refunds', {
+  ref: 'Refund',
+  localField: '_id',
+  foreignField: 'orderId'
 });
 
 // Virtuals
