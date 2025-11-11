@@ -2,11 +2,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '@/lib/api-client';
 import { Order } from '@/types/api';
 
-export const useUserOrders = () => {
+export const useUserOrders = (params?: { limit?: number }) => {
   return useQuery({
-    queryKey: ['orders', 'user'],
+    queryKey: ['orders', 'user', params],
     queryFn: async () => {
-      const response = await apiClient.get('/orders/my-orders');
+      const response = await apiClient.get('/orders/my-orders', {
+        params,
+      });
       return response.data.data.orders as Order[];
     },
   });

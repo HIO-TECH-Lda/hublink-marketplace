@@ -3,13 +3,14 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserOrders } from '@/hooks/useOrders';
-import { ArrowLeft, Eye, Package, Calendar, DollarSign, Clock } from 'lucide-react';
+import { ArrowLeft, Package, Calendar, DollarSign, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import BuyerSidebar from '../components/BuyerSidebar';
 import { formatCurrency } from '@/lib/payment';
+import { OrdersTable } from '@/components/orders/OrdersTable';
 
 export default function OrderHistoryPage() {
   const { user } = useAuth();
@@ -29,61 +30,6 @@ export default function OrderHistoryPage() {
   }
 
   const userOrders = orders || [];
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'delivered':
-        return 'text-green-600 bg-green-50';
-      case 'shipped':
-        return 'text-blue-600 bg-blue-50';
-      case 'processing':
-        return 'text-yellow-600 bg-yellow-50';
-      case 'canceled':
-        return 'text-red-600 bg-red-50';
-      case 'pending':
-        return 'text-orange-600 bg-orange-50';
-      default:
-        return 'text-gray-600 bg-gray-50';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'delivered':
-        return <Package className="w-4 h-4" />;
-      case 'shipped':
-        return <Package className="w-4 h-4" />;
-      case 'processing':
-        return <Clock className="w-4 h-4" />;
-      case 'canceled':
-        return <Package className="w-4 h-4" />;
-      case 'pending':
-        return <Clock className="w-4 h-4" />;
-      default:
-        return <Package className="w-4 h-4" />;
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'Pendente';
-      case 'confirmed':
-        return 'Confirmado';
-      case 'processing':
-        return 'Em Processamento';
-      case 'shipped':
-        return 'Enviado';
-      case 'delivered':
-        return 'Entregue';
-      case 'canceled':
-        return 'Cancelado';
-      case 'refunded':
-        return 'Reembolsado';
-      default:
-        return status;
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-1">
@@ -179,90 +125,7 @@ export default function OrderHistoryPage() {
                   </Link>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Pedido
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Data
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Total
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Itens
-                        </th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Ações
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {userOrders.map((order: any) => (
-                        <tr key={order._id || order.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">
-                              #{order.orderNumber || order._id?.slice(-6)}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center text-sm text-gray-900">
-                              <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-                              {new Date(order.createdAt || order.date).toLocaleDateString('pt-MZ')}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                              {getStatusIcon(order.status)}
-                              <span className="ml-1">{getStatusText(order.status)}</span>
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {formatCurrency(order.totalAmount || order.total || 0)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {order.items?.length || 0} {(order.items?.length || 0) === 1 ? 'item' : 'itens'}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div className="flex items-center justify-end space-x-2">
-                              <Link 
-                                href={`/pedido/${order._id || order.id}`}
-                                className="inline-flex items-center text-green-600 hover:text-green-900"
-                              >
-                                <Eye className="w-4 h-4 mr-1" />
-                                Ver
-                              </Link>
-                              {order.status === 'pending' && (
-                                <Link 
-                                  href={`/pagamento/${order._id || order.id}`}
-                                  className="inline-flex items-center text-blue-600 hover:text-blue-900"
-                                >
-                                  <DollarSign className="w-4 h-4 mr-1" />
-                                  Pagar
-                                </Link>
-                              )}
-                              {(order.status === 'delivered' || order.status === 'shipped') && (
-                                <Link 
-                                  href={`/reembolso/${order._id || order.id}`}
-                                  className="inline-flex items-center text-orange-600 hover:text-orange-900"
-                                >
-                                  <ArrowLeft className="w-4 h-4 mr-1" />
-                                  Reembolso
-                                </Link>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <OrdersTable orders={userOrders} />
               )}
             </div>
 

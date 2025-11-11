@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Package, Heart, ShoppingCart, Settings, LogOut, User, Edit, Eye } from 'lucide-react';
+import { Package, Heart, ShoppingCart, Settings, LogOut, User, Edit } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -12,37 +12,15 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { formatCurrency } from '@/lib/payment';
 import Link from 'next/link';
 import BuyerSidebar from '../components/BuyerSidebar';
+import { OrdersTable } from '@/components/orders/OrdersTable';
 
 export default function UserDashboardPage() {
   const { user } = useAuth();
-  const { data: orders, isLoading: ordersLoading } = useUserOrders();
+  const { data: orders, isLoading: ordersLoading } = useUserOrders({ limit: 5 });
   const { data: cart } = useCart();
   const { data: wishlist } = useWishlist();
 
-  // Get recent orders (last 3)
-  const recentOrders = orders?.slice(0, 3) || [];
-
-  const getStatusColor = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case 'delivered': return 'text-primary';
-      case 'shipped': return 'text-warning';
-      case 'processing': return 'text-blue-600';
-      case 'pending': return 'text-yellow-600';
-      case 'cancelled': return 'text-red-600';
-      default: return 'text-gray-600';
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case 'delivered': return 'Entregue';
-      case 'shipped': return 'A caminho';
-      case 'processing': return 'Processando';
-      case 'pending': return 'Pendente';
-      case 'cancelled': return 'Cancelado';
-      default: return status;
-    }
-  };
+  const dashboardOrders = orders ?? [];
 
   return (
     <div className="min-h-screen bg-gray-1">
@@ -148,61 +126,22 @@ export default function UserDashboardPage() {
                 </Link>
               </div>
 
-              {ordersLoading ? (
-                <div className="text-center py-6 sm:py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                  <p className="text-gray-6 text-sm sm:text-base">Carregando pedidos...</p>
-                </div>
-              ) : recentOrders.length > 0 ? (
-                <div className="space-y-3 sm:space-y-4">
-                  {recentOrders.map((order: any) => (
-                    <div key={order._id || order.id} className="border border-gray-2 rounded-lg p-3 sm:p-4">
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 items-center">
-                        <div className="col-span-2 sm:col-span-1">
-                          <p className="text-xs sm:text-sm font-medium text-gray-7">ID do Pedido</p>
-                          <p className="text-sm sm:text-base font-medium text-gray-9">#{order.orderNumber || order._id?.slice(-6)}</p>
-                        </div>
-                        <div className="col-span-1">
-                          <p className="text-xs sm:text-sm font-medium text-gray-7">Data</p>
-                          <p className="text-sm sm:text-base text-gray-6">
-                            {new Date(order.createdAt || order.date).toLocaleDateString('pt-BR')}
-                          </p>
-                        </div>
-                        <div className="col-span-1">
-                          <p className="text-xs sm:text-sm font-medium text-gray-7">Total</p>
-                          <p className="text-sm sm:text-base text-gray-9">
-                            {formatCurrency(order.totalAmount || order.total)}
-                          </p>
-                        </div>
-                        <div className="col-span-1">
-                          <p className="text-xs sm:text-sm font-medium text-gray-7">Status</p>
-                          <p className={`text-sm sm:text-base font-medium ${getStatusColor(order.status)}`}>
-                            {getStatusText(order.status)}
-                          </p>
-                        </div>
-                        <div className="col-span-2 sm:col-span-1 flex justify-end">
-                          <Link href={`/pedido/${order._id || order.id}`}>
-                            <Button variant="outline" size="sm" className="text-xs sm:text-sm w-full sm:w-auto">
-                              <Eye size={12} className="mr-1 sm:mr-2" />
-                              Ver Detalhes
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-6 sm:py-8">
-                  <Package size={40} className="mx-auto text-gray-4 mb-3 sm:mb-4" />
-                  <p className="text-gray-6 text-sm sm:text-base">Você ainda não fez nenhum pedido</p>
-                  <Link href="/loja">
-                    <Button className="mt-3 sm:mt-4 bg-primary hover:bg-primary-hard text-white text-sm sm:text-base">
-                      Começar a Comprar
-                    </Button>
-                  </Link>
-                </div>
-              )}
+              <OrdersTable
+                orders={dashboardOrders}
+                isLoading={ordersLoading}
+                limit={5}
+                emptyMessage={
+                  <div className="text-center">
+                    <Package size={40} className="mx-auto text-gray-4 mb-3 sm:mb-4" />
+                    <p className="text-gray-6 text-sm sm:text-base">Você ainda não fez nenhum pedido</p>
+                    <Link href="/loja">
+                      <Button className="mt-3 sm:mt-4 bg-primary hover:bg-primary-hard text-white text-sm sm:text-base">
+                        Ir às Compras
+                      </Button>
+                    </Link>
+                  </div>
+                }
+              />
             </div>
           </div>
         </div>
