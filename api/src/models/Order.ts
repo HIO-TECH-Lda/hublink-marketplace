@@ -378,6 +378,9 @@ orderSchema.virtual('refunds', {
 
 // Virtuals
 orderSchema.virtual('itemCount').get(function(this: IOrder): number {
+  if (!this.items || !Array.isArray(this.items)) {
+    return 0;
+  }
   return this.items.reduce((total, item) => total + item.quantity, 0);
 });
 
@@ -414,6 +417,9 @@ orderSchema.virtual('canCancel').get(function(this: IOrder): boolean {
 });
 
 orderSchema.virtual('canRefund').get(function(this: IOrder): boolean {
+  if (!this.payment) {
+    return false;
+  }
   return ['delivered', 'shipped'].includes(this.status) && this.payment.status === 'completed';
 });
 

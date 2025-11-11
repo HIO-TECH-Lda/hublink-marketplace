@@ -357,6 +357,38 @@ export class ReviewController {
   }
 
   /**
+   * Get seller's reviews (all reviews on seller's products)
+   */
+  static async getSellerReviews(req: Request, res: Response) {
+    try {
+      const sellerId = req.user!.userId;
+      const { 
+        page = 1, 
+        limit = 50,
+        status
+      } = req.query;
+
+      const result = await ReviewService.getSellerReviews(sellerId, {
+        page: Number(page),
+        limit: Number(limit),
+        status: status as string
+      });
+
+      return res.json({
+        success: true,
+        message: 'Seller reviews retrieved successfully',
+        data: result
+      });
+    } catch (error: any) {
+      console.error('Get seller reviews error:', error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || 'Failed to retrieve seller reviews'
+      });
+    }
+  }
+
+  /**
    * Get review by ID
    */
   static async getReviewById(req: Request, res: Response) {

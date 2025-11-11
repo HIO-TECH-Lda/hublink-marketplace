@@ -456,6 +456,76 @@ export class ReviewService {
   }
 
   /**
+   * Get reviews for seller's products
+   */
+  static async getSellerReviews(
+    sellerId: string,
+    options: {
+      page?: number;
+      limit?: number;
+      status?: string;
+    } = {}
+  ): Promise<ReviewListResponse> {
+    try {
+      const { page = 1, limit = 10, status } = options;
+
+      // Get all product IDs for this seller
+      const sellerProducts = await Product.find({ sellerId }).select('_id');
+      const productIds = sellerProducts.map((p: any) => p._id);
+
+      if (productIds.length === 0) {
+        return {
+          reviews: [],
+          total: 0,
+          page,
+          limit,
+          totalPages: 0,
+          averageRating: 0
+        };
+      }
+
+      // Build query
+      const query: any = { productId: { $in: productIds } };
+      if (status) {
+        query.status = status;
+      }
+
+      // Get reviews with pagination
+      const reviews = await Review.find(query)
+        .populate('productId', 'name images primaryImage sellerName')
+        .populate('userId', 'firstName lastName avatar')
+        .populate('orderId', 'orderNumber')
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+      const total = await Review.countDocuments(query);
+
+      // Calculate average rating for seller's products
+      const ratingStats = await Review.aggregate([
+        { $match: { productId: { $in: productIds }, status: 'approved' } },
+        { $group: { _id: null, averageRating: { $avg: '$rating' } } }
+      ]);
+
+      const averageRating = ratingStats.length > 0 
+        ? Math.round(ratingStats[0].averageRating * 10) / 10 
+        : 0;
+
+      return {
+        reviews,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        averageRating
+      };
+    } catch (error) {
+      console.error('Error getting seller reviews:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Get review analytics for admin dashboard
    */
   static async getReviewAnalytics(): Promise<{

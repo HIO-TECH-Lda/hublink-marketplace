@@ -79,6 +79,13 @@ router.get('/user/reviews',
   ReviewController.getUserReviews
 );
 
+// Get seller's reviews (requires seller authentication)
+router.get('/seller/my-reviews', 
+  authenticateToken, 
+  authorizeRoles('seller'), 
+  ReviewController.getSellerReviews
+);
+
 // Get recent reviews (public)
 router.get('/recent/reviews', 
   ReviewController.getRecentReviews
