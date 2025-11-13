@@ -18,6 +18,7 @@ import emailRoutes from './routes/email';
 import imaliRoutes from './routes/imali';
 import payoutRoutes from './routes/payouts';
 import refundRoutes from './routes/refunds';
+import ticketRoutes from './routes/tickets';
 
 // Load environment variables
 dotenv.config();
@@ -207,6 +208,9 @@ app.use('/api/v1/payouts', payoutRoutes);
 
 // Refund routes (seller only)
 app.use('/api/v1/refunds', refundRoutes);
+
+// Ticket routes
+app.use('/api/v1/tickets', ticketRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {

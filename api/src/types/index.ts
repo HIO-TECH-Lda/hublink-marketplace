@@ -393,30 +393,68 @@ export interface IWishlist {
 }
 
 // Ticket Types
-export interface ITicket {
-  _id?: string;
-  title: string;
-  description: string;
-  category: 'technical_issue' | 'payment_problem' | 'order_issue' | 'return_request' | 'account_issue';
+export type TicketCategory = 
+  | 'technical_issue' 
+  | 'payment_problem' 
+  | 'order_issue' 
+  | 'return_request' 
+  | 'account_issue' 
+  | 'product_issue' 
+  | 'shipping_problem' 
+  | 'general_inquiry' 
+  | 'feature_request' 
+  | 'bug_report';
 
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'open' | 'in_progress' | 'waiting_for_user' | 'resolved' | 'closed';
-  userId: string;
-  userType: 'buyer' | 'seller' | 'admin';
-  assignedTo?: string;
-  orderId?: string;
-  messages: ITicketMessage[];
-  createdAt?: Date;
-  updatedAt?: Date;
+export type TicketPriority = 'low' | 'medium' | 'high' | 'urgent';
+
+export type TicketStatus = 
+  | 'open' 
+  | 'in_progress' 
+  | 'waiting_for_user' 
+  | 'waiting_for_third_party' 
+  | 'resolved' 
+  | 'closed';
+
+export interface ITicketAttachment {
+  _id?: string;
+  ticketId: string;
+  messageId?: string;
+  fileName: string;
+  fileUrl: string;
+  publicId?: string;
+  fileSize: number;
+  mimeType: string;
+  uploadedAt?: Date;
 }
 
 export interface ITicketMessage {
+  _id?: string;
+  ticketId: string;
   userId: string;
   userType: 'buyer' | 'seller' | 'admin' | 'support';
   message: string;
   isInternal: boolean;
-  attachments?: string[];
+  attachments?: ITicketAttachment[];
   createdAt?: Date;
+}
+
+export interface ITicket {
+  _id?: string;
+  title: string;
+  description: string;
+  category: TicketCategory;
+  priority: TicketPriority;
+  status: TicketStatus;
+  userId: string;
+  userType: 'buyer' | 'seller' | 'admin';
+  assignedTo?: string;
+  orderId?: string;
+  productId?: string;
+  tags: string[];
+  attachments: ITicketAttachment[];
+  messages: ITicketMessage[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 // API Response Types

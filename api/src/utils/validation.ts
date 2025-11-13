@@ -965,6 +965,127 @@ export const requestPayoutSchema = Joi.object({
     })
 });
 
+// Ticket validation schemas
+export const createTicketSchema = Joi.object({
+  title: Joi.string()
+    .min(3)
+    .max(200)
+    .required()
+    .messages({
+      'string.min': 'Title must be at least 3 characters',
+      'string.max': 'Title cannot exceed 200 characters',
+      'any.required': 'Title is required'
+    }),
+  description: Joi.string()
+    .min(10)
+    .max(5000)
+    .required()
+    .messages({
+      'string.min': 'Description must be at least 10 characters',
+      'string.max': 'Description cannot exceed 5000 characters',
+      'any.required': 'Description is required'
+    }),
+  category: Joi.string()
+    .valid(
+      'technical_issue',
+      'payment_problem',
+      'order_issue',
+      'return_request',
+      'account_issue',
+      'product_issue',
+      'shipping_problem',
+      'general_inquiry',
+      'feature_request',
+      'bug_report'
+    )
+    .required()
+    .messages({
+      'any.only': 'Invalid category',
+      'any.required': 'Category is required'
+    }),
+  priority: Joi.string()
+    .valid('low', 'medium', 'high', 'urgent')
+    .required()
+    .messages({
+      'any.only': 'Invalid priority',
+      'any.required': 'Priority is required'
+    }),
+  orderId: Joi.string()
+    .optional(),
+  productId: Joi.string()
+    .optional(),
+  tags: Joi.array()
+    .items(Joi.string().max(50))
+    .max(10)
+    .optional(),
+  attachments: Joi.array()
+    .items(
+      Joi.object({
+        fileName: Joi.string().required(),
+        fileUrl: Joi.string().uri().required(),
+        fileSize: Joi.number().min(0).required(),
+        mimeType: Joi.string().required()
+      })
+    )
+    .optional()
+});
+
+export const updateTicketSchema = Joi.object({
+  status: Joi.string()
+    .valid(
+      'open',
+      'in_progress',
+      'waiting_for_user',
+      'waiting_for_third_party',
+      'resolved',
+      'closed'
+    )
+    .optional(),
+  priority: Joi.string()
+    .valid('low', 'medium', 'high', 'urgent')
+    .optional(),
+  assignedTo: Joi.string()
+    .optional(),
+  tags: Joi.array()
+    .items(Joi.string().max(50))
+    .max(10)
+    .optional()
+});
+
+export const addMessageSchema = Joi.object({
+  message: Joi.string()
+    .min(1)
+    .max(5000)
+    .required()
+    .messages({
+      'string.min': 'Message cannot be empty',
+      'string.max': 'Message cannot exceed 5000 characters',
+      'any.required': 'Message is required'
+    }),
+  isInternal: Joi.boolean()
+    .optional(),
+  attachments: Joi.array()
+    .items(
+      Joi.object({
+        fileName: Joi.string().required(),
+        fileUrl: Joi.string().uri().required(),
+        fileSize: Joi.number().min(0).required(),
+        mimeType: Joi.string().required()
+      })
+    )
+    .optional()
+});
+
+export const uploadAttachmentSchema = Joi.object({
+  fileName: Joi.string().required(),
+  fileSize: Joi.number().min(0).max(5 * 1024 * 1024).required(), // 5MB max
+  mimeType: Joi.string()
+    .valid('image/jpeg', 'image/png', 'image/gif', 'application/pdf')
+    .required(),
+  base64: Joi.string().required(),
+  messageId: Joi.string().optional()
+});
+
 // Validation middleware factory
 export const validateRequest = (schema: Joi.ObjectSchema) => {
   return (req: any, res: any, next: any) => {
