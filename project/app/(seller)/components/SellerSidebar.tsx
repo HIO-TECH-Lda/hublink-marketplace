@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Package, ShoppingBag, DollarSign, Settings, LogOut, User, TrendingUp, RotateCcw, Star } from 'lucide-react';
+import { Package, ShoppingBag, DollarSign, Settings, LogOut, User, TrendingUp, RotateCcw, Star, BarChart3, ChevronDown, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface SellerSidebarProps {
@@ -13,6 +13,7 @@ interface SellerSidebarProps {
 export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
   const { user, logout } = useAuth();
   const pathname = usePathname();
+  const [isFinancesOpen, setIsFinancesOpen] = useState(pathname?.startsWith('/vendedor/financas'));
 
   const handleLogout = () => {
     logout();
@@ -62,6 +63,36 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
       active: pathname === '/vendedor/configuracoes'
     }
   ];
+
+  const financeSubItems = [
+    {
+      href: '/vendedor/financas',
+      label: 'Dashboard',
+      active: pathname === '/vendedor/financas'
+    },
+    {
+      href: '/vendedor/financas/receitas',
+      label: 'Receitas',
+      active: pathname?.startsWith('/vendedor/financas/receitas')
+    },
+    {
+      href: '/vendedor/financas/despesas',
+      label: 'Despesas',
+      active: pathname?.startsWith('/vendedor/financas/despesas')
+    },
+    {
+      href: '/vendedor/financas/transacoes',
+      label: 'Transações',
+      active: pathname === '/vendedor/financas/transacoes'
+    },
+    {
+      href: '/vendedor/financas/relatorios',
+      label: 'Relatórios',
+      active: pathname === '/vendedor/financas/relatorios'
+    }
+  ];
+
+  const isFinancesActive = pathname?.startsWith('/vendedor/financas');
 
   return (
     <div className={`bg-white rounded-lg shadow-sm p-4 sm:p-6 ${className}`}>
@@ -117,6 +148,45 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
             </Link>
           );
         })}
+
+        {/* Finanças - Multi-level Menu */}
+        <div>
+          <button
+            onClick={() => setIsFinancesOpen(!isFinancesOpen)}
+            className={`w-full flex items-center justify-between space-x-2 sm:space-x-3 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base ${
+              isFinancesActive
+                ? 'text-primary bg-primary/10 font-medium'
+                : 'text-gray-7 hover:text-primary hover:bg-primary/5'
+            }`}
+          >
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <BarChart3 size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
+              <span>Finanças</span>
+            </div>
+            {isFinancesOpen ? (
+              <ChevronDown size={16} className="flex-shrink-0" />
+            ) : (
+              <ChevronRight size={16} className="flex-shrink-0" />
+            )}
+          </button>
+          {isFinancesOpen && (
+            <div className="ml-4 sm:ml-6 mt-1 space-y-1 border-l-2 border-gray-2 pl-3">
+              {financeSubItems.map((subItem) => (
+                <Link
+                  key={subItem.href}
+                  href={subItem.href}
+                  className={`block px-2 sm:px-3 py-2 rounded-lg transition-colors text-sm ${
+                    subItem.active
+                      ? 'text-primary bg-primary/10 font-medium'
+                      : 'text-gray-6 hover:text-primary hover:bg-primary/5'
+                  }`}
+                >
+                  {subItem.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </nav>
 
       {/* Logout Button */}
