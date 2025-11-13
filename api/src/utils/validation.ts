@@ -1086,6 +1086,133 @@ export const uploadAttachmentSchema = Joi.object({
   messageId: Joi.string().optional()
 });
 
+// Finance validation schemas
+export const createIncomeSchema = Joi.object({
+  amount: Joi.number()
+    .min(0.01)
+    .required()
+    .messages({
+      'number.min': 'Amount must be greater than 0',
+      'any.required': 'Amount is required'
+    }),
+  date: Joi.date()
+    .required()
+    .messages({
+      'any.required': 'Date is required'
+    }),
+  description: Joi.string()
+    .min(3)
+    .max(500)
+    .required()
+    .messages({
+      'string.min': 'Description must be at least 3 characters',
+      'string.max': 'Description cannot exceed 500 characters',
+      'any.required': 'Description is required'
+    }),
+  customerName: Joi.string()
+    .max(100)
+    .optional(),
+  paymentMethod: Joi.string()
+    .valid('cash', 'mpesa', 'bank_transfer', 'emola', 'other')
+    .required()
+    .messages({
+      'any.only': 'Invalid payment method',
+      'any.required': 'Payment method is required'
+    }),
+  category: Joi.string()
+    .optional()
+});
+
+export const createExpenseSchema = Joi.object({
+  amount: Joi.number()
+    .min(0.01)
+    .required()
+    .messages({
+      'number.min': 'Amount must be greater than 0',
+      'any.required': 'Amount is required'
+    }),
+  date: Joi.date()
+    .required()
+    .messages({
+      'any.required': 'Date is required'
+    }),
+  category: Joi.string()
+    .required()
+    .messages({
+      'any.required': 'Category is required'
+    }),
+  description: Joi.string()
+    .min(3)
+    .max(500)
+    .required()
+    .messages({
+      'string.min': 'Description must be at least 3 characters',
+      'string.max': 'Description cannot exceed 500 characters',
+      'any.required': 'Description is required'
+    }),
+  vendor: Joi.string()
+    .max(100)
+    .optional(),
+  paymentMethod: Joi.string()
+    .valid('cash', 'mpesa', 'bank_transfer', 'emola', 'other')
+    .required()
+    .messages({
+      'any.only': 'Invalid payment method',
+      'any.required': 'Payment method is required'
+    }),
+  isRecurring: Joi.boolean()
+    .optional(),
+  recurringConfig: Joi.object({
+    frequency: Joi.string()
+      .valid('daily', 'weekly', 'monthly', 'yearly')
+      .required(),
+    endDate: Joi.date()
+      .optional(),
+    nextDueDate: Joi.date()
+      .optional()
+  })
+    .optional()
+});
+
+export const updateTransactionSchema = Joi.object({
+  amount: Joi.number()
+    .min(0.01)
+    .optional(),
+  description: Joi.string()
+    .min(3)
+    .max(500)
+    .optional(),
+  category: Joi.string()
+    .optional(),
+  date: Joi.date()
+    .optional(),
+  vendor: Joi.string()
+    .max(100)
+    .optional(),
+  customerName: Joi.string()
+    .max(100)
+    .optional(),
+  paymentMethod: Joi.string()
+    .valid('cash', 'mpesa', 'bank_transfer', 'emola', 'other')
+    .optional()
+});
+
+export const financeUploadAttachmentSchema = Joi.object({
+  fileName: Joi.string().required(),
+  fileSize: Joi.number().min(0).max(5 * 1024 * 1024).required(),
+  mimeType: Joi.string()
+    .valid('image/jpeg', 'image/png', 'image/gif', 'application/pdf')
+    .required(),
+  base64: Joi.string().required()
+});
+
+export const syncSalesSchema = Joi.object({
+  orderId: Joi.string()
+    .optional(),
+  syncAll: Joi.boolean()
+    .optional()
+});
+
 // Validation middleware factory
 export const validateRequest = (schema: Joi.ObjectSchema) => {
   return (req: any, res: any, next: any) => {

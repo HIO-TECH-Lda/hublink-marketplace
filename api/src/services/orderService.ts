@@ -392,6 +392,8 @@ export class OrderService {
           break;
         case 'delivered':
           await order.deliverOrder();
+          // Sync marketplace sales to finance for all sellers in this order
+          await this.syncFinanceForDeliveredOrder(order);
           break;
         case 'cancelled':
           if (!options.cancelledBy || !options.cancelReason) {
@@ -412,6 +414,27 @@ export class OrderService {
       return order;
     } catch (error) {
       throw new Error(`Failed to update order status: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  // Sync finance entries for all sellers when order is delivered
+  private static async syncFinanceForDeliveredOrder(order: IOrder): Promise<void> {
+    try {
+      const { FinanceService } = require('./financeService');
+      const sellerIds = [...new Set(order.items.map(item => item.sellerId.toString()))];
+      
+      // Sync for each seller in the order
+      for (const sellerId of sellerIds) {
+        try {
+          await FinanceService.syncMarketplaceSales(sellerId, order._id!.toString());
+        } catch (error) {
+          // Log but don't fail the order update if finance sync fails
+          console.error(`Failed to sync finance for seller ${sellerId} and order ${order._id}:`, error);
+        }
+      }
+    } catch (error) {
+      // Don't throw - finance sync failure shouldn't break order update
+      console.error('Error syncing finance for delivered order:', error);
     }
   }
 

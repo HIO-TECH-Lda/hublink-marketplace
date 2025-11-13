@@ -457,6 +457,62 @@ export interface ITicket {
   updatedAt?: Date;
 }
 
+// Finance Types
+export type FinanceType = 'income' | 'expense';
+export type FinanceSource = 'marketplace' | 'manual' | 'other';
+export type PaymentMethod = 'cash' | 'mpesa' | 'bank_transfer' | 'emola' | 'other';
+export type RecurringFrequency = 'daily' | 'weekly' | 'monthly' | 'yearly';
+export type ReportType = 'daily' | 'weekly' | 'monthly' | 'yearly' | 'custom';
+
+export interface IFinanceAttachment {
+  _id?: string;
+  fileName: string;
+  fileUrl: string;
+  publicId?: string;
+  fileSize: number;
+  mimeType: string;
+  uploadedAt?: Date;
+}
+
+export interface IRecurringConfig {
+  frequency: RecurringFrequency;
+  endDate?: Date;
+  nextDueDate?: Date;
+}
+
+export interface ISellerFinance {
+  _id?: string;
+  sellerId: string;
+  type: FinanceType;
+  source: FinanceSource;
+  orderId?: string;
+  amount: number;
+  currency: string;
+  category?: string;
+  vendor?: string;
+  description: string;
+  date: Date;
+  paymentMethod: PaymentMethod;
+  attachments: IFinanceAttachment[];
+  customerName?: string;
+  isRecurring: boolean;
+  recurringConfig?: IRecurringConfig;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
+}
+
+export interface IExpenseCategory {
+  _id?: string;
+  name: string;
+  slug: string;
+  icon?: string;
+  color?: string;
+  isDefault: boolean;
+  sellerId?: string;
+  createdAt?: Date;
+}
+
 // API Response Types
 export interface ApiResponse<T = any> {
   success: boolean;

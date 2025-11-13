@@ -19,6 +19,7 @@ import imaliRoutes from './routes/imali';
 import payoutRoutes from './routes/payouts';
 import refundRoutes from './routes/refunds';
 import ticketRoutes from './routes/tickets';
+import financeRoutes from './routes/finances';
 
 // Load environment variables
 dotenv.config();
@@ -211,6 +212,9 @@ app.use('/api/v1/refunds', refundRoutes);
 
 // Ticket routes
 app.use('/api/v1/tickets', ticketRoutes);
+
+// Seller finance routes
+app.use('/api/v1/seller/finances', financeRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
