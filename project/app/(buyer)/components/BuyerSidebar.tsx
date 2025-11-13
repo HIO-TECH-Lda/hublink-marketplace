@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Package, Heart, ShoppingCart, Settings, LogOut, User, TrendingUp } from 'lucide-react';
+import { Package, Heart, ShoppingCart, Settings, LogOut, User, TrendingUp, MessageSquare } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface BuyerSidebarProps {
@@ -26,6 +26,12 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
       label: 'Histórico de Pedidos',
       icon: Package,
       active: pathname === '/historico-pedidos'
+    },
+    {
+      href: '/suporte/meus-tickets',
+      label: 'Meus Tickets',
+      icon: MessageSquare,
+      active: pathname?.startsWith('/suporte')
     },
     {
       href: '/configuracoes',
