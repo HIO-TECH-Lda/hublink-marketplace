@@ -62,19 +62,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     return pathname.startsWith(href);
   };
 
-  if (!state.isAuthenticated || !state.user) {
-    return (
-      <div className="min-h-screen bg-gray-1 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
-          <Button onClick={() => router.push('/entrar')} className="bg-primary hover:bg-primary-hard text-white">
-            Fazer Login
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  // if (!state.isAuthenticated || !state.user) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-1 flex items-center justify-center">
+  //       <div className="text-center">
+  //         <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
+  //         <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
+  //         <Button onClick={() => router.push('/entrar')} className="bg-primary hover:bg-primary-hard text-white">
+  //           Fazer Login
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -139,7 +139,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         {/* User info and logout - fixed at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-200">
+        {/* <div className="absolute bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-200">
           <div className="p-4">
             <div className="flex items-center mb-3">
               <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
@@ -164,7 +164,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               Sair
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Main content */}
