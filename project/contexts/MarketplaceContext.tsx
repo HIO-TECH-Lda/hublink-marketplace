@@ -529,69 +529,69 @@ const mockProducts: Product[] = [
 const mockBlogPosts: BlogPost[] = [
   {
     id: '1',
-    title: 'Os Benefícios dos Alimentos Orgânicos',
-    excerpt: 'Descubra por que escolher alimentos orgânicos pode fazer toda a diferença na sua saúde e no meio ambiente.',
-    content: 'Conteúdo completo sobre os benefícios dos alimentos orgânicos...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Como Escolher os Melhores Produtos Online',
+    excerpt: 'Dicas essenciais para fazer compras inteligentes e encontrar produtos de qualidade no marketplace.',
+    content: 'Guia completo sobre como escolher produtos online com segurança e qualidade...',
+    image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg',
     date: '2024-01-15',
-    author: 'Dr. Maria Silva',
-    category: 'Saúde',
-    tags: ['orgânico', 'saúde', 'nutrição']
+    author: 'Maria Silva',
+    category: 'Dicas',
+    tags: ['compras online', 'dicas', 'qualidade']
   },
   {
     id: '2',
-    title: 'Como Cultivar sua Própria Horta Orgânica',
-    excerpt: 'Aprenda técnicas simples para começar sua própria horta orgânica em casa.',
-    content: 'Guia completo para cultivar horta orgânica...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
-    date: '2024-01-10',
+    title: 'Tendências de Moda e Tecnologia em 2024',
+    excerpt: 'Descubra as últimas tendências em moda, tecnologia e produtos que estão em alta este ano.',
+    content: 'Análise completa das tendências de moda e tecnologia para 2024...',
+    image: 'https://images.pexels.com/photos/3184460/pexels-photo-3184460.jpeg',
+    date: '2024-01-12',
     author: 'João Santos',
-    category: 'Cultivo',
-    tags: ['horta', 'cultivo', 'orgânico']
+    category: 'Tendências',
+    tags: ['moda', 'tecnologia', 'tendências']
   },
   {
     id: '3',
-    title: 'Receitas Saudáveis com Produtos Orgânicos',
-    excerpt: 'Receitas deliciosas e nutritivas usando apenas ingredientes orgânicos.',
-    content: 'Coleção de receitas saudáveis...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
-    date: '2024-01-05',
+    title: 'Guia Completo de Compras Online Seguras',
+    excerpt: 'Aprenda a proteger suas informações e fazer compras online com segurança e confiança.',
+    content: 'Dicas de segurança para compras online e proteção de dados...',
+    image: 'https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg',
+    date: '2024-01-10',
     author: 'Ana Costa',
-    category: 'Receitas',
-    tags: ['receitas', 'saudável', 'orgânico']
+    category: 'Segurança',
+    tags: ['segurança', 'compras online', 'proteção']
   },
   {
     id: '4',
-    title: 'O Impacto Ambiental da Agricultura Orgânica',
-    excerpt: 'Entenda como a agricultura orgânica contribui para a preservação do meio ambiente.',
-    content: 'Análise do impacto ambiental...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Os Melhores Produtos para Casa e Decoração',
+    excerpt: 'Descubra produtos incríveis para transformar sua casa em um ambiente moderno e acolhedor.',
+    content: 'Guia de produtos de decoração e organização para casa...',
+    image: 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg',
     date: '2023-12-28',
     author: 'Carlos Oliveira',
-    category: 'Meio Ambiente',
-    tags: ['meio ambiente', 'sustentabilidade', 'orgânico']
+    category: 'Casa',
+    tags: ['casa', 'decoração', 'organização']
   },
   {
     id: '5',
-    title: 'Dicas para Escolher os Melhores Produtos Orgânicos',
-    excerpt: 'Saiba como identificar e escolher produtos orgânicos de qualidade.',
-    content: 'Guia para escolher produtos orgânicos...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Dicas de Economia nas Compras Online',
+    excerpt: 'Aprenda estratégias para economizar e encontrar as melhores ofertas no marketplace.',
+    content: 'Como economizar dinheiro fazendo compras inteligentes online...',
+    image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg',
     date: '2023-12-20',
     author: 'Lucia Ferreira',
-    category: 'Dicas',
-    tags: ['dicas', 'qualidade', 'orgânico']
+    category: 'Economia',
+    tags: ['economia', 'ofertas', 'descontos']
   },
   {
     id: '6',
-    title: 'A Importância da Estação dos Alimentos',
-    excerpt: 'Descubra por que consumir alimentos da estação é melhor para sua saúde e para o planeta.',
-    content: 'Sobre a importância da sazonalidade...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Produtos Essenciais para o Dia a Dia',
+    excerpt: 'Confira uma lista curada dos produtos mais úteis e versáteis para o seu dia a dia.',
+    content: 'Lista de produtos essenciais que todo mundo deveria ter...',
+    image: 'https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg',
     date: '2023-12-15',
     author: 'Pedro Lima',
-    category: 'Saúde',
-    tags: ['estação', 'sazonalidade', 'saúde']
+    category: 'Dicas',
+    tags: ['essenciais', 'dia a dia', 'produtos']
   }
 ];
 

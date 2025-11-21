@@ -1,15 +1,15 @@
 {
-  "name": "Txova - Marketplace Orgânico",
-  "short_name": "Txova",
-  "description": "Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. Conectamos produtores locais com consumidores conscientes.",
+  "name": "VITRINE - Marketplace Completo",
+  "short_name": "VITRINE",
+  "description": "Marketplace completo com produtos de qualidade em todas as categorias.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#10b981",
+  "theme_color": "#2563EB",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "pt-MZ",
-  "categories": ["shopping", "food", "lifestyle"],
+  "categories": ["shopping", "business", "lifestyle"],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
@@ -62,9 +62,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Banca",
-      "short_name": "Banca",
-      "description": "Explorar produtos orgânicos",
+      "name": "Produtos em Destaque",
+      "short_name": "Destaques",
+      "description": "Explorar produtos em destaque",
       "url": "/loja",
       "icons": [
         {
@@ -104,7 +104,7 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Página inicial do Txova"
+      "label": "Página inicial da VITRINE"
     },
     {
       "src": "/screenshots/shop.png",

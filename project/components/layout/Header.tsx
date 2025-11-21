@@ -84,8 +84,8 @@ export default function Header() {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={14} />
-                <span className="hidden lg:inline">contato@txova.co.mz</span>
-                <span className="lg:hidden">contato@txova.co.mz</span>
+                <span className="hidden lg:inline">contato@vitrine.com</span>
+                <span className="lg:hidden">contato@vitrine.com</span>
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
@@ -107,9 +107,9 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">T</span>
+                <span className="text-white font-bold text-sm">V</span>
               </div>
-              <span className="text-xl sm:text-2xl font-bold text-gray-9">Txova</span>
+              <span className="text-xl sm:text-2xl font-bold text-gray-9">VITRINE</span>
             </Link>
 
             {/* Desktop Navigation */}
