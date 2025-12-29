@@ -1,6 +1,7 @@
 import User, { IUserDocument } from '../models/User';
 import Order from '../models/Order';
 import Payment from '../models/Payment';
+import Review from '../models/Review';
 import mongoose, { Types } from 'mongoose';
 
 export interface UserListFilters {
@@ -193,7 +194,7 @@ export class AdminUserService {
         throw new Error('User not found');
       }
 
-      // Get order statistics
+      // Get comprehensive order statistics
       const orderStats = await Order.aggregate([
         {
           $match: {
@@ -205,12 +206,34 @@ export class AdminUserService {
           $group: {
             _id: null,
             orderCount: { $sum: 1 },
-            totalSpent: { $sum: '$total' }
+            totalSpent: { $sum: '$total' },
+            deliveredCount: {
+              $sum: { $cond: [{ $eq: ['$status', 'delivered'] }, 1, 0] }
+            }
           }
         }
       ]);
 
-      const stats = orderStats[0] || { orderCount: 0, totalSpent: 0 };
+      const stats = orderStats[0] || { orderCount: 0, totalSpent: 0, deliveredCount: 0 };
+
+      // Get review statistics
+      const reviewStats = await Review.aggregate([
+        {
+          $match: {
+            userId: new Types.ObjectId(userId),
+            status: 'approved'
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalReviews: { $sum: 1 },
+            averageRating: { $avg: '$rating' }
+          }
+        }
+      ]);
+
+      const reviewData = reviewStats[0] || { totalReviews: 0, averageRating: 0 };
 
       // Get last login (from last payment)
       const lastPayment = await Payment.findOne({ userId })
@@ -218,9 +241,81 @@ export class AdminUserService {
         .select('createdAt')
         .lean();
 
+      // Get recent orders (last 10)
+      const recentOrders = await Order.find({ userId: new Types.ObjectId(userId) })
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .select('orderNumber items sellerName total status createdAt')
+        .lean();
+
+      // Get recent reviews (last 10)
+      const recentReviews = await Review.find({ userId: new Types.ObjectId(userId) })
+        .populate('productId', 'name primaryImage')
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .select('productId rating title content createdAt')
+        .lean();
+
+      // Format orders for frontend
+      const formattedOrders = recentOrders.map((order: any) => ({
+        id: order._id.toString(),
+        orderNumber: order.orderNumber,
+        vendor: order.items[0]?.sellerName || 'N/A',
+        itemCount: order.items.length,
+        amount: order.total,
+        status: order.status,
+        date: order.createdAt
+      }));
+
+      // Format reviews for frontend
+      const formattedReviews = recentReviews.map((review: any) => ({
+        id: review._id.toString(),
+        productName: review.productId?.name || 'Product Deleted',
+        productImage: review.productId?.primaryImage,
+        rating: review.rating,
+        title: review.title,
+        comment: review.content,
+        date: review.createdAt
+      }));
+
+      // Activity timeline
+      const activities = [
+        {
+          type: 'last_login',
+          label: 'Último login',
+          date: lastPayment?.createdAt || user.updatedAt,
+          color: 'green'
+        },
+        {
+          type: 'account_created',
+          label: 'Conta criada',
+          date: user.createdAt,
+          color: 'blue'
+        },
+        {
+          type: 'last_update',
+          label: 'Última atualização',
+          date: user.updatedAt,
+          color: 'purple'
+        }
+      ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
       return {
         ...user,
         id: user._id.toString(),
+        // Summary statistics
+        statistics: {
+          totalOrders: stats.orderCount,
+          deliveredOrders: stats.deliveredCount,
+          totalSpent: stats.totalSpent,
+          averageRating: Math.round(reviewData.averageRating * 10) / 10,
+          totalReviews: reviewData.totalReviews
+        },
+        // Detailed data
+        orders: formattedOrders,
+        reviews: formattedReviews,
+        activities: activities,
+        // Legacy fields for backward compatibility
         orderCount: stats.orderCount,
         totalSpent: stats.totalSpent,
         lastLogin: lastPayment?.createdAt || user.updatedAt
