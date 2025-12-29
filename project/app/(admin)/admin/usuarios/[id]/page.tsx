@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { 
   User, 
@@ -8,238 +8,89 @@ import {
   ArrowLeft, 
   Package,
   Calendar,
-  TrendingUp,
-  Eye,
+  ShoppingCart,
+  Star,
+  CreditCard,
+  Activity,
   Mail,
   Phone,
   MapPin,
   Shield,
-  ShoppingCart,
-  Heart,
-  Star,
-  CreditCard,
-  Lock,
-  Activity
+  CheckCircle2,
+  XCircle
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
-
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  status: 'active' | 'inactive' | 'suspended' | 'pending';
-  role: 'buyer' | 'seller' | 'admin';
-  avatar?: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-  preferences: {
-    newsletter: boolean;
-    notifications: boolean;
-    language: string;
-  };
-  stats: {
-    totalOrders: number;
-    totalSpent: number;
-    favoriteProducts: number;
-    reviews: number;
-    averageRating: number;
-  };
-  createdAt: string;
-  updatedAt: string;
-  lastLogin: string;
-}
-
-interface Order {
-  id: string;
-  orderNumber: string;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  total: number;
-  items: number;
-  createdAt: string;
-  seller: string;
-}
-
-interface Review {
-  id: string;
-  productName: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-}
+import { useAdminUser, useUpdateUserStatus } from '@/hooks/useAdmin';
+import { useToast } from '@/hooks/use-toast';
 
 export default function UserDetailsPage() {
   const router = useRouter();
   const params = useParams();
-  const { state } = useMarketplace();
-  const [user, setUser] = useState<User | null>(null);
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    loadUserDetails();
-  }, [params.id]);
-
-  const loadUserDetails = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const mockUser: User = {
-      id: params.id as string,
-      firstName: 'João',
-      lastName: 'Silva',
-      email: 'joao.silva@email.com',
-      phone: '+258 84 123 4567',
-      status: 'active',
-      role: 'buyer',
-      address: {
-        street: 'Rua Principal, nº 123',
-        city: 'Maputo',
-        state: 'Maputo',
-        zipCode: '1100',
-        country: 'Moçambique'
-      },
-      preferences: {
-        newsletter: true,
-        notifications: true,
-        language: 'pt-MZ'
-      },
-      stats: {
-        totalOrders: 15,
-        totalSpent: 2500.75,
-        favoriteProducts: 8,
-        reviews: 12,
-        averageRating: 4.2
-      },
-      createdAt: '2023-06-15T10:30:00Z',
-      updatedAt: '2024-01-20T14:25:00Z',
-      lastLogin: '2024-01-20T08:15:00Z'
-    };
-
-    const mockOrders: Order[] = [
-      {
-        id: '1',
-        orderNumber: 'ORD-2024-001',
-        status: 'delivered',
-        total: 125.90,
-        items: 3,
-        createdAt: '2024-01-15T10:30:00Z',
-        seller: 'Fazenda Verde'
-      },
-      {
-        id: '2',
-        orderNumber: 'ORD-2024-002',
-        status: 'processing',
-        total: 89.50,
-        items: 2,
-        createdAt: '2024-01-18T14:20:00Z',
-        seller: 'Horta Orgânica'
-      },
-      {
-        id: '3',
-        orderNumber: 'ORD-2024-003',
-        status: 'pending',
-        total: 156.75,
-        items: 4,
-        createdAt: '2024-01-20T09:15:00Z',
-        seller: 'Produtos Naturais'
-      }
-    ];
-
-    const mockReviews: Review[] = [
-      {
-        id: '1',
-        productName: 'Maçãs Orgânicas',
-        rating: 5,
-        comment: 'Excelente qualidade! Frutas muito frescas e saborosas.',
-        createdAt: '2024-01-16T16:45:00Z'
-      },
-      {
-        id: '2',
-        productName: 'Bananas Prata',
-        rating: 4,
-        comment: 'Muito boas, entrega rápida e produtos de qualidade.',
-        createdAt: '2024-01-14T11:20:00Z'
-      },
-      {
-        id: '3',
-        productName: 'Tomates Orgânicos',
-        rating: 4,
-        comment: 'Tomates frescos e saborosos. Recomendo!',
-        createdAt: '2024-01-12T13:30:00Z'
-      }
-    ];
-
-    setUser(mockUser);
-    setOrders(mockOrders);
-    setReviews(mockReviews);
-    setIsLoading(false);
-  };
+  const { toast } = useToast();
+  const userId = params.id as string;
+  
+  const { data: user, isLoading } = useAdminUser(userId);
+  const updateStatus = useUpdateUserStatus();
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'text-green-600 bg-green-100';
-      case 'inactive': return 'text-gray-600 bg-gray-100';
-      case 'suspended': return 'text-red-600 bg-red-100';
-      case 'pending': return 'text-yellow-600 bg-yellow-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'inactive': return 'bg-gray-100 text-gray-800';
+      case 'suspended': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusText = (status: string) => {
-    switch (status) {
-      case 'active': return 'Ativo';
-      case 'inactive': return 'Inativo';
-      case 'suspended': return 'Suspenso';
-      case 'pending': return 'Pendente';
-      default: return status;
-    }
+    const statusMap: Record<string, string> = {
+      active: 'Ativo',
+      inactive: 'Inativo',
+      suspended: 'Suspenso'
+    };
+    return statusMap[status] || status;
   };
 
   const getRoleText = (role: string) => {
-    switch (role) {
-      case 'buyer': return 'Comprador';
-      case 'seller': return 'Vendedor';
-      case 'admin': return 'Administrador';
-      default: return role;
-    }
+    const roleMap: Record<string, string> = {
+      buyer: 'Comprador',
+      seller: 'Vendedor',
+      admin: 'Administrador',
+      support: 'Suporte'
+    };
+    return roleMap[role] || role;
   };
 
   const getOrderStatusColor = (status: string) => {
-    switch (status) {
-      case 'delivered': return 'text-green-600 bg-green-100';
-      case 'processing': return 'text-blue-600 bg-blue-100';
-      case 'shipped': return 'text-purple-600 bg-purple-100';
-      case 'pending': return 'text-yellow-600 bg-yellow-100';
-      case 'cancelled': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
+    const statusMap: Record<string, string> = {
+      delivered: 'bg-green-100 text-green-800',
+      confirmed: 'bg-blue-100 text-blue-800',
+      processing: 'bg-blue-100 text-blue-800',
+      shipped: 'bg-blue-100 text-blue-800',
+      pending: 'bg-yellow-100 text-yellow-800',
+      cancelled: 'bg-gray-100 text-gray-800'
+    };
+    return statusMap[status] || 'bg-gray-100 text-gray-800';
   };
 
   const getOrderStatusText = (status: string) => {
-    switch (status) {
-      case 'delivered': return 'Entregue';
-      case 'processing': return 'Processando';
-      case 'shipped': return 'Enviado';
-      case 'pending': return 'Pendente';
-      case 'cancelled': return 'Cancelado';
-      default: return status;
-    }
+    const statusMap: Record<string, string> = {
+      pending: 'Pendente',
+      confirmed: 'Confirmado',
+      processing: 'Processando',
+      shipped: 'Enviado',
+      delivered: 'Entregue',
+      cancelled: 'Cancelado'
+    };
+    return statusMap[status] || status;
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-MZ', {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'Nunca';
+    return new Date(dateString).toLocaleString('pt-MZ', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
@@ -253,6 +104,22 @@ export default function UserDetailsPage() {
       style: 'currency',
       currency: 'MZN'
     }).format(amount);
+  };
+
+  const handleStatusChange = async (newStatus: 'active' | 'inactive' | 'suspended') => {
+    try {
+      await updateStatus.mutateAsync({ userId, status: newStatus });
+      toast({
+        title: 'Status atualizado',
+        description: 'O status do usuário foi atualizado com sucesso.',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Erro',
+        description: error.response?.data?.message || 'Falha ao atualizar status',
+        variant: 'destructive',
+      });
+    }
   };
 
   if (isLoading) {
@@ -275,11 +142,26 @@ export default function UserDetailsPage() {
           <div className="text-center">
             <User className="w-12 h-12 text-gray-4 mx-auto mb-4" />
             <p className="text-gray-6">Usuário não encontrado</p>
+            <Button onClick={() => router.push('/admin/usuarios')} className="mt-4">
+              Voltar para Lista
+            </Button>
           </div>
         </div>
       </AdminLayout>
     );
   }
+
+  const statistics = (user as any).statistics || {
+    totalOrders: (user as any).orderCount || 0,
+    deliveredOrders: 0,
+    totalSpent: (user as any).totalSpent || 0,
+    averageRating: 0,
+    totalReviews: 0
+  };
+
+  const orders = (user as any).orders || [];
+  const reviews = (user as any).reviews || [];
+  const activities = (user as any).activities || [];
 
   return (
     <AdminLayout>
@@ -289,14 +171,14 @@ export default function UserDetailsPage() {
             <h1 className="text-3xl font-bold text-gray-9 mb-2">
               {user.firstName} {user.lastName}
             </h1>
-            <p className="text-gray-6">Detalhes do usuário</p>
+            <p className="text-gray-6">ID: {user._id || user.id}</p>
           </div>
           <div className="flex items-center space-x-2">
-            <Button onClick={() => router.back()} variant="outline">
+            <Button onClick={() => router.push('/admin/usuarios')} variant="outline">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar
             </Button>
-            <Button onClick={() => router.push(`/admin/usuarios/${user.id}/editar`)}>
+            <Button onClick={() => router.push(`/admin/usuarios/${userId}/editar`)}>
               <Edit className="w-4 h-4 mr-2" />
               Editar
             </Button>
@@ -304,7 +186,7 @@ export default function UserDetailsPage() {
         </div>
       </div>
 
-      {/* User Stats */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -312,9 +194,9 @@ export default function UserDetailsPage() {
             <ShoppingCart className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{user.stats.totalOrders}</div>
+            <div className="text-2xl font-bold text-gray-9">{statistics.totalOrders}</div>
             <p className="text-xs text-gray-6">
-              {orders.filter(o => o.status === 'delivered').length} entregues
+              {statistics.deliveredOrders} entregues
             </p>
           </CardContent>
         </Card>
@@ -326,7 +208,7 @@ export default function UserDetailsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-9">
-              {formatCurrency(user.stats.totalSpent)}
+              {formatCurrency(statistics.totalSpent)}
             </div>
           </CardContent>
         </Card>
@@ -337,8 +219,10 @@ export default function UserDetailsPage() {
             <Star className="h-4 w-4 text-yellow-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{user.stats.averageRating}</div>
-            <p className="text-xs text-gray-6">{user.stats.reviews} avaliações</p>
+            <div className="text-2xl font-bold text-gray-9">
+              {statistics.averageRating > 0 ? statistics.averageRating.toFixed(1) : '0.0'}
+            </div>
+            <p className="text-xs text-gray-6">{statistics.totalReviews} avaliações</p>
           </CardContent>
         </Card>
 
@@ -361,8 +245,8 @@ export default function UserDetailsPage() {
           <Tabs defaultValue="profile" className="space-y-6">
             <TabsList>
               <TabsTrigger value="profile">Perfil</TabsTrigger>
-              <TabsTrigger value="orders">Pedidos</TabsTrigger>
-              <TabsTrigger value="reviews">Avaliações</TabsTrigger>
+              <TabsTrigger value="orders">Pedidos ({orders.length})</TabsTrigger>
+              <TabsTrigger value="reviews">Avaliações ({reviews.length})</TabsTrigger>
               <TabsTrigger value="activity">Atividade</TabsTrigger>
             </TabsList>
 
@@ -383,11 +267,25 @@ export default function UserDetailsPage() {
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-7">Email</label>
-                      <p className="text-gray-9">{user.email}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-gray-9">{user.email}</p>
+                        {user.emailVerified ? (
+                          <CheckCircle2 className="w-4 h-4 text-green-600" />
+                        ) : (
+                          <XCircle className="w-4 h-4 text-gray-400" />
+                        )}
+                      </div>
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-7">Telefone</label>
-                      <p className="text-gray-9">{user.phone}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-gray-9">{user.phone}</p>
+                        {user.phoneVerified ? (
+                          <CheckCircle2 className="w-4 h-4 text-green-600" />
+                        ) : (
+                          <XCircle className="w-4 h-4 text-gray-400" />
+                        )}
+                      </div>
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-7">Função</label>
@@ -398,62 +296,121 @@ export default function UserDetailsPage() {
               </Card>
 
               {/* Address Information */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <MapPin className="w-5 h-5 mr-2" />
-                    Endereço
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <p className="text-gray-9">{user.address.street}</p>
-                    <p className="text-gray-9">
-                      {user.address.city}, {user.address.state} {user.address.zipCode}
-                    </p>
-                    <p className="text-gray-9">{user.address.country}</p>
-                  </div>
-                </CardContent>
-              </Card>
+              {(user.billingAddress || user.shippingAddress) && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <MapPin className="w-5 h-5 mr-2" />
+                      Endereços
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {user.billingAddress && (
+                        <div>
+                          <h3 className="font-medium mb-2">Endereço de Cobrança</h3>
+                          <div className="text-sm text-gray-6 space-y-1">
+                            <p>{user.billingAddress.street || user.billingAddress.address}</p>
+                            <p>
+                              {user.billingAddress.city}, {user.billingAddress.state}
+                            </p>
+                            <p>
+                              {user.billingAddress.postalCode || user.billingAddress.zipCode}
+                            </p>
+                            <p>{user.billingAddress.country}</p>
+                          </div>
+                        </div>
+                      )}
+                      {user.shippingAddress && (
+                        <div>
+                          <h3 className="font-medium mb-2">Endereço de Entrega</h3>
+                          <div className="text-sm text-gray-6 space-y-1">
+                            <p>{user.shippingAddress.street || user.shippingAddress.address}</p>
+                            <p>
+                              {user.shippingAddress.city}, {user.shippingAddress.state}
+                            </p>
+                            <p>
+                              {user.shippingAddress.postalCode || user.shippingAddress.zipCode}
+                            </p>
+                            <p>{user.shippingAddress.country}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Seller Profile */}
+              {user.sellerProfile && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Shield className="w-5 h-5 mr-2" />
+                      Perfil de Vendedor
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium text-gray-7">Nome da Loja</label>
+                        <p className="text-gray-9">{user.sellerProfile.storeName}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-7">Cidade</label>
+                        <p className="text-gray-9">{user.sellerProfile.city}</p>
+                      </div>
+                      {user.sellerProfile.storeDescription && (
+                        <div className="md:col-span-2">
+                          <label className="text-sm font-medium text-gray-7">Descrição</label>
+                          <p className="text-gray-9">{user.sellerProfile.storeDescription}</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Preferences */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Lock className="w-5 h-5 mr-2" />
-                    Preferências
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-7">Newsletter</label>
-                      <p className="text-gray-9">
-                        {user.preferences.newsletter ? 'Ativado' : 'Desativado'}
-                      </p>
+              {user.preferences && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Preferências</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {user.preferences.language && (
+                        <div>
+                          <label className="text-sm font-medium text-gray-7">Idioma</label>
+                          <p className="text-gray-9">{user.preferences.language}</p>
+                        </div>
+                      )}
+                      {user.preferences.currency && (
+                        <div>
+                          <label className="text-sm font-medium text-gray-7">Moeda</label>
+                          <p className="text-gray-9">{user.preferences.currency}</p>
+                        </div>
+                      )}
+                      {user.preferences.notifications && (
+                        <div>
+                          <label className="text-sm font-medium text-gray-7">Notificações</label>
+                          <div className="space-y-1 text-sm text-gray-6">
+                            <p>Email: {user.preferences.notifications.email ? 'Ativado' : 'Desativado'}</p>
+                            <p>SMS: {user.preferences.notifications.sms ? 'Ativado' : 'Desativado'}</p>
+                            <p>Push: {user.preferences.notifications.push ? 'Ativado' : 'Desativado'}</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-7">Notificações</label>
-                      <p className="text-gray-9">
-                        {user.preferences.notifications ? 'Ativado' : 'Desativado'}
-                      </p>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-7">Idioma</label>
-                      <p className="text-gray-9">{user.preferences.language}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             <TabsContent value="orders" className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Histórico de Pedidos</CardTitle>
-                  <CardDescription>
-                    Todos os pedidos realizados por este usuário
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {orders.length === 0 ? (
@@ -464,8 +421,8 @@ export default function UserDetailsPage() {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {orders.map((order) => (
-                        <div key={order.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                      {orders.map((order: any) => (
+                        <div key={order.id || order._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
                               <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
@@ -473,16 +430,16 @@ export default function UserDetailsPage() {
                               </div>
                               <div>
                                 <h3 className="font-medium text-gray-9">{order.orderNumber}</h3>
-                                <p className="text-sm text-gray-6">Vendedor: {order.seller}</p>
-                                <p className="text-sm text-gray-6">{order.items} itens</p>
+                                <p className="text-sm text-gray-6">Vendedor: {order.vendor}</p>
+                                <p className="text-sm text-gray-6">{order.itemCount} itens</p>
                               </div>
                             </div>
                             <div className="text-right">
-                              <p className="font-medium text-gray-9">{formatCurrency(order.total)}</p>
+                              <p className="font-medium text-gray-9">{formatCurrency(order.amount)}</p>
                               <Badge className={getOrderStatusColor(order.status)}>
                                 {getOrderStatusText(order.status)}
                               </Badge>
-                              <p className="text-xs text-gray-6 mt-1">{formatDate(order.createdAt)}</p>
+                              <p className="text-xs text-gray-6 mt-1">{formatDate(order.date)}</p>
                             </div>
                           </div>
                         </div>
@@ -497,9 +454,6 @@ export default function UserDetailsPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Avaliações</CardTitle>
-                  <CardDescription>
-                    Avaliações deixadas por este usuário
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {reviews.length === 0 ? (
@@ -510,19 +464,39 @@ export default function UserDetailsPage() {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {reviews.map((review) => (
-                        <div key={review.id} className="border border-gray-200 rounded-lg p-4">
-                          <div className="flex items-start justify-between">
+                      {reviews.map((review: any) => (
+                        <div key={review.id || review._id} className="border border-gray-200 rounded-lg p-4">
+                          <div className="flex items-start gap-4">
+                            {review.productImage && (
+                              <img
+                                src={review.productImage}
+                                alt={review.productName}
+                                className="w-16 h-16 rounded-lg object-cover"
+                              />
+                            )}
                             <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-2">
+                              <div className="flex items-center gap-2 mb-2">
                                 <h3 className="font-medium text-gray-9">{review.productName}</h3>
                                 <div className="flex items-center">
-                                  <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                                  <span className="text-sm text-gray-7 ml-1">{review.rating}</span>
+                                  {[...Array(5)].map((_, i) => (
+                                    <Star
+                                      key={i}
+                                      className={`w-4 h-4 ${
+                                        i < review.rating
+                                          ? 'text-yellow-500 fill-current'
+                                          : 'text-gray-300'
+                                      }`}
+                                    />
+                                  ))}
                                 </div>
                               </div>
-                              <p className="text-gray-7">{review.comment}</p>
-                              <p className="text-xs text-gray-6 mt-2">{formatDate(review.createdAt)}</p>
+                              {review.title && (
+                                <p className="font-medium text-gray-9 mb-1">{review.title}</p>
+                              )}
+                              {review.comment && (
+                                <p className="text-gray-7 mb-2">{review.comment}</p>
+                              )}
+                              <p className="text-xs text-gray-6">{formatDate(review.date)}</p>
                             </div>
                           </div>
                         </div>
@@ -537,34 +511,55 @@ export default function UserDetailsPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Atividade Recente</CardTitle>
-                  <CardDescription>
-                    Últimas atividades do usuário
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <div>
-                        <p className="text-sm text-gray-9">Último login</p>
-                        <p className="text-xs text-gray-6">{formatDate(user.lastLogin)}</p>
+                  {activities.length === 0 ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div>
+                          <p className="text-sm text-gray-9">Último login</p>
+                          <p className="text-xs text-gray-6">{formatDate((user as any).lastLogin)}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <div>
+                          <p className="text-sm text-gray-9">Conta criada</p>
+                          <p className="text-xs text-gray-6">{formatDate(user.createdAt)}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <div>
+                          <p className="text-sm text-gray-9">Última atualização</p>
+                          <p className="text-xs text-gray-6">{formatDate(user.updatedAt)}</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <div>
-                        <p className="text-sm text-gray-9">Conta criada</p>
-                        <p className="text-xs text-gray-6">{formatDate(user.createdAt)}</p>
-                      </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {activities.map((activity: any, index: number) => (
+                        <div key={index} className="flex items-center space-x-3">
+                          <div
+                            className={`w-2 h-2 rounded-full ${
+                              activity.color === 'green'
+                                ? 'bg-green-500'
+                                : activity.color === 'blue'
+                                ? 'bg-blue-500'
+                                : activity.color === 'purple'
+                                ? 'bg-purple-500'
+                                : 'bg-gray-500'
+                            }`}
+                          ></div>
+                          <div>
+                            <p className="text-sm text-gray-9">{activity.label}</p>
+                            <p className="text-xs text-gray-6">{formatDate(activity.date)}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <div>
-                        <p className="text-sm text-gray-9">Última atualização</p>
-                        <p className="text-xs text-gray-6">{formatDate(user.updatedAt)}</p>
-                      </div>
-                    </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -582,7 +577,7 @@ export default function UserDetailsPage() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-6">ID:</span>
-                  <span className="font-medium">{user.id}</span>
+                  <span className="font-medium text-xs">{user._id || user.id}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-6">Status:</span>
@@ -596,11 +591,11 @@ export default function UserDetailsPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-6">Membro desde:</span>
-                  <span className="font-medium">{formatDate(user.createdAt)}</span>
+                  <span className="font-medium text-sm">{formatDate(user.createdAt)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-6">Último login:</span>
-                  <span className="font-medium">{formatDate(user.lastLogin)}</span>
+                  <span className="font-medium text-sm">{formatDate((user as any).lastLogin)}</span>
                 </div>
               </div>
             </CardContent>
@@ -613,25 +608,11 @@ export default function UserDetailsPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <Button 
-                onClick={() => router.push(`/admin/usuarios/${user.id}/editar`)}
+                onClick={() => router.push(`/admin/usuarios/${userId}/editar`)}
                 className="w-full"
               >
                 <Edit className="w-4 h-4 mr-2" />
                 Editar Usuário
-              </Button>
-              <Button 
-                variant="outline"
-                className="w-full"
-              >
-                <Mail className="w-4 h-4 mr-2" />
-                Enviar Email
-              </Button>
-              <Button 
-                variant="outline"
-                className="w-full"
-              >
-                <Shield className="w-4 h-4 mr-2" />
-                Alterar Status
               </Button>
             </CardContent>
           </Card>
