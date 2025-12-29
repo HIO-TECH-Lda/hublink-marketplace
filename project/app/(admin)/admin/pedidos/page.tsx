@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   ShoppingCart, 
@@ -9,134 +9,76 @@ import {
   DollarSign,
   CheckCircle,
   XCircle,
-  ArrowLeft
+  Filter,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
-
-interface Order {
-  id: string;
-  orderNumber: string;
-  customer: {
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  total: number;
-  paymentStatus: 'pending' | 'paid' | 'failed';
-  createdAt: string;
-}
+import { useAdminOrders, useAdminOrderStats } from '@/hooks/useAdmin';
 
 export default function OrderManagementPage() {
   const router = useRouter();
-  const { state } = useMarketplace();
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
-  useEffect(() => {
-    loadOrders();
-  }, []);
+  const { data: stats } = useAdminOrderStats();
+  const { data: ordersData, isLoading } = useAdminOrders({
+    page,
+    limit,
+    search: searchTerm || undefined,
+    status: statusFilter !== 'all' ? statusFilter : undefined,
+  });
 
-  useEffect(() => {
-    filterOrders();
-  }, [orders, searchTerm, statusFilter]);
-
-  const loadOrders = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const mockOrders: Order[] = [
-      {
-        id: '1',
-        orderNumber: 'ORD123456',
-        customer: {
-          firstName: 'João',
-          lastName: 'Silva',
-          email: 'joao.silva@email.com'
-        },
-        status: 'pending',
-        total: 42.50,
-        paymentStatus: 'paid',
-        createdAt: '2024-01-20T10:30:00Z'
-      },
-      {
-        id: '2',
-        orderNumber: 'ORD123457',
-        customer: {
-          firstName: 'Maria',
-          lastName: 'Santos',
-          email: 'maria.santos@email.com'
-        },
-        status: 'delivered',
-        total: 26.70,
-        paymentStatus: 'paid',
-        createdAt: '2024-01-19T14:20:00Z'
-      },
-      {
-        id: '3',
-        orderNumber: 'ORD123458',
-        customer: {
-          firstName: 'Pedro',
-          lastName: 'Oliveira',
-          email: 'pedro.oliveira@email.com'
-        },
-        status: 'cancelled',
-        total: 11.00,
-        paymentStatus: 'failed',
-        createdAt: '2024-01-18T09:15:00Z'
-      }
-    ];
-
-    setOrders(mockOrders);
-    setIsLoading(false);
-  };
-
-  const filterOrders = () => {
-    let filtered = orders;
-
-    if (searchTerm) {
-      filtered = filtered.filter(order =>
-        order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.customer.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(order => order.status === statusFilter);
-    }
-
-    setFilteredOrders(filtered);
+  const orders = ordersData?.orders || [];
+  const pagination = {
+    page: ordersData?.page || 1,
+    totalPages: ordersData?.totalPages || 1,
+    total: ordersData?.total || 0,
+    limit: ordersData?.limit || limit
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'delivered': return 'text-green-600 bg-green-100';
-      case 'shipped': return 'text-blue-600 bg-blue-100';
-      case 'processing': return 'text-yellow-600 bg-yellow-100';
-      case 'pending': return 'text-orange-600 bg-orange-100';
-      case 'cancelled': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
+    const statusMap: Record<string, string> = {
+      pending: 'bg-yellow-100 text-yellow-800',
+      confirmed: 'bg-blue-100 text-blue-800',
+      processing: 'bg-blue-100 text-blue-800',
+      shipped: 'bg-blue-100 text-blue-800',
+      delivered: 'bg-green-100 text-green-800',
+      cancelled: 'bg-red-100 text-red-800',
+      refunded: 'bg-gray-100 text-gray-800'
+    };
+    return statusMap[status] || 'bg-gray-100 text-gray-800';
   };
 
   const getStatusText = (status: string) => {
-    switch (status) {
-      case 'delivered': return 'Entregue';
-      case 'shipped': return 'Enviado';
-      case 'processing': return 'Processando';
-      case 'pending': return 'Pendente';
-      case 'cancelled': return 'Cancelado';
-      default: return status;
-    }
+    const statusMap: Record<string, string> = {
+      pending: 'Pendente',
+      confirmed: 'Confirmado',
+      processing: 'Processando',
+      shipped: 'Enviado',
+      delivered: 'Entregue',
+      cancelled: 'Cancelado',
+      refunded: 'Reembolsado'
+    };
+    return statusMap[status] || status;
+  };
+
+  const getPaymentStatusText = (status: string) => {
+    const statusMap: Record<string, string> = {
+      pending: 'Pendente',
+      processing: 'Processando',
+      completed: 'Completo',
+      failed: 'Falhou',
+      refunded: 'Reembolsado'
+    };
+    return statusMap[status] || status;
   };
 
   const formatCurrency = (amount: number) => {
@@ -147,7 +89,18 @@ export default function OrderManagementPage() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-MZ');
+    return new Date(dateString).toLocaleString('pt-MZ', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPage(1);
   };
 
   if (isLoading) {
@@ -171,10 +124,6 @@ export default function OrderManagementPage() {
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Pedidos</h1>
             <p className="text-gray-6">Gerencie todos os pedidos da plataforma</p>
           </div>
-          <Button onClick={() => router.back()} variant="outline">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar
-          </Button>
         </div>
       </div>
 
@@ -186,9 +135,9 @@ export default function OrderManagementPage() {
             <ShoppingCart className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{orders.length}</div>
+            <div className="text-2xl font-bold text-gray-9">{stats?.total.toLocaleString() || 0}</div>
             <p className="text-xs text-gray-6">
-              {orders.filter(o => o.status === 'pending').length} pendentes
+              {stats?.pending || 0} pendentes
             </p>
           </CardContent>
         </Card>
@@ -200,7 +149,7 @@ export default function OrderManagementPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-9">
-              {formatCurrency(orders.reduce((sum, order) => sum + order.total, 0))}
+              {stats?.totalRevenue ? formatCurrency(stats.totalRevenue) : formatCurrency(0)}
             </div>
           </CardContent>
         </Card>
@@ -212,7 +161,7 @@ export default function OrderManagementPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-9">
-              {orders.filter(o => o.status === 'delivered').length}
+              {stats?.delivered.toLocaleString() || 0}
             </div>
           </CardContent>
         </Card>
@@ -224,7 +173,7 @@ export default function OrderManagementPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-9">
-              {orders.filter(o => o.status === 'cancelled').length}
+              {stats?.cancelled.toLocaleString() || 0}
             </div>
           </CardContent>
         </Card>
@@ -232,49 +181,58 @@ export default function OrderManagementPage() {
 
       {/* Filters */}
       <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-9">Filtros</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <CardContent className="p-6">
+          <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="text-sm font-medium text-gray-7 mb-2 block">Buscar</label>
-              <Input
-                placeholder="Número do pedido, cliente..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full"
-              />
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
+                <Input
+                  placeholder="Número do pedido, cliente, email..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Todos os status" />
+                  <SelectValue placeholder="Todos" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todos os status</SelectItem>
+                  <SelectItem value="all">Todos</SelectItem>
                   <SelectItem value="pending">Pendente</SelectItem>
+                  <SelectItem value="confirmed">Confirmado</SelectItem>
                   <SelectItem value="processing">Processando</SelectItem>
                   <SelectItem value="shipped">Enviado</SelectItem>
                   <SelectItem value="delivered">Entregue</SelectItem>
                   <SelectItem value="cancelled">Cancelado</SelectItem>
+                  <SelectItem value="refunded">Reembolsado</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-end">
-              <Button 
-                onClick={() => {
-                  setSearchTerm('');
-                  setStatusFilter('all');
-                }}
-                variant="outline"
-                className="w-full"
-              >
-                Limpar Filtros
+            <div className="flex items-end gap-2">
+              <Button type="submit" variant="outline" className="flex-1">
+                <Search className="w-4 h-4 mr-2" />
+                Buscar
               </Button>
+              {(searchTerm || statusFilter !== 'all') && (
+                <Button 
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setStatusFilter('all');
+                    setPage(1);
+                  }}
+                  variant="outline"
+                >
+                  <Filter className="w-4 h-4" />
+                </Button>
+              )}
             </div>
-          </div>
+          </form>
         </CardContent>
       </Card>
 
@@ -282,38 +240,45 @@ export default function OrderManagementPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-9">
-            Pedidos ({filteredOrders.length})
+            Pedidos ({pagination.total.toLocaleString()})
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
+                <tr className="border-b border-gray-2">
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Pedido</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Cliente</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Total</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Pagamento</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Data</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-7">Ações</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
+                {orders.map((order: any) => (
+                  <tr key={order.id || order._id} className="border-b border-gray-2 hover:bg-gray-1/50">
                     <td className="py-4 px-4">
                       <p className="font-medium text-gray-9">{order.orderNumber}</p>
+                      <p className="text-xs text-gray-5">{order.itemCount || 0} itens</p>
                     </td>
                     <td className="py-4 px-4">
                       <div>
                         <p className="font-medium text-gray-9">
-                          {order.customer.firstName} {order.customer.lastName}
+                          {order.client?.name || `${order.client?.firstName || ''} ${order.client?.lastName || ''}`.trim()}
                         </p>
-                        <p className="text-sm text-gray-6">{order.customer.email}</p>
+                        <p className="text-sm text-gray-6">{order.client?.email}</p>
                       </div>
                     </td>
                     <td className="py-4 px-4">
-                      <p className="font-medium text-gray-9">{formatCurrency(order.total)}</p>
+                      <p className="font-medium text-gray-9">
+                        {formatCurrency(order.total)}
+                      </p>
+                      {order.currency && order.currency !== 'MZN' && (
+                        <p className="text-xs text-gray-5">{order.currency}</p>
+                      )}
                     </td>
                     <td className="py-4 px-4">
                       <Badge className={getStatusColor(order.status)}>
@@ -321,11 +286,16 @@ export default function OrderManagementPage() {
                       </Badge>
                     </td>
                     <td className="py-4 px-4">
-                      <p className="text-sm text-gray-7">{formatDate(order.createdAt)}</p>
+                      <span className="text-sm text-gray-7">
+                        {getPaymentStatusText(order.paymentStatus || 'pending')}
+                      </span>
                     </td>
                     <td className="py-4 px-4">
+                      <p className="text-sm text-gray-7">{formatDate(order.date || order.createdAt)}</p>
+                    </td>
+                    <td className="py-4 px-4 text-right">
                       <Button
-                        onClick={() => router.push(`/admin/pedidos/${order.id}`)}
+                        onClick={() => router.push(`/admin/pedidos/${order.id || order._id}`)}
                         size="sm"
                         variant="outline"
                       >
@@ -338,14 +308,44 @@ export default function OrderManagementPage() {
             </table>
           </div>
 
-          {filteredOrders.length === 0 && (
-            <div className="text-center py-8">
-              <ShoppingCart className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-              <p className="text-gray-6">Nenhum pedido encontrado</p>
+          {orders.length === 0 && (
+            <div className="text-center py-12">
+              <ShoppingCart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum pedido encontrado</h3>
+              <p className="text-gray-6">Tente ajustar os filtros de busca</p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {pagination.totalPages > 1 && (
+            <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-2">
+              <div className="text-sm text-gray-6">
+                Página {pagination.page} de {pagination.totalPages} • {pagination.total} total
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  disabled={pagination.page === 1}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Anterior
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
+                  disabled={pagination.page >= pagination.totalPages}
+                >
+                  Próxima
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
           )}
         </CardContent>
       </Card>
     </AdminLayout>
   );
-} 
+}

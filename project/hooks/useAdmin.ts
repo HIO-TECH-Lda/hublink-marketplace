@@ -267,17 +267,41 @@ export const useDeleteProduct = () => {
 // Admin Orders Management
 // ============================================
 
+export const useAdminOrderStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'orders', 'stats'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/orders/stats');
+      return response.data.data as {
+        total: number;
+        pending: number;
+        totalRevenue: number;
+        delivered: number;
+        cancelled: number;
+      };
+    },
+  });
+};
+
 export const useAdminOrders = (params?: {
   page?: number;
   limit?: number;
   status?: string;
   search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }) => {
   return useQuery({
     queryKey: ['admin', 'orders', params],
     queryFn: async () => {
       const response = await apiClient.get('/admin/orders', { params });
-      return response.data.data as { orders: Order[]; pagination: any };
+      return response.data.data as {
+        orders: Order[];
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
     },
   });
 };
@@ -287,9 +311,42 @@ export const useAdminOrder = (orderId: string) => {
     queryKey: ['admin', 'order', orderId],
     queryFn: async () => {
       const response = await apiClient.get(`/admin/orders/${orderId}`);
-      return response.data.data.order as Order;
+      return response.data.data as Order;
     },
     enabled: !!orderId,
+  });
+};
+
+export const useUpdateOrderStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      orderId,
+      status,
+      trackingNumber,
+      cancelReason,
+      refundAmount,
+    }: {
+      orderId: string;
+      status: string;
+      trackingNumber?: string;
+      cancelReason?: string;
+      refundAmount?: number;
+    }) => {
+      const response = await apiClient.patch(`/admin/orders/${orderId}/status`, {
+        status,
+        trackingNumber,
+        cancelReason,
+        refundAmount,
+      });
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'order', variables.orderId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders', 'stats'] });
+    },
   });
 };
 
@@ -297,14 +354,37 @@ export const useUpdateOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ orderId, data }: { orderId: string; data: Partial<Order> }) => {
+    mutationFn: async ({
+      orderId,
+      data,
+    }: {
+      orderId: string;
+      data: {
+        status?: string;
+        paymentStatus?: string;
+        clientInfo?: {
+          firstName?: string;
+          lastName?: string;
+          email?: string;
+          phone?: string;
+        };
+        shippingAddress?: {
+          address?: string;
+          city?: string;
+          state?: string;
+          zipCode?: string;
+        };
+        notes?: string;
+        trackingNumber?: string;
+      };
+    }) => {
       const response = await apiClient.put(`/admin/orders/${orderId}`, data);
-      return response.data.data.order as Order;
+      return response.data.data;
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'order', variables.orderId] });
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders', 'stats'] });
     },
   });
 };
