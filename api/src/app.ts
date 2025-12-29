@@ -20,6 +20,7 @@ import payoutRoutes from './routes/payouts';
 import refundRoutes from './routes/refunds';
 import ticketRoutes from './routes/tickets';
 import financeRoutes from './routes/finances';
+import dashboardRoutes from './routes/dashboard';
 
 // Load environment variables
 dotenv.config();
@@ -215,6 +216,9 @@ app.use('/api/v1/tickets', ticketRoutes);
 
 // Seller finance routes
 app.use('/api/v1/seller/finances', financeRoutes);
+
+// Admin dashboard routes
+app.use('/api/v1/admin/dashboard', dashboardRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
