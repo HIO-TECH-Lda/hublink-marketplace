@@ -83,18 +83,41 @@ export const useAdminDashboard = () => {
 // Admin Users Management
 // ============================================
 
+export const useAdminUserStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'users', 'stats'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/users/stats');
+      return response.data.data as {
+        total: number;
+        vendors: number;
+        clients: number;
+        active: number;
+      };
+    },
+  });
+};
+
 export const useAdminUsers = (params?: {
   page?: number;
   limit?: number;
   role?: string;
   status?: string;
   search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }) => {
   return useQuery({
     queryKey: ['admin', 'users', params],
     queryFn: async () => {
       const response = await apiClient.get('/admin/users', { params });
-      return response.data.data as { users: User[]; pagination: any };
+      return response.data.data as {
+        users: User[];
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
     },
   });
 };
@@ -104,7 +127,7 @@ export const useAdminUser = (userId: string) => {
     queryKey: ['admin', 'user', userId],
     queryFn: async () => {
       const response = await apiClient.get(`/admin/users/${userId}`);
-      return response.data.data.user as User;
+      return response.data.data as User;
     },
     enabled: !!userId,
   });
@@ -116,11 +139,50 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: async ({ userId, data }: { userId: string; data: Partial<User> }) => {
       const response = await apiClient.put(`/admin/users/${userId}`, data);
-      return response.data.data.user as User;
+      return response.data.data as User;
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'user', variables.userId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users', 'stats'] });
+    },
+  });
+};
+
+export const useUpdateUserStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userId, status }: { userId: string; status: 'active' | 'inactive' | 'suspended' }) => {
+      const response = await apiClient.patch(`/admin/users/${userId}/status`, { status });
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users', 'stats'] });
+    },
+  });
+};
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phone: string;
+      password: string;
+      role?: string;
+      status?: string;
+    }) => {
+      const response = await apiClient.post('/admin/users', data);
+      return response.data.data as User;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users', 'stats'] });
     },
   });
 };
@@ -135,6 +197,7 @@ export const useDeleteUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users', 'stats'] });
     },
   });
 };
