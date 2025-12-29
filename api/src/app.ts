@@ -22,6 +22,7 @@ import ticketRoutes from './routes/tickets';
 import financeRoutes from './routes/finances';
 import dashboardRoutes from './routes/dashboard';
 import adminUserRoutes from './routes/adminUsers';
+import adminOrderRoutes from './routes/adminOrders';
 
 // Load environment variables
 dotenv.config();
@@ -223,6 +224,9 @@ app.use('/api/v1/admin/dashboard', dashboardRoutes);
 
 // Admin user management routes
 app.use('/api/v1/admin/users', adminUserRoutes);
+
+// Admin order management routes
+app.use('/api/v1/admin/orders', adminOrderRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
