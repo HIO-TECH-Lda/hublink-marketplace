@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, Heart, ShoppingCart, User, Menu, X, Phone, Mail } from 'lucide-react';
+import { Search, Heart, ShoppingCart, User, Menu, X, Phone, Mail, Shield } from 'lucide-react';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/hooks/useCart';
@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 
 export default function Header() {
   const { state, dispatch } = useMarketplace();
-  const { user, logout } = useAuth();
+  const { user, logout, hasRole } = useAuth();
   const { data: cart, isLoading: cartLoading } = useCart();
   const { data: wishlist } = useWishlist();
   const router = useRouter();
@@ -120,6 +120,15 @@ export default function Header() {
               <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
               <Link href="/contato" className="hover:text-primary transition-colors">Contato</Link>
               <Link href="/faqs" className="hover:text-primary transition-colors">FAQs</Link>
+              {hasRole('admin') && (
+                <Link 
+                  href="/admin" 
+                  className="flex items-center space-x-1 hover:text-primary transition-colors text-primary font-medium"
+                >
+                  <Shield size={16} />
+                  <span>Admin</span>
+                </Link>
+              )}
             </nav>
 
             {/* Search Bar - Desktop */}
@@ -231,6 +240,15 @@ export default function Header() {
                 <Link href="/blog" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Blog</Link>
                 <Link href="/contato" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Contato</Link>
                 <Link href="/faqs" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">FAQs</Link>
+                {hasRole('admin') && (
+                  <Link 
+                    href="/admin" 
+                    className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors flex items-center space-x-2 text-primary font-medium"
+                  >
+                    <Shield size={16} />
+                    <span>Admin Dashboard</span>
+                  </Link>
+                )}
               </nav>
             </div>
           )}

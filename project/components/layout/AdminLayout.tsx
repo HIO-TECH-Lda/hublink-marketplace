@@ -22,7 +22,7 @@ import {
   FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -46,12 +46,11 @@ const navigation = [
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { state, dispatch } = useMarketplace();
+  const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
-    dispatch({ type: 'SET_USER', payload: null });
-    dispatch({ type: 'SET_AUTHENTICATED', payload: false });
+    logout();
     router.push('/');
   };
 
@@ -139,32 +138,34 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         {/* User info and logout - fixed at bottom */}
-        {/* <div className="absolute bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-200">
-          <div className="p-4">
-            <div className="flex items-center mb-3">
-              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-gray-600">
-                  {state.user.firstName.charAt(0)}{state.user.lastName.charAt(0)}
-                </span>
+        {user && (
+          <div className="absolute bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-200">
+            <div className="p-4">
+              <div className="flex items-center mb-3">
+                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-medium text-gray-600">
+                    {user.firstName?.charAt(0) || ''}{user.lastName?.charAt(0) || ''}
+                  </span>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-gray-9">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p className="text-xs text-gray-6">Administrador</p>
+                </div>
               </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-9">
-                  {state.user.firstName} {state.user.lastName}
-                </p>
-                <p className="text-xs text-gray-6">Administrador</p>
-              </div>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                size="sm"
+                className="w-full"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sair
+              </Button>
             </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              size="sm"
-              className="w-full"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Sair
-            </Button>
           </div>
-        </div> */}
+        )}
       </div>
 
       {/* Main content */}

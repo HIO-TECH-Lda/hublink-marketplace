@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Users, 
@@ -14,156 +14,19 @@ import {
   Settings,
   Shield,
   FileText,
-  MessageSquare
+  MessageSquare,
+  RotateCcw,
+  Tag
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
-
-interface DashboardStats {
-  totalUsers: number;
-  totalOrders: number;
-  totalRevenue: number;
-  totalProducts: number;
-  averageRating: number;
-  pendingOrders: number;
-  activeSellers: number;
-  totalReviews: number;
-  totalBlogPosts: number;
-}
-
-interface RecentActivity {
-  id: string;
-  type: 'order' | 'user' | 'product' | 'review';
-  title: string;
-  description: string;
-  timestamp: string;
-  status?: string;
-}
+import { useAdminDashboard } from '@/hooks/useAdmin';
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const { state } = useMarketplace();
-  const [stats, setStats] = useState<DashboardStats>({
-    totalUsers: 0,
-    totalOrders: 0,
-    totalRevenue: 0,
-    totalProducts: 0,
-    averageRating: 0,
-    pendingOrders: 0,
-    activeSellers: 0,
-    totalReviews: 0,
-    totalBlogPosts: 0
-  });
-  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
-
-  const loadDashboardData = async () => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Calculate stats from context data and mock data
-    const totalUsers = 1250; // Mock total users
-    const totalOrders = state.orders?.length || 0;
-    const totalRevenue = state.orders?.reduce((sum, order) => sum + order.total, 0) || 0;
-    const totalProducts = state.products?.length || 0;
-    const averageRating = 4.5; // Mock average rating
-    const pendingOrders = state.orders?.filter(order => order.status === 'pending').length || 0;
-    const activeSellers = 12; // Mock active sellers
-    const totalReviews = 156; // Mock total reviews
-
-    setStats({
-      totalUsers,
-      totalOrders,
-      totalRevenue,
-      totalProducts,
-      averageRating,
-      pendingOrders,
-      activeSellers,
-      totalReviews,
-      totalBlogPosts: state.blogPosts?.length || 0
-    });
-
-    // Mock recent activity
-    const activity: RecentActivity[] = [
-      {
-        id: '1',
-        type: 'order',
-        title: 'Novo Pedido #ORD123456',
-        description: 'Pedido de MTn 150,00 realizado por João Silva',
-        timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-        status: 'pending'
-      },
-      {
-        id: '2',
-        type: 'user',
-        title: 'Novo Usuário Registrado',
-        description: 'Maria Santos criou uma nova conta',
-        timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString()
-      },
-      {
-        id: '3',
-        type: 'product',
-        title: 'Produto Adicionado',
-        description: 'Novo produto "Maçãs Orgânicas" adicionado por Fazenda Verde',
-        timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString()
-      },
-      {
-        id: '4',
-        type: 'review',
-        title: 'Nova Avaliação',
-        description: 'Avaliação 5 estrelas para "Tomates Orgânicos"',
-        timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString()
-      },
-      {
-        id: '5',
-        type: 'order',
-        title: 'Pedido Entregue #ORD123455',
-        description: 'Pedido de MTn 89,90 entregue com sucesso',
-        timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
-        status: 'delivered'
-      }
-    ];
-
-    setRecentActivity(activity);
-    setIsLoading(false);
-  };
-
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case 'order':
-        return <ShoppingCart className="w-4 h-4" />;
-      case 'user':
-        return <Users className="w-4 h-4" />;
-      case 'product':
-        return <Package className="w-4 h-4" />;
-      case 'review':
-        return <Star className="w-4 h-4" />;
-      default:
-        return <MessageSquare className="w-4 h-4" />;
-    }
-  };
-
-  const getActivityColor = (type: string) => {
-    switch (type) {
-      case 'order':
-        return 'text-blue-600 bg-blue-100';
-      case 'user':
-        return 'text-green-600 bg-green-100';
-      case 'product':
-        return 'text-purple-600 bg-purple-100';
-      case 'review':
-        return 'text-yellow-600 bg-yellow-100';
-      default:
-        return 'text-gray-600 bg-gray-100';
-    }
-  };
+  const { data: dashboard, isLoading } = useAdminDashboard();
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('pt-MZ', {
@@ -172,16 +35,12 @@ export default function AdminDashboard() {
     }).format(amount);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('pt-MZ', {
-      day: '2-digit',
-      month: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const formatPercent = (value: number) => {
+    const sign = value >= 0 ? '+' : '';
+    return `${sign}${value.toFixed(1)}%`;
   };
 
-  if (isLoading) {
+  if (isLoading || !dashboard) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-[400px]">
@@ -196,23 +55,25 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout>
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-9 mb-2">Dashboard</h1>
         <p className="text-gray-6">Visão geral da plataforma</p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+      {/* Main Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-6">Total de Usuários</CardTitle>
             <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{stats.totalUsers}</div>
-            <p className="text-xs text-gray-6">
-              +12% em relação ao mês passado
+            <div className="text-2xl font-bold text-gray-9">{dashboard.users.total.toLocaleString()}</div>
+            <p className={`text-xs ${dashboard.users.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {formatPercent(dashboard.users.changePercent)} este mês
+            </p>
+            <p className="text-xs text-gray-5 mt-1">
+              {dashboard.users.buyers} compradores • {dashboard.users.sellers} vendedores
             </p>
           </CardContent>
         </Card>
@@ -223,9 +84,9 @@ export default function AdminDashboard() {
             <ShoppingCart className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{stats.totalOrders}</div>
+            <div className="text-2xl font-bold text-gray-9">{dashboard.orders.total.toLocaleString()}</div>
             <p className="text-xs text-gray-6">
-              {stats.pendingOrders} pedidos pendentes
+              {dashboard.orders.pending} pendentes • {dashboard.orders.recent} recentes
             </p>
           </CardContent>
         </Card>
@@ -236,9 +97,12 @@ export default function AdminDashboard() {
             <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{formatCurrency(stats.totalRevenue)}</div>
-            <p className="text-xs text-gray-6">
-              +8% em relação ao mês passado
+            <div className="text-2xl font-bold text-gray-9">{formatCurrency(dashboard.revenue.total)}</div>
+            <p className={`text-xs ${dashboard.revenue.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {formatPercent(dashboard.revenue.changePercent)} este mês
+            </p>
+            <p className="text-xs text-gray-5 mt-1">
+              Este mês: {formatCurrency(dashboard.revenue.thisMonth)}
             </p>
           </CardContent>
         </Card>
@@ -249,23 +113,89 @@ export default function AdminDashboard() {
             <Package className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{stats.totalProducts}</div>
+            <div className="text-2xl font-bold text-gray-9">{dashboard.products.total.toLocaleString()}</div>
             <p className="text-xs text-gray-6">
-              {stats.activeSellers} vendedores ativos
+              {dashboard.products.activeSellers} vendedores ativos
             </p>
+            {(dashboard.products.lowStock > 0 || dashboard.products.outOfStock > 0) && (
+              <p className="text-xs text-warning mt-1">
+                {dashboard.products.lowStock} baixo estoque • {dashboard.products.outOfStock} sem estoque
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Secondary Stats Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-medium text-gray-6">Avaliações</CardTitle>
+            <Star className="h-3 w-3 text-yellow-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold text-gray-9">{dashboard.reviews.averageRating.toFixed(1)}</div>
+            <p className="text-xs text-gray-5">{dashboard.reviews.total} total</p>
+            {dashboard.reviews.pending > 0 && (
+              <Badge variant="secondary" className="mt-1 text-xs">{dashboard.reviews.pending} pendentes</Badge>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Posts do Blog</CardTitle>
-            <FileText className="h-4 w-4 text-primary" />
+            <CardTitle className="text-xs font-medium text-gray-6">Reembolsos</CardTitle>
+            <RotateCcw className="h-3 w-3 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{stats.totalBlogPosts}</div>
-            <p className="text-xs text-gray-6">
-              Posts publicados
-            </p>
+            <div className="text-lg font-bold text-gray-9">{dashboard.refunds.total}</div>
+            <p className="text-xs text-gray-5">{dashboard.refunds.pending} pendentes</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-medium text-gray-6">Tickets</CardTitle>
+            <MessageSquare className="h-3 w-3 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold text-gray-9">{dashboard.tickets.total}</div>
+            <p className="text-xs text-gray-5">{dashboard.tickets.open} abertos</p>
+            {dashboard.tickets.urgent > 0 && (
+              <Badge className="mt-1 bg-red-100 text-red-800 text-xs">{dashboard.tickets.urgent} urgentes</Badge>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-medium text-gray-6">Categorias</CardTitle>
+            <Tag className="h-3 w-3 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold text-gray-9">{dashboard.categories.total}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-medium text-gray-6">Pagamentos</CardTitle>
+            <DollarSign className="h-3 w-3 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold text-gray-9">{dashboard.payments.completed}</div>
+            <p className="text-xs text-gray-5">{dashboard.payments.pending} pendentes</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-medium text-gray-6">Blog Posts</CardTitle>
+            <FileText className="h-3 w-3 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold text-gray-9">{dashboard.blogPosts.published}</div>
+            <p className="text-xs text-gray-5">{dashboard.blogPosts.total} total</p>
           </CardContent>
         </Card>
       </div>
@@ -337,92 +267,120 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-          {/* System Status */}
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-9">Status do Sistema</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-6">Servidor</span>
-                <Badge className="bg-green-100 text-green-800">Online</Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-6">Banco de Dados</span>
-                <Badge className="bg-green-100 text-green-800">Online</Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-6">Pagamentos</span>
-                <Badge className="bg-green-100 text-green-800">Online</Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-6">Email</span>
-                <Badge className="bg-green-100 text-green-800">Online</Badge>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
-        {/* Recent Activity */}
+        {/* Order Status Breakdown */}
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-9">Atividade Recente</CardTitle>
-              <CardDescription>
-                Últimas atividades na plataforma
-              </CardDescription>
+              <CardTitle className="text-lg font-semibold text-gray-9">Status dos Pedidos</CardTitle>
+              <CardDescription>Distribuição de pedidos por status</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity) => (
-                  <div key={activity.id} className="flex items-start space-x-3">
-                    <div className={`p-2 rounded-full ${getActivityColor(activity.type)}`}>
-                      {getActivityIcon(activity.type)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-9">{activity.title}</p>
-                      <p className="text-sm text-gray-6">{activity.description}</p>
-                      <p className="text-xs text-gray-5 mt-1">
-                        {formatDate(activity.timestamp)}
-                      </p>
-                    </div>
-                    {activity.status && (
-                      <Badge 
-                        variant={activity.status === 'pending' ? 'secondary' : 'default'}
-                        className="ml-2"
-                      >
-                        {activity.status === 'pending' ? 'Pendente' : 'Entregue'}
-                      </Badge>
-                    )}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span className="text-sm text-gray-7">Entregues</span>
                   </div>
-                ))}
+                  <span className="font-semibold text-gray-9">{dashboard.orders.delivered}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                    <span className="text-sm text-gray-7">Enviados</span>
+                  </div>
+                  <span className="font-semibold text-gray-9">{dashboard.orders.shipped}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <span className="text-sm text-gray-7">Em Processamento</span>
+                  </div>
+                  <span className="font-semibold text-gray-9">{dashboard.orders.processing}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 rounded-full bg-gray-500"></div>
+                    <span className="text-sm text-gray-7">Pendentes</span>
+                  </div>
+                  <span className="font-semibold text-gray-9">{dashboard.orders.pending}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <span className="text-sm text-gray-7">Cancelados</span>
+                  </div>
+                  <span className="font-semibold text-gray-9">{dashboard.orders.cancelled}</span>
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Performance Metrics */}
+          {/* Alerts & Notifications */}
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-9">Métricas de Performance</CardTitle>
+              <CardTitle className="text-lg font-semibold text-gray-9">Alertas</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-9">{stats.averageRating}</div>
-                  <div className="flex items-center justify-center mt-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`w-4 h-4 ${i < Math.floor(stats.averageRating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-                      />
-                    ))}
+              <div className="space-y-2">
+                {dashboard.tickets.urgent > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-red-50 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <AlertTriangle className="w-4 h-4 text-red-600" />
+                      <span className="text-sm text-red-800">{dashboard.tickets.urgent} tickets urgentes</span>
+                    </div>
+                    <Button size="sm" variant="outline" onClick={() => router.push('/admin/tickets')}>
+                      Ver
+                    </Button>
                   </div>
-                  <p className="text-sm text-gray-6 mt-1">Avaliação Média</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-9">{stats.totalReviews}</div>
-                  <p className="text-sm text-gray-6 mt-1">Total de Avaliações</p>
-                </div>
+                )}
+                {dashboard.reviews.pending > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-yellow-50 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <Star className="w-4 h-4 text-yellow-600" />
+                      <span className="text-sm text-yellow-800">{dashboard.reviews.pending} avaliações pendentes</span>
+                    </div>
+                    <Button size="sm" variant="outline" onClick={() => router.push('/admin/produtos')}>
+                      Ver
+                    </Button>
+                  </div>
+                )}
+                {dashboard.refunds.pending > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-orange-50 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <RotateCcw className="w-4 h-4 text-orange-600" />
+                      <span className="text-sm text-orange-800">{dashboard.refunds.pending} reembolsos pendentes</span>
+                    </div>
+                    <Button size="sm" variant="outline" onClick={() => router.push('/admin/reembolsos')}>
+                      Ver
+                    </Button>
+                  </div>
+                )}
+                {(dashboard.products.lowStock > 0 || dashboard.products.outOfStock > 0) && (
+                  <div className="flex items-center justify-between p-2 bg-yellow-50 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <Package className="w-4 h-4 text-yellow-600" />
+                      <span className="text-sm text-yellow-800">
+                        {dashboard.products.lowStock + dashboard.products.outOfStock} produtos com estoque baixo
+                      </span>
+                    </div>
+                    <Button size="sm" variant="outline" onClick={() => router.push('/admin/produtos')}>
+                      Ver
+                    </Button>
+                  </div>
+                )}
+                {dashboard.orders.pending > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-blue-50 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <ShoppingCart className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm text-blue-800">{dashboard.orders.pending} pedidos pendentes</span>
+                    </div>
+                    <Button size="sm" variant="outline" onClick={() => router.push('/admin/pedidos')}>
+                      Ver
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

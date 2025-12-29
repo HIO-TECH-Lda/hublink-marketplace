@@ -45,7 +45,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserProfile = async () => {
     try {
       const response = await apiClient.get('/auth/me');
-      setUser(response.data.data);
+      // Handle both response structures: response.data.data.user or response.data.data
+      const userData = response.data.data?.user || response.data.data;
+      setUser(userData);
     } catch (error) {
       console.error('Failed to fetch user profile:', error);
       // Clear auth on any error to prevent loops
@@ -66,7 +68,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     try {
       const response = await apiClient.post('/auth/login', { email, password });
-      const { token: newToken, refreshToken: newRefreshToken, user: userData } = response.data.data;
+      // Handle both response structures
+      const responseData = response.data.data || response.data;
+      const { token: newToken, refreshToken: newRefreshToken, user: userData } = responseData;
+      
+      // Debug logging
+      console.log('Login response:', { userData, role: userData?.role });
       
       localStorage.setItem('authToken', newToken);
       localStorage.setItem('refreshToken', newRefreshToken);
