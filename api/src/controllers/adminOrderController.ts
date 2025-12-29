@@ -102,5 +102,27 @@ export class AdminOrderController {
       });
     }
   }
+
+  // Update order details
+  static async updateOrder(req: Request, res: Response): Promise<void> {
+    try {
+      const { orderId } = req.params;
+      const updateData = req.body;
+
+      const order = await AdminOrderService.updateOrder(orderId, updateData);
+
+      res.status(200).json({
+        success: true,
+        message: 'Order updated successfully',
+        data: order
+      });
+    } catch (error) {
+      const statusCode = error instanceof Error && error.message === 'Order not found' ? 404 : 500;
+      res.status(statusCode).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to update order'
+      });
+    }
+  }
 }
 

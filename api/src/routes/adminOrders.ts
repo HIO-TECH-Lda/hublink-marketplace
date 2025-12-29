@@ -17,7 +17,10 @@ router.get('/', AdminOrderController.getOrders);
 // Get order by ID
 router.get('/:orderId', AdminOrderController.getOrderById);
 
-// Update order status
+// Update order (full update)
+router.put('/:orderId', AdminOrderController.updateOrder);
+
+// Update order status (quick action)
 router.patch('/:orderId/status', AdminOrderController.updateOrderStatus);
 
 export default router;

@@ -224,9 +224,57 @@ GET /api/v1/admin/orders/507f1f77bcf86cd799439011
 
 ---
 
-### 4. Update Order Status
+### 4. Update Order (Full Update)
 
-Update the status of an order.
+Update order details including status, payment status, client info, and delivery address.
+
+**Endpoint:** `PUT /api/v1/admin/orders/:orderId`
+
+**Path Parameters:**
+- `orderId`: Order ID (MongoDB ObjectId)
+
+**Request Body:**
+
+```json
+{
+  "status": "confirmed",
+  "paymentStatus": "completed",
+  "clientInfo": {
+    "firstName": "João",
+    "lastName": "Silva",
+    "email": "joao.silva@email.com",
+    "phone": "+258841234567"
+  },
+  "shippingAddress": {
+    "address": "Avenida 25 de Setembro, 123",
+    "city": "Maputo",
+    "state": "Maputo",
+    "zipCode": "1100"
+  },
+  "notes": "Please deliver before 5 PM",
+  "trackingNumber": "TRACK123456"
+}
+```
+
+**All fields are optional** - only include fields you want to update.
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "message": "Order updated successfully",
+  "data": {
+    // Full order object (same as GET response)
+  }
+}
+```
+
+---
+
+### 5. Update Order Status (Quick Action)
+
+Update only the order status (quick action).
 
 **Endpoint:** `PATCH /api/v1/admin/orders/:orderId/status`
 
@@ -272,6 +320,61 @@ Update the status of an order.
     ],
     "shippedAt": "2024-01-20T14:00:00.000Z",
     "updatedAt": "2024-01-20T14:00:00.000Z"
+  }
+}
+```
+
+---
+
+## Enhanced Order View Response
+
+The `GET /api/v1/admin/orders/:orderId` endpoint now includes additional data:
+
+### Timeline/Activity
+
+```json
+{
+  "timeline": [
+    {
+      "type": "order_created",
+      "label": "Pedido Criado",
+      "date": "2024-01-20T12:30:00.000Z",
+      "color": "green"
+    },
+    {
+      "type": "order_confirmed",
+      "label": "Pedido Confirmado",
+      "date": "2024-01-20T13:00:00.000Z",
+      "color": "blue"
+    }
+  ]
+}
+```
+
+### Order Summary
+
+```json
+{
+  "summary": {
+    "itemCount": 2,
+    "subtotal": 425.00,
+    "tax": 0,
+    "shipping": 0,
+    "discount": 0,
+    "total": 425.00
+  }
+}
+```
+
+### Payment Labels
+
+```json
+{
+  "payment": {
+    "method": "credit_card",
+    "methodLabel": "Cartão de Crédito",
+    "status": "completed",
+    "statusLabel": "Pago"
   }
 }
 ```
@@ -543,4 +646,11 @@ The API has rate limiting enabled:
 - Order numbers are unique and follow the format: `ORD-YYYYMMDD-####`
 - Search is case-insensitive and matches order numbers, client names, and emails
 - Dates are in ISO 8601 format (UTC)
+
+---
+
+## Additional Resources
+
+For detailed frontend implementation examples for viewing and updating single orders, see:
+- **`ADMIN_ORDER_VIEW_UPDATE_GUIDE.md`** - Complete React components and implementation guide
 
