@@ -14,7 +14,7 @@ const config: Config = {
       },
       colors: {
         primary: {
-          DEFAULT: '#00BE27',
+          DEFAULT: '#53B046',
           soft: '#6AC187',
           hard: '#2C762F',
         },

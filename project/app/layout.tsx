@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     yahoo: 'your-yahoo-verification-code',
   },
   manifest: '/manifest.json',
-  themeColor: '#10b981',
+  themeColor: '#53B046',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   appleWebApp: {
     capable: true,
@@ -123,9 +123,9 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-        <meta name="msapplication-TileColor" content="#10b981" />
+        <meta name="msapplication-TileColor" content="#53B046" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="theme-color" content="#10b981" />
+        <meta name="theme-color" content="#53B046" />
         
         {/* Additional SEO meta tags */}
         <meta name="author" content="Txova Team" />
@@ -178,7 +178,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png" />
-        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#10b981" />
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#53B046" />
         <link rel="shortcut icon" href="/favicon.ico" />
         
         {/* Preconnect to external domains for performance */}
