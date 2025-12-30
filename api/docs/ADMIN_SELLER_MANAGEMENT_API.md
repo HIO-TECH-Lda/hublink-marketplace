@@ -80,6 +80,7 @@ Authorization: Bearer <token>
           "email": "joao@fazendaverde.com",
           "phone": "+258841234567"
         },
+        "totalProducts": 15,
         "productCount": 15,
         "totalSales": 12500.00,
         "averageRating": 4.8,
@@ -137,6 +138,24 @@ Authorization: Bearer <token>
       "totalSales": 12500.00,
       "totalQuantitySold": 450
     },
+    "products": [
+      {
+        "id": "507f1f77bcf86cd799439011",
+        "name": "Maçãs Orgânicas",
+        "primaryImage": "https://example.com/apple.jpg",
+        "price": 150.00,
+        "stock": 50,
+        "averageRating": 4.8,
+        "totalReviews": 25,
+        "status": "active",
+        "category": {
+          "id": "507f1f77bcf86cd799439012",
+          "name": "Frutas",
+          "slug": "frutas"
+        },
+        "createdAt": "2024-01-15T10:30:00.000Z"
+      }
+    ],
     "status": "active",
     "createdAt": "2024-01-15T10:30:00.000Z",
     "updatedAt": "2024-01-20T14:20:00.000Z"
@@ -210,13 +229,31 @@ interface Seller {
     email: string;
     phone: string;
   };
-  productCount: number;
+  totalProducts: number;
+  productCount: number; // Backward compatibility
   totalSales: number;
   averageRating: number;
   totalReviews: number;
   status: 'active' | 'inactive' | 'suspended';
   createdAt: string;
   updatedAt: string;
+}
+
+interface SellerProduct {
+  id: string;
+  name: string;
+  primaryImage: string;
+  price: number;
+  stock: number;
+  averageRating: number;
+  totalReviews: number;
+  status: string;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+  createdAt: string;
 }
 
 interface SellerDetails extends Seller {
@@ -247,6 +284,7 @@ interface SellerDetails extends Seller {
     totalSales: number;
     totalQuantitySold: number;
   };
+  products: SellerProduct[];
 }
 ```
 

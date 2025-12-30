@@ -234,7 +234,8 @@ export class AdminSellerService {
             phone: seller.phone
           },
           sellerProfile: seller.sellerProfile || null,
-          productCount: productData.productCount,
+          totalProducts: productData.productCount, // Renamed for clarity
+          productCount: productData.productCount, // Keep for backward compatibility
           totalSales: Math.round(totalSales * 100) / 100,
           averageRating: Math.round(productData.averageRating * 10) / 10,
           totalReviews: productData.totalReviews,
@@ -334,6 +335,31 @@ export class AdminSellerService {
         totalQuantitySold: 0
       };
 
+      // Get all products for this seller
+      const products = await Product.find({ sellerId: new Types.ObjectId(sellerId) })
+        .select('_id name primaryImage price stock averageRating totalReviews status createdAt')
+        .populate('categoryId', 'name slug')
+        .sort({ createdAt: -1 })
+        .lean();
+
+      // Format products for frontend
+      const formattedProducts = products.map((product: any) => ({
+        id: product._id.toString(),
+        name: product.name,
+        primaryImage: product.primaryImage,
+        price: product.price,
+        stock: product.stock,
+        averageRating: product.averageRating || 0,
+        totalReviews: product.totalReviews || 0,
+        status: product.status,
+        category: {
+          id: (product.categoryId as any)?._id?.toString(),
+          name: (product.categoryId as any)?.name || 'N/A',
+          slug: (product.categoryId as any)?.slug
+        },
+        createdAt: product.createdAt
+      }));
+
       return {
         ...seller,
         id: seller._id.toString(),
@@ -364,6 +390,7 @@ export class AdminSellerService {
           totalSales: Math.round(salesData.totalSales * 100) / 100,
           totalQuantitySold: salesData.totalQuantitySold
         },
+        products: formattedProducts,
         status: seller.status
       };
     } catch (error) {

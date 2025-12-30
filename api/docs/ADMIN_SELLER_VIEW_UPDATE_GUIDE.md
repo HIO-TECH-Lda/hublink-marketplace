@@ -119,6 +119,24 @@ Authorization: Bearer <token>
       "totalSales": 125000.00,
       "totalQuantitySold": 450
     },
+    "products": [
+      {
+        "id": "507f1f77bcf86cd799439011",
+        "name": "Maçãs Orgânicas",
+        "primaryImage": "https://example.com/apple.jpg",
+        "price": 150.00,
+        "stock": 50,
+        "averageRating": 4.8,
+        "totalReviews": 25,
+        "status": "active",
+        "category": {
+          "id": "507f1f77bcf86cd799439012",
+          "name": "Frutas",
+          "slug": "frutas"
+        },
+        "createdAt": "2024-01-15T10:30:00.000Z"
+      }
+    ],
     "createdAt": "2024-01-15T10:30:00.000Z",
     "updatedAt": "2024-01-20T14:20:00.000Z"
   }
@@ -227,6 +245,22 @@ interface SellerDetails {
     totalSales: number;
     totalQuantitySold: number;
   };
+  products: Array<{
+    id: string;
+    name: string;
+    primaryImage: string;
+    price: number;
+    stock: number;
+    averageRating: number;
+    totalReviews: number;
+    status: string;
+    category: {
+      id: string;
+      name: string;
+      slug: string;
+    };
+    createdAt: string;
+  }>;
   createdAt: string;
   updatedAt: string;
 }
