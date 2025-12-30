@@ -109,6 +109,23 @@ Authorization: Bearer <token>
     "isFeatured": false,
     "productCount": 25,
     "childrenCount": 2,
+    "products": [
+      {
+        "id": "507f1f77bcf86cd799439011",
+        "name": "Maçãs Orgânicas",
+        "primaryImage": "https://example.com/apple.jpg",
+        "price": 150.00,
+        "stock": 50,
+        "averageRating": 4.8,
+        "totalReviews": 25,
+        "status": "active",
+        "seller": {
+          "id": "507f1f77bcf86cd799439014",
+          "name": "Fazenda Verde"
+        },
+        "createdAt": "2024-01-15T10:30:00.000Z"
+      }
+    ],
     "parent": null,
     "parentId": null,
     "level": 0,
@@ -287,8 +304,25 @@ interface Category {
   updatedAt: string;
 }
 
+interface CategoryProduct {
+  id: string;
+  name: string;
+  primaryImage: string;
+  price: number;
+  stock: number;
+  averageRating: number;
+  totalReviews: number;
+  status: string;
+  seller: {
+    id: string;
+    name: string;
+  } | null;
+  createdAt: string;
+}
+
 interface CategoryDetails extends Category {
   childrenCount: number;
+  products: CategoryProduct[];
   parentId?: string;
   metaTitle?: string;
   metaDescription?: string;

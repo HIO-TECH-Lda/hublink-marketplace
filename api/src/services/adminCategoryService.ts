@@ -174,6 +174,36 @@ export class AdminCategoryService {
       // Get child categories count
       const childrenCount = await Category.countDocuments({ parentId: new Types.ObjectId(categoryId) });
 
+      // Get all products for this category
+      const products = await Product.find({ categoryId: new Types.ObjectId(categoryId) })
+        .select('_id name primaryImage price stock averageRating totalReviews status sellerId createdAt')
+        .populate('sellerId', 'firstName lastName sellerProfile')
+        .sort({ createdAt: -1 })
+        .limit(100) // Limit to prevent huge responses
+        .lean();
+
+      // Format products for frontend
+      const formattedProducts = products.map((product: any) => {
+        const seller = product.sellerId as any;
+        return {
+          id: product._id.toString(),
+          name: product.name,
+          primaryImage: product.primaryImage,
+          price: product.price,
+          stock: product.stock,
+          averageRating: product.averageRating || 0,
+          totalReviews: product.totalReviews || 0,
+          status: product.status,
+          seller: seller ? {
+            id: seller._id?.toString() || seller?.toString(),
+            name: seller.sellerProfile?.storeName || 
+                  `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || 
+                  'N/A'
+          } : null,
+          createdAt: product.createdAt
+        };
+      });
+
       const parent = category.parentId as any;
 
       return {
@@ -181,6 +211,7 @@ export class AdminCategoryService {
         id: category._id.toString(),
         productCount,
         childrenCount,
+        products: formattedProducts,
         parent: parent ? {
           id: parent._id.toString(),
           name: parent.name,
