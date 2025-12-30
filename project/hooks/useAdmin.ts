@@ -390,6 +390,94 @@ export const useUpdateOrder = () => {
 };
 
 // ============================================
+// Admin Refunds Management
+// ============================================
+
+export const useAdminRefundStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'refunds', 'stats'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/refunds/stats');
+      return response.data.data as {
+        total: number;
+        pending: number;
+        approved: number;
+        rejected: number;
+        totalValue: number;
+      };
+    },
+  });
+};
+
+export const useAdminRefunds = (params?: {
+  page?: number;
+  limit?: number;
+  status?: string;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'refunds', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/refunds', { params });
+      return response.data.data as {
+        refunds: any[];
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
+    },
+  });
+};
+
+export const useAdminRefund = (refundId: string) => {
+  return useQuery({
+    queryKey: ['admin', 'refund', refundId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/admin/refunds/${refundId}`);
+      return response.data.data;
+    },
+    enabled: !!refundId,
+  });
+};
+
+export const useApproveRefund = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (refundId: string) => {
+      const response = await apiClient.patch(`/admin/refunds/${refundId}/approve`);
+      return response.data.data;
+    },
+    onSuccess: (_, refundId) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'refunds'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'refund', refundId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'refunds', 'stats'] });
+    },
+  });
+};
+
+export const useRejectRefund = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ refundId, rejectionReason }: { refundId: string; rejectionReason: string }) => {
+      const response = await apiClient.patch(`/admin/refunds/${refundId}/reject`, {
+        rejectionReason,
+      });
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'refunds'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'refund', variables.refundId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'refunds', 'stats'] });
+    },
+  });
+};
+
+// ============================================
 // Admin Sellers Management
 // ============================================
 
@@ -553,45 +641,4 @@ export const useUpdateTicket = () => {
   });
 };
 
-// ============================================
-// Admin Refunds Management
-// ============================================
-
-import { Refund } from '@/types/api';
-
-export const useAdminRefunds = (params?: {
-  page?: number;
-  limit?: number;
-  status?: string;
-}) => {
-  return useQuery({
-    queryKey: ['admin', 'refunds', params],
-    queryFn: async () => {
-      const response = await apiClient.get('/admin/refunds', { params });
-      return response.data.data as { refunds: Refund[]; pagination: any };
-    },
-  });
-};
-
-export const useProcessRefund = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ refundId, action, rejectionReason }: {
-      refundId: string;
-      action: 'approve' | 'reject';
-      rejectionReason?: string;
-    }) => {
-      const response = await apiClient.put(`/admin/refunds/${refundId}`, {
-        action,
-        rejectionReason,
-      });
-      return response.data.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin', 'refunds'] });
-      queryClient.invalidateQueries({ queryKey: ['refunds'] });
-    },
-  });
-};
 
