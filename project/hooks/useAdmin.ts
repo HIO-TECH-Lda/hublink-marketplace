@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '@/lib/api-client';
 import { User, Product, Order } from '@/types/api';
+import { useToast } from '@/hooks/use-toast';
 
 // ============================================
 // Admin Dashboard
@@ -545,34 +546,85 @@ export const useRejectRefund = () => {
 // Admin Sellers Management
 // ============================================
 
+export interface SellerStats {
+  total: number;
+  approved: number;
+  pending: number;
+  rejected: number;
+  totalSales: number;
+  averageRating: number;
+}
+
 export interface Seller {
-  _id: string;
-  userId: string | User;
-  businessName: string;
-  businessDescription: string;
-  logo?: string;
-  status: 'pending' | 'approved' | 'rejected' | 'suspended';
+  id: string;
+  company: {
+    name: string;
+    description?: string;
+    address?: string;
+    city?: string;
+    province?: string;
+    postalCode?: string;
+    productTypes?: string;
+    experience?: string;
+  };
+  contact: {
+    name: string;
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    phone: string;
+  };
+  productCount?: number;
+  totalSales?: number;
+  averageRating?: number;
+  totalReviews?: number;
+  status: 'active' | 'inactive' | 'suspended';
   createdAt: string;
   updatedAt: string;
 }
+
+export interface SellerDetails extends Seller {
+  statistics: {
+    productCount: number;
+    averageRating: number;
+    totalReviews: number;
+    totalViews: number;
+    totalPurchases: number;
+    totalOrders: number;
+    totalSales: number;
+    totalQuantitySold: number;
+  };
+}
+
+export const useAdminSellerStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'sellers', 'stats'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/sellers/stats');
+      return response.data.data as SellerStats;
+    },
+  });
+};
 
 export const useAdminSellers = (params?: {
   page?: number;
   limit?: number;
   status?: string;
   search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }) => {
-  return useQuery<Seller[]>({
+  return useQuery({
     queryKey: ['admin', 'sellers', params],
     queryFn: async () => {
-      const response = await apiClient.get('/admin/users/sellers', { params });
-      // API returns {success: true, data: [...]} where data is an array
-      const data = response.data.data;
-      if (Array.isArray(data)) {
-        return data as Seller[];
-      }
-      // Fallback for paginated response structure
-      return (data?.sellers || data || []) as Seller[];
+      const response = await apiClient.get('/admin/sellers', { params });
+      return response.data.data as {
+        sellers: Seller[];
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
     },
   });
 };
@@ -582,7 +634,7 @@ export const useAdminSeller = (sellerId: string) => {
     queryKey: ['admin', 'seller', sellerId],
     queryFn: async () => {
       const response = await apiClient.get(`/admin/sellers/${sellerId}`);
-      return response.data.data.seller as Seller;
+      return response.data.data as SellerDetails;
     },
     enabled: !!sellerId,
   });
@@ -590,14 +642,29 @@ export const useAdminSeller = (sellerId: string) => {
 
 export const useUpdateSellerStatus = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ sellerId, status }: { sellerId: string; status: string }) => {
+    mutationFn: async ({ sellerId, status }: { sellerId: string; status: 'active' | 'inactive' | 'suspended' }) => {
       const response = await apiClient.patch(`/admin/sellers/${sellerId}/status`, { status });
       return response.data.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'sellers'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'seller', variables.sellerId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'sellers', 'stats'] });
+      toast({
+        title: 'Status atualizado',
+        description: 'O status do vendedor foi atualizado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar status do vendedor';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
     },
   });
 };
