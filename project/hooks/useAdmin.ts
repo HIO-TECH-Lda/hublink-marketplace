@@ -1072,4 +1072,239 @@ export const useUpdateTicket = () => {
   });
 };
 
+// ============================================
+// Admin Blog Management
+// ============================================
+
+export interface BlogStats {
+  total: number;
+  published: number;
+  draft: number;
+  archived: number;
+  totalViews: number;
+  totalCategories: number;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  content: string;
+  image?: string;
+  author: {
+    id: string;
+    name: string;
+    email?: string;
+    avatar?: string;
+  };
+  category: string;
+  tags: string[];
+  status: 'draft' | 'published' | 'archived';
+  publishedAt?: string;
+  isFeatured: boolean;
+  stats: {
+    views: number;
+    likes: number;
+    shares: number;
+  };
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateBlogPostRequest {
+  title: string;
+  slug?: string;
+  excerpt?: string;
+  content: string;
+  image?: string;
+  authorId: string;
+  authorName: string;
+  category: string;
+  tags?: string[];
+  status?: 'draft' | 'published' | 'archived';
+  isFeatured?: boolean;
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
+}
+
+export const useAdminBlogStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'blog', 'stats'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/blog/stats');
+      return response.data.data as BlogStats;
+    },
+  });
+};
+
+export const useAdminBlogPosts = (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  category?: string;
+  status?: string;
+  authorId?: string;
+  isFeatured?: boolean;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'blog', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/blog', { params });
+      return response.data.data as {
+        posts: BlogPost[];
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
+    },
+  });
+};
+
+export const useAdminBlogPost = (postId: string) => {
+  return useQuery({
+    queryKey: ['admin', 'blog', 'post', postId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/admin/blog/${postId}`);
+      return response.data.data as BlogPost;
+    },
+    enabled: !!postId,
+  });
+};
+
+export const useAdminBlogCategories = () => {
+  return useQuery({
+    queryKey: ['admin', 'blog', 'categories'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/blog/categories');
+      return response.data.data as string[];
+    },
+  });
+};
+
+export const useCreateBlogPost = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (data: CreateBlogPostRequest | FormData) => {
+      const response = await apiClient.post('/admin/blog', data);
+      return response.data.data as BlogPost;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog', 'stats'] });
+      toast({
+        title: 'Post criado',
+        description: 'O post foi criado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao criar post';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateBlogPost = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ postId, data }: { postId: string; data: Partial<CreateBlogPostRequest> | FormData }) => {
+      const response = await apiClient.put(`/admin/blog/${postId}`, data);
+      return response.data.data as BlogPost;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog', 'post', variables.postId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog', 'stats'] });
+      toast({
+        title: 'Post atualizado',
+        description: 'As alterações foram salvas com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar post';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateBlogPostStatus = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ postId, status }: { postId: string; status: 'draft' | 'published' | 'archived' }) => {
+      const response = await apiClient.patch(`/admin/blog/${postId}/status`, { status });
+      return response.data.data as BlogPost;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog', 'post', variables.postId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog', 'stats'] });
+      toast({
+        title: 'Status atualizado',
+        description: 'O status do post foi atualizado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar status do post';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useDeleteBlogPost = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (postId: string) => {
+      const response = await apiClient.delete(`/admin/blog/${postId}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog', 'stats'] });
+      toast({
+        title: 'Post excluído',
+        description: 'O post foi excluído com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao excluir post';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   FileText, 
@@ -12,109 +12,102 @@ import {
   Calendar,
   User,
   Tag,
-  Filter,
   ArrowLeft,
-  MoreHorizontal
+  MoreVertical,
+  TrendingUp,
+  BookOpen,
+  Archive
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
-
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  image: string;
-  date: string;
-  author: string;
-  category: string;
-  tags: string[];
-}
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { 
+  useAdminBlogStats, 
+  useAdminBlogPosts, 
+  useAdminBlogCategories,
+  useUpdateBlogPostStatus, 
+  useDeleteBlogPost 
+} from '@/hooks/useAdmin';
+import { useToast } from '@/hooks/use-toast';
 
 export default function BlogManagementPage() {
   const router = useRouter();
-  const { state, dispatch } = useMarketplace();
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const limit = 20;
 
-  useEffect(() => {
-    loadBlogPosts();
-  }, []);
+  const { data: stats, isLoading: statsLoading } = useAdminBlogStats();
+  const { data: categoriesData } = useAdminBlogCategories();
+  const { data: postsData, isLoading: postsLoading } = useAdminBlogPosts({
+    page,
+    limit,
+    search: searchTerm || undefined,
+    status: statusFilter === 'all' ? undefined : statusFilter,
+    category: categoryFilter === 'all' ? undefined : categoryFilter,
+    sortBy: 'createdAt',
+    sortOrder: 'desc'
+  });
 
-  useEffect(() => {
-    filterPosts();
-  }, [blogPosts, searchTerm, categoryFilter]);
+  const updateStatus = useUpdateBlogPostStatus();
+  const deletePost = useDeleteBlogPost();
 
-  const loadBlogPosts = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setBlogPosts(state.blogPosts);
-    setIsLoading(false);
-  };
+  const posts = postsData?.posts || [];
+  const categories = categoriesData || [];
+  const isLoading = statsLoading || postsLoading;
 
-  const filterPosts = () => {
-    let filtered = blogPosts;
-
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(post =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.author.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Filter by category
-    if (categoryFilter !== 'all') {
-      filtered = filtered.filter(post => post.category === categoryFilter);
-    }
-
-    setFilteredPosts(filtered);
-  };
-
-  const handleDeletePost = (postId: string) => {
-    if (confirm('Tem certeza que deseja excluir este post?')) {
-      dispatch({ type: 'DELETE_BLOG_POST', payload: postId });
-      setBlogPosts(prev => prev.filter(post => post.id !== postId));
-      alert('Post excluído com sucesso!');
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'published': return 'text-green-600 bg-green-100';
+      case 'draft': return 'text-yellow-600 bg-yellow-100';
+      case 'archived': return 'text-gray-600 bg-gray-100';
+      default: return 'text-gray-600 bg-gray-100';
     }
   };
 
-  const handleViewPost = (postId: string) => {
-    router.push(`/blog/${postId}`);
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'published': return 'Publicado';
+      case 'draft': return 'Rascunho';
+      case 'archived': return 'Arquivado';
+      default: return status;
+    }
   };
 
-  const handleEditPost = (postId: string) => {
-    router.push(`/admin/blog/${postId}/editar`);
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('pt-MZ');
   };
 
-  const handleCreatePost = () => {
-    router.push('/admin/blog/novo');
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPage(1);
   };
 
-  const categories = ['all', ...Array.from(new Set(blogPosts.map(post => post.category)))];
-
-  const stats = {
-    totalPosts: blogPosts.length,
-    publishedPosts: blogPosts.length,
-    categories: categories.length - 1, // Exclude 'all'
-    totalViews: blogPosts.reduce((sum, post) => sum + Math.floor(Math.random() * 1000), 0)
+  const handleUpdateStatus = (postId: string, status: 'draft' | 'published' | 'archived') => {
+    updateStatus.mutate({ postId, status });
   };
 
-  if (isLoading) {
+  const handleDeletePost = (postId: string, postTitle: string) => {
+    if (confirm(`Tem certeza que deseja excluir o post "${postTitle}"?`)) {
+      deletePost.mutate(postId);
+    }
+  };
+
+  const totalPages = postsData?.totalPages || 1;
+
+  if (isLoading && !postsData) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center h-64">
+        <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-gray-6">Carregando...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-6">Carregando posts...</p>
           </div>
         </div>
       </AdminLayout>
@@ -123,203 +116,352 @@ export default function BlogManagementPage() {
 
   return (
     <AdminLayout>
-      {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento do Blog</h1>
             <p className="text-gray-6">Gerencie os posts do blog da plataforma</p>
           </div>
-          <div className="flex items-center space-x-2">
-            <Button onClick={handleCreatePost} className="bg-primary hover:bg-primary-hard text-white">
-              <Plus size={16} className="mr-2" />
+          <div className="flex gap-2">
+            <Button onClick={() => router.push('/admin/blog/novo')}>
+              <Plus className="w-4 h-4 mr-2" />
               Novo Post
+            </Button>
+            <Button onClick={() => router.back()} variant="outline">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
             </Button>
           </div>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-6">Total de Posts</p>
-                <p className="text-2xl font-bold text-gray-9">{stats.totalPosts}</p>
+      {stats && (
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Total</p>
+                  <p className="text-xl font-bold text-gray-9">{stats.total.toLocaleString()}</p>
+                </div>
+                <FileText className="w-5 h-5 text-gray-4" />
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <FileText className="w-6 h-6 text-blue-600" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Publicados</p>
+                  <p className="text-xl font-bold text-green-600">{stats.published.toLocaleString()}</p>
+                </div>
+                <BookOpen className="w-5 h-5 text-green-600" />
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-6">Posts Publicados</p>
-                <p className="text-2xl font-bold text-gray-9">{stats.publishedPosts}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Rascunhos</p>
+                  <p className="text-xl font-bold text-yellow-600">{stats.draft.toLocaleString()}</p>
+                </div>
+                <FileText className="w-5 h-5 text-yellow-600" />
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <FileText className="w-6 h-6 text-green-600" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Arquivados</p>
+                  <p className="text-xl font-bold text-gray-600">{stats.archived.toLocaleString()}</p>
+                </div>
+                <Archive className="w-5 h-5 text-gray-600" />
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-6">Categorias</p>
-                <p className="text-2xl font-bold text-gray-9">{stats.categories}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Visualizações</p>
+                  <p className="text-xl font-bold text-blue-600">{stats.totalViews.toLocaleString()}</p>
+                </div>
+                <TrendingUp className="w-5 h-5 text-blue-600" />
               </div>
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Tag className="w-6 h-6 text-purple-600" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Categorias</p>
+                  <p className="text-xl font-bold text-purple-600">{stats.totalCategories.toLocaleString()}</p>
+                </div>
+                <Tag className="w-5 h-5 text-purple-600" />
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-6">Total de Visualizações</p>
-                <p className="text-2xl font-bold text-gray-9">{stats.totalViews.toLocaleString()}</p>
-              </div>
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <Eye className="w-6 h-6 text-orange-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Filters */}
       <Card className="mb-6">
-        <CardContent className="p-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
-                <Input
-                  placeholder="Buscar posts..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+        <CardContent className="p-4">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
+              <Input
+                placeholder="Buscar por título, conteúdo, autor, tags..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
-            <div className="sm:w-48">
-              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Categoria" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category === 'all' ? 'Todas as Categorias' : category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="published">Publicado</SelectItem>
+                <SelectItem value="draft">Rascunho</SelectItem>
+                <SelectItem value="archived">Arquivado</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(1); }}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Todas categorias" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas categorias</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {(searchTerm || statusFilter !== 'all' || categoryFilter !== 'all') && (
+              <Button 
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setSearchTerm('');
+                  setStatusFilter('all');
+                  setCategoryFilter('all');
+                  setPage(1);
+                }}
+              >
+                Limpar
+              </Button>
+            )}
+          </form>
+        </CardContent>
+      </Card>
+
+      {/* Posts Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-9">
+            Posts ({postsData?.total || 0})
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Post</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Autor</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Categoria</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Visualizações</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Publicado em</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {posts.map((post) => (
+                  <tr key={post.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-4">
+                      <div className="flex items-center">
+                        <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center mr-3 flex-shrink-0 overflow-hidden">
+                          {post.image ? (
+                            <img 
+                              src={post.image} 
+                              alt={post.title}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <FileText className="w-6 h-6 text-gray-4" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-9 truncate">{post.title}</p>
+                          {post.excerpt && (
+                            <p className="text-sm text-gray-6 line-clamp-1">{post.excerpt}</p>
+                          )}
+                          {post.isFeatured && (
+                            <Badge variant="secondary" className="mt-1 text-xs">
+                              Destaque
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center">
+                        <User className="w-4 h-4 text-gray-4 mr-1" />
+                        <span className="text-sm text-gray-7">{post.author.name}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <Badge variant="outline" className="text-xs">
+                        {post.category}
+                      </Badge>
+                    </td>
+                    <td className="py-4 px-4">
+                      <Badge className={getStatusColor(post.status)}>
+                        {getStatusText(post.status)}
+                      </Badge>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center">
+                        <Eye className="w-4 h-4 text-gray-4 mr-1" />
+                        <span className="text-sm text-gray-7">{post.stats.views.toLocaleString()}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      {post.publishedAt ? (
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 text-gray-4 mr-1" />
+                          <span className="text-sm text-gray-6">{formatDate(post.publishedAt)}</span>
+                        </div>
+                      ) : (
+                        <span className="text-sm text-gray-5">—</span>
+                      )}
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          onClick={() => router.push(`/admin/blog/${post.id}`)}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="outline">
+                              <MoreVertical className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() => router.push(`/admin/blog/${post.id}/editar`)}
+                            >
+                              <Edit className="w-4 h-4 mr-2" />
+                              Editar
+                            </DropdownMenuItem>
+                            {post.status !== 'published' && (
+                              <DropdownMenuItem
+                                onClick={() => handleUpdateStatus(post.id, 'published')}
+                                disabled={updateStatus.isPending}
+                              >
+                                <BookOpen className="w-4 h-4 mr-2" />
+                                Publicar
+                              </DropdownMenuItem>
+                            )}
+                            {post.status !== 'draft' && (
+                              <DropdownMenuItem
+                                onClick={() => handleUpdateStatus(post.id, 'draft')}
+                                disabled={updateStatus.isPending}
+                              >
+                                <FileText className="w-4 h-4 mr-2" />
+                                Mover para Rascunho
+                              </DropdownMenuItem>
+                            )}
+                            {post.status !== 'archived' && (
+                              <DropdownMenuItem
+                                onClick={() => handleUpdateStatus(post.id, 'archived')}
+                                disabled={updateStatus.isPending}
+                              >
+                                <Archive className="w-4 h-4 mr-2" />
+                                Arquivar
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem
+                              onClick={() => handleDeletePost(post.id, post.title)}
+                              className="text-red-600"
+                              disabled={deletePost.isPending}
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Excluir
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </CardContent>
       </Card>
 
-      {/* Blog Posts List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Posts do Blog</CardTitle>
-          <CardDescription>
-            {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''} encontrado{filteredPosts.length !== 1 ? 's' : ''}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {filteredPosts.length === 0 ? (
-            <div className="text-center py-12">
-              <FileText className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum post encontrado</h3>
-              <p className="text-gray-6 mb-4">
-                {searchTerm || categoryFilter !== 'all' 
-                  ? 'Tente ajustar os filtros de busca.' 
-                  : 'Comece criando seu primeiro post do blog.'
-                }
-              </p>
-              {!searchTerm && categoryFilter === 'all' && (
-                <Button onClick={handleCreatePost} className="bg-primary hover:bg-primary-hard text-white">
-                  <Plus size={16} className="mr-2" />
-                  Criar Primeiro Post
-                </Button>
-              )}
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredPosts.map((post) => (
-                <div key={post.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center space-x-4 flex-1">
-                    <div className="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-gray-9 truncate">{post.title}</h3>
-                      <p className="text-gray-6 text-sm line-clamp-2">{post.excerpt}</p>
-                      <div className="flex items-center space-x-4 mt-2 text-xs text-gray-5">
-                        <div className="flex items-center space-x-1">
-                          <Calendar size={12} />
-                          <span>{new Date(post.date).toLocaleDateString('pt-MZ')}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <User size={12} />
-                          <span>{post.author}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Tag size={12} />
-                          <span>{post.category}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleViewPost(post.id)}
-                      className="text-blue-600 hover:text-blue-700"
-                    >
-                      <Eye size={14} />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEditPost(post.id)}
-                      className="text-green-600 hover:text-green-700"
-                    >
-                      <Edit size={14} />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDeletePost(post.id)}
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <Trash2 size={14} />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {posts.length === 0 && (
+        <Card>
+          <CardContent className="text-center py-12">
+            <FileText className="w-12 h-12 text-gray-4 mx-auto mb-4" />
+            <p className="text-gray-6">Nenhum post encontrado</p>
+            {(searchTerm || statusFilter !== 'all' || categoryFilter !== 'all') && (
+              <Button 
+                onClick={() => {
+                  setSearchTerm('');
+                  setStatusFilter('all');
+                  setCategoryFilter('all');
+                  setPage(1);
+                }}
+                variant="outline"
+                className="mt-4"
+              >
+                Limpar Filtros
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-6 pt-4 border-t">
+          <p className="text-sm text-gray-6">
+            Página {page} de {totalPages}
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+            >
+              Anterior
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+            >
+              Próxima
+            </Button>
+          </div>
+        </div>
+      )}
     </AdminLayout>
   );
 }
