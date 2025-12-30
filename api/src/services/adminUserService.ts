@@ -185,6 +185,30 @@ export class AdminUserService {
     }
   }
 
+  // Get sellers list for dropdown
+  static async getSellers(): Promise<any[]> {
+    try {
+      const sellers = await User.find({ role: 'seller', status: 'active' })
+        .select('_id firstName lastName email sellerProfile')
+        .sort({ 'sellerProfile.storeName': 1, firstName: 1 })
+        .lean();
+
+      return sellers.map((seller: any) => ({
+        id: seller._id.toString(),
+        name: seller.sellerProfile?.storeName || 
+              `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || 
+              seller.email,
+        email: seller.email,
+        storeName: seller.sellerProfile?.storeName || null,
+        fullName: `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || seller.email
+      }));
+    } catch (error) {
+      throw new Error(
+        `Failed to get sellers: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
   // Get user by ID with full details
   static async getUserById(userId: string): Promise<any> {
     try {

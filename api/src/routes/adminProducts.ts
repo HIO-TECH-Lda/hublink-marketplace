@@ -14,6 +14,9 @@ router.get('/stats', AdminProductController.getProductStats);
 // Get all products with filters
 router.get('/', AdminProductController.getProducts);
 
+// Create product
+router.post('/', AdminProductController.createProduct);
+
 // Get product by ID
 router.get('/:productId', AdminProductController.getProductById);
 

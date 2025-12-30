@@ -3,6 +3,7 @@ import User from '../models/User';
 import Category from '../models/Category';
 import Review from '../models/Review';
 import Order from '../models/Order';
+import { ProductService } from './productService';
 import mongoose, { Types } from 'mongoose';
 
 export interface ProductListFilters {
@@ -185,6 +186,39 @@ export class AdminProductService {
     } catch (error) {
       throw new Error(
         `Failed to get products: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  // Create product (admin can create for any seller)
+  static async createProduct(productData: any): Promise<any> {
+    try {
+      // Validate seller exists
+      if (!productData.sellerId) {
+        throw new Error('Seller ID is required');
+      }
+
+      const seller = await User.findById(productData.sellerId);
+      if (!seller) {
+        throw new Error('Seller not found');
+      }
+
+      const sellerName = seller.sellerProfile?.storeName || 
+                        `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || 
+                        seller.email;
+
+      // Use ProductService to create product
+      const product = await ProductService.createProduct(
+        productData,
+        productData.sellerId,
+        sellerName
+      );
+
+      // Return created product with populated data
+      return await this.getProductById(product._id.toString());
+    } catch (error) {
+      throw new Error(
+        `Failed to create product: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     }
   }

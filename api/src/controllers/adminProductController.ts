@@ -44,6 +44,25 @@ export class AdminProductController {
     }
   }
 
+  // Create product
+  static async createProduct(req: Request, res: Response): Promise<void> {
+    try {
+      const productData = req.body;
+      const product = await AdminProductService.createProduct(productData);
+      res.status(201).json({
+        success: true,
+        message: 'Product created successfully',
+        data: product
+      });
+    } catch (error) {
+      const statusCode = error instanceof Error && error.message.includes('not found') ? 404 : 500;
+      res.status(statusCode).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to create product'
+      });
+    }
+  }
+
   // Get product by ID
   static async getProductById(req: Request, res: Response): Promise<void> {
     try {

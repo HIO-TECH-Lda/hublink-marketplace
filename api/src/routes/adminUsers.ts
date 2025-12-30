@@ -11,6 +11,9 @@ router.use(requireAdmin);
 // Get user statistics
 router.get('/stats', AdminUserController.getUserStats);
 
+// Get sellers list for dropdown
+router.get('/sellers', AdminUserController.getSellers);
+
 // Get all users with filters
 router.get('/', AdminUserController.getUsers);
 

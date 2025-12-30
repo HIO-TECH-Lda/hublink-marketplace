@@ -55,7 +55,48 @@ Get summary statistics about users.
 
 ---
 
-### 2. Get All Users (with filters)
+### 2. Get Sellers List (for dropdown)
+
+Get a list of all active sellers for use in dropdowns (e.g., when creating/editing products).
+
+**Endpoint:** `GET /api/v1/admin/users/sellers`
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "507f1f77bcf86cd799439014",
+      "name": "Fazenda Verde",
+      "email": "joao@fazendaverde.com",
+      "storeName": "Fazenda Verde",
+      "fullName": "João Silva"
+    },
+    {
+      "id": "507f1f77bcf86cd799439015",
+      "name": "Maria Santos",
+      "email": "maria@email.com",
+      "storeName": null,
+      "fullName": "Maria Santos"
+    }
+  ]
+}
+```
+
+**Response Fields:**
+- `id`: Seller user ID
+- `name`: Display name (store name if available, otherwise full name, otherwise email)
+- `email`: Seller email
+- `storeName`: Store name (if available)
+- `fullName`: Full name (firstName + lastName)
+
+**Note:** Only returns active sellers (`role: 'seller'`, `status: 'active'`). Results are sorted by store name, then by first name.
+
+---
+
+### 3. Get All Users (with filters)
 
 Get a paginated list of users with optional filtering and search.
 
@@ -132,7 +173,7 @@ GET /api/v1/admin/users?search=joao&status=active&role=buyer&page=1&limit=10
 
 ---
 
-### 3. Get User by ID
+### 4. Get User by ID
 
 Get detailed information about a specific user.
 
@@ -203,7 +244,7 @@ GET /api/v1/admin/users/507f1f77bcf86cd799439011
 
 ---
 
-### 4. Create New User
+### 5. Create New User
 
 Create a new user account (admin only).
 
@@ -276,7 +317,7 @@ Create a new user account (admin only).
 
 ---
 
-### 5. Update User
+### 6. Update User
 
 Update user information.
 
@@ -341,7 +382,7 @@ Update user information.
 
 ---
 
-### 6. Update User Status
+### 7. Update User Status
 
 Update only the user's status.
 
@@ -388,7 +429,7 @@ Update only the user's status.
 
 ---
 
-### 7. Delete User
+### 8. Delete User
 
 Delete a user account.
 

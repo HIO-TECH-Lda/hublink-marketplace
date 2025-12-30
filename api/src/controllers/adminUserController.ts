@@ -2,6 +2,22 @@ import { Request, Response } from 'express';
 import { AdminUserService } from '../services/adminUserService';
 
 export class AdminUserController {
+  // Get sellers list for dropdown
+  static async getSellers(req: Request, res: Response): Promise<void> {
+    try {
+      const sellers = await AdminUserService.getSellers();
+      res.json({
+        success: true,
+        data: sellers
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to get sellers'
+      });
+    }
+  }
+
   // Get user statistics
   static async getUserStats(req: Request, res: Response): Promise<void> {
     try {
