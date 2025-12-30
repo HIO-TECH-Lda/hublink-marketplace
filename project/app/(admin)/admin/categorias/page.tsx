@@ -13,7 +13,8 @@ import {
   Eye,
   CheckCircle,
   XCircle,
-  TrendingUp
+  MoreVertical,
+  Building
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { 
   useAdminCategoryStats, 
   useAdminCategories, 
@@ -118,52 +120,48 @@ export default function CategoryManagementPage() {
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-6">Total de Categorias</CardTitle>
-              <Tag className="h-4 w-4 text-primary" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-9">{stats.total}</div>
-              <p className="text-xs text-gray-6">
-                {stats.active} ativas
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-6">Categorias Ativas</CardTitle>
-              <CheckCircle className="h-4 w-4 text-green-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-9">
-                {stats.active}
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Total</p>
+                  <p className="text-xl font-bold text-gray-9">{stats.total.toLocaleString()}</p>
+                </div>
+                <Tag className="w-5 h-5 text-primary" />
               </div>
             </CardContent>
           </Card>
-
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-6">Total de Produtos</CardTitle>
-              <Package className="h-4 w-4 text-blue-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-9">
-                {stats.totalProducts}
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Ativas</p>
+                  <p className="text-xl font-bold text-green-600">{stats.active.toLocaleString()}</p>
+                </div>
+                <CheckCircle className="w-5 h-5 text-green-600" />
               </div>
             </CardContent>
           </Card>
-
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-6">Categorias Inativas</CardTitle>
-              <XCircle className="h-4 w-4 text-gray-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-9">
-                {stats.inactive}
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Inativas</p>
+                  <p className="text-xl font-bold text-gray-600">{stats.inactive.toLocaleString()}</p>
+                </div>
+                <XCircle className="w-5 h-5 text-gray-600" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Total Produtos</p>
+                  <p className="text-xl font-bold text-blue-600">{stats.totalProducts.toLocaleString()}</p>
+                </div>
+                <Package className="w-5 h-5 text-blue-600" />
               </div>
             </CardContent>
           </Card>
@@ -172,141 +170,175 @@ export default function CategoryManagementPage() {
 
       {/* Filters */}
       <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-9">Filtros</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="text-sm font-medium text-gray-7 mb-2 block">Buscar</label>
+        <CardContent className="p-4">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
               <Input
-                placeholder="Nome, descrição ou slug..."
+                placeholder="Buscar por nome, descrição ou slug..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full"
+                className="pl-10"
               />
             </div>
-            <div>
-              <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
-              <Select value={statusFilter} onValueChange={(value) => { setStatusFilter(value); setPage(1); }}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Todos os status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os status</SelectItem>
-                  <SelectItem value="active">Ativo</SelectItem>
-                  <SelectItem value="inactive">Inativo</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-end gap-2">
-              <Button type="submit" className="flex-1">
-                <Search className="w-4 h-4 mr-2" />
-                Buscar
-              </Button>
+            <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="active">Ativo</SelectItem>
+                <SelectItem value="inactive">Inativo</SelectItem>
+              </SelectContent>
+            </Select>
+            {(searchTerm || statusFilter !== 'all') && (
               <Button 
                 type="button"
+                variant="outline"
                 onClick={() => {
                   setSearchTerm('');
                   setStatusFilter('all');
                   setPage(1);
                 }}
-                variant="outline"
               >
                 Limpar
               </Button>
-            </div>
+            )}
           </form>
         </CardContent>
       </Card>
 
-      {/* Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categories.map((category) => (
-          <Card key={category.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center flex-1">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
-                    {category.image ? (
-                      <img 
-                        src={category.image} 
-                        alt={category.name}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    ) : (
-                      <Tag className="w-5 h-5 text-primary" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <CardTitle className="text-lg">{category.name}</CardTitle>
-                    <Badge className={getStatusColor(category.isActive)}>
-                      {getStatusText(category.isActive)}
-                    </Badge>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Button
-                    onClick={() => router.push(`/admin/categorias/${category.id}/editar`)}
-                    size="sm"
-                    variant="outline"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    onClick={() => handleDeleteCategory(category.id, category.name)}
-                    size="sm"
-                    variant="outline"
-                    className="text-red-600 hover:text-red-700"
-                    disabled={deleteCategory.isPending}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {category.description && (
-                <p className="text-gray-6 mb-4 line-clamp-2">{category.description}</p>
-              )}
-              <div className="flex items-center justify-between text-sm mb-4">
-                <div className="flex items-center">
-                  <Package className="w-4 h-4 text-gray-4 mr-1" />
-                  <span className="text-gray-6">{category.productCount} produtos</span>
-                </div>
-                {category.parent && (
-                  <Badge variant="outline" className="text-xs">
-                    {category.parent.name}
-                  </Badge>
-                )}
-              </div>
-              <div className="flex items-center justify-between text-xs text-gray-5 mb-4">
-                <span>Slug: {category.slug}</span>
-                <span>{formatDate(category.createdAt)}</span>
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <Button
-                  onClick={() => handleToggleStatus(category.id, category.isActive)}
-                  size="sm"
-                  variant={category.isActive ? 'outline' : 'default'}
-                  className={category.isActive ? 'text-red-600 hover:text-red-700' : ''}
-                  disabled={updateStatus.isPending}
-                >
-                  {category.isActive ? 'Desativar' : 'Ativar'}
-                </Button>
-                <Button
-                  onClick={() => router.push(`/admin/categorias/${category.id}`)}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Eye className="w-4 h-4 mr-1" />
-                  Ver Detalhes
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {/* Categories Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-9">
+            Categorias ({categoriesData?.total || 0})
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Categoria</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Slug</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Categoria Pai</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Produtos</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Criada em</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categories.map((category) => (
+                  <tr key={category.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-4">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                          {category.image ? (
+                            <img 
+                              src={category.image} 
+                              alt={category.name}
+                              className="w-full h-full object-cover rounded-lg"
+                            />
+                          ) : (
+                            <Tag className="w-5 h-5 text-primary" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-9">{category.name}</p>
+                          {category.description && (
+                            <p className="text-sm text-gray-6 line-clamp-1">{category.description}</p>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <code className="text-xs text-gray-6 bg-gray-100 px-2 py-1 rounded">
+                        {category.slug}
+                      </code>
+                    </td>
+                    <td className="py-4 px-4">
+                      {category.parent ? (
+                        <div className="flex items-center">
+                          <Building className="w-4 h-4 text-gray-4 mr-1" />
+                          <span className="text-sm text-gray-7">{category.parent.name}</span>
+                        </div>
+                      ) : (
+                        <span className="text-sm text-gray-5">—</span>
+                      )}
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center">
+                        <Package className="w-4 h-4 text-gray-4 mr-1" />
+                        <span className="text-sm text-gray-7">{category.productCount}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <Badge className={getStatusColor(category.isActive)}>
+                        {getStatusText(category.isActive)}
+                      </Badge>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-sm text-gray-6">{formatDate(category.createdAt)}</span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          onClick={() => router.push(`/admin/categorias/${category.id}`)}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="outline">
+                              <MoreVertical className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() => router.push(`/admin/categorias/${category.id}/editar`)}
+                            >
+                              <Edit className="w-4 h-4 mr-2" />
+                              Editar
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleToggleStatus(category.id, category.isActive)}
+                              disabled={updateStatus.isPending}
+                            >
+                              {category.isActive ? (
+                                <>
+                                  <XCircle className="w-4 h-4 mr-2" />
+                                  Desativar
+                                </>
+                              ) : (
+                                <>
+                                  <CheckCircle className="w-4 h-4 mr-2" />
+                                  Ativar
+                                </>
+                              )}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleDeleteCategory(category.id, category.name)}
+                              className="text-red-600"
+                              disabled={deleteCategory.isPending}
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Excluir
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
 
       {categories.length === 0 && (
         <Card>
