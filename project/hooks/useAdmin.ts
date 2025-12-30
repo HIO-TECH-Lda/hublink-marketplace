@@ -206,18 +206,42 @@ export const useDeleteUser = () => {
 // Admin Products Management
 // ============================================
 
+export const useAdminProductStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'products', 'stats'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/products/stats');
+      return response.data.data as {
+        total: number;
+        active: number;
+        pending: number;
+        rejected: number;
+        averageRating: number;
+      };
+    },
+  });
+};
+
 export const useAdminProducts = (params?: {
   page?: number;
   limit?: number;
   status?: string;
-  category?: string;
+  categoryId?: string;
   search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }) => {
   return useQuery({
     queryKey: ['admin', 'products', params],
     queryFn: async () => {
       const response = await apiClient.get('/admin/products', { params });
-      return response.data.data as { products: Product[]; pagination: any };
+      return response.data.data as {
+        products: Product[];
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
     },
   });
 };
@@ -227,7 +251,7 @@ export const useAdminProduct = (productId: string) => {
     queryKey: ['admin', 'product', productId],
     queryFn: async () => {
       const response = await apiClient.get(`/admin/products/${productId}`);
-      return response.data.data.product as Product;
+      return response.data.data as Product;
     },
     enabled: !!productId,
   });
@@ -241,9 +265,26 @@ export const useUpdateProductStatus = () => {
       const response = await apiClient.patch(`/admin/products/${productId}/status`, { status });
       return response.data.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'product', variables.productId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products', 'stats'] });
+    },
+  });
+};
+
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ productId, data }: { productId: string; data: Partial<Product> }) => {
+      const response = await apiClient.put(`/admin/products/${productId}`, data);
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'product', variables.productId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products', 'stats'] });
     },
   });
 };
@@ -258,7 +299,7 @@ export const useDeleteProduct = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products', 'stats'] });
     },
   });
 };
