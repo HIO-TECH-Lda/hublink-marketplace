@@ -27,6 +27,8 @@ import adminRefundRoutes from './routes/adminRefunds';
 import adminProductRoutes from './routes/adminProducts';
 import adminSellerRoutes from './routes/adminSellers';
 import adminCategoryRoutes from './routes/adminCategories';
+import blogRoutes from './routes/blog';
+import adminBlogRoutes from './routes/adminBlog';
 
 // Load environment variables
 dotenv.config();
@@ -243,6 +245,12 @@ app.use('/api/v1/admin/sellers', adminSellerRoutes);
 
 // Admin category management routes
 app.use('/api/v1/admin/categories', adminCategoryRoutes);
+
+// Blog routes (public)
+app.use('/api/v1/blog', blogRoutes);
+
+// Admin blog management routes
+app.use('/api/v1/admin/blog', adminBlogRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
