@@ -794,59 +794,232 @@ export const useUpdateSellerStatus = () => {
 // Admin Categories Management
 // ============================================
 
-import { Category } from '@/types/api';
+export interface CategoryStats {
+  total: number;
+  active: number;
+  inactive: number;
+  totalProducts: number;
+}
 
-export const useAdminCategories = () => {
+export interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  slug: string;
+  image?: string;
+  icon?: string;
+  isActive: boolean;
+  isFeatured: boolean;
+  productCount: number;
+  parent: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  level: number;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CategoryProduct {
+  id: string;
+  name: string;
+  primaryImage: string;
+  price: number;
+  stock: number;
+  averageRating: number;
+  totalReviews: number;
+  status: string;
+  seller: {
+    id: string;
+    name: string;
+  };
+  createdAt: string;
+}
+
+export interface CategoryDetails extends Category {
+  childrenCount: number;
+  parentId?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  products?: CategoryProduct[];
+}
+
+export interface CreateCategoryRequest {
+  name: string;
+  description?: string;
+  slug?: string;
+  parentId?: string;
+  image?: string;
+  icon?: string;
+  isActive?: boolean;
+  isFeatured?: boolean;
+  sortOrder?: number;
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+}
+
+export const useAdminCategoryStats = () => {
   return useQuery({
-    queryKey: ['admin', 'categories'],
+    queryKey: ['admin', 'categories', 'stats'],
     queryFn: async () => {
-      const response = await apiClient.get('/admin/categories');
-      return response.data.data.categories as Category[];
+      const response = await apiClient.get('/admin/categories/stats');
+      return response.data.data as CategoryStats;
     },
+  });
+};
+
+export const useAdminCategories = (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  isActive?: boolean;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'categories', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/categories', { params });
+      return response.data.data as {
+        categories: Category[];
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
+    },
+  });
+};
+
+export const useAdminCategory = (categoryId: string) => {
+  return useQuery({
+    queryKey: ['admin', 'category', categoryId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/admin/categories/${categoryId}`);
+      return response.data.data as CategoryDetails;
+    },
+    enabled: !!categoryId,
   });
 };
 
 export const useCreateCategory = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (data: Partial<Category>) => {
+    mutationFn: async (data: CreateCategoryRequest) => {
       const response = await apiClient.post('/admin/categories', data);
-      return response.data.data.category as Category;
+      return response.data.data as CategoryDetails;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'categories'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'categories', 'stats'] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+      toast({
+        title: 'Categoria criada',
+        description: 'A categoria foi criada com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao criar categoria';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
     },
   });
 };
 
 export const useUpdateCategory = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ categoryId, data }: { categoryId: string; data: Partial<Category> }) => {
+    mutationFn: async ({ categoryId, data }: { categoryId: string; data: Partial<CreateCategoryRequest> }) => {
       const response = await apiClient.put(`/admin/categories/${categoryId}`, data);
-      return response.data.data.category as Category;
+      return response.data.data as CategoryDetails;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'categories'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'category', variables.categoryId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'categories', 'stats'] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+      toast({
+        title: 'Categoria atualizada',
+        description: 'As alterações foram salvas com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar categoria';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateCategoryStatus = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ categoryId, isActive }: { categoryId: string; isActive: boolean }) => {
+      const response = await apiClient.patch(`/admin/categories/${categoryId}/status`, { isActive });
+      return response.data.data as CategoryDetails;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'categories'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'category', variables.categoryId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'categories', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      toast({
+        title: 'Status atualizado',
+        description: 'O status da categoria foi atualizado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar status da categoria';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
     },
   });
 };
 
 export const useDeleteCategory = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
     mutationFn: async (categoryId: string) => {
       const response = await apiClient.delete(`/admin/categories/${categoryId}`);
-      return response.data.data;
+      return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'categories'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'categories', 'stats'] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+      toast({
+        title: 'Categoria excluída',
+        description: 'A categoria foi excluída com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao excluir categoria';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
     },
   });
 };

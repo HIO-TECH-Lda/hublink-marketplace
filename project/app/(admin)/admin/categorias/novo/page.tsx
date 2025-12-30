@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
   Tag, 
   Save, 
   ArrowLeft, 
-  Image as ImageIcon,
-  X
+  Image as ImageIcon
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -18,19 +17,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { useAdminCategory, useUpdateCategory, useAdminCategories } from '@/hooks/useAdmin';
+import { useCreateCategory, useAdminCategories } from '@/hooks/useAdmin';
 import { useToast } from '@/hooks/use-toast';
 
-export default function EditCategoryPage() {
+export default function AdminCreateCategoryPage() {
   const router = useRouter();
-  const params = useParams();
   const { toast } = useToast();
-  const categoryId = params.id as string;
-  
-  const { data: category, isLoading } = useAdminCategory(categoryId);
+  const createCategory = useCreateCategory();
   const { data: categoriesData } = useAdminCategories({ limit: 100 });
   const allCategories = categoriesData?.categories || [];
-  const updateCategory = useUpdateCategory();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -49,26 +44,6 @@ export default function EditCategoryPage() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (category) {
-      setFormData({
-        name: category.name || '',
-        description: category.description || '',
-        slug: category.slug || '',
-        parentId: category.parentId || category.parent?.id || '',
-        image: category.image || '',
-        icon: category.icon || '',
-        isActive: category.isActive ?? true,
-        isFeatured: category.isFeatured ?? false,
-        sortOrder: category.sortOrder || 0,
-        metaTitle: category.metaTitle || '',
-        metaDescription: category.metaDescription || '',
-        keywords: category.keywords || [],
-        newKeyword: ''
-      });
-    }
-  }, [category]);
 
   // Auto-generate slug from name
   const generateSlug = (name: string) => {
@@ -129,67 +104,37 @@ export default function EditCategoryPage() {
     }
 
     try {
-      const updateData: any = {
+      const categoryData: any = {
         name: formData.name,
         slug: formData.slug,
         isActive: formData.isActive,
         isFeatured: formData.isFeatured
       };
 
-      if (formData.description) updateData.description = formData.description;
-      if (formData.parentId) updateData.parentId = formData.parentId;
-      if (!formData.parentId && category?.parent) updateData.parentId = null;
-      if (formData.icon) updateData.icon = formData.icon;
-      if (formData.sortOrder) updateData.sortOrder = formData.sortOrder;
-      if (formData.metaTitle) updateData.metaTitle = formData.metaTitle;
-      if (formData.metaDescription) updateData.metaDescription = formData.metaDescription;
-      if (formData.keywords.length > 0) updateData.keywords = formData.keywords;
+      if (formData.description) categoryData.description = formData.description;
+      if (formData.parentId) categoryData.parentId = formData.parentId;
+      if (formData.icon) categoryData.icon = formData.icon;
+      if (formData.sortOrder) categoryData.sortOrder = formData.sortOrder;
+      if (formData.metaTitle) categoryData.metaTitle = formData.metaTitle;
+      if (formData.metaDescription) categoryData.metaDescription = formData.metaDescription;
+      if (formData.keywords.length > 0) categoryData.keywords = formData.keywords;
 
-      if (formData.image) updateData.image = formData.image;
+      if (formData.image) categoryData.image = formData.image;
 
-      await updateCategory.mutateAsync({ categoryId, data: updateData });
-      router.push(`/admin/categorias/${categoryId}`);
+      const newCategory = await createCategory.mutateAsync(categoryData);
+      router.push(`/admin/categorias/${newCategory.id}`);
     } catch (error: any) {
       // Error is handled by the hook
     }
   };
-
-  if (isLoading) {
-    return (
-      <AdminLayout>
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-gray-6">Carregando categoria...</p>
-          </div>
-        </div>
-      </AdminLayout>
-    );
-  }
-
-  if (!category) {
-    return (
-      <AdminLayout>
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <Tag className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-            <p className="text-gray-6">Categoria não encontrada</p>
-            <Button onClick={() => router.back()} className="mt-4">
-              Voltar
-            </Button>
-          </div>
-        </div>
-      </AdminLayout>
-    );
-  }
 
   return (
     <AdminLayout>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Categoria</h1>
-            <p className="text-gray-6">{category.name}</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Criar Nova Categoria</h1>
+            <p className="text-gray-6">Adicione uma nova categoria de produtos</p>
           </div>
           <Button onClick={() => router.back()} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -217,6 +162,7 @@ export default function EditCategoryPage() {
                       id="name"
                       value={formData.name}
                       onChange={(e) => handleNameChange(e.target.value)}
+                      placeholder="Ex: Frutas"
                       className={errors.name ? 'border-red-500' : ''}
                     />
                     {errors.name && (
@@ -229,11 +175,15 @@ export default function EditCategoryPage() {
                       id="slug"
                       value={formData.slug}
                       onChange={(e) => setFormData({...formData, slug: e.target.value})}
+                      placeholder="frutas"
                       className={errors.slug ? 'border-red-500' : ''}
                     />
                     {errors.slug && (
                       <p className="text-red-500 text-sm mt-1">{errors.slug}</p>
                     )}
+                    <p className="text-xs text-gray-6 mt-1">
+                      URL-friendly identifier (gerado automaticamente se deixado em branco)
+                    </p>
                   </div>
                   <div>
                     <Label htmlFor="description">Descrição</Label>
@@ -241,7 +191,8 @@ export default function EditCategoryPage() {
                       id="description"
                       value={formData.description}
                       onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      rows={4}
+                      placeholder="Descreva a categoria..."
+                      rows={3}
                     />
                   </div>
                 </div>
@@ -301,10 +252,10 @@ export default function EditCategoryPage() {
                       <SelectContent>
                         <SelectItem value="none">Nenhuma (Categoria Principal)</SelectItem>
                         {allCategories
-                          .filter(cat => cat.id !== categoryId)
-                          .map((cat) => (
-                            <SelectItem key={cat.id} value={cat.id}>
-                              {cat.name}
+                          .filter(cat => cat.id !== formData.parentId)
+                          .map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
                             </SelectItem>
                           ))}
                       </SelectContent>
@@ -318,6 +269,9 @@ export default function EditCategoryPage() {
                       onChange={(e) => setFormData({...formData, icon: e.target.value})}
                       placeholder="tag"
                     />
+                    <p className="text-xs text-gray-6 mt-1">
+                      Nome do ícone (ex: tag, package, etc.)
+                    </p>
                   </div>
                   <div>
                     <Label htmlFor="sortOrder">Ordem de Exibição</Label>
@@ -366,6 +320,7 @@ export default function EditCategoryPage() {
                       id="metaTitle"
                       value={formData.metaTitle}
                       onChange={(e) => setFormData({...formData, metaTitle: e.target.value})}
+                      placeholder="Frutas - Txova"
                     />
                   </div>
                   <div>
@@ -374,6 +329,7 @@ export default function EditCategoryPage() {
                       id="metaDescription"
                       value={formData.metaDescription}
                       onChange={(e) => setFormData({...formData, metaDescription: e.target.value})}
+                      placeholder="Compre frutas frescas..."
                       rows={2}
                     />
                   </div>
@@ -401,7 +357,7 @@ export default function EditCategoryPage() {
                               onClick={() => handleRemoveKeyword(keyword)}
                               className="ml-1 hover:text-red-500"
                             >
-                              <X className="w-3 h-3" />
+                              ×
                             </button>
                           </Badge>
                         ))}
@@ -449,10 +405,6 @@ export default function EditCategoryPage() {
                       </span>
                     </div>
                   )}
-                  <div className="flex justify-between">
-                    <span className="text-gray-6">Produtos:</span>
-                    <span className="font-medium">{category.productCount}</span>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -462,17 +414,17 @@ export default function EditCategoryPage() {
                 <Button 
                   type="submit" 
                   className="w-full" 
-                  disabled={updateCategory.isPending}
+                  disabled={createCategory.isPending}
                 >
-                  {updateCategory.isPending ? (
+                  {createCategory.isPending ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Salvando...
+                      Criando...
                     </>
                   ) : (
                     <>
                       <Save className="w-4 h-4 mr-2" />
-                      Salvar Alterações
+                      Criar Categoria
                     </>
                   )}
                 </Button>
@@ -484,3 +436,4 @@ export default function EditCategoryPage() {
     </AdminLayout>
   );
 }
+
