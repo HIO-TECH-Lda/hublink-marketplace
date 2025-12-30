@@ -583,7 +583,31 @@ export interface Seller {
   updatedAt: string;
 }
 
-export interface SellerDetails extends Seller {
+export interface SellerDetails {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: 'seller';
+  status: 'active' | 'inactive' | 'suspended';
+  company: {
+    name: string;
+    description?: string;
+    address?: string;
+    city?: string;
+    province?: string;
+    postalCode?: string;
+    productTypes?: string;
+    experience?: string;
+  };
+  contact: {
+    name: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+  };
   statistics: {
     productCount: number;
     averageRating: number;
@@ -594,6 +618,28 @@ export interface SellerDetails extends Seller {
     totalSales: number;
     totalQuantitySold: number;
   };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateSellerRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  storeName?: string;
+  businessName?: string;
+  storeDescription?: string;
+  businessDescription?: string;
+  address: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  productTypes?: string;
+  businessType?: string;
+  experience?: string;
+  status?: 'active' | 'inactive' | 'suspended';
+  password?: string;
 }
 
 export const useAdminSellerStats = () => {
@@ -637,6 +683,63 @@ export const useAdminSeller = (sellerId: string) => {
       return response.data.data as SellerDetails;
     },
     enabled: !!sellerId,
+  });
+};
+
+export const useCreateSeller = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (data: CreateSellerRequest) => {
+      const response = await apiClient.post('/admin/sellers', data);
+      return response.data.data as SellerDetails;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'sellers'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'sellers', 'stats'] });
+      toast({
+        title: 'Vendedor criado',
+        description: 'O vendedor foi criado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao criar vendedor';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateSeller = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ sellerId, data }: { sellerId: string; data: Partial<CreateSellerRequest> }) => {
+      const response = await apiClient.put(`/admin/sellers/${sellerId}`, data);
+      return response.data.data as SellerDetails;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'sellers'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'seller', variables.sellerId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'sellers', 'stats'] });
+      toast({
+        title: 'Vendedor atualizado',
+        description: 'As alterações foram salvas com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar vendedor';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
   });
 };
 

@@ -15,8 +15,7 @@ import {
   Phone,
   MapPin,
   TrendingUp,
-  Eye,
-  ShoppingCart
+  Edit
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -116,10 +115,19 @@ export default function VendorDetailPage() {
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Detalhes do Vendedor</h1>
             <p className="text-gray-6">{seller.company.name}</p>
           </div>
-          <Button onClick={() => router.back()} variant="outline">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              onClick={() => router.push(`/admin/vendedores/${sellerId}/editar`)} 
+              variant="default"
+            >
+              <Edit className="w-4 h-4 mr-2" />
+              Editar
+            </Button>
+            <Button onClick={() => router.back()} variant="outline">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -221,12 +229,8 @@ export default function VendorDetailPage() {
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-gray-7">Pessoa de Contato</label>
-                  <p className="text-gray-9 font-medium">{seller.contact.name}</p>
-                  {seller.contact.firstName && seller.contact.lastName && (
-                    <p className="text-sm text-gray-6">
-                      {seller.contact.firstName} {seller.contact.lastName}
-                    </p>
-                  )}
+                  <p className="text-gray-9 font-medium">{seller.firstName} {seller.lastName}</p>
+                  <p className="text-sm text-gray-6">{seller.contact.name}</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>

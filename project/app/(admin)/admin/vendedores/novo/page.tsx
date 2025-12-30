@@ -6,13 +6,10 @@ import {
   Shield, 
   Save, 
   ArrowLeft, 
-  Upload,
-  AlertCircle,
   User,
   Building,
-  Mail,
-  Phone,
-  MapPin
+  MapPin,
+  Lock
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -20,41 +17,35 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { Label } from '@/components/ui/label';
+import { useCreateSeller } from '@/hooks/useAdmin';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AdminCreateSellerPage() {
   const router = useRouter();
-  const { state } = useMarketplace();
-  const [isSaving, setIsSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { toast } = useToast();
+  const createSeller = useCreateSeller();
 
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
-    businessName: '',
-    businessDescription: '',
-    businessType: '',
-    address: {
-      street: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: 'Moçambique'
-    },
-    status: 'pending',
-    commissionRate: '10'
+    storeName: '',
+    storeDescription: '',
+    address: '',
+    city: '',
+    province: '',
+    postalCode: '',
+    productTypes: '',
+    experience: '',
+    status: 'inactive' as 'active' | 'inactive' | 'suspended',
+    password: ''
   });
 
-  const businessTypes = [
-    { id: 'individual', name: 'Pessoa Individual' },
-    { id: 'company', name: 'Empresa' },
-    { id: 'cooperative', name: 'Cooperativa' },
-    { id: 'association', name: 'Associação' }
-  ];
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.firstName.trim()) {
@@ -71,23 +62,20 @@ export default function AdminCreateSellerPage() {
     if (!formData.phone.trim()) {
       newErrors.phone = 'Telefone é obrigatório';
     }
-    if (!formData.businessName.trim()) {
-      newErrors.businessName = 'Nome do negócio é obrigatório';
+    if (!formData.storeName.trim()) {
+      newErrors.storeName = 'Nome da loja é obrigatório';
     }
-    if (!formData.businessType) {
-      newErrors.businessType = 'Tipo de negócio é obrigatório';
+    if (!formData.address.trim()) {
+      newErrors.address = 'Endereço é obrigatório';
     }
-    if (!formData.address.street.trim()) {
-      newErrors.street = 'Endereço é obrigatório';
-    }
-    if (!formData.address.city.trim()) {
+    if (!formData.city.trim()) {
       newErrors.city = 'Cidade é obrigatória';
     }
-    if (!formData.address.state.trim()) {
-      newErrors.state = 'Província é obrigatória';
+    if (!formData.province.trim()) {
+      newErrors.province = 'Província é obrigatória';
     }
-    if (!formData.address.zipCode.trim()) {
-      newErrors.zipCode = 'Código postal é obrigatório';
+    if (!formData.postalCode.trim()) {
+      newErrors.postalCode = 'Código postal é obrigatório';
     }
 
     setErrors(newErrors);
@@ -101,23 +89,30 @@ export default function AdminCreateSellerPage() {
       return;
     }
 
-    setIsSaving(true);
-
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const sellerData: any = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        storeName: formData.storeName,
+        address: formData.address,
+        city: formData.city,
+        province: formData.province,
+        postalCode: formData.postalCode,
+        status: formData.status
+      };
 
-      // Here you would typically make an API call to create the seller
-      console.log('Creating seller:', {
-        ...formData,
-        commissionRate: parseFloat(formData.commissionRate)
-      });
+      if (formData.storeDescription) sellerData.storeDescription = formData.storeDescription;
+      if (formData.productTypes) sellerData.productTypes = formData.productTypes;
+      if (formData.experience) sellerData.experience = formData.experience;
+      if (formData.password) sellerData.password = formData.password;
 
-      // Navigate back to sellers list
-      router.push('/admin/vendedores');
-    } catch (error) {
-      console.error('Error creating seller:', error);
-    } finally {
-      setIsSaving(false);
+      const newSeller = await createSeller.mutateAsync(sellerData);
+      
+      router.push(`/admin/vendedores/${newSeller.id}`);
+    } catch (error: any) {
+      // Error is handled by the hook
     }
   };
 
@@ -150,11 +145,12 @@ export default function AdminCreateSellerPage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Nome *</label>
+                    <Label htmlFor="firstName">Nome *</Label>
                     <Input
+                      id="firstName"
                       value={formData.firstName}
                       onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                      placeholder="Nome do vendedor"
+                      placeholder="João"
                       className={errors.firstName ? 'border-red-500' : ''}
                     />
                     {errors.firstName && (
@@ -162,11 +158,12 @@ export default function AdminCreateSellerPage() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Sobrenome *</label>
+                    <Label htmlFor="lastName">Sobrenome *</Label>
                     <Input
+                      id="lastName"
                       value={formData.lastName}
                       onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                      placeholder="Sobrenome do vendedor"
+                      placeholder="Silva"
                       className={errors.lastName ? 'border-red-500' : ''}
                     />
                     {errors.lastName && (
@@ -174,12 +171,13 @@ export default function AdminCreateSellerPage() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Email *</label>
+                    <Label htmlFor="email">Email *</Label>
                     <Input
+                      id="email"
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      placeholder="email@exemplo.com"
+                      placeholder="joao@exemplo.com"
                       className={errors.email ? 'border-red-500' : ''}
                     />
                     {errors.email && (
@@ -187,11 +185,12 @@ export default function AdminCreateSellerPage() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Telefone *</label>
+                    <Label htmlFor="phone">Telefone *</Label>
                     <Input
+                      id="phone"
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      placeholder="+258 84 123 4567"
+                      placeholder="+258841234567"
                       className={errors.phone ? 'border-red-500' : ''}
                     />
                     {errors.phone && (
@@ -213,43 +212,45 @@ export default function AdminCreateSellerPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Nome do Negócio *</label>
+                    <Label htmlFor="storeName">Nome da Loja *</Label>
                     <Input
-                      value={formData.businessName}
-                      onChange={(e) => setFormData({...formData, businessName: e.target.value})}
-                      placeholder="Ex: Fazenda Verde"
-                      className={errors.businessName ? 'border-red-500' : ''}
+                      id="storeName"
+                      value={formData.storeName}
+                      onChange={(e) => setFormData({...formData, storeName: e.target.value})}
+                      placeholder="Fazenda Verde"
+                      className={errors.storeName ? 'border-red-500' : ''}
                     />
-                    {errors.businessName && (
-                      <p className="text-red-500 text-sm mt-1">{errors.businessName}</p>
+                    {errors.storeName && (
+                      <p className="text-red-500 text-sm mt-1">{errors.storeName}</p>
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Descrição do Negócio</label>
+                    <Label htmlFor="storeDescription">Descrição da Loja</Label>
                     <Textarea
-                      value={formData.businessDescription}
-                      onChange={(e) => setFormData({...formData, businessDescription: e.target.value})}
+                      id="storeDescription"
+                      value={formData.storeDescription}
+                      onChange={(e) => setFormData({...formData, storeDescription: e.target.value})}
                       placeholder="Descreva o negócio..."
                       rows={3}
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Tipo de Negócio *</label>
-                    <Select value={formData.businessType} onValueChange={(value) => setFormData({...formData, businessType: value})}>
-                      <SelectTrigger className={errors.businessType ? 'border-red-500' : ''}>
-                        <SelectValue placeholder="Selecione o tipo de negócio" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {businessTypes.map((type) => (
-                          <SelectItem key={type.id} value={type.id}>
-                            {type.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.businessType && (
-                      <p className="text-red-500 text-sm mt-1">{errors.businessType}</p>
-                    )}
+                    <Label htmlFor="productTypes">Tipos de Produtos</Label>
+                    <Input
+                      id="productTypes"
+                      value={formData.productTypes}
+                      onChange={(e) => setFormData({...formData, productTypes: e.target.value})}
+                      placeholder="Frutas e Legumes"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="experience">Experiência</Label>
+                    <Input
+                      id="experience"
+                      value={formData.experience}
+                      onChange={(e) => setFormData({...formData, experience: e.target.value})}
+                      placeholder="10 anos de experiência"
+                    />
                   </div>
                 </div>
               </CardContent>
@@ -266,29 +267,25 @@ export default function AdminCreateSellerPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Rua/Avenida *</label>
+                    <Label htmlFor="address">Endereço *</Label>
                     <Input
-                      value={formData.address.street}
-                      onChange={(e) => setFormData({
-                        ...formData, 
-                        address: {...formData.address, street: e.target.value}
-                      })}
-                      placeholder="Rua Principal, nº 123"
-                      className={errors.street ? 'border-red-500' : ''}
+                      id="address"
+                      value={formData.address}
+                      onChange={(e) => setFormData({...formData, address: e.target.value})}
+                      placeholder="Estrada Nacional 1, Km 25"
+                      className={errors.address ? 'border-red-500' : ''}
                     />
-                    {errors.street && (
-                      <p className="text-red-500 text-sm mt-1">{errors.street}</p>
+                    {errors.address && (
+                      <p className="text-red-500 text-sm mt-1">{errors.address}</p>
                     )}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-7 mb-2 block">Cidade *</label>
+                      <Label htmlFor="city">Cidade *</Label>
                       <Input
-                        value={formData.address.city}
-                        onChange={(e) => setFormData({
-                          ...formData, 
-                          address: {...formData.address, city: e.target.value}
-                        })}
+                        id="city"
+                        value={formData.city}
+                        onChange={(e) => setFormData({...formData, city: e.target.value})}
                         placeholder="Maputo"
                         className={errors.city ? 'border-red-500' : ''}
                       />
@@ -297,33 +294,29 @@ export default function AdminCreateSellerPage() {
                       )}
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-7 mb-2 block">Província *</label>
+                      <Label htmlFor="province">Província *</Label>
                       <Input
-                        value={formData.address.state}
-                        onChange={(e) => setFormData({
-                          ...formData, 
-                          address: {...formData.address, state: e.target.value}
-                        })}
+                        id="province"
+                        value={formData.province}
+                        onChange={(e) => setFormData({...formData, province: e.target.value})}
                         placeholder="Maputo"
-                        className={errors.state ? 'border-red-500' : ''}
+                        className={errors.province ? 'border-red-500' : ''}
                       />
-                      {errors.state && (
-                        <p className="text-red-500 text-sm mt-1">{errors.state}</p>
+                      {errors.province && (
+                        <p className="text-red-500 text-sm mt-1">{errors.province}</p>
                       )}
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-7 mb-2 block">Código Postal *</label>
+                      <Label htmlFor="postalCode">Código Postal *</Label>
                       <Input
-                        value={formData.address.zipCode}
-                        onChange={(e) => setFormData({
-                          ...formData, 
-                          address: {...formData.address, zipCode: e.target.value}
-                        })}
+                        id="postalCode"
+                        value={formData.postalCode}
+                        onChange={(e) => setFormData({...formData, postalCode: e.target.value})}
                         placeholder="1100"
-                        className={errors.zipCode ? 'border-red-500' : ''}
+                        className={errors.postalCode ? 'border-red-500' : ''}
                       />
-                      {errors.zipCode && (
-                        <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>
+                      {errors.postalCode && (
+                        <p className="text-red-500 text-sm mt-1">{errors.postalCode}</p>
                       )}
                     </div>
                   </div>
@@ -335,42 +328,42 @@ export default function AdminCreateSellerPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <AlertCircle className="w-5 h-5 mr-2" />
+                  <Shield className="w-5 h-5 mr-2" />
                   Configurações
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
-                    <Select value={formData.status} onValueChange={(value) => setFormData({...formData, status: value})}>
+                    <Label htmlFor="status">Status</Label>
+                    <Select 
+                      value={formData.status} 
+                      onValueChange={(value: 'active' | 'inactive' | 'suspended') => setFormData({...formData, status: value})}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="pending">Pendente</SelectItem>
-                        <SelectItem value="approved">Aprovado</SelectItem>
-                        <SelectItem value="rejected">Rejeitado</SelectItem>
-                        <SelectItem value="suspended">Suspenso</SelectItem>
+                        <SelectItem value="inactive">Pendente</SelectItem>
+                        <SelectItem value="active">Aprovado</SelectItem>
+                        <SelectItem value="suspended">Rejeitado</SelectItem>
                       </SelectContent>
                     </Select>
                     <p className="text-xs text-gray-6 mt-1">
-                      Vendedores pendentes precisam de aprovação
+                      Vendedores pendentes precisam de aprovação antes de serem exibidos
                     </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Taxa de Comissão (%)</label>
+                    <Label htmlFor="password">Senha (Opcional)</Label>
                     <Input
-                      type="number"
-                      min="0"
-                      max="50"
-                      step="0.1"
-                      value={formData.commissionRate}
-                      onChange={(e) => setFormData({...formData, commissionRate: e.target.value})}
-                      placeholder="10"
+                      id="password"
+                      type="password"
+                      value={formData.password}
+                      onChange={(e) => setFormData({...formData, password: e.target.value})}
+                      placeholder="Deixe em branco para senha temporária"
                     />
                     <p className="text-xs text-gray-6 mt-1">
-                      Percentual que o vendedor recebe por venda
+                      Se não informada, será gerada uma senha temporária
                     </p>
                   </div>
                 </div>
@@ -380,18 +373,18 @@ export default function AdminCreateSellerPage() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Seller Summary */}
             <Card>
               <CardHeader>
-                <CardTitle>Resumo do Vendedor</CardTitle>
+                <CardTitle>Resumo</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
+                <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-6">Nome:</span>
                     <span className="font-medium">
-                      {formData.firstName && formData.lastName ? 
-                        `${formData.firstName} ${formData.lastName}` : 'Não definido'}
+                      {formData.firstName && formData.lastName 
+                        ? `${formData.firstName} ${formData.lastName}` 
+                        : 'Não definido'}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -403,43 +396,31 @@ export default function AdminCreateSellerPage() {
                     <span className="font-medium">{formData.phone || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Negócio:</span>
-                    <span className="font-medium">{formData.businessName || 'Não definido'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-6">Tipo:</span>
-                    <span className="font-medium">
-                      {businessTypes.find(t => t.id === formData.businessType)?.name || 'Não definido'}
-                    </span>
+                    <span className="text-gray-6">Loja:</span>
+                    <span className="font-medium">{formData.storeName || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-6">Status:</span>
                     <span className="font-medium">
-                      {formData.status === 'pending' ? 'Pendente' : 
-                       formData.status === 'approved' ? 'Aprovado' : 
-                       formData.status === 'rejected' ? 'Rejeitado' : 'Suspenso'}
+                      {formData.status === 'active' ? 'Aprovado' : 
+                       formData.status === 'inactive' ? 'Pendente' : 'Rejeitado'}
                     </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-6">Comissão:</span>
-                    <span className="font-medium">{formData.commissionRate}%</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Save Button */}
             <Card>
               <CardContent className="pt-6">
                 <Button 
                   type="submit" 
                   className="w-full" 
-                  disabled={isSaving}
+                  disabled={createSeller.isPending}
                 >
-                  {isSaving ? (
+                  {createSeller.isPending ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Criando Vendedor...
+                      Criando...
                     </>
                   ) : (
                     <>
