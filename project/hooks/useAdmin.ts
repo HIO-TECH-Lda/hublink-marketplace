@@ -583,6 +583,23 @@ export interface Seller {
   updatedAt: string;
 }
 
+export interface SellerProduct {
+  id: string;
+  name: string;
+  primaryImage: string;
+  price: number;
+  stock: number;
+  averageRating: number;
+  totalReviews: number;
+  status: string;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+  createdAt: string;
+}
+
 export interface SellerDetails {
   id: string;
   firstName: string;
@@ -618,6 +635,7 @@ export interface SellerDetails {
     totalSales: number;
     totalQuantitySold: number;
   };
+  products?: SellerProduct[];
   createdAt: string;
   updatedAt: string;
 }

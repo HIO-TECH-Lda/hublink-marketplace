@@ -238,19 +238,85 @@ export default function VendorDetailPage() {
                       <Mail className="w-4 h-4 mr-1" />
                       Email
                     </label>
-                    <p className="text-gray-9">{seller.contact.email}</p>
+                    <p className="text-gray-9">{seller.email}</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-7 flex items-center">
                       <Phone className="w-4 h-4 mr-1" />
                       Telefone
                     </label>
-                    <p className="text-gray-9">{seller.contact.phone}</p>
+                    <p className="text-gray-9">{seller.phone}</p>
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* Products */}
+          {seller.products && seller.products.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Package className="w-5 h-5 mr-2" />
+                  Produtos ({seller.products.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {seller.products.map((product) => (
+                    <div 
+                      key={product.id} 
+                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                      onClick={() => router.push(`/admin/produtos/${product.id}`)}
+                    >
+                      <div className="flex items-center flex-1">
+                        <div className="w-16 h-16 bg-gray-200 rounded-lg mr-4 flex items-center justify-center overflow-hidden">
+                          {product.primaryImage ? (
+                            <img 
+                              src={product.primaryImage} 
+                              alt={product.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <Package className="w-6 h-6 text-gray-4" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-9">{product.name}</p>
+                          <div className="flex items-center gap-4 mt-1 text-sm text-gray-6">
+                            <span>{product.category.name}</span>
+                            <span>•</span>
+                            <span>Estoque: {product.stock}</span>
+                            {product.averageRating > 0 && (
+                              <>
+                                <span>•</span>
+                                <div className="flex items-center">
+                                  <Star className="w-3 h-3 text-yellow-500 mr-1" />
+                                  <span>{product.averageRating.toFixed(1)} ({product.totalReviews})</span>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right ml-4">
+                        <p className="font-medium text-gray-9">{formatCurrency(product.price)}</p>
+                        <Badge className={
+                          product.status === 'active' ? 'text-green-600 bg-green-100' :
+                          product.status === 'pending' ? 'text-yellow-600 bg-yellow-100' :
+                          'text-gray-600 bg-gray-100'
+                        }>
+                          {product.status === 'active' ? 'Ativo' :
+                           product.status === 'pending' ? 'Pendente' :
+                           product.status === 'draft' ? 'Rascunho' : product.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* Sidebar */}
