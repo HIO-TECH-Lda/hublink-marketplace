@@ -277,13 +277,36 @@ export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ productId, data }: { productId: string; data: Partial<Product> }) => {
-      const response = await apiClient.put(`/admin/products/${productId}`, data);
+    mutationFn: async ({ productId, data }: { productId: string; data: FormData | Partial<Product> }) => {
+      // If FormData, use multipart/form-data, otherwise use JSON
+      const config = data instanceof FormData 
+        ? { headers: { 'Content-Type': 'multipart/form-data' } }
+        : {};
+      const response = await apiClient.put(`/admin/products/${productId}`, data, config);
       return response.data.data;
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'product', variables.productId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products', 'stats'] });
+    },
+  });
+};
+
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: FormData | any) => {
+      // If FormData, use multipart/form-data, otherwise use JSON
+      const config = data instanceof FormData 
+        ? { headers: { 'Content-Type': 'multipart/form-data' } }
+        : {};
+      const response = await apiClient.post('/admin/products', data, config);
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'products', 'stats'] });
     },
   });
@@ -539,11 +562,17 @@ export const useAdminSellers = (params?: {
   status?: string;
   search?: string;
 }) => {
-  return useQuery({
+  return useQuery<Seller[]>({
     queryKey: ['admin', 'sellers', params],
     queryFn: async () => {
-      const response = await apiClient.get('/admin/sellers', { params });
-      return response.data.data as { sellers: Seller[]; pagination: any };
+      const response = await apiClient.get('/admin/users/sellers', { params });
+      // API returns {success: true, data: [...]} where data is an array
+      const data = response.data.data;
+      if (Array.isArray(data)) {
+        return data as Seller[];
+      }
+      // Fallback for paginated response structure
+      return (data?.sellers || data || []) as Seller[];
     },
   });
 };

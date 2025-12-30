@@ -3,149 +3,129 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { 
-  Package, 
   Save, 
   ArrowLeft, 
-  AlertCircle,
+  Package,
   X
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import ImageUpload from '@/components/ui/image-upload';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  tags: string[];
-  seller: {
-    id: string;
-    name: string;
-    businessName: string;
-    email: string;
-    phone: string;
-  };
-  status: 'active' | 'inactive' | 'pending' | 'rejected';
-  rating: number;
-  reviewCount: number;
-  stock: number;
-  image: string;
-  images: string[];
-  createdAt: string;
-  updatedAt: string;
-  rejectionReason?: string;
-}
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { SingleImageUpload } from '@/components/ui/single-image-upload';
+import { MultiImageUpload, ImageFile } from '@/components/ui/multi-image-upload';
+import { useAdminProduct, useUpdateProduct } from '@/hooks/useAdmin';
+import { useCategories } from '@/hooks/useCategories';
+import { useAdminSellers } from '@/hooks/useAdmin';
+import { useToast } from '@/hooks/use-toast';
 
 export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
-  const { state } = useMarketplace();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { toast } = useToast();
+  const productId = params.id as string;
+  
+  const { data: product, isLoading } = useAdminProduct(productId);
+  const { data: categories } = useCategories();
+  const { data: sellersData } = useAdminSellers({ limit: 100 });
+  const updateProduct = useUpdateProduct();
 
-  // Form state
+  // API returns array directly: {success: true, data: [...]}
+  const sellers: any[] = Array.isArray(sellersData) ? sellersData : (sellersData ? [sellersData] : []);
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    shortDescription: '',
     price: '',
-    category: '',
-    status: '',
+    originalPrice: '',
     stock: '',
+    status: 'draft',
+    categoryId: '',
+    subcategoryId: '',
+    sellerId: '',
+    sku: '',
+    primaryImage: null as File | null,
+    primaryImagePreview: '' as string,
+    images: [] as ImageFile[],
+    isFeatured: false,
+    isBestSeller: false,
     tags: [] as string[],
     newTag: ''
   });
 
-  const [categories] = useState([
-    'Frutas',
-    'Legumes',
-    'Verduras',
-    'Grãos',
-    'Laticínios',
-    'Carnes',
-    'Bebidas',
-    'Outros'
-  ]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    loadProduct();
-  }, [params.id]);
+    if (product) {
+      const productData = product as any;
+      
+      // Convert existing images to ImageFile format for preview
+      const existingImages: ImageFile[] = [];
+      if (productData.images && Array.isArray(productData.images)) {
+        productData.images.forEach((img: any, index: number) => {
+          // If it's already a URL, create a placeholder ImageFile
+          if (typeof img === 'string' || img.url) {
+            const url = typeof img === 'string' ? img : img.url;
+            // Create a dummy file object for existing images
+            const dummyFile = new File([], `image-${index}.jpg`, { type: 'image/jpeg' });
+            existingImages.push({
+              file: dummyFile,
+              preview: url,
+              id: `existing-${index}`
+            });
+          }
+        });
+      }
+      
+      setFormData({
+        name: productData.name || '',
+        description: productData.description || '',
+        shortDescription: productData.shortDescription || '',
+        price: productData.price?.toString() || '',
+        originalPrice: productData.originalPrice?.toString() || '',
+        stock: productData.stock?.toString() || '',
+        status: productData.status || 'draft',
+        categoryId: productData.category?.id || productData.categoryId || '',
+        subcategoryId: productData.subcategory?.id || productData.subcategoryId || '',
+        sellerId: productData.seller?.id || productData.sellerId || '',
+        sku: productData.sku || '',
+        primaryImage: null,
+        primaryImagePreview: productData.primaryImage || '',
+        images: existingImages,
+        isFeatured: productData.isFeatured || false,
+        isBestSeller: productData.isBestSeller || false,
+        tags: productData.tags || [],
+        newTag: ''
+      });
+    }
+  }, [product]);
 
-  const loadProduct = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Mock product data
-    const mockProduct: Product = {
-      id: params.id as string,
-      name: 'Maçãs Orgânicas',
-      description: 'Maçãs orgânicas frescas e saborosas, cultivadas sem agrotóxicos. Perfeitas para consumo direto ou para preparo de receitas saudáveis.',
-      price: 150.00,
-      category: 'Frutas',
-      tags: ['orgânico', 'fresco', 'saudável', 'sem agrotóxicos'],
-      seller: {
-        id: '1',
-        name: 'João Silva',
-        businessName: 'Fazenda Verde',
-        email: 'joao@fazendaverde.com',
-        phone: '(258) 84-123-4567'
-      },
-      status: 'active',
-      rating: 4.8,
-      reviewCount: 25,
-      stock: 50,
-      image: '/images/apples.jpg',
-      images: ['/images/apples.jpg', '/images/apples-2.jpg', '/images/apples-3.jpg'],
-      createdAt: '2024-01-15T10:30:00Z',
-      updatedAt: '2024-01-20T14:25:00Z'
-    };
-
-    setProduct(mockProduct);
-    
-    // Populate form data
-    setFormData({
-      name: mockProduct.name,
-      description: mockProduct.description,
-      price: mockProduct.price.toString(),
-      category: mockProduct.category,
-      status: mockProduct.status,
-      stock: mockProduct.stock.toString(),
-      tags: [...mockProduct.tags],
-      newTag: ''
-    });
-    
-    setIsLoading(false);
-  };
-
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Nome do produto é obrigatório';
+      newErrors.name = 'Nome é obrigatório';
     }
     if (!formData.description.trim()) {
       newErrors.description = 'Descrição é obrigatória';
     }
-    if (!formData.price.trim()) {
-      newErrors.price = 'Preço é obrigatório';
-    } else if (isNaN(Number(formData.price)) || Number(formData.price) <= 0) {
-      newErrors.price = 'Preço deve ser um número válido maior que zero';
+    if (!formData.price.trim() || parseFloat(formData.price) <= 0) {
+      newErrors.price = 'Preço deve ser maior que zero';
     }
-    if (!formData.category.trim()) {
-      newErrors.category = 'Categoria é obrigatória';
+    if (!formData.stock.trim() || parseInt(formData.stock) < 0) {
+      newErrors.stock = 'Estoque deve ser zero ou maior';
     }
-    if (!formData.stock.trim()) {
-      newErrors.stock = 'Estoque é obrigatório';
-    } else if (isNaN(Number(formData.stock)) || Number(formData.stock) < 0) {
-      newErrors.stock = 'Estoque deve ser um número válido maior ou igual a zero';
+    if (!formData.categoryId) {
+      newErrors.categoryId = 'Categoria é obrigatória';
+    }
+    if (!formData.sellerId) {
+      newErrors.sellerId = 'Vendedor é obrigatório';
     }
 
     setErrors(newErrors);
@@ -176,43 +156,68 @@ export default function EditProductPage() {
       return;
     }
 
-    setIsSaving(true);
-
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Update product with new data
-      if (product) {
-        const updatedProduct: Product = {
-          ...product,
-          name: formData.name,
-          description: formData.description,
-          price: Number(formData.price),
-          category: formData.category,
-          status: formData.status as Product['status'],
-          stock: Number(formData.stock),
-          tags: formData.tags,
-          updatedAt: new Date().toISOString()
-        };
-
-        setProduct(updatedProduct);
+      // Create FormData for file uploads
+      const formDataToSend = new FormData();
+      
+      // Add text fields
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('sellerId', formData.sellerId);
+      formDataToSend.append('categoryId', formData.categoryId);
+      formDataToSend.append('price', formData.price);
+      formDataToSend.append('stock', formData.stock);
+      formDataToSend.append('status', formData.status);
+      formDataToSend.append('isFeatured', formData.isFeatured.toString());
+      formDataToSend.append('isBestSeller', formData.isBestSeller.toString());
+      
+      if (formData.shortDescription) formDataToSend.append('shortDescription', formData.shortDescription);
+      if (formData.subcategoryId) formDataToSend.append('subcategoryId', formData.subcategoryId);
+      if (formData.originalPrice) formDataToSend.append('originalPrice', formData.originalPrice);
+      if (formData.sku) formDataToSend.append('sku', formData.sku);
+      
+      // Add tags as JSON array
+      if (formData.tags.length > 0) {
+        formDataToSend.append('tags', JSON.stringify(formData.tags));
       }
 
-      // Redirect to product details
-      router.push(`/admin/produtos/${params.id}`);
-    } catch (error) {
-      console.error('Error updating product:', error);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+      // Add primary image file (only if new file uploaded)
+      if (formData.primaryImage && formData.primaryImage.size > 0) {
+        formDataToSend.append('primaryImage', formData.primaryImage);
+      } else if (formData.images.length > 0 && formData.images[0].file.size > 0 && !formData.primaryImagePreview) {
+        // Use first image as primary if no primary image set
+        formDataToSend.append('primaryImage', formData.images[0].file);
+      } else if (formData.primaryImagePreview) {
+        // Keep existing primary image URL
+        formDataToSend.append('primaryImageUrl', formData.primaryImagePreview);
+      }
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('pt-MZ', {
-      style: 'currency',
-      currency: 'MZN'
-    }).format(amount);
+      // Add additional image files (only new files, preserve existing URLs)
+      formData.images.forEach((img, index) => {
+        if (img.file.size > 0) {
+          // New file upload
+          formDataToSend.append(`images`, img.file);
+        } else {
+          // Existing image URL - preserve it
+          formDataToSend.append(`imageUrls`, img.preview);
+        }
+      });
+
+      await updateProduct.mutateAsync({ productId, data: formDataToSend });
+      
+      toast({
+        title: 'Produto atualizado',
+        description: 'As alterações foram salvas com sucesso.',
+      });
+      
+      router.push(`/admin/produtos/${productId}`);
+    } catch (error: any) {
+      toast({
+        title: 'Erro',
+        description: error.response?.data?.message || 'Falha ao atualizar produto',
+        variant: 'destructive',
+      });
+    }
   };
 
   if (isLoading) {
@@ -235,21 +240,26 @@ export default function EditProductPage() {
           <div className="text-center">
             <Package className="w-12 h-12 text-gray-4 mx-auto mb-4" />
             <p className="text-gray-6">Produto não encontrado</p>
+            <Button onClick={() => router.push('/admin/produtos')} className="mt-4">
+              Voltar para Lista
+            </Button>
           </div>
         </div>
       </AdminLayout>
     );
   }
 
+  const productData = product as any;
+
   return (
     <AdminLayout>
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Produto</h1>
-            <p className="text-gray-6">{product.name}</p>
+            <p className="text-gray-6">{productData.name}</p>
           </div>
-          <Button onClick={() => router.back()} variant="outline">
+          <Button onClick={() => router.push(`/admin/produtos/${productId}`)} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
           </Button>
@@ -257,22 +267,19 @@ export default function EditProductPage() {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Form */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {/* Basic Information */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Package className="w-5 h-5 mr-2" />
-                  Informações Básicas
-                </CardTitle>
+                <CardTitle>Informações Básicas</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Nome do Produto *</label>
+                    <Label htmlFor="name">Nome do Produto *</Label>
                     <Input
+                      id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                       className={errors.name ? 'border-red-500' : ''}
@@ -282,89 +289,194 @@ export default function EditProductPage() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Descrição *</label>
+                    <Label htmlFor="shortDescription">Descrição Curta</Label>
+                    <Input
+                      id="shortDescription"
+                      value={formData.shortDescription}
+                      onChange={(e) => setFormData({...formData, shortDescription: e.target.value})}
+                      placeholder="Breve descrição do produto"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Descrição *</Label>
                     <Textarea
+                      id="description"
                       value={formData.description}
                       onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      rows={4}
+                      rows={6}
                       className={errors.description ? 'border-red-500' : ''}
                     />
                     {errors.description && (
                       <p className="text-red-500 text-sm mt-1">{errors.description}</p>
                     )}
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-7 mb-2 block">Preço (MZN) *</label>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={formData.price}
-                        onChange={(e) => setFormData({...formData, price: e.target.value})}
-                        className={errors.price ? 'border-red-500' : ''}
-                      />
-                      {errors.price && (
-                        <p className="text-red-500 text-sm mt-1">{errors.price}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-7 mb-2 block">Estoque *</label>
-                      <Input
-                        type="number"
-                        min="0"
-                        value={formData.stock}
-                        onChange={(e) => setFormData({...formData, stock: e.target.value})}
-                        className={errors.stock ? 'border-red-500' : ''}
-                      />
-                      {errors.stock && (
-                        <p className="text-red-500 text-sm mt-1">{errors.stock}</p>
-                      )}
-                    </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Pricing */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Preço e Estoque</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="price">Preço (MZN) *</Label>
+                    <Input
+                      id="price"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={formData.price}
+                      onChange={(e) => setFormData({...formData, price: e.target.value})}
+                      className={errors.price ? 'border-red-500' : ''}
+                    />
+                    {errors.price && (
+                      <p className="text-red-500 text-sm mt-1">{errors.price}</p>
+                    )}
+                  </div>
+                  <div>
+                    <Label htmlFor="originalPrice">Preço Original</Label>
+                    <Input
+                      id="originalPrice"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={formData.originalPrice}
+                      onChange={(e) => setFormData({...formData, originalPrice: e.target.value})}
+                      placeholder="Para produtos em promoção"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="stock">Estoque *</Label>
+                    <Input
+                      id="stock"
+                      type="number"
+                      min="0"
+                      value={formData.stock}
+                      onChange={(e) => setFormData({...formData, stock: e.target.value})}
+                      className={errors.stock ? 'border-red-500' : ''}
+                    />
+                    {errors.stock && (
+                      <p className="text-red-500 text-sm mt-1">{errors.stock}</p>
+                    )}
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Category and Status */}
+            {/* Category & Seller */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <AlertCircle className="w-5 h-5 mr-2" />
-                  Categoria e Status
-                </CardTitle>
+                <CardTitle>Categoria e Vendedor</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Categoria *</label>
-                    <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
-                      <SelectTrigger className={errors.category ? 'border-red-500' : ''}>
+                    <Label htmlFor="categoryId">Categoria *</Label>
+                    <Select
+                      value={formData.categoryId}
+                      onValueChange={(value) => setFormData({...formData, categoryId: value})}
+                    >
+                      <SelectTrigger className={errors.categoryId ? 'border-red-500' : ''}>
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category} value={category}>{category}</SelectItem>
+                        {categories?.map((category: any) => (
+                          <SelectItem key={category._id || category.id} value={category._id || category.id}>
+                            {category.name}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                    {errors.category && (
-                      <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+                    {errors.categoryId && (
+                      <p className="text-red-500 text-sm mt-1">{errors.categoryId}</p>
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
-                    <Select value={formData.status} onValueChange={(value) => setFormData({...formData, status: value})}>
+                    <Label htmlFor="sellerId">Vendedor *</Label>
+                    <Select
+                      value={formData.sellerId}
+                      onValueChange={(value) => setFormData({...formData, sellerId: value})}
+                    >
+                      <SelectTrigger className={errors.sellerId ? 'border-red-500' : ''}>
+                        <SelectValue placeholder={
+                          sellers.length === 0 
+                            ? "Nenhum vendedor encontrado"
+                            : "Selecione um vendedor"
+                        } />
+                      </SelectTrigger>
+                      {sellers.length > 0 && (
+                        <SelectContent>
+                          {sellers.map((seller: any) => (
+                            <SelectItem key={seller._id || seller.id} value={seller._id || seller.id}>
+                              {seller.storeName || seller.businessName || seller.name || seller.fullName || seller.email || 'Vendedor sem nome'}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      )}
+                    </Select>
+                    {errors.sellerId && (
+                      <p className="text-red-500 text-sm mt-1">{errors.sellerId}</p>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Status & Flags */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Status e Marcadores</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="status">Status</Label>
+                    <Select
+                      value={formData.status}
+                      onValueChange={(value) => setFormData({...formData, status: value})}
+                    >
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecione o status" />
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="draft">Pendente</SelectItem>
                         <SelectItem value="active">Ativo</SelectItem>
-                        <SelectItem value="pending">Pendente</SelectItem>
-                        <SelectItem value="rejected">Rejeitado</SelectItem>
                         <SelectItem value="inactive">Inativo</SelectItem>
+                        <SelectItem value="archived">Rejeitado</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Produto em Destaque</Label>
+                      <p className="text-xs text-gray-6">Exibir na página inicial</p>
+                    </div>
+                    <Switch
+                      checked={formData.isFeatured}
+                      onCheckedChange={(checked) => setFormData({...formData, isFeatured: checked})}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Mais Vendido</Label>
+                      <p className="text-xs text-gray-6">Marcar como best seller</p>
+                    </div>
+                    <Switch
+                      checked={formData.isBestSeller}
+                      onCheckedChange={(checked) => setFormData({...formData, isBestSeller: checked})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="sku">SKU</Label>
+                    <Input
+                      id="sku"
+                      value={formData.sku}
+                      onChange={(e) => setFormData({...formData, sku: e.target.value})}
+                      placeholder="Código do produto"
+                    />
                   </div>
                 </div>
               </CardContent>
@@ -374,13 +486,12 @@ export default function EditProductPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Tags</CardTitle>
-                <CardDescription>Adicione tags para melhorar a busca e categorização</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex gap-2">
                     <Input
-                      placeholder="Adicionar nova tag..."
+                      placeholder="Adicionar tag..."
                       value={formData.newTag}
                       onChange={(e) => setFormData({...formData, newTag: e.target.value})}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
@@ -410,78 +521,75 @@ export default function EditProductPage() {
             {/* Images */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Package className="w-5 h-5 mr-2" />
-                  Imagens do Produto
-                </CardTitle>
-                <CardDescription>Gerencie as imagens do produto</CardDescription>
+                <CardTitle>Imagens do Produto</CardTitle>
               </CardHeader>
-              <CardContent>
-                <ImageUpload
-                  images={product.images}
-                  onImagesChange={(newImages) => {
-                    // In a real app, you would update the product here
-                    console.log('Images updated:', newImages);
-                  }}
-                  maxImages={5}
-                />
+              <CardContent className="space-y-6">
+                <div>
+                  <SingleImageUpload
+                    image={formData.primaryImage}
+                    preview={formData.primaryImagePreview}
+                    onChange={(file) => setFormData({...formData, primaryImage: file})}
+                    label="Imagem Principal"
+                  />
+                </div>
+                
+                <div>
+                  <MultiImageUpload
+                    images={formData.images}
+                    onChange={(images) => setFormData({...formData, images})}
+                    maxImages={5}
+                    label="Imagens Adicionais"
+                  />
+                  <p className="text-xs text-gray-6 mt-2">
+                    A primeira imagem será usada como principal se nenhuma imagem principal for selecionada
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Product Summary */}
             <Card>
               <CardHeader>
-                <CardTitle>Resumo do Produto</CardTitle>
+                <CardTitle>Resumo</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
+                <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Vendedor:</span>
-                    <span className="font-medium">{product.seller.businessName}</span>
+                    <span className="text-gray-6">Nome:</span>
+                    <span className="font-medium">{formData.name || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Avaliação:</span>
-                    <span className="font-medium">{product.rating}/5 ({product.reviewCount})</span>
+                    <span className="text-gray-6">Preço:</span>
+                    <span className="font-medium">
+                      {formData.price ? `MZN ${parseFloat(formData.price).toFixed(2)}` : 'Não definido'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Preço Atual:</span>
-                    <span className="font-bold">{formatCurrency(product.price)}</span>
+                    <span className="text-gray-6">Estoque:</span>
+                    <span className="font-medium">{formData.stock || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Estoque Atual:</span>
-                    <span className="font-medium">{product.stock} unidades</span>
+                    <span className="text-gray-6">Status:</span>
+                    <span className="font-medium">
+                      {formData.status === 'draft' ? 'Pendente' : 
+                       formData.status === 'active' ? 'Ativo' : 
+                       formData.status === 'inactive' ? 'Inativo' : 'Rejeitado'}
+                    </span>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Seller Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Informações do Vendedor</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <p className="font-medium text-gray-9">{product.seller.businessName}</p>
-                  <p className="text-sm text-gray-6">{product.seller.name}</p>
-                  <p className="text-sm text-gray-6">{product.seller.email}</p>
-                  <p className="text-sm text-gray-6">{product.seller.phone}</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Save Button */}
             <Card>
               <CardContent className="pt-6">
                 <Button 
                   type="submit" 
                   className="w-full" 
-                  disabled={isSaving}
+                  disabled={updateProduct.isPending}
                 >
-                  {isSaving ? (
+                  {updateProduct.isPending ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                       Salvando...
@@ -500,4 +608,4 @@ export default function EditProductPage() {
       </form>
     </AdminLayout>
   );
-} 
+}
