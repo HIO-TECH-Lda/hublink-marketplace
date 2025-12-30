@@ -1,0 +1,400 @@
+import User from '../models/User';
+import Product from '../models/Product';
+import Order from '../models/Order';
+import Review from '../models/Review';
+import Payment from '../models/Payment';
+import mongoose, { Types } from 'mongoose';
+
+export interface SellerListFilters {
+  search?: string;
+  status?: 'active' | 'inactive' | 'suspended';
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface SellerStats {
+  total: number;
+  approved: number; // active sellers
+  pending: number; // inactive sellers (pending approval)
+  rejected: number; // suspended sellers
+  totalSales: number;
+  averageRating: number;
+}
+
+export class AdminSellerService {
+  // Get seller statistics
+  static async getSellerStats(): Promise<SellerStats> {
+    try {
+      const [total, approved, pending, rejected, salesStats, ratingStats] = await Promise.all([
+        User.countDocuments({ role: 'seller' }),
+        User.countDocuments({ role: 'seller', status: 'active' }),
+        User.countDocuments({ role: 'seller', status: 'inactive' }),
+        User.countDocuments({ role: 'seller', status: 'suspended' }),
+        // Calculate total sales from orders
+        Order.aggregate([
+          {
+            $unwind: '$items'
+          },
+          {
+            $lookup: {
+              from: 'products',
+              localField: 'items.productId',
+              foreignField: '_id',
+              as: 'product'
+            }
+          },
+          {
+            $unwind: '$product'
+          },
+          {
+            $match: {
+              'product.sellerId': { $exists: true },
+              status: { $ne: 'cancelled' }
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              totalSales: { $sum: { $multiply: ['$items.price', '$items.quantity'] } }
+            }
+          }
+        ]),
+        // Calculate average rating from products
+        Product.aggregate([
+          {
+            $match: {
+              sellerId: { $exists: true }
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              averageRating: { $avg: '$averageRating' },
+              count: { $sum: 1 }
+            }
+          }
+        ])
+      ]);
+
+      const totalSales = salesStats[0]?.totalSales || 0;
+      const averageRating = ratingStats[0]?.averageRating || 0;
+
+      return {
+        total,
+        approved,
+        pending,
+        rejected,
+        totalSales: Math.round(totalSales * 100) / 100,
+        averageRating: Math.round(averageRating * 10) / 10
+      };
+    } catch (error) {
+      throw new Error(
+        `Failed to get seller statistics: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  // Get all sellers with filters and pagination
+  static async getSellers(filters: SellerListFilters = {}): Promise<{
+    sellers: any[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }> {
+    try {
+      const {
+        search,
+        status,
+        page = 1,
+        limit = 10,
+        sortBy = 'createdAt',
+        sortOrder = 'desc'
+      } = filters;
+
+      // Build query
+      const query: any = { role: 'seller' };
+
+      // Status filter
+      if (status) {
+        query.status = status;
+      }
+
+      // Search filter (store name, contact name, email, NUIT if exists)
+      if (search) {
+        query.$or = [
+          { 'sellerProfile.storeName': { $regex: search, $options: 'i' } },
+          { firstName: { $regex: search, $options: 'i' } },
+          { lastName: { $regex: search, $options: 'i' } },
+          { email: { $regex: search, $options: 'i' } },
+          { phone: { $regex: search, $options: 'i' } }
+        ];
+      }
+
+      // Calculate pagination
+      const skip = (page - 1) * limit;
+      const sort: any = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
+
+      // Get total count
+      const total = await User.countDocuments(query);
+
+      // Get sellers
+      const sellers = await User.find(query)
+        .select('-password')
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean();
+
+      // Get seller IDs
+      const sellerIds = sellers.map((s: any) => s._id);
+
+      // Get product counts and sales for each seller
+      const productCounts = await Product.aggregate([
+        {
+          $match: {
+            sellerId: { $in: sellerIds }
+          }
+        },
+        {
+          $group: {
+            _id: '$sellerId',
+            productCount: { $sum: 1 },
+            averageRating: { $avg: '$averageRating' },
+            totalReviews: { $sum: '$totalReviews' }
+          }
+        }
+      ]);
+
+      // Get sales totals from orders
+      const salesData = await Order.aggregate([
+        {
+          $unwind: '$items'
+        },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'items.productId',
+            foreignField: '_id',
+            as: 'product'
+          }
+        },
+        {
+          $unwind: '$product'
+        },
+        {
+          $match: {
+            'product.sellerId': { $in: sellerIds },
+            status: { $ne: 'cancelled' }
+          }
+        },
+        {
+          $group: {
+            _id: '$product.sellerId',
+            totalSales: { $sum: { $multiply: ['$items.price', '$items.quantity'] } }
+          }
+        }
+      ]);
+
+      // Create maps for quick lookup
+      const productMap = new Map();
+      productCounts.forEach((item: any) => {
+        productMap.set(item._id.toString(), {
+          productCount: item.productCount,
+          averageRating: item.averageRating || 0,
+          totalReviews: item.totalReviews || 0
+        });
+      });
+
+      const salesMap = new Map();
+      salesData.forEach((item: any) => {
+        salesMap.set(item._id.toString(), item.totalSales);
+      });
+
+      // Format sellers for frontend
+      const formattedSellers = sellers.map((seller: any) => {
+        const productData = productMap.get(seller._id.toString()) || {
+          productCount: 0,
+          averageRating: 0,
+          totalReviews: 0
+        };
+        const totalSales = salesMap.get(seller._id.toString()) || 0;
+
+        return {
+          id: seller._id.toString(),
+          company: {
+            name: seller.sellerProfile?.storeName || 'N/A',
+            description: seller.sellerProfile?.storeDescription
+          },
+          contact: {
+            name: `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || seller.email,
+            email: seller.email,
+            phone: seller.phone
+          },
+          sellerProfile: seller.sellerProfile || null,
+          productCount: productData.productCount,
+          totalSales: Math.round(totalSales * 100) / 100,
+          averageRating: Math.round(productData.averageRating * 10) / 10,
+          totalReviews: productData.totalReviews,
+          status: seller.status, // active = approved, inactive = pending, suspended = rejected
+          createdAt: seller.createdAt,
+          updatedAt: seller.updatedAt
+        };
+      });
+
+      return {
+        sellers: formattedSellers,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      };
+    } catch (error) {
+      throw new Error(
+        `Failed to get sellers: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  // Get seller by ID with full details
+  static async getSellerById(sellerId: string): Promise<any> {
+    try {
+      const seller = await User.findOne({ _id: sellerId, role: 'seller' })
+        .select('-password')
+        .lean();
+
+      if (!seller) {
+        throw new Error('Seller not found');
+      }
+
+      // Get product statistics
+      const productStats = await Product.aggregate([
+        {
+          $match: {
+            sellerId: new Types.ObjectId(sellerId)
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            productCount: { $sum: 1 },
+            averageRating: { $avg: '$averageRating' },
+            totalReviews: { $sum: '$totalReviews' },
+            totalViews: { $sum: '$viewCount' },
+            totalPurchases: { $sum: '$purchaseCount' }
+          }
+        }
+      ]);
+
+      // Get sales statistics from orders
+      const salesStats = await Order.aggregate([
+        {
+          $unwind: '$items'
+        },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'items.productId',
+            foreignField: '_id',
+            as: 'product'
+          }
+        },
+        {
+          $unwind: '$product'
+        },
+        {
+          $match: {
+            'product.sellerId': new Types.ObjectId(sellerId),
+            status: { $ne: 'cancelled' }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalOrders: { $sum: 1 },
+            totalSales: { $sum: { $multiply: ['$items.price', '$items.quantity'] } },
+            totalQuantitySold: { $sum: '$items.quantity' }
+          }
+        }
+      ]);
+
+      const productData = productStats[0] || {
+        productCount: 0,
+        averageRating: 0,
+        totalReviews: 0,
+        totalViews: 0,
+        totalPurchases: 0
+      };
+
+      const salesData = salesStats[0] || {
+        totalOrders: 0,
+        totalSales: 0,
+        totalQuantitySold: 0
+      };
+
+      return {
+        ...seller,
+        id: seller._id.toString(),
+        company: {
+          name: seller.sellerProfile?.storeName || 'N/A',
+          description: seller.sellerProfile?.storeDescription,
+          address: seller.sellerProfile?.address,
+          city: seller.sellerProfile?.city,
+          province: seller.sellerProfile?.province,
+          postalCode: seller.sellerProfile?.postalCode,
+          productTypes: seller.sellerProfile?.productTypes,
+          experience: seller.sellerProfile?.experience
+        },
+        contact: {
+          name: `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || seller.email,
+          firstName: seller.firstName,
+          lastName: seller.lastName,
+          email: seller.email,
+          phone: seller.phone
+        },
+        statistics: {
+          productCount: productData.productCount,
+          averageRating: Math.round(productData.averageRating * 10) / 10,
+          totalReviews: productData.totalReviews,
+          totalViews: productData.totalViews,
+          totalPurchases: productData.totalPurchases,
+          totalOrders: salesData.totalOrders,
+          totalSales: Math.round(salesData.totalSales * 100) / 100,
+          totalQuantitySold: salesData.totalQuantitySold
+        },
+        status: seller.status
+      };
+    } catch (error) {
+      throw new Error(
+        `Failed to get seller: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  // Update seller status (approve/reject)
+  static async updateSellerStatus(
+    sellerId: string,
+    status: 'active' | 'inactive' | 'suspended'
+  ): Promise<any> {
+    try {
+      const seller = await User.findOne({ _id: sellerId, role: 'seller' });
+
+      if (!seller) {
+        throw new Error('Seller not found');
+      }
+
+      seller.status = status;
+      await seller.save();
+
+      // Return updated seller with populated data
+      return await this.getSellerById(sellerId);
+    } catch (error) {
+      throw new Error(
+        `Failed to update seller status: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+}
+
