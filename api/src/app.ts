@@ -29,6 +29,7 @@ import adminSellerRoutes from './routes/adminSellers';
 import adminCategoryRoutes from './routes/adminCategories';
 import blogRoutes from './routes/blog';
 import adminBlogRoutes from './routes/adminBlog';
+import adminNewsletterRoutes from './routes/adminNewsletter';
 
 // Load environment variables
 dotenv.config();
@@ -251,6 +252,9 @@ app.use('/api/v1/blog', blogRoutes);
 
 // Admin blog management routes
 app.use('/api/v1/admin/blog', adminBlogRoutes);
+
+// Admin newsletter routes
+app.use('/api/v1/admin/newsletter', adminNewsletterRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
