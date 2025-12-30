@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { AdminBlogController } from '../controllers/adminBlogController';
 import { authenticateToken, authorizeRoles } from '../middleware/auth';
+import { uploadSingleImage } from '../middleware/upload';
 
 const router = Router();
 
@@ -17,14 +18,14 @@ router.get('/', AdminBlogController.getPosts);
 // Get categories
 router.get('/categories', AdminBlogController.getCategories);
 
-// Create post
-router.post('/', AdminBlogController.createPost);
+// Create post (with image upload support)
+router.post('/', uploadSingleImage, AdminBlogController.createPost);
 
 // Get post by ID
 router.get('/:postId', AdminBlogController.getPostById);
 
-// Update post
-router.put('/:postId', AdminBlogController.updatePost);
+// Update post (with image upload support)
+router.put('/:postId', uploadSingleImage, AdminBlogController.updatePost);
 
 // Update post status
 router.patch('/:postId/status', AdminBlogController.updatePostStatus);

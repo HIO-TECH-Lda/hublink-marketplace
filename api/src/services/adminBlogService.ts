@@ -1,5 +1,6 @@
 import BlogPost from '../models/BlogPost';
 import User from '../models/User';
+import { uploadBase64Image } from '../utils/cloudinary';
 import mongoose, { Types } from 'mongoose';
 
 export interface BlogListFilters {
@@ -225,6 +226,12 @@ export class AdminBlogService {
         }
       }
 
+      // Upload image to Cloudinary if provided (base64 or URL)
+      if (postData.image) {
+        const uploaded = await uploadBase64Image(postData.image, 'blog');
+        postData.image = uploaded.url;
+      }
+
       // Set publishedAt if status is published
       if (postData.status === 'published' && !postData.publishedAt) {
         postData.publishedAt = new Date();
@@ -265,6 +272,12 @@ export class AdminBlogService {
         if (author) {
           updateData.authorName = `${author.firstName || ''} ${author.lastName || ''}`.trim() || author.email;
         }
+      }
+
+      // Upload new image to Cloudinary if provided (base64 or URL)
+      if (updateData.image && updateData.image !== post.image) {
+        const uploaded = await uploadBase64Image(updateData.image, 'blog');
+        updateData.image = uploaded.url;
       }
 
       // Set publishedAt if status changes to published

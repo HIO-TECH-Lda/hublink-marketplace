@@ -124,7 +124,7 @@ Authorization: Bearer <token> (admin only)
   "slug": "os-beneficios-dos-alimentos-organicos",
   "excerpt": "Descubra por que escolher alimentos orgânicos...",
   "content": "<p>Conteúdo completo do post em HTML...</p>",
-  "image": "https://example.com/post.jpg",
+  "image": "data:image/jpeg;base64,/9j/4AAQSkZJRg...", // Base64 image or URL
   "authorId": "507f1f77bcf86cd799439012",
   "authorName": "Dr. Maria Silva",
   "category": "Saúde",
@@ -138,6 +138,16 @@ Authorization: Bearer <token> (admin only)
   }
 }
 ```
+
+**Image Upload:**
+- Supports both `multipart/form-data` (file upload) and `application/x-www-form-urlencoded` (base64 string)
+- `image` field accepts:
+  - **File upload:** Send as `multipart/form-data` with field name `image` (file will be converted to base64 automatically)
+  - **Base64 string:** Send as `application/x-www-form-urlencoded` with `image` field containing base64 string (e.g., `data:image/jpeg;base64,...`)
+  - **Image URL:** If already uploaded, send the URL directly
+- Image is automatically uploaded to Cloudinary and URL is saved
+- Images are stored in `blog` folder on Cloudinary
+- Maximum file size: 10MB
 
 **Required Fields:**
 - `title`: Post title
@@ -422,10 +432,12 @@ interface BlogPost {
 
 ## Notes
 
+- **Image Upload:** Images can be provided as base64 strings or URLs. Base64 images are automatically uploaded to Cloudinary and the URL is saved.
 - Only `published` posts are visible via public endpoints
 - Slug must be unique
 - View count increments automatically on public view
 - `publishedAt` is set automatically when status changes to `published`
 - Author name is auto-populated from user if `authorId` provided
 - Content is excluded from list endpoints (included in detail endpoints)
+- Images are stored in Cloudinary `blog` folder
 
