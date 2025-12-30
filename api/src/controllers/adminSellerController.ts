@@ -61,6 +61,45 @@ export class AdminSellerController {
     }
   }
 
+  // Create seller
+  static async createSeller(req: Request, res: Response): Promise<void> {
+    try {
+      const sellerData = req.body;
+      const seller = await AdminSellerService.createSeller(sellerData);
+      res.status(201).json({
+        success: true,
+        message: 'Seller created successfully',
+        data: seller
+      });
+    } catch (error) {
+      const statusCode = error instanceof Error && error.message.includes('already exists') ? 400 : 500;
+      res.status(statusCode).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to create seller'
+      });
+    }
+  }
+
+  // Update seller
+  static async updateSeller(req: Request, res: Response): Promise<void> {
+    try {
+      const { sellerId } = req.params;
+      const updateData = req.body;
+      const seller = await AdminSellerService.updateSeller(sellerId, updateData);
+      res.json({
+        success: true,
+        message: 'Seller updated successfully',
+        data: seller
+      });
+    } catch (error) {
+      const statusCode = error instanceof Error && error.message === 'Seller not found' ? 404 : 500;
+      res.status(statusCode).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to update seller'
+      });
+    }
+  }
+
   // Update seller status
   static async updateSellerStatus(req: Request, res: Response): Promise<void> {
     try {

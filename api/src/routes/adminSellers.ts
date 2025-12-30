@@ -14,8 +14,14 @@ router.get('/stats', AdminSellerController.getSellerStats);
 // Get all sellers with filters
 router.get('/', AdminSellerController.getSellers);
 
+// Create seller
+router.post('/', AdminSellerController.createSeller);
+
 // Get seller by ID
 router.get('/:sellerId', AdminSellerController.getSellerById);
+
+// Update seller
+router.put('/:sellerId', AdminSellerController.updateSeller);
 
 // Update seller status (approve/reject)
 router.patch('/:sellerId/status', AdminSellerController.updateSellerStatus);

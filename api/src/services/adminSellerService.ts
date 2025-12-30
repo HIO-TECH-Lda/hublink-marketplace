@@ -373,6 +373,119 @@ export class AdminSellerService {
     }
   }
 
+  // Create seller
+  static async createSeller(sellerData: any): Promise<any> {
+    try {
+      // Check if email already exists
+      const existingUser = await User.findOne({ email: sellerData.email });
+      if (existingUser) {
+        throw new Error('Email already exists');
+      }
+
+      // Create seller profile
+      const sellerProfile = {
+        storeName: sellerData.storeName || sellerData.businessName,
+        storeDescription: sellerData.storeDescription || sellerData.businessDescription,
+        address: sellerData.address,
+        city: sellerData.city,
+        province: sellerData.province,
+        postalCode: sellerData.postalCode,
+        productTypes: sellerData.productTypes || sellerData.businessType,
+        experience: sellerData.experience
+      };
+
+      // Create user with seller role
+      const seller = new User({
+        firstName: sellerData.firstName,
+        lastName: sellerData.lastName,
+        email: sellerData.email,
+        phone: sellerData.phone,
+        role: 'seller',
+        status: sellerData.status || 'inactive', // Default to pending
+        sellerProfile,
+        password: sellerData.password || 'TempPassword123!' // Should be changed on first login
+      });
+
+      await seller.save();
+
+      // Return created seller with populated data
+      return await this.getSellerById(seller._id.toString());
+    } catch (error) {
+      throw new Error(
+        `Failed to create seller: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  // Update seller
+  static async updateSeller(sellerId: string, updateData: any): Promise<any> {
+    try {
+      const seller = await User.findOne({ _id: sellerId, role: 'seller' });
+
+      if (!seller) {
+        throw new Error('Seller not found');
+      }
+
+      // Update basic fields
+      if (updateData.firstName) seller.firstName = updateData.firstName;
+      if (updateData.lastName) seller.lastName = updateData.lastName;
+      if (updateData.email) seller.email = updateData.email;
+      if (updateData.phone) seller.phone = updateData.phone;
+      if (updateData.status) seller.status = updateData.status;
+
+      // Initialize sellerProfile if it doesn't exist
+      if (!seller.sellerProfile) {
+        seller.sellerProfile = {
+          storeName: '',
+          storeDescription: '',
+          address: '',
+          city: '',
+          province: '',
+          postalCode: '',
+          productTypes: '',
+          experience: ''
+        } as any;
+      }
+
+      const profile = seller.sellerProfile as any;
+
+      // Update seller profile
+      if (updateData.storeName || updateData.businessName) {
+        profile.storeName = updateData.storeName || updateData.businessName;
+      }
+      if (updateData.storeDescription || updateData.businessDescription) {
+        profile.storeDescription = updateData.storeDescription || updateData.businessDescription;
+      }
+      if (updateData.address) {
+        profile.address = updateData.address;
+      }
+      if (updateData.city) {
+        profile.city = updateData.city;
+      }
+      if (updateData.province) {
+        profile.province = updateData.province;
+      }
+      if (updateData.postalCode) {
+        profile.postalCode = updateData.postalCode;
+      }
+      if (updateData.productTypes || updateData.businessType) {
+        profile.productTypes = updateData.productTypes || updateData.businessType;
+      }
+      if (updateData.experience) {
+        profile.experience = updateData.experience;
+      }
+
+      await seller.save();
+
+      // Return updated seller with populated data
+      return await this.getSellerById(sellerId);
+    } catch (error) {
+      throw new Error(
+        `Failed to update seller: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
   // Update seller status (approve/reject)
   static async updateSellerStatus(
     sellerId: string,
