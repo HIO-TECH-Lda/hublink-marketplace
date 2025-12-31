@@ -63,7 +63,7 @@ const newsletterSubscriberSchema = new Schema<INewsletterSubscriberDocument>({
   origin: {
     type: String,
     enum: ['popup', 'footer', 'signup', 'admin', 'import'],
-    default: 'website'
+    default: 'signup'
   },
   tags: [{
     type: String,
@@ -111,7 +111,7 @@ newsletterSubscriberSchema.index({ tags: 1 });
 newsletterSubscriberSchema.index({ createdAt: -1 });
 
 // Virtual for full name
-newsletterSubscriberSchema.virtual('fullName').get(function() {
+newsletterSubscriberSchema.virtual('fullName').get(function(this: INewsletterSubscriberDocument) {
   if (this.firstName && this.lastName) {
     return `${this.firstName} ${this.lastName}`;
   }
