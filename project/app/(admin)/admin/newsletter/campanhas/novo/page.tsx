@@ -102,6 +102,9 @@ export default function CreateCampaignPage() {
     if (!formData.htmlContent.trim()) {
       newErrors.htmlContent = 'Conteúdo HTML é obrigatório';
     }
+    if (formData.status === 'scheduled' && !formData.scheduledAt) {
+      newErrors.scheduledAt = 'Data e hora são obrigatórias para campanhas agendadas';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -111,25 +114,30 @@ export default function CreateCampaignPage() {
     e.preventDefault();
     
     if (!validateForm()) {
+      toast({
+        title: 'Erro de validação',
+        description: 'Por favor, preencha todos os campos obrigatórios.',
+        variant: 'destructive',
+      });
       return;
     }
 
     try {
       const campaignData: any = {
-        name: formData.name,
-        subject: formData.subject,
+        name: formData.name.trim(),
+        subject: formData.subject.trim(),
         type: formData.type,
         status: formData.status,
         content: {
-          html: formData.htmlContent
+          html: formData.htmlContent.trim()
         }
       };
 
-      if (formData.plainTextContent) {
-        campaignData.content.plainText = formData.plainTextContent;
+      if (formData.plainTextContent && formData.plainTextContent.trim()) {
+        campaignData.content.plainText = formData.plainTextContent.trim();
       }
 
-      // Segmentation
+      // Segmentation - only include if there are actual filters
       const hasSegmentation = formData.subscriberStatus !== 'all' || 
                              formData.tags.length > 0 || 
                              formData.categories.length > 0 || 
@@ -154,17 +162,37 @@ export default function CreateCampaignPage() {
         }
       }
 
-      if (formData.scheduledAt) {
-        campaignData.scheduledAt = formData.scheduledAt;
+      // Only include scheduledAt if status is scheduled and date is provided
+      if (formData.status === 'scheduled' && formData.scheduledAt) {
+        // Convert datetime-local to ISO string
+        const date = new Date(formData.scheduledAt);
+        if (!isNaN(date.getTime())) {
+          campaignData.scheduledAt = date.toISOString();
+        }
       }
-      if (formData.timezone) {
-        campaignData.timezone = formData.timezone;
+      // Always include timezone if provided
+      if (formData.timezone && formData.timezone.trim()) {
+        campaignData.timezone = formData.timezone.trim();
       }
 
+      console.log('Creating campaign with data:', JSON.stringify(campaignData, null, 2));
+      
       const newCampaign = await createCampaign.mutateAsync(campaignData);
-      router.push(`/admin/newsletter/campanhas/${newCampaign.id}`);
+      
+      console.log('Campaign created successfully:', newCampaign);
+      
+      if (newCampaign && newCampaign.id) {
+        router.push(`/admin/newsletter/campanhas/${newCampaign.id}`);
+      } else {
+        // If no ID, redirect to campaigns list
+        router.push('/admin/newsletter?tab=campaigns');
+      }
     } catch (error: any) {
-      // Error is handled by the hook
+      console.error('Error creating campaign:', error);
+      // Error is handled by the hook, but we can add additional logging
+      if (error?.response) {
+        console.error('API Error Response:', error.response.data);
+      }
     }
   };
 
@@ -415,13 +443,20 @@ export default function CreateCampaignPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="scheduledAt">Data e Hora (opcional)</Label>
+                    <Label htmlFor="scheduledAt">
+                      Data e Hora {formData.status === 'scheduled' ? '*' : '(opcional)'}
+                    </Label>
                     <Input
                       id="scheduledAt"
                       type="datetime-local"
                       value={formData.scheduledAt}
                       onChange={(e) => setFormData({...formData, scheduledAt: e.target.value})}
+                      className={errors.scheduledAt ? 'border-red-500' : ''}
+                      required={formData.status === 'scheduled'}
                     />
+                    {errors.scheduledAt && (
+                      <p className="text-red-500 text-sm mt-1">{errors.scheduledAt}</p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="timezone">Fuso Horário</Label>
