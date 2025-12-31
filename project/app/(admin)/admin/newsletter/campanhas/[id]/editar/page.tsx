@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { 
   ArrowLeft, 
   Save, 
@@ -20,13 +20,17 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { useCreateCampaign } from '@/hooks/useAdmin';
+import { useUpdateCampaign, useAdminCampaign } from '@/hooks/useAdmin';
 import { useToast } from '@/hooks/use-toast';
 
-export default function CreateCampaignPage() {
+export default function EditCampaignPage() {
   const router = useRouter();
+  const params = useParams();
   const { toast } = useToast();
-  const createCampaign = useCreateCampaign();
+  const campaignId = params.id as string;
+  
+  const { data: campaign, isLoading } = useAdminCampaign(campaignId);
+  const updateCampaign = useUpdateCampaign();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -46,6 +50,27 @@ export default function CreateCampaignPage() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (campaign) {
+      setFormData({
+        name: campaign.name || '',
+        subject: campaign.subject || '',
+        type: campaign.type || 'newsletter',
+        status: campaign.status || 'draft',
+        htmlContent: campaign.content?.html || '',
+        plainTextContent: campaign.content?.plainText || '',
+        subscriberStatus: campaign.segmentation?.subscriberStatus || 'all',
+        tags: campaign.segmentation?.tags || [],
+        newTag: '',
+        categories: campaign.segmentation?.preferences?.categories || [],
+        newCategory: '',
+        frequencies: campaign.segmentation?.preferences?.frequency || [],
+        scheduledAt: campaign.scheduledAt ? new Date(campaign.scheduledAt).toISOString().slice(0, 16) : '',
+        timezone: campaign.timezone || 'Africa/Maputo'
+      });
+    }
+  }, [campaign]);
 
   const handleAddTag = () => {
     if (formData.newTag.trim() && !formData.tags.includes(formData.newTag.trim().toLowerCase())) {
@@ -115,18 +140,17 @@ export default function CreateCampaignPage() {
     }
 
     try {
-      const campaignData: any = {
+      const updateData: any = {
         name: formData.name,
         subject: formData.subject,
         type: formData.type,
-        status: formData.status,
         content: {
           html: formData.htmlContent
         }
       };
 
       if (formData.plainTextContent) {
-        campaignData.content.plainText = formData.plainTextContent;
+        updateData.content.plainText = formData.plainTextContent;
       }
 
       // Segmentation
@@ -136,45 +160,91 @@ export default function CreateCampaignPage() {
                              formData.frequencies.length > 0;
 
       if (hasSegmentation) {
-        campaignData.segmentation = {};
+        updateData.segmentation = {};
         if (formData.subscriberStatus !== 'all') {
-          campaignData.segmentation.subscriberStatus = formData.subscriberStatus;
+          updateData.segmentation.subscriberStatus = formData.subscriberStatus;
         }
         if (formData.tags.length > 0) {
-          campaignData.segmentation.tags = formData.tags;
+          updateData.segmentation.tags = formData.tags;
         }
         if (formData.categories.length > 0 || formData.frequencies.length > 0) {
-          campaignData.segmentation.preferences = {};
+          updateData.segmentation.preferences = {};
           if (formData.categories.length > 0) {
-            campaignData.segmentation.preferences.categories = formData.categories;
+            updateData.segmentation.preferences.categories = formData.categories;
           }
           if (formData.frequencies.length > 0) {
-            campaignData.segmentation.preferences.frequency = formData.frequencies;
+            updateData.segmentation.preferences.frequency = formData.frequencies;
           }
         }
       }
 
       if (formData.scheduledAt) {
-        campaignData.scheduledAt = formData.scheduledAt;
+        updateData.scheduledAt = formData.scheduledAt;
       }
       if (formData.timezone) {
-        campaignData.timezone = formData.timezone;
+        updateData.timezone = formData.timezone;
       }
 
-      const newCampaign = await createCampaign.mutateAsync(campaignData);
-      router.push(`/admin/newsletter/campanhas/${newCampaign.id}`);
+      await updateCampaign.mutateAsync({ campaignId, data: updateData });
+      router.push(`/admin/newsletter/campanhas/${campaignId}`);
     } catch (error: any) {
       // Error is handled by the hook
     }
   };
+
+  if (isLoading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-6">Carregando campanha...</p>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (!campaign) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <Mail className="w-12 h-12 text-gray-4 mx-auto mb-4" />
+            <p className="text-gray-6">Campanha não encontrada</p>
+            <Button onClick={() => router.back()} className="mt-4">
+              Voltar
+            </Button>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  // Only allow editing draft or scheduled campaigns
+  if (campaign.status !== 'draft' && campaign.status !== 'scheduled') {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <Mail className="w-12 h-12 text-gray-4 mx-auto mb-4" />
+            <p className="text-gray-6">Apenas campanhas em rascunho ou agendadas podem ser editadas</p>
+            <Button onClick={() => router.back()} className="mt-4">
+              Voltar
+            </Button>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Nova Campanha</h1>
-            <p className="text-gray-6">Crie uma nova campanha de email</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Campanha</h1>
+            <p className="text-gray-6">{campaign.name}</p>
           </div>
           <Button onClick={() => router.back()} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -202,7 +272,6 @@ export default function CreateCampaignPage() {
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      placeholder="Ex: Ofertas da Semana"
                       className={errors.name ? 'border-red-500' : ''}
                     />
                     {errors.name && (
@@ -215,46 +284,28 @@ export default function CreateCampaignPage() {
                       id="subject"
                       value={formData.subject}
                       onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                      placeholder="Ex: 🌿 20% OFF em produtos orgânicos"
                       className={errors.subject ? 'border-red-500' : ''}
                     />
                     {errors.subject && (
                       <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
                     )}
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="type">Tipo</Label>
-                      <Select 
-                        value={formData.type} 
-                        onValueChange={(value: any) => setFormData({...formData, type: value})}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="newsletter">Newsletter</SelectItem>
-                          <SelectItem value="promotional">Promocional</SelectItem>
-                          <SelectItem value="announcement">Anúncio</SelectItem>
-                          <SelectItem value="welcome">Boas-vindas</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="status">Status</Label>
-                      <Select 
-                        value={formData.status} 
-                        onValueChange={(value: any) => setFormData({...formData, status: value})}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="draft">Rascunho</SelectItem>
-                          <SelectItem value="scheduled">Agendada</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div>
+                    <Label htmlFor="type">Tipo</Label>
+                    <Select 
+                      value={formData.type} 
+                      onValueChange={(value: any) => setFormData({...formData, type: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="newsletter">Newsletter</SelectItem>
+                        <SelectItem value="promotional">Promocional</SelectItem>
+                        <SelectItem value="announcement">Anúncio</SelectItem>
+                        <SelectItem value="welcome">Boas-vindas</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </CardContent>
@@ -276,7 +327,6 @@ export default function CreateCampaignPage() {
                       id="htmlContent"
                       value={formData.htmlContent}
                       onChange={(e) => setFormData({...formData, htmlContent: e.target.value})}
-                      placeholder="<html><body><h1>Conteúdo da campanha</h1></body></html>"
                       rows={10}
                       className={errors.htmlContent ? 'border-red-500' : ''}
                     />
@@ -290,7 +340,6 @@ export default function CreateCampaignPage() {
                       id="plainTextContent"
                       value={formData.plainTextContent}
                       onChange={(e) => setFormData({...formData, plainTextContent: e.target.value})}
-                      placeholder="Versão em texto simples do email"
                       rows={6}
                     />
                   </div>
@@ -429,7 +478,6 @@ export default function CreateCampaignPage() {
                       id="timezone"
                       value={formData.timezone}
                       onChange={(e) => setFormData({...formData, timezone: e.target.value})}
-                      placeholder="Africa/Maputo"
                     />
                   </div>
                 </div>
@@ -460,7 +508,10 @@ export default function CreateCampaignPage() {
                   <div className="flex justify-between">
                     <span className="text-gray-6">Status:</span>
                     <span className="font-medium">
-                      {formData.status === 'draft' ? 'Rascunho' : 'Agendada'}
+                      {formData.status === 'draft' ? 'Rascunho' :
+                       formData.status === 'scheduled' ? 'Agendada' :
+                       formData.status === 'sending' ? 'Enviando' :
+                       formData.status === 'sent' ? 'Enviada' : 'Cancelada'}
                     </span>
                   </div>
                   {formData.tags.length > 0 && (
@@ -478,17 +529,17 @@ export default function CreateCampaignPage() {
                 <Button 
                   type="submit" 
                   className="w-full" 
-                  disabled={createCampaign.isPending}
+                  disabled={updateCampaign.isPending}
                 >
-                  {createCampaign.isPending ? (
+                  {updateCampaign.isPending ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Criando...
+                      Salvando...
                     </>
                   ) : (
                     <>
                       <Save className="w-4 h-4 mr-2" />
-                      Criar Campanha
+                      Salvar Alterações
                     </>
                   )}
                 </Button>
@@ -500,3 +551,4 @@ export default function CreateCampaignPage() {
     </AdminLayout>
   );
 }
+

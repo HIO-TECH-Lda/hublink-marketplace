@@ -1,16 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Mail, 
   Search, 
-  Filter, 
-  MoreHorizontal, 
   Edit, 
   Trash2, 
   Eye,
-  Download,
   Users,
   TrendingUp,
   Calendar,
@@ -18,315 +15,127 @@ import {
   Plus,
   Tag,
   UserCheck,
-  UserX
+  UserX,
+  MoreVertical,
+  Send,
+  FileText
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
-
-interface NewsletterSubscriber {
-  id: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  status: 'active' | 'unsubscribed' | 'bounced' | 'pending';
-  source: 'popup' | 'footer' | 'signup' | 'admin';
-  tags: string[];
-  preferences: {
-    categories: string[];
-    frequency: string;
-    language: string;
-  };
-  stats: {
-    emailsSent: number;
-    emailsOpened: number;
-    emailsClicked: number;
-    lastOpened?: string;
-    lastClicked?: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface NewsletterCampaign {
-  id: string;
-  name: string;
-  subject: string;
-  status: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled';
-  type: 'newsletter' | 'promotional' | 'announcement' | 'welcome';
-  stats: {
-    totalSubscribers: number;
-    emailsSent: number;
-    emailsDelivered: number;
-    emailsOpened: number;
-    emailsClicked: number;
-    unsubscribes: number;
-    bounces: number;
-    openRate: number;
-    clickRate: number;
-  };
-  sentAt?: string;
-  createdAt: string;
-}
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { 
+  useAdminNewsletterStats,
+  useAdminSubscribers,
+  useAdminCampaigns,
+  useUpdateSubscriberStatus,
+  useDeleteSubscriber,
+  useUpdateCampaignStatus,
+  useDeleteCampaign
+} from '@/hooks/useAdmin';
+import { useToast } from '@/hooks/use-toast';
 
 export default function NewsletterManagementPage() {
   const router = useRouter();
-  const { state } = useMarketplace();
-  const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
-  const [campaigns, setCampaigns] = useState<NewsletterCampaign[]>([]);
-  const [filteredSubscribers, setFilteredSubscribers] = useState<NewsletterSubscriber[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [sourceFilter, setSourceFilter] = useState<string>('all');
-  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('subscribers');
+  
+  // Subscribers filters
+  const [subscriberSearch, setSubscriberSearch] = useState('');
+  const [subscriberStatusFilter, setSubscriberStatusFilter] = useState<string>('all');
+  const [subscriberOriginFilter, setSubscriberOriginFilter] = useState<string>('all');
+  const [subscriberPage, setSubscriberPage] = useState(1);
+  
+  // Campaigns filters
+  const [campaignSearch, setCampaignSearch] = useState('');
+  const [campaignStatusFilter, setCampaignStatusFilter] = useState<string>('all');
+  const [campaignTypeFilter, setCampaignTypeFilter] = useState<string>('all');
+  const [campaignPage, setCampaignPage] = useState(1);
+  
+  const limit = 20;
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  const { data: stats, isLoading: statsLoading } = useAdminNewsletterStats();
+  const { data: subscribersData, isLoading: subscribersLoading } = useAdminSubscribers({
+    page: subscriberPage,
+    limit,
+    search: subscriberSearch || undefined,
+    status: subscriberStatusFilter === 'all' ? undefined : subscriberStatusFilter,
+    origin: subscriberOriginFilter === 'all' ? undefined : subscriberOriginFilter,
+    sortBy: 'createdAt',
+    sortOrder: 'desc'
+  });
+  const { data: campaignsData, isLoading: campaignsLoading } = useAdminCampaigns({
+    page: campaignPage,
+    limit,
+    search: campaignSearch || undefined,
+    status: campaignStatusFilter === 'all' ? undefined : campaignStatusFilter,
+    type: campaignTypeFilter === 'all' ? undefined : campaignTypeFilter,
+    sortBy: 'createdAt',
+    sortOrder: 'desc'
+  });
 
-  useEffect(() => {
-    filterSubscribers();
-  }, [subscribers, searchTerm, statusFilter, sourceFilter]);
+  const updateSubscriberStatus = useUpdateSubscriberStatus();
+  const deleteSubscriber = useDeleteSubscriber();
+  const updateCampaignStatus = useUpdateCampaignStatus();
+  const deleteCampaign = useDeleteCampaign();
 
-  const loadData = async () => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  const subscribers = subscribersData?.subscribers || [];
+  const campaigns = campaignsData?.campaigns || [];
+  const isLoading = statsLoading || subscribersLoading || campaignsLoading;
 
-    // Mock subscriber data
-    const mockSubscribers: NewsletterSubscriber[] = [
-      {
-        id: '1',
-        email: 'joao.silva@email.com',
-        firstName: 'João',
-        lastName: 'Silva',
-        status: 'active',
-        source: 'popup',
-        tags: ['organic', 'vegetables'],
-        preferences: {
-          categories: ['vegetables', 'fruits'],
-          frequency: 'weekly',
-          language: 'pt-MZ'
-        },
-        stats: {
-          emailsSent: 12,
-          emailsOpened: 8,
-          emailsClicked: 3,
-          lastOpened: '2024-01-20T14:25:00Z',
-          lastClicked: '2024-01-18T10:30:00Z'
-        },
-        createdAt: '2024-01-15T10:30:00Z',
-        updatedAt: '2024-01-20T14:25:00Z'
-      },
-      {
-        id: '2',
-        email: 'maria.santos@email.com',
-        firstName: 'Maria',
-        lastName: 'Santos',
-        status: 'active',
-        source: 'footer',
-        tags: ['fruits', 'promotional'],
-        preferences: {
-          categories: ['fruits', 'dairy'],
-          frequency: 'monthly',
-          language: 'pt-MZ'
-        },
-        stats: {
-          emailsSent: 8,
-          emailsOpened: 6,
-          emailsClicked: 2,
-          lastOpened: '2024-01-19T16:45:00Z',
-          lastClicked: '2024-01-15T11:20:00Z'
-        },
-        createdAt: '2024-01-10T09:15:00Z',
-        updatedAt: '2024-01-19T16:45:00Z'
-      },
-      {
-        id: '3',
-        email: 'pedro.oliveira@email.com',
-        status: 'unsubscribed',
-        source: 'signup',
-        tags: ['organic'],
-        preferences: {
-          categories: ['vegetables'],
-          frequency: 'weekly',
-          language: 'pt-MZ'
-        },
-        stats: {
-          emailsSent: 5,
-          emailsOpened: 2,
-          emailsClicked: 0,
-          lastOpened: '2024-01-12T10:30:00Z'
-        },
-        createdAt: '2024-01-05T11:20:00Z',
-        updatedAt: '2024-01-15T10:30:00Z'
-      },
-      {
-        id: '4',
-        email: 'ana.costa@email.com',
-        firstName: 'Ana',
-        lastName: 'Costa',
-        status: 'bounced',
-        source: 'popup',
-        tags: ['dairy'],
-        preferences: {
-          categories: ['dairy', 'bakery'],
-          frequency: 'promotional',
-          language: 'pt-MZ'
-        },
-        stats: {
-          emailsSent: 3,
-          emailsOpened: 0,
-          emailsClicked: 0
-        },
-        createdAt: '2024-01-08T14:20:00Z',
-        updatedAt: '2024-01-12T09:15:00Z'
-      }
-    ];
-
-    // Mock campaign data
-    const mockCampaigns: NewsletterCampaign[] = [
-      {
-        id: '1',
-        name: 'Ofertas da Semana - Orgânicos',
-        subject: '🍃 20% OFF em produtos orgânicos selecionados',
-        status: 'sent',
-        type: 'promotional',
-        stats: {
-          totalSubscribers: 1250,
-          emailsSent: 1250,
-          emailsDelivered: 1180,
-          emailsOpened: 590,
-          emailsClicked: 147,
-          unsubscribes: 8,
-          bounces: 70,
-          openRate: 47.2,
-          clickRate: 11.8
-        },
-        sentAt: '2024-01-20T10:00:00Z',
-        createdAt: '2024-01-19T14:30:00Z'
-      },
-      {
-        id: '2',
-        name: 'Newsletter Mensal - Janeiro',
-        subject: '📰 Novidades e dicas de alimentação saudável',
-        status: 'scheduled',
-        type: 'newsletter',
-        stats: {
-          totalSubscribers: 1250,
-          emailsSent: 0,
-          emailsDelivered: 0,
-          emailsOpened: 0,
-          emailsClicked: 0,
-          unsubscribes: 0,
-          bounces: 0,
-          openRate: 0,
-          clickRate: 0
-        },
-        createdAt: '2024-01-21T09:00:00Z'
-      },
-      {
-        id: '3',
-        name: 'Bem-vindo ao Txova',
-        subject: '🎉 Bem-vindo! Comece sua jornada orgânica',
-        status: 'sent',
-        type: 'welcome',
-        stats: {
-          totalSubscribers: 45,
-          emailsSent: 45,
-          emailsDelivered: 42,
-          emailsOpened: 38,
-          emailsClicked: 25,
-          unsubscribes: 1,
-          bounces: 3,
-          openRate: 84.4,
-          clickRate: 55.6
-        },
-        sentAt: '2024-01-18T16:00:00Z',
-        createdAt: '2024-01-18T15:30:00Z'
-      }
-    ];
-
-    setSubscribers(mockSubscribers);
-    setCampaigns(mockCampaigns);
-    setIsLoading(false);
-  };
-
-  const filterSubscribers = () => {
-    let filtered = subscribers;
-
-    if (searchTerm) {
-      filtered = filtered.filter(subscriber =>
-        subscriber.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        subscriber.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        subscriber.lastName?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(subscriber => subscriber.status === statusFilter);
-    }
-
-    if (sourceFilter !== 'all') {
-      filtered = filtered.filter(subscriber => subscriber.source === sourceFilter);
-    }
-
-    setFilteredSubscribers(filtered);
-  };
-
-  const getStatusColor = (status: string) => {
+  const getSubscriberStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'unsubscribed': return 'bg-red-100 text-red-800';
-      case 'bounced': return 'bg-orange-100 text-orange-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active': return 'text-green-600 bg-green-100';
+      case 'unsubscribed': return 'text-red-600 bg-red-100';
+      case 'bounced': return 'text-orange-600 bg-orange-100';
+      case 'pending': return 'text-yellow-600 bg-yellow-100';
+      default: return 'text-gray-600 bg-gray-100';
     }
   };
 
-  const getStatusText = (status: string) => {
+  const getSubscriberStatusText = (status: string) => {
     switch (status) {
       case 'active': return 'Ativo';
-      case 'unsubscribed': return 'Cancelado';
-      case 'bounced': return 'Bounce';
+      case 'unsubscribed': return 'Desinscrito';
+      case 'bounced': return 'Rejeitado';
       case 'pending': return 'Pendente';
       default: return status;
     }
   };
 
-  const getSourceText = (source: string) => {
-    switch (source) {
+  const getOriginText = (origin: string) => {
+    switch (origin) {
       case 'popup': return 'Popup';
       case 'footer': return 'Rodapé';
       case 'signup': return 'Cadastro';
       case 'admin': return 'Admin';
-      default: return source;
+      case 'import': return 'Importado';
+      default: return origin;
     }
   };
 
   const getCampaignStatusColor = (status: string) => {
     switch (status) {
-      case 'sent': return 'bg-green-100 text-green-800';
-      case 'scheduled': return 'bg-blue-100 text-blue-800';
-      case 'sending': return 'bg-yellow-100 text-yellow-800';
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'sent': return 'text-green-600 bg-green-100';
+      case 'scheduled': return 'text-blue-600 bg-blue-100';
+      case 'sending': return 'text-purple-600 bg-purple-100';
+      case 'draft': return 'text-gray-600 bg-gray-100';
+      case 'cancelled': return 'text-red-600 bg-red-100';
+      default: return 'text-gray-600 bg-gray-100';
     }
   };
 
   const getCampaignStatusText = (status: string) => {
     switch (status) {
-      case 'sent': return 'Enviado';
-      case 'scheduled': return 'Agendado';
+      case 'sent': return 'Enviada';
+      case 'scheduled': return 'Agendada';
       case 'sending': return 'Enviando';
       case 'draft': return 'Rascunho';
-      case 'cancelled': return 'Cancelado';
+      case 'cancelled': return 'Cancelada';
       default: return status;
     }
   };
@@ -342,75 +151,48 @@ export default function NewsletterManagementPage() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-MZ', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    return new Date(dateString).toLocaleDateString('pt-MZ');
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-MZ', {
-      style: 'currency',
-      currency: 'MZN'
-    }).format(value);
+  const handleSubscriberSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubscriberPage(1);
   };
 
-  const handleExportSubscribers = () => {
-    // Mock export functionality
-    alert('Exportando lista de assinantes...');
+  const handleCampaignSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCampaignPage(1);
   };
 
-  const handleCreateCampaign = () => {
-    router.push('/admin/newsletter/campanhas/novo');
+  const handleUpdateSubscriberStatus = (subscriberId: string, status: 'active' | 'unsubscribed' | 'bounced' | 'pending') => {
+    updateSubscriberStatus.mutate({ subscriberId, status });
   };
 
-  const handleEditCampaign = (campaignId: string) => {
-    router.push(`/admin/newsletter/campanhas/${campaignId}/editar`);
+  const handleDeleteSubscriber = (subscriberId: string, email: string) => {
+    if (confirm(`Tem certeza que deseja excluir o assinante "${email}"?`)) {
+      deleteSubscriber.mutate(subscriberId);
+    }
   };
 
-  const handleViewCampaign = (campaignId: string) => {
-    router.push(`/admin/newsletter/campanhas/${campaignId}`);
+  const handleUpdateCampaignStatus = (campaignId: string, status: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled') => {
+    updateCampaignStatus.mutate({ campaignId, status });
   };
 
-  const handleUnsubscribe = (subscriberId: string) => {
-    // Mock unsubscribe functionality
-    setSubscribers(prev => prev.map(sub => 
-      sub.id === subscriberId 
-        ? { ...sub, status: 'unsubscribed' as const }
-        : sub
-    ));
-    alert('Assinante cancelado com sucesso!');
+  const handleDeleteCampaign = (campaignId: string, name: string) => {
+    if (confirm(`Tem certeza que deseja excluir a campanha "${name}"?`)) {
+      deleteCampaign.mutate(campaignId);
+    }
   };
 
-  const handleResubscribe = (subscriberId: string) => {
-    // Mock resubscribe functionality
-    setSubscribers(prev => prev.map(sub => 
-      sub.id === subscriberId 
-        ? { ...sub, status: 'active' as const }
-        : sub
-    ));
-    alert('Assinante reativado com sucesso!');
-  };
+  const subscribersTotalPages = subscribersData?.pagination.totalPages || 1;
+  const campaignsTotalPages = campaignsData?.pagination.totalPages || 1;
 
-  const stats = {
-    totalSubscribers: subscribers.length,
-    activeSubscribers: subscribers.filter(s => s.status === 'active').length,
-    unsubscribedSubscribers: subscribers.filter(s => s.status === 'unsubscribed').length,
-    bouncedSubscribers: subscribers.filter(s => s.status === 'bounced').length,
-    totalCampaigns: campaigns.length,
-    sentCampaigns: campaigns.filter(c => c.status === 'sent').length,
-    scheduledCampaigns: campaigns.filter(c => c.status === 'scheduled').length
-  };
-
-  if (isLoading) {
+  if (isLoading && !subscribersData && !campaignsData) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center h-64">
+        <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-6">Carregando...</p>
           </div>
         </div>
@@ -420,19 +202,26 @@ export default function NewsletterManagementPage() {
 
   return (
     <AdminLayout>
-      {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Newsletter</h1>
             <p className="text-gray-6">Gerencie assinantes e campanhas de email</p>
           </div>
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              onClick={() => router.back()}
-              className="text-gray-6 hover:text-gray-9"
-            >
+          <div className="flex gap-2">
+            {activeTab === 'subscribers' && (
+              <Button onClick={() => router.push('/admin/newsletter/subscribers/novo')}>
+                <Plus className="w-4 h-4 mr-2" />
+                Novo Assinante
+              </Button>
+            )}
+            {activeTab === 'campaigns' && (
+              <Button onClick={() => router.push('/admin/newsletter/campanhas/novo')}>
+                <Plus className="w-4 h-4 mr-2" />
+                Nova Campanha
+              </Button>
+            )}
+            <Button onClick={() => router.back()} variant="outline">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar
             </Button>
@@ -441,209 +230,260 @@ export default function NewsletterManagementPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-6">Total de Assinantes</p>
-                <p className="text-2xl font-bold text-gray-9">{stats.totalSubscribers}</p>
+      {stats && (
+        <div className="grid grid-cols-2 md:grid-cols-7 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Total</p>
+                  <p className="text-xl font-bold text-gray-9">{stats.totalSubscribers.toLocaleString()}</p>
+                </div>
+                <Users className="w-5 h-5 text-gray-4" />
               </div>
-              <Users className="w-8 h-8 text-primary" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-6">Assinantes Ativos</p>
-                <p className="text-2xl font-bold text-green-600">{stats.activeSubscribers}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Ativos</p>
+                  <p className="text-xl font-bold text-green-600">{stats.activeSubscribers.toLocaleString()}</p>
+                </div>
+                <UserCheck className="w-5 h-5 text-green-600" />
               </div>
-              <UserCheck className="w-8 h-8 text-green-600" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-6">Campanhas Enviadas</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.sentCampaigns}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Desinscritos</p>
+                  <p className="text-xl font-bold text-red-600">{stats.unsubscribed.toLocaleString()}</p>
+                </div>
+                <UserX className="w-5 h-5 text-red-600" />
               </div>
-              <Mail className="w-8 h-8 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-6">Campanhas Agendadas</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.scheduledCampaigns}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Rejeitados</p>
+                  <p className="text-xl font-bold text-orange-600">{stats.bounced.toLocaleString()}</p>
+                </div>
+                <Mail className="w-5 h-5 text-orange-600" />
               </div>
-              <Calendar className="w-8 h-8 text-orange-600" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Enviadas</p>
+                  <p className="text-xl font-bold text-blue-600">{stats.campaignsSent.toLocaleString()}</p>
+                </div>
+                <Send className="w-5 h-5 text-blue-600" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Agendadas</p>
+                  <p className="text-xl font-bold text-purple-600">{stats.campaignsScheduled.toLocaleString()}</p>
+                </div>
+                <Calendar className="w-5 h-5 text-purple-600" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-6 mb-1">Rascunhos</p>
+                  <p className="text-xl font-bold text-gray-600">{stats.campaignsDraft.toLocaleString()}</p>
+                </div>
+                <FileText className="w-5 h-5 text-gray-600" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList>
           <TabsTrigger value="subscribers">Assinantes</TabsTrigger>
           <TabsTrigger value="campaigns">Campanhas</TabsTrigger>
         </TabsList>
 
+        {/* Subscribers Tab */}
         <TabsContent value="subscribers" className="space-y-6">
-          {/* Subscribers Management */}
+          {/* Filters */}
           <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Assinantes da Newsletter</CardTitle>
-                  <CardDescription>
-                    Gerencie a lista de assinantes e suas preferências
-                  </CardDescription>
-                </div>
-                <div className="flex space-x-2">
-                  <Button variant="outline" onClick={handleExportSubscribers}>
-                    <Download className="w-4 h-4 mr-2" />
-                    Exportar
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* Filters */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <div className="flex-1">
+            <CardContent className="p-4">
+              <form onSubmit={handleSubscriberSearch} className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
                   <Input
                     placeholder="Buscar por email ou nome..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full"
+                    value={subscriberSearch}
+                    onChange={(e) => setSubscriberSearch(e.target.value)}
+                    className="pl-10"
                   />
                 </div>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-48">
-                    <SelectValue placeholder="Status" />
+                <Select value={subscriberStatusFilter} onValueChange={(v) => { setSubscriberStatusFilter(v); setSubscriberPage(1); }}>
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todos os Status</SelectItem>
+                    <SelectItem value="all">Todos os status</SelectItem>
                     <SelectItem value="active">Ativo</SelectItem>
-                    <SelectItem value="unsubscribed">Cancelado</SelectItem>
-                    <SelectItem value="bounced">Bounce</SelectItem>
+                    <SelectItem value="unsubscribed">Desinscrito</SelectItem>
+                    <SelectItem value="bounced">Rejeitado</SelectItem>
                     <SelectItem value="pending">Pendente</SelectItem>
                   </SelectContent>
                 </Select>
-                <Select value={sourceFilter} onValueChange={setSourceFilter}>
-                  <SelectTrigger className="w-full sm:w-48">
-                    <SelectValue placeholder="Origem" />
+                <Select value={subscriberOriginFilter} onValueChange={(v) => { setSubscriberOriginFilter(v); setSubscriberPage(1); }}>
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue placeholder="Todas origens" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todas as Origens</SelectItem>
+                    <SelectItem value="all">Todas origens</SelectItem>
                     <SelectItem value="popup">Popup</SelectItem>
                     <SelectItem value="footer">Rodapé</SelectItem>
                     <SelectItem value="signup">Cadastro</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="import">Importado</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+                {(subscriberSearch || subscriberStatusFilter !== 'all' || subscriberOriginFilter !== 'all') && (
+                  <Button 
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setSubscriberSearch('');
+                      setSubscriberStatusFilter('all');
+                      setSubscriberOriginFilter('all');
+                      setSubscriberPage(1);
+                    }}
+                  >
+                    Limpar
+                  </Button>
+                )}
+              </form>
+            </CardContent>
+          </Card>
 
-              {/* Subscribers Table */}
+          {/* Subscribers Table */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-gray-9">
+                Assinantes ({subscribersData?.pagination.total || 0})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-2">
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Assinante</th>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Email</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Nome</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Origem</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Tags</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Engajamento</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Cadastro</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Cadastrado em</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredSubscribers.map((subscriber) => (
-                      <tr key={subscriber.id} className="border-b border-gray-2 hover:bg-gray-1/50">
+                    {subscribers.map((subscriber) => (
+                      <tr key={subscriber.id} className="border-b border-gray-100 hover:bg-gray-50">
                         <td className="py-4 px-4">
-                          <div>
-                            <p className="font-medium text-gray-9">
-                              {subscriber.firstName && subscriber.lastName 
-                                ? `${subscriber.firstName} ${subscriber.lastName}`
-                                : 'Nome não informado'
-                              }
-                            </p>
-                            <p className="text-sm text-gray-6">{subscriber.email}</p>
-                          </div>
+                          <p className="font-medium text-gray-9">{subscriber.email}</p>
                         </td>
                         <td className="py-4 px-4">
-                          <Badge className={getStatusColor(subscriber.status)}>
-                            {getStatusText(subscriber.status)}
+                          <p className="text-gray-7">{subscriber.fullName || '—'}</p>
+                        </td>
+                        <td className="py-4 px-4">
+                          <Badge className={getSubscriberStatusColor(subscriber.status)}>
+                            {getSubscriberStatusText(subscriber.status)}
                           </Badge>
                         </td>
                         <td className="py-4 px-4">
-                          <span className="text-sm text-gray-9">
-                            {getSourceText(subscriber.source)}
-                          </span>
+                          <Badge variant="outline" className="text-xs">
+                            {getOriginText(subscriber.origin)}
+                          </Badge>
                         </td>
                         <td className="py-4 px-4">
-                          <div className="flex flex-wrap gap-1">
-                            {subscriber.tags.slice(0, 2).map((tag) => (
-                              <Badge key={tag} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                            {subscriber.tags.length > 2 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{subscriber.tags.length - 2}
-                              </Badge>
-                            )}
-                          </div>
+                          {subscriber.engagement ? (
+                            <div className="text-sm">
+                              <p className="text-gray-7">
+                                {subscriber.engagement.openRate}% abertura
+                              </p>
+                              <p className="text-gray-5 text-xs">
+                                {subscriber.engagement.emailsSent} enviados
+                              </p>
+                            </div>
+                          ) : (
+                            <span className="text-sm text-gray-5">—</span>
+                          )}
                         </td>
                         <td className="py-4 px-4">
-                          <div className="text-sm">
-                            <p className="text-gray-9">
-                              {subscriber.stats.emailsOpened}/{subscriber.stats.emailsSent} abertos
-                            </p>
-                            <p className="text-gray-6">
-                              {subscriber.stats.emailsClicked} cliques
-                            </p>
-                          </div>
+                          <span className="text-sm text-gray-6">{formatDate(subscriber.registeredAt || subscriber.createdAt)}</span>
                         </td>
                         <td className="py-4 px-4">
-                          <span className="text-sm text-gray-6">
-                            {formatDate(subscriber.createdAt)}
-                          </span>
-                        </td>
-                        <td className="py-4 px-4">
-                          <div className="flex space-x-2">
-                            {subscriber.status === 'active' ? (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleUnsubscribe(subscriber.id)}
-                                className="text-red-600 hover:text-red-700"
-                              >
-                                <UserX className="w-3 h-3 mr-1" />
-                                Cancelar
-                              </Button>
-                            ) : (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleResubscribe(subscriber.id)}
-                                className="text-green-600 hover:text-green-700"
-                              >
-                                <UserCheck className="w-3 h-3 mr-1" />
-                                Reativar
-                              </Button>
-                            )}
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              onClick={() => router.push(`/admin/newsletter/subscribers/${subscriber.id}`)}
+                              size="sm"
+                              variant="outline"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button size="sm" variant="outline">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => router.push(`/admin/newsletter/subscribers/${subscriber.id}/editar`)}
+                                >
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Editar
+                                </DropdownMenuItem>
+                                {subscriber.status !== 'active' && (
+                                  <DropdownMenuItem
+                                    onClick={() => handleUpdateSubscriberStatus(subscriber.id, 'active')}
+                                    disabled={updateSubscriberStatus.isPending}
+                                  >
+                                    <UserCheck className="w-4 h-4 mr-2" />
+                                    Ativar
+                                  </DropdownMenuItem>
+                                )}
+                                {subscriber.status !== 'unsubscribed' && (
+                                  <DropdownMenuItem
+                                    onClick={() => handleUpdateSubscriberStatus(subscriber.id, 'unsubscribed')}
+                                    disabled={updateSubscriberStatus.isPending}
+                                  >
+                                    <UserX className="w-4 h-4 mr-2" />
+                                    Desinscrever
+                                  </DropdownMenuItem>
+                                )}
+                                <DropdownMenuItem
+                                  onClick={() => handleDeleteSubscriber(subscriber.id, subscriber.email)}
+                                  className="text-red-600"
+                                  disabled={deleteSubscriber.isPending}
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Excluir
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </td>
                       </tr>
@@ -651,60 +491,136 @@ export default function NewsletterManagementPage() {
                   </tbody>
                 </table>
               </div>
-
-              {filteredSubscribers.length === 0 && (
-                <div className="text-center py-8">
-                  <Mail className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-                  <p className="text-gray-6">Nenhum assinante encontrado</p>
-                </div>
-              )}
             </CardContent>
           </Card>
-        </TabsContent>
 
-        <TabsContent value="campaigns" className="space-y-6">
-          {/* Campaigns Management */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Campanhas de Email</CardTitle>
-                  <CardDescription>
-                    Gerencie campanhas de newsletter e marketing
-                  </CardDescription>
-                </div>
-                <Button onClick={handleCreateCampaign}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Nova Campanha
+          {subscribers.length === 0 && (
+            <Card>
+              <CardContent className="text-center py-12">
+                <Users className="w-12 h-12 text-gray-4 mx-auto mb-4" />
+                <p className="text-gray-6">Nenhum assinante encontrado</p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Pagination */}
+          {subscribersTotalPages > 1 && (
+            <div className="flex items-center justify-between pt-4 border-t">
+              <p className="text-sm text-gray-6">
+                Página {subscriberPage} de {subscribersTotalPages}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSubscriberPage(p => Math.max(1, p - 1))}
+                  disabled={subscriberPage === 1}
+                >
+                  Anterior
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSubscriberPage(p => Math.min(subscribersTotalPages, p + 1))}
+                  disabled={subscriberPage === subscribersTotalPages}
+                >
+                  Próxima
                 </Button>
               </div>
+            </div>
+          )}
+        </TabsContent>
+
+        {/* Campaigns Tab */}
+        <TabsContent value="campaigns" className="space-y-6">
+          {/* Filters */}
+          <Card>
+            <CardContent className="p-4">
+              <form onSubmit={handleCampaignSearch} className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
+                  <Input
+                    placeholder="Buscar por nome ou assunto..."
+                    value={campaignSearch}
+                    onChange={(e) => setCampaignSearch(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <Select value={campaignStatusFilter} onValueChange={(v) => { setCampaignStatusFilter(v); setCampaignPage(1); }}>
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os status</SelectItem>
+                    <SelectItem value="draft">Rascunho</SelectItem>
+                    <SelectItem value="scheduled">Agendada</SelectItem>
+                    <SelectItem value="sending">Enviando</SelectItem>
+                    <SelectItem value="sent">Enviada</SelectItem>
+                    <SelectItem value="cancelled">Cancelada</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={campaignTypeFilter} onValueChange={(v) => { setCampaignTypeFilter(v); setCampaignPage(1); }}>
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue placeholder="Todos tipos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos tipos</SelectItem>
+                    <SelectItem value="newsletter">Newsletter</SelectItem>
+                    <SelectItem value="promotional">Promocional</SelectItem>
+                    <SelectItem value="announcement">Anúncio</SelectItem>
+                    <SelectItem value="welcome">Boas-vindas</SelectItem>
+                  </SelectContent>
+                </Select>
+                {(campaignSearch || campaignStatusFilter !== 'all' || campaignTypeFilter !== 'all') && (
+                  <Button 
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setCampaignSearch('');
+                      setCampaignStatusFilter('all');
+                      setCampaignTypeFilter('all');
+                      setCampaignPage(1);
+                    }}
+                  >
+                    Limpar
+                  </Button>
+                )}
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Campaigns Table */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-gray-9">
+                Campanhas ({campaignsData?.pagination.total || 0})
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              {/* Campaigns Table */}
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-2">
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Campanha</th>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Nome</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Assunto</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Tipo</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Assinantes</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Performance</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Data</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Enviada em</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
                     </tr>
                   </thead>
                   <tbody>
                     {campaigns.map((campaign) => (
-                      <tr key={campaign.id} className="border-b border-gray-2 hover:bg-gray-1/50">
+                      <tr key={campaign.id} className="border-b border-gray-100 hover:bg-gray-50">
                         <td className="py-4 px-4">
-                          <div>
-                            <p className="font-medium text-gray-9">{campaign.name}</p>
-                            <p className="text-sm text-gray-6">{campaign.subject}</p>
-                          </div>
+                          <p className="font-medium text-gray-9">{campaign.name}</p>
                         </td>
                         <td className="py-4 px-4">
-                          <Badge variant="outline">
+                          <p className="text-gray-7">{campaign.subject}</p>
+                        </td>
+                        <td className="py-4 px-4">
+                          <Badge variant="outline" className="text-xs">
                             {getCampaignTypeText(campaign.type)}
                           </Badge>
                         </td>
@@ -714,45 +630,78 @@ export default function NewsletterManagementPage() {
                           </Badge>
                         </td>
                         <td className="py-4 px-4">
-                          <span className="text-sm text-gray-9">
-                            {campaign.stats.totalSubscribers.toLocaleString()}
-                          </span>
+                          {campaign.performance ? (
+                            <div className="text-sm">
+                              <p className="text-gray-7">
+                                {campaign.performance.openRate.toFixed(1)}% abertura
+                              </p>
+                              <p className="text-gray-5 text-xs">
+                                {campaign.performance.clickRate.toFixed(1)}% cliques
+                              </p>
+                            </div>
+                          ) : (
+                            <span className="text-sm text-gray-5">—</span>
+                          )}
                         </td>
                         <td className="py-4 px-4">
-                          <div className="text-sm">
-                            <p className="text-gray-9">
-                              Taxa de abertura: {campaign.stats.openRate}%
-                            </p>
-                            <p className="text-gray-6">
-                              Taxa de clique: {campaign.stats.clickRate}%
-                            </p>
-                          </div>
+                          {campaign.sentAt ? (
+                            <span className="text-sm text-gray-6">{formatDate(campaign.sentAt)}</span>
+                          ) : (
+                            <span className="text-sm text-gray-5">—</span>
+                          )}
                         </td>
                         <td className="py-4 px-4">
-                          <span className="text-sm text-gray-6">
-                            {campaign.sentAt ? formatDate(campaign.sentAt) : formatDate(campaign.createdAt)}
-                          </span>
-                        </td>
-                        <td className="py-4 px-4">
-                          <div className="flex space-x-2">
+                          <div className="flex items-center space-x-2">
                             <Button
-                              variant="outline"
+                              onClick={() => router.push(`/admin/newsletter/campanhas/${campaign.id}`)}
                               size="sm"
-                              onClick={() => handleViewCampaign(campaign.id)}
+                              variant="outline"
                             >
-                              <Eye className="w-3 h-3 mr-1" />
-                              Ver
+                              <Eye className="w-4 h-4" />
                             </Button>
-                            {campaign.status === 'draft' && (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleEditCampaign(campaign.id)}
-                              >
-                                <Edit className="w-3 h-3 mr-1" />
-                                Editar
-                              </Button>
-                            )}
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button size="sm" variant="outline">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => router.push(`/admin/newsletter/campanhas/${campaign.id}/editar`)}
+                                >
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Editar
+                                </DropdownMenuItem>
+                                {campaign.status === 'draft' && (
+                                  <DropdownMenuItem
+                                    onClick={() => handleUpdateCampaignStatus(campaign.id, 'scheduled')}
+                                    disabled={updateCampaignStatus.isPending}
+                                  >
+                                    <Calendar className="w-4 h-4 mr-2" />
+                                    Agendar
+                                  </DropdownMenuItem>
+                                )}
+                                {campaign.status === 'scheduled' && (
+                                  <DropdownMenuItem
+                                    onClick={() => handleUpdateCampaignStatus(campaign.id, 'cancelled')}
+                                    disabled={updateCampaignStatus.isPending}
+                                  >
+                                    <UserX className="w-4 h-4 mr-2" />
+                                    Cancelar
+                                  </DropdownMenuItem>
+                                )}
+                                {(campaign.status === 'draft' || campaign.status === 'cancelled') && (
+                                  <DropdownMenuItem
+                                    onClick={() => handleDeleteCampaign(campaign.id, campaign.name)}
+                                    className="text-red-600"
+                                    disabled={deleteCampaign.isPending}
+                                  >
+                                    <Trash2 className="w-4 h-4 mr-2" />
+                                    Excluir
+                                  </DropdownMenuItem>
+                                )}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </td>
                       </tr>
@@ -760,19 +709,44 @@ export default function NewsletterManagementPage() {
                   </tbody>
                 </table>
               </div>
-
-              {campaigns.length === 0 && (
-                <div className="text-center py-8">
-                  <Mail className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-                  <p className="text-gray-6">Nenhuma campanha encontrada</p>
-                  <Button onClick={handleCreateCampaign} className="mt-4">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Criar Primeira Campanha
-                  </Button>
-                </div>
-              )}
             </CardContent>
           </Card>
+
+          {campaigns.length === 0 && (
+            <Card>
+              <CardContent className="text-center py-12">
+                <Send className="w-12 h-12 text-gray-4 mx-auto mb-4" />
+                <p className="text-gray-6">Nenhuma campanha encontrada</p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Pagination */}
+          {campaignsTotalPages > 1 && (
+            <div className="flex items-center justify-between pt-4 border-t">
+              <p className="text-sm text-gray-6">
+                Página {campaignPage} de {campaignsTotalPages}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCampaignPage(p => Math.max(1, p - 1))}
+                  disabled={campaignPage === 1}
+                >
+                  Anterior
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCampaignPage(p => Math.min(campaignsTotalPages, p + 1))}
+                  disabled={campaignPage === campaignsTotalPages}
+                >
+                  Próxima
+                </Button>
+              </div>
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </AdminLayout>

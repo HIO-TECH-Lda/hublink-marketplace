@@ -1307,4 +1307,462 @@ export const useDeleteBlogPost = () => {
   });
 };
 
+// ============================================
+// Admin Newsletter Management
+// ============================================
+
+export interface NewsletterStats {
+  totalSubscribers: number;
+  activeSubscribers: number;
+  unsubscribed: number;
+  bounced: number;
+  campaignsSent: number;
+  campaignsScheduled: number;
+  campaignsDraft: number;
+}
+
+export interface NewsletterSubscriber {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  fullName: string;
+  status: 'active' | 'unsubscribed' | 'bounced' | 'pending';
+  origin: 'popup' | 'footer' | 'signup' | 'admin' | 'import';
+  tags: string[];
+  engagement?: {
+    emailsSent: number;
+    emailsOpened: number;
+    emailsClicked: number;
+    openRate: string;
+    clickRate: string;
+  };
+  preferences?: {
+    categories?: string[];
+    frequency?: 'daily' | 'weekly' | 'monthly';
+    promotions?: boolean;
+    productUpdates?: boolean;
+    blogPosts?: boolean;
+  };
+  metadata?: {
+    ipAddress?: string;
+    userAgent?: string;
+    referrer?: string;
+  };
+  stats?: {
+    emailsSent: number;
+    emailsOpened: number;
+    emailsClicked: number;
+    lastOpened?: string;
+    lastClicked?: string;
+    openRate: string;
+    clickRate: string;
+  };
+  registeredAt: string;
+  unsubscribedAt?: string;
+  unsubscribedReason?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewsletterCampaign {
+  id: string;
+  name: string;
+  subject: string;
+  type: 'newsletter' | 'promotional' | 'announcement' | 'welcome';
+  status: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled';
+  content?: {
+    html: string;
+    plainText?: string;
+  };
+  segmentation?: {
+    subscriberStatus?: 'all' | 'active' | 'new';
+    tags?: string[];
+    preferences?: {
+      categories?: string[];
+      frequency?: string[];
+    };
+  };
+  subscribers?: number;
+  performance?: {
+    openRate: number;
+    clickRate: number;
+  };
+  scheduledAt?: string;
+  timezone?: string;
+  sentAt?: string;
+  createdBy?: {
+    id: string;
+    name: string;
+  };
+  stats?: {
+    totalSubscribers: number;
+    sent: number;
+    delivered: number;
+    opened: number;
+    clicked: number;
+    bounced: number;
+    unsubscribed: number;
+    deliveryRate: number;
+    openRate: number;
+    clickRate: number;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateSubscriberRequest {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  status?: 'active' | 'unsubscribed' | 'bounced' | 'pending';
+  origin?: 'popup' | 'footer' | 'signup' | 'admin' | 'import';
+  tags?: string[];
+  preferences?: {
+    categories?: string[];
+    frequency?: 'daily' | 'weekly' | 'monthly';
+    promotions?: boolean;
+    productUpdates?: boolean;
+    blogPosts?: boolean;
+  };
+  metadata?: {
+    ipAddress?: string;
+    userAgent?: string;
+    referrer?: string;
+  };
+}
+
+export interface CreateCampaignRequest {
+  name: string;
+  subject: string;
+  type: 'newsletter' | 'promotional' | 'announcement' | 'welcome';
+  status?: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled';
+  content: {
+    html: string;
+    plainText?: string;
+  };
+  segmentation?: {
+    subscriberStatus?: 'all' | 'active' | 'new';
+    tags?: string[];
+    preferences?: {
+      categories?: string[];
+      frequency?: string[];
+    };
+  };
+  scheduledAt?: string;
+  timezone?: string;
+}
+
+export const useAdminNewsletterStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'newsletter', 'stats'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/newsletter/stats');
+      return response.data.data as NewsletterStats;
+    },
+  });
+};
+
+export const useAdminSubscribers = (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+  origin?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'newsletter', 'subscribers', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/newsletter/subscribers', { params });
+      return response.data.data as {
+        subscribers: NewsletterSubscriber[];
+        pagination: {
+          page: number;
+          limit: number;
+          total: number;
+          totalPages: number;
+        };
+      };
+    },
+  });
+};
+
+export const useAdminSubscriber = (subscriberId: string) => {
+  return useQuery({
+    queryKey: ['admin', 'newsletter', 'subscriber', subscriberId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/admin/newsletter/subscribers/${subscriberId}`);
+      return response.data.data as NewsletterSubscriber;
+    },
+    enabled: !!subscriberId,
+  });
+};
+
+export const useCreateSubscriber = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (data: CreateSubscriberRequest) => {
+      const response = await apiClient.post('/admin/newsletter/subscribers', data);
+      return response.data.data as NewsletterSubscriber;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'subscribers'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'stats'] });
+      toast({
+        title: 'Assinante criado',
+        description: 'O assinante foi adicionado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao criar assinante';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateSubscriber = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ subscriberId, data }: { subscriberId: string; data: Partial<CreateSubscriberRequest> }) => {
+      const response = await apiClient.put(`/admin/newsletter/subscribers/${subscriberId}`, data);
+      return response.data.data as NewsletterSubscriber;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'subscribers'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'subscriber', variables.subscriberId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'stats'] });
+      toast({
+        title: 'Assinante atualizado',
+        description: 'As alterações foram salvas com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar assinante';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateSubscriberStatus = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ subscriberId, status }: { subscriberId: string; status: 'active' | 'unsubscribed' | 'bounced' | 'pending' }) => {
+      const response = await apiClient.patch(`/admin/newsletter/subscribers/${subscriberId}/status`, { status });
+      return response.data.data as NewsletterSubscriber;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'subscribers'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'subscriber', variables.subscriberId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'stats'] });
+      toast({
+        title: 'Status atualizado',
+        description: 'O status do assinante foi atualizado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar status do assinante';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useDeleteSubscriber = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (subscriberId: string) => {
+      const response = await apiClient.delete(`/admin/newsletter/subscribers/${subscriberId}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'subscribers'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'stats'] });
+      toast({
+        title: 'Assinante excluído',
+        description: 'O assinante foi excluído com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao excluir assinante';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useAdminCampaigns = (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  type?: string;
+  status?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'newsletter', 'campaigns', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/newsletter/campaigns', { params });
+      return response.data.data as {
+        campaigns: NewsletterCampaign[];
+        pagination: {
+          page: number;
+          limit: number;
+          total: number;
+          totalPages: number;
+        };
+      };
+    },
+  });
+};
+
+export const useAdminCampaign = (campaignId: string) => {
+  return useQuery({
+    queryKey: ['admin', 'newsletter', 'campaign', campaignId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/admin/newsletter/campaigns/${campaignId}`);
+      return response.data.data as NewsletterCampaign;
+    },
+    enabled: !!campaignId,
+  });
+};
+
+export const useCreateCampaign = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (data: CreateCampaignRequest) => {
+      const response = await apiClient.post('/admin/newsletter/campaigns', data);
+      return response.data.data as NewsletterCampaign;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'campaigns'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'stats'] });
+      toast({
+        title: 'Campanha criada',
+        description: 'A campanha foi criada com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao criar campanha';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateCampaign = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ campaignId, data }: { campaignId: string; data: Partial<CreateCampaignRequest> }) => {
+      const response = await apiClient.put(`/admin/newsletter/campaigns/${campaignId}`, data);
+      return response.data.data as NewsletterCampaign;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'campaigns'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'campaign', variables.campaignId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'stats'] });
+      toast({
+        title: 'Campanha atualizada',
+        description: 'As alterações foram salvas com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar campanha';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateCampaignStatus = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ campaignId, status, scheduledAt }: { campaignId: string; status: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled'; scheduledAt?: string }) => {
+      const response = await apiClient.patch(`/admin/newsletter/campaigns/${campaignId}/status`, { status, scheduledAt });
+      return response.data.data as NewsletterCampaign;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'campaigns'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'campaign', variables.campaignId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'stats'] });
+      toast({
+        title: 'Status atualizado',
+        description: 'O status da campanha foi atualizado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar status da campanha';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useDeleteCampaign = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (campaignId: string) => {
+      const response = await apiClient.delete(`/admin/newsletter/campaigns/${campaignId}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'campaigns'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'newsletter', 'stats'] });
+      toast({
+        title: 'Campanha excluída',
+        description: 'A campanha foi excluída com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao excluir campanha';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
 
