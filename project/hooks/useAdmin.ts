@@ -2229,4 +2229,97 @@ function downloadCSV(csv: string, filename: string) {
   document.body.removeChild(link);
 }
 
+// ============================================
+// Admin Audit Logs
+// ============================================
+
+export interface AuditLog {
+  id: string;
+  user: {
+    id?: string;
+    name: string;
+    email?: string;
+    role?: string;
+  };
+  action: 'create' | 'read' | 'update' | 'delete';
+  entity: {
+    type: string;
+    id: string;
+    name?: string;
+  };
+  changes: Array<{
+    field: string;
+    oldValue: any;
+    newValue: any;
+  }>;
+  metadata: {
+    ipAddress?: string;
+    userAgent?: string;
+    method?: string;
+    url?: string;
+    statusCode?: number;
+  };
+  description?: string;
+  createdAt: string;
+}
+
+export interface AuditLogStatistics {
+  total: number;
+  byAction: {
+    create: number;
+    read: number;
+    update: number;
+    delete: number;
+  };
+  byEntityType: Array<{
+    entityType: string;
+    count: number;
+  }>;
+  topUsers: Array<{
+    userId: string;
+    userName: string;
+    activityCount: number;
+  }>;
+}
+
+export const useAdminAuditLogs = (params?: {
+  page?: number;
+  limit?: number;
+  userId?: string;
+  entityType?: string;
+  entityId?: string;
+  action?: 'create' | 'read' | 'update' | 'delete';
+  startDate?: string;
+  endDate?: string;
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'audit-logs', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/audit-logs', { params });
+      return response.data.data as {
+        logs: AuditLog[];
+        pagination: {
+          page: number;
+          limit: number;
+          total: number;
+          totalPages: number;
+        };
+      };
+    },
+  });
+};
+
+export const useAdminAuditLogStats = (params?: {
+  startDate?: string;
+  endDate?: string;
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'audit-logs', 'statistics', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/audit-logs/statistics', { params });
+      return response.data.data as AuditLogStatistics;
+    },
+  });
+};
+
 

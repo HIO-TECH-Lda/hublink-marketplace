@@ -19,7 +19,8 @@ import {
   MessageSquare,
   RotateCcw,
   Mail,
-  FileText
+  FileText,
+  FileSearch
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -40,6 +41,7 @@ const navigation = [
   { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },
   { name: 'Tickets', href: '/admin/tickets', icon: MessageSquare },
   { name: 'Relatórios', href: '/admin/relatorios', icon: BarChart3 },
+  { name: 'Auditoria', href: '/admin/auditoria', icon: FileSearch },
   { name: 'Configurações', href: '/admin/configuracoes', icon: Settings },
 ];
 
