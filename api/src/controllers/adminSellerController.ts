@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { AdminSellerService } from '../services/adminSellerService';
-import { AuditLogService } from '../services/auditLogService';
 
 export class AdminSellerController {
   // Get seller statistics
@@ -67,17 +66,6 @@ export class AdminSellerController {
     try {
       const sellerData = req.body;
       const seller = await AdminSellerService.createSeller(sellerData);
-      
-      // Log the creation
-      await AuditLogService.logFromRequest(
-        req,
-        'create',
-        'seller',
-        seller.id,
-        seller.company?.name || seller.contact?.name || seller.contact?.email,
-        undefined,
-        'New seller account created'
-      );
 
       res.status(201).json({
         success: true,
@@ -98,30 +86,7 @@ export class AdminSellerController {
     try {
       const { sellerId } = req.params;
       const updateData = req.body;
-      
-      // Get old data for change detection
-      const oldSeller = await AdminSellerService.getSellerById(sellerId);
-      
       const seller = await AdminSellerService.updateSeller(sellerId, updateData);
-      
-      // Detect and log changes
-      const changes = AuditLogService.detectChanges(
-        oldSeller,
-        updateData,
-        ['firstName', 'lastName', 'email', 'phone', 'status', 'sellerProfile']
-      );
-      
-      if (changes.length > 0) {
-        await AuditLogService.logFromRequest(
-          req,
-          'update',
-          'seller',
-          sellerId,
-          seller.company?.name || seller.contact?.name || seller.contact?.email,
-          changes,
-          'Seller information updated'
-        );
-      }
 
       res.json({
         success: true,
@@ -151,28 +116,9 @@ export class AdminSellerController {
         return;
       }
 
-      // Get old status for audit log
-      const oldSeller = await AdminSellerService.getSellerById(sellerId);
-      const oldStatus = oldSeller.status;
-
       const seller = await AdminSellerService.updateSellerStatus(
         sellerId,
         status as 'active' | 'inactive' | 'suspended'
-      );
-      
-      // Log the status change
-      await AuditLogService.logFromRequest(
-        req,
-        'update',
-        'seller',
-        sellerId,
-        seller.company?.name || seller.contact?.name || seller.contact?.email,
-        [{
-          field: 'status',
-          oldValue: oldStatus,
-          newValue: status
-        }],
-        `Seller status changed from ${oldStatus} to ${status}`
       );
 
       res.json({

@@ -30,7 +30,7 @@ export class AuditLogService {
     }
   }
 
-  // Helper to log from Express request
+  // Helper to log from Express request (DEPRECATED - Use global middleware instead)
   static async logFromRequest(
     req: Request,
     action: 'create' | 'read' | 'update' | 'delete',
@@ -42,9 +42,6 @@ export class AuditLogService {
   ): Promise<void> {
     const user = (req as any).user;
     const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-    // Set flag to skip automatic middleware logging (prevent duplicates)
-    (req as any).skipAuditLog = true;
 
     await this.log({
       userId: user?.userId,

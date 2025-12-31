@@ -85,8 +85,7 @@ export const auditLogMiddleware = async (req: Request, res: Response, next: Next
   // Intercept response to log after success
   res.json = function(data: any) {
     // Only log successful operations (2xx status codes)
-    // Skip if manual logging flag is set
-    if (res.statusCode >= 200 && res.statusCode < 300 && !(req as any).skipAuditLog) {
+    if (res.statusCode >= 200 && res.statusCode < 300) {
       // Log asynchronously without blocking response
       setImmediate(() => {
         logOperation(req, res, action, entityInfo, data);
@@ -97,8 +96,7 @@ export const auditLogMiddleware = async (req: Request, res: Response, next: Next
   
   res.send = function(data: any) {
     // Only log successful operations
-    // Skip if manual logging flag is set
-    if (res.statusCode >= 200 && res.statusCode < 300 && !(req as any).skipAuditLog) {
+    if (res.statusCode >= 200 && res.statusCode < 300) {
       setImmediate(() => {
         logOperation(req, res, action, entityInfo, data);
       });
