@@ -1,38 +1,229 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Send, Upload, X, Clock, CheckCircle, AlertCircle, MessageSquare, User, Tag, Calendar, FileText, Edit3, Save, Users } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Send, 
+  Upload, 
+  X, 
+  Clock, 
+  CheckCircle, 
+  AlertCircle, 
+  MessageSquare, 
+  User, 
+  Tag, 
+  Calendar, 
+  FileText, 
+  Edit3, 
+  Save, 
+  Users,
+  Trash2,
+  Eye,
+  Download
+} from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { useMarketplace, TicketCategory, TicketPriority, TicketStatus } from '@/contexts/MarketplaceContext';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { 
+  useAdminTicket,
+  useUpdateTicket,
+  useUpdateTicketStatus,
+  useAssignTicket,
+  useAddTicketMessage,
+  useDeleteTicket,
+  useAdminUsers,
+  Ticket,
+  TicketStatus
+} from '@/hooks/useAdmin';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AdminTicketDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { state, dispatch } = useMarketplace();
+  const { toast } = useToast();
   const ticketId = params.id as string;
 
-  const [ticket, setTicket] = useState<any>(null);
+  const { data: ticket, isLoading } = useAdminTicket(ticketId);
+  const { data: usersData } = useAdminUsers({ limit: 100, role: 'all' });
+  const updateTicket = useUpdateTicket();
+  const updateStatus = useUpdateTicketStatus();
+  const assignTicket = useAssignTicket();
+  const addMessage = useAddTicketMessage();
+  const deleteTicket = useDeleteTicket();
+
   const [newMessage, setNewMessage] = useState('');
   const [internalNote, setInternalNote] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTicket, setEditedTicket] = useState<any>(null);
+  const [isInternal, setIsInternal] = useState(false);
   const [attachments, setAttachments] = useState<File[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTicket, setEditedTicket] = useState<Partial<Ticket>>({});
 
-  useEffect(() => {
-    const foundTicket = state.tickets.find(t => t.id === ticketId);
-    if (foundTicket) {
-      setTicket(foundTicket);
-      setEditedTicket(foundTicket);
+  const users = usersData?.users || [];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'open': return 'text-orange-600 bg-orange-100';
+      case 'in_progress': return 'text-blue-600 bg-blue-100';
+      case 'waiting_for_user': return 'text-yellow-600 bg-yellow-100';
+      case 'waiting_for_third_party': return 'text-purple-600 bg-purple-100';
+      case 'resolved': return 'text-green-600 bg-green-100';
+      case 'closed': return 'text-gray-600 bg-gray-100';
+      default: return 'text-gray-600 bg-gray-100';
     }
-  }, [ticketId, state.tickets]);
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'open': return 'Aberto';
+      case 'in_progress': return 'Em Progresso';
+      case 'waiting_for_user': return 'Aguardando Resposta';
+      case 'waiting_for_third_party': return 'Aguardando Terceiros';
+      case 'resolved': return 'Resolvido';
+      case 'closed': return 'Fechado';
+      default: return status;
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'low': return 'text-gray-600 bg-gray-100';
+      case 'medium': return 'text-blue-600 bg-blue-100';
+      case 'high': return 'text-orange-600 bg-orange-100';
+      case 'urgent': return 'text-red-600 bg-red-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getPriorityText = (priority: string) => {
+    switch (priority) {
+      case 'low': return 'Baixa';
+      case 'medium': return 'Média';
+      case 'high': return 'Alta';
+      case 'urgent': return 'Urgente';
+      default: return priority;
+    }
+  };
+
+  const getCategoryText = (category: string) => {
+    const labels: Record<string, string> = {
+      'technical_issue': 'Problema Técnico',
+      'payment_problem': 'Problema com Pagamento',
+      'order_issue': 'Problema com Pedido',
+      'return_request': 'Solicitação de Devolução',
+      'account_issue': 'Problema com Conta',
+      'product_issue': 'Problema com Produto',
+      'shipping_problem': 'Problema com Envio',
+      'general_inquiry': 'Consulta Geral',
+      'feature_request': 'Solicitação de Funcionalidade',
+      'bug_report': 'Reportar Bug'
+    };
+    return labels[category] || category;
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString('pt-MZ', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() && !internalNote.trim()) {
+      toast({
+        title: 'Erro',
+        description: 'Por favor, digite uma mensagem.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const message = isInternal ? internalNote : newMessage;
+      const attachmentData = await Promise.all(
+        attachments.map(async (file) => {
+          const base64 = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+          return {
+            base64,
+            fileName: file.name,
+            fileSize: file.size,
+            mimeType: file.type
+          };
+        })
+      );
+
+      await addMessage.mutateAsync({
+        ticketId,
+        data: {
+          message,
+          isInternal,
+          attachments: attachmentData.length > 0 ? attachmentData : undefined
+        }
+      });
+
+      setNewMessage('');
+      setInternalNote('');
+      setIsInternal(false);
+      setAttachments([]);
+    } catch (error: any) {
+      // Error is handled by the hook
+    }
+  };
+
+  const handleUpdateStatus = (status: TicketStatus) => {
+    updateStatus.mutate({ ticketId, status });
+  };
+
+  const handleAssign = (userId: string) => {
+    assignTicket.mutate({ ticketId, userId });
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      await updateTicket.mutateAsync({ ticketId, data: editedTicket });
+      setIsEditing(false);
+      setEditedTicket({});
+    } catch (error: any) {
+      // Error is handled by the hook
+    }
+  };
+
+  const handleDelete = () => {
+    if (confirm(`Tem certeza que deseja excluir o ticket "${ticket?.ticketNumber}"?`)) {
+      deleteTicket.mutate(ticketId, {
+        onSuccess: () => {
+          router.push('/admin/tickets');
+        }
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-6">Carregando ticket...</p>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   if (!ticket) {
     return (
@@ -51,675 +242,387 @@ export default function AdminTicketDetailPage() {
     );
   }
 
-  const getStatusIcon = (status: TicketStatus) => {
-    switch (status) {
-      case TicketStatus.OPEN:
-        return <AlertCircle className="w-4 h-4 text-orange-500" />;
-      case TicketStatus.IN_PROGRESS:
-        return <Clock className="w-4 h-4 text-blue-500" />;
-      case TicketStatus.WAITING_FOR_USER:
-        return <MessageSquare className="w-4 h-4 text-yellow-500" />;
-      case TicketStatus.WAITING_FOR_THIRD_PARTY:
-        return <Clock className="w-4 h-4 text-purple-500" />;
-      case TicketStatus.RESOLVED:
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case TicketStatus.CLOSED:
-        return <X className="w-4 h-4 text-gray-500" />;
-      default:
-        return <AlertCircle className="w-4 h-4 text-gray-500" />;
-    }
-  };
-
-  const getStatusColor = (status: TicketStatus) => {
-    switch (status) {
-      case TicketStatus.OPEN:
-        return 'bg-orange-100 text-orange-800';
-      case TicketStatus.IN_PROGRESS:
-        return 'bg-blue-100 text-blue-800';
-      case TicketStatus.WAITING_FOR_USER:
-        return 'bg-yellow-100 text-yellow-800';
-      case TicketStatus.WAITING_FOR_THIRD_PARTY:
-        return 'bg-purple-100 text-purple-800';
-      case TicketStatus.RESOLVED:
-        return 'bg-green-100 text-green-800';
-      case TicketStatus.CLOSED:
-        return 'bg-gray-100 text-gray-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getStatusText = (status: TicketStatus) => {
-    switch (status) {
-      case TicketStatus.OPEN:
-        return 'Aberto';
-      case TicketStatus.IN_PROGRESS:
-        return 'Em Progresso';
-      case TicketStatus.WAITING_FOR_USER:
-        return 'Aguardando Resposta';
-      case TicketStatus.WAITING_FOR_THIRD_PARTY:
-        return 'Aguardando Terceiros';
-      case TicketStatus.RESOLVED:
-        return 'Resolvido';
-      case TicketStatus.CLOSED:
-        return 'Fechado';
-      default:
-        return status;
-    }
-  };
-
-  const getPriorityColor = (priority: TicketPriority) => {
-    switch (priority) {
-      case TicketPriority.LOW:
-        return 'bg-gray-100 text-gray-800';
-      case TicketPriority.MEDIUM:
-        return 'bg-blue-100 text-blue-800';
-      case TicketPriority.HIGH:
-        return 'bg-orange-100 text-orange-800';
-      case TicketPriority.URGENT:
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getPriorityText = (priority: TicketPriority) => {
-    switch (priority) {
-      case TicketPriority.LOW:
-        return 'Baixa';
-      case TicketPriority.MEDIUM:
-        return 'Média';
-      case TicketPriority.HIGH:
-        return 'Alta';
-      case TicketPriority.URGENT:
-        return 'Urgente';
-      default:
-        return priority;
-    }
-  };
-
-  const getCategoryIcon = (category: TicketCategory) => {
-    const icons: Record<TicketCategory, string> = {
-      [TicketCategory.TECHNICAL_ISSUE]: '🔧',
-      [TicketCategory.PAYMENT_PROBLEM]: '💳',
-      [TicketCategory.ORDER_ISSUE]: '📦',
-      [TicketCategory.RETURN_REQUEST]: '🔄',
-      [TicketCategory.ACCOUNT_ISSUE]: '👤',
-      [TicketCategory.PRODUCT_ISSUE]: '🛍️',
-      [TicketCategory.SHIPPING_PROBLEM]: '🚚',
-      [TicketCategory.GENERAL_INQUIRY]: '❓',
-      [TicketCategory.FEATURE_REQUEST]: '💡',
-      [TicketCategory.BUG_REPORT]: '🐛'
-    };
-    return icons[category] || '📋';
-  };
-
-  const getCategoryText = (category: TicketCategory) => {
-    const labels: Record<TicketCategory, string> = {
-      [TicketCategory.TECHNICAL_ISSUE]: 'Problema Técnico',
-      [TicketCategory.PAYMENT_PROBLEM]: 'Problema com Pagamento',
-      [TicketCategory.ORDER_ISSUE]: 'Problema com Pedido',
-      [TicketCategory.RETURN_REQUEST]: 'Solicitação de Devolução',
-      [TicketCategory.ACCOUNT_ISSUE]: 'Problema com Conta',
-      [TicketCategory.PRODUCT_ISSUE]: 'Problema com Produto',
-      [TicketCategory.SHIPPING_PROBLEM]: 'Problema com Envio',
-      [TicketCategory.GENERAL_INQUIRY]: 'Consulta Geral',
-      [TicketCategory.FEATURE_REQUEST]: 'Solicitação de Funcionalidade',
-      [TicketCategory.BUG_REPORT]: 'Reportar Bug'
-    };
-    return labels[category] || category;
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-MZ', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getUserName = (userId: string) => {
-    const user = state.user?.id === userId ? state.user : 
-                state.orders.find(o => o.userId === userId)?.user;
-    return user ? `${user.firstName} ${user.lastName}` : 'Usuário';
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    setAttachments(prev => [...prev, ...files]);
-  };
-
-  const removeFile = (index: number) => {
-    setAttachments(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const handleSendMessage = async () => {
-    if (!newMessage.trim() || !ticket) return;
-    setIsSubmitting(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const newMsg = {
-        id: `msg-${Date.now()}`,
-        ticketId: ticket.id,
-        userId: state.user?.id || 'admin',
-        userType: 'admin' as const,
-        message: newMessage,
-        createdAt: new Date().toISOString(),
-        isInternal: false,
-        attachments: []
-      };
-      const updatedTicket = {
-        ...ticket,
-        messages: [...ticket.messages, newMsg],
-        updatedAt: new Date().toISOString()
-      };
-      dispatch({ type: 'UPDATE_TICKET', payload: updatedTicket });
-      setTicket(updatedTicket);
-      setNewMessage('');
-      setAttachments([]);
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Erro ao enviar mensagem. Tente novamente.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleSaveChanges = async () => {
-    if (!editedTicket) return;
-    setIsSubmitting(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const updatedTicket = {
-        ...editedTicket,
-        updatedAt: new Date().toISOString()
-      };
-      dispatch({ type: 'UPDATE_TICKET', payload: updatedTicket });
-      setTicket(updatedTicket);
-      setIsEditing(false);
-    } catch (error) {
-      console.error('Error updating ticket:', error);
-      alert('Erro ao atualizar ticket. Tente novamente.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleCancelEdit = () => {
-    setEditedTicket(ticket);
-    setIsEditing(false);
-  };
+  const messages = ticket.messages?.public || [];
+  const internalMessages = ticket.messages?.internal || [];
+  const allMessages = ticket.messages?.all || [];
 
   return (
     <AdminLayout>
-      <div className="space-y-4 sm:space-y-6">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-9 mb-2">Ticket #{ticket.id}</h1>
-              <p className="text-gray-6">{ticket.title}</p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="outline"
-                onClick={() => router.push('/admin/tickets')}
-                className="text-gray-6 hover:text-gray-9"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Voltar
-              </Button>
-              {isEditing ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={handleCancelEdit}
-                    disabled={isSubmitting}
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    onClick={handleSaveChanges}
-                    disabled={isSubmitting}
-                  >
-                    <Save className="w-4 h-4 mr-2" />
-                    Salvar
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  variant="outline"
-                  onClick={() => setIsEditing(true)}
-                >
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">{ticket.ticketNumber}</h1>
+            <p className="text-gray-6">{ticket.title}</p>
+          </div>
+          <div className="flex gap-2">
+            {isEditing ? (
+              <>
+                <Button onClick={() => { setIsEditing(false); setEditedTicket({}); }} variant="outline">
+                  Cancelar
+                </Button>
+                <Button onClick={handleSaveEdit} disabled={updateTicket.isPending}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Salvar
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button onClick={() => { setIsEditing(true); setEditedTicket(ticket); }} variant="outline">
                   <Edit3 className="w-4 h-4 mr-2" />
                   Editar
                 </Button>
-              )}
-            </div>
+                <Button onClick={handleDelete} variant="outline" className="text-red-600">
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Excluir
+                </Button>
+                <Button onClick={() => router.back()} variant="outline">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Voltar
+                </Button>
+              </>
+            )}
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
-            {/* Ticket Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  Informações do Ticket
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {isEditing ? (
-                  <div className="space-y-4">
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          {/* Ticket Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Informações do Ticket</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {isEditing ? (
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="title">Título</Label>
+                    <Input
+                      id="title"
+                      value={editedTicket.title || ''}
+                      onChange={(e) => setEditedTicket({...editedTicket, title: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Descrição</Label>
+                    <Textarea
+                      id="description"
+                      value={editedTicket.description || ''}
+                      onChange={(e) => setEditedTicket({...editedTicket, description: e.target.value})}
+                      rows={4}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Título</label>
-                      <Input
-                        value={editedTicket.title}
-                        onChange={(e) => setEditedTicket({...editedTicket, title: e.target.value})}
-                        className="h-10"
-                      />
+                      <Label htmlFor="category">Categoria</Label>
+                      <Select 
+                        value={editedTicket.category || ''} 
+                        onValueChange={(value) => setEditedTicket({...editedTicket, category: value as any})}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="technical_issue">Problema Técnico</SelectItem>
+                          <SelectItem value="payment_problem">Problema com Pagamento</SelectItem>
+                          <SelectItem value="order_issue">Problema com Pedido</SelectItem>
+                          <SelectItem value="return_request">Solicitação de Devolução</SelectItem>
+                          <SelectItem value="account_issue">Problema com Conta</SelectItem>
+                          <SelectItem value="product_issue">Problema com Produto</SelectItem>
+                          <SelectItem value="shipping_problem">Problema com Envio</SelectItem>
+                          <SelectItem value="general_inquiry">Consulta Geral</SelectItem>
+                          <SelectItem value="feature_request">Solicitação de Funcionalidade</SelectItem>
+                          <SelectItem value="bug_report">Reportar Bug</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
-                      <Textarea
-                        value={editedTicket.description}
-                        onChange={(e) => setEditedTicket({...editedTicket, description: e.target.value})}
-                        rows={3}
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                        <Select 
-                          value={editedTicket.status} 
-                          onValueChange={(value) => setEditedTicket({...editedTicket, status: value})}
-                        >
-                          <SelectTrigger className="h-10">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value={TicketStatus.OPEN}>Aberto</SelectItem>
-                            <SelectItem value={TicketStatus.IN_PROGRESS}>Em Progresso</SelectItem>
-                            <SelectItem value={TicketStatus.WAITING_FOR_USER}>Aguardando Resposta</SelectItem>
-                            <SelectItem value={TicketStatus.WAITING_FOR_THIRD_PARTY}>Aguardando Terceiros</SelectItem>
-                            <SelectItem value={TicketStatus.RESOLVED}>Resolvido</SelectItem>
-                            <SelectItem value={TicketStatus.CLOSED}>Fechado</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Prioridade</label>
-                        <Select 
-                          value={editedTicket.priority} 
-                          onValueChange={(value) => setEditedTicket({...editedTicket, priority: value})}
-                        >
-                          <SelectTrigger className="h-10">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value={TicketPriority.LOW}>Baixa</SelectItem>
-                            <SelectItem value={TicketPriority.MEDIUM}>Média</SelectItem>
-                            <SelectItem value={TicketPriority.HIGH}>Alta</SelectItem>
-                            <SelectItem value={TicketPriority.URGENT}>Urgente</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Categoria</label>
-                        <Select 
-                          value={editedTicket.category} 
-                          onValueChange={(value) => setEditedTicket({...editedTicket, category: value})}
-                        >
-                          <SelectTrigger className="h-10">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value={TicketCategory.TECHNICAL_ISSUE}>Problema Técnico</SelectItem>
-                            <SelectItem value={TicketCategory.PAYMENT_PROBLEM}>Problema com Pagamento</SelectItem>
-                            <SelectItem value={TicketCategory.ORDER_ISSUE}>Problema com Pedido</SelectItem>
-                            <SelectItem value={TicketCategory.RETURN_REQUEST}>Solicitação de Devolução</SelectItem>
-                            <SelectItem value={TicketCategory.ACCOUNT_ISSUE}>Problema com Conta</SelectItem>
-                            <SelectItem value={TicketCategory.PRODUCT_ISSUE}>Problema com Produto</SelectItem>
-                            <SelectItem value={TicketCategory.SHIPPING_PROBLEM}>Problema com Envio</SelectItem>
-                            <SelectItem value={TicketCategory.GENERAL_INQUIRY}>Consulta Geral</SelectItem>
-                            <SelectItem value={TicketCategory.FEATURE_REQUEST}>Solicitação de Funcionalidade</SelectItem>
-                            <SelectItem value={TicketCategory.BUG_REPORT}>Reportar Bug</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Atribuir Agente</label>
-                                                 <Select 
-                           value={editedTicket.assignedTo || 'unassigned'} 
-                           onValueChange={(value) => setEditedTicket({...editedTicket, assignedTo: value === 'unassigned' ? null : value})}
-                         >
-                           <SelectTrigger className="h-10">
-                             <SelectValue placeholder="Selecionar agente" />
-                           </SelectTrigger>
-                           <SelectContent>
-                             <SelectItem value="unassigned">Não atribuído</SelectItem>
-                             {state.agents?.map((agent) => (
-                               <SelectItem key={agent.id} value={agent.id}>
-                                 {agent.name}
-                               </SelectItem>
-                             ))}
-                           </SelectContent>
-                         </Select>
-                      </div>
+                      <Label htmlFor="priority">Prioridade</Label>
+                      <Select 
+                        value={editedTicket.priority || ''} 
+                        onValueChange={(value) => setEditedTicket({...editedTicket, priority: value as any})}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="low">Baixa</SelectItem>
+                          <SelectItem value="medium">Média</SelectItem>
+                          <SelectItem value="high">Alta</SelectItem>
+                          <SelectItem value="urgent">Urgente</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
-                ) : (
-                  <div className="space-y-4">
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-7">Título</label>
+                    <p className="text-gray-9 font-medium">{ticket.title}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-7">Descrição</label>
+                    <p className="text-gray-9 whitespace-pre-wrap">{ticket.description}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h3 className="font-semibold text-gray-9 mb-2">{ticket.title}</h3>
-                      <p className="text-gray-6 text-sm">{ticket.description}</p>
+                      <label className="text-sm font-medium text-gray-7">Categoria</label>
+                      <Badge variant="outline">{getCategoryText(ticket.category)}</Badge>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge className={getStatusColor(ticket.status)}>
-                        {getStatusIcon(ticket.status)}
-                        <span className="ml-1">{getStatusText(ticket.status)}</span>
-                      </Badge>
+                    <div>
+                      <label className="text-sm font-medium text-gray-7">Prioridade</label>
                       <Badge className={getPriorityColor(ticket.priority)}>
                         {getPriorityText(ticket.priority)}
                       </Badge>
-                      <Badge variant="outline">
-                        <span className="mr-1">{getCategoryIcon(ticket.category)}</span>
-                        {getCategoryText(ticket.category)}
-                      </Badge>
-                      {ticket.orderId && (
-                        <Badge variant="outline">
-                          Pedido: {ticket.orderId}
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                      <div className="flex items-center gap-2">
-                        <User className="w-4 h-4 text-gray-400" />
-                        <span className="text-gray-6">Criado por:</span>
-                        <span className="font-medium">{getUserName(ticket.userId)}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-gray-400" />
-                        <span className="text-gray-6">Criado em:</span>
-                        <span className="font-medium">{formatDate(ticket.createdAt)}</span>
-                      </div>
-                      {ticket.assignedTo && (
-                        <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-gray-400" />
-                          <span className="text-gray-6">Atribuído a:</span>
-                          <span className="font-medium">
-                            {state.agents?.find(a => a.id === ticket.assignedTo)?.name}
-                          </span>
-                        </div>
-                      )}
                     </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Messages */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5" />
-                  Mensagens ({ticket.messages.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {ticket.messages.map((message: any) => (
-                    <div
-                      key={message.id}
-                      className={`p-4 rounded-lg border ${
-                        message.isInternal 
-                          ? 'bg-yellow-50 border-yellow-200' 
-                          : message.userType === 'admin'
-                          ? 'bg-blue-50 border-blue-200'
-                          : 'bg-gray-50 border-gray-200'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-sm">
-                            {message.userType === 'admin' ? 'Administrador' : getUserName(message.userId)}
-                          </span>
-                          {message.isInternal && (
-                            <Badge variant="outline" className="text-xs">
-                              Nota Interna
-                            </Badge>
-                          )}
-                        </div>
-                        <span className="text-xs text-gray-5">
-                          {formatDate(message.createdAt)}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-7 whitespace-pre-wrap">
-                        {message.message}
-                      </p>
-                    </div>
-                  ))}
                 </div>
+              )}
+            </CardContent>
+          </Card>
 
-                {/* New Message Form */}
-                <div className="mt-6 space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nova Mensagem (Pública)
-                    </label>
-                    <Textarea
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder="Digite sua resposta..."
-                      rows={3}
-                    />
-                  </div>
-                  
-                  {/* File Upload */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Anexos
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        type="file"
-                        multiple
-                        onChange={handleFileUpload}
-                        className="flex-1"
-                      />
-                      <Button variant="outline" size="sm" className="h-10">
-                        <Upload className="w-4 h-4" />
-                      </Button>
+          {/* Messages */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Mensagens ({allMessages.length})</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                {allMessages.map((message) => (
+                  <div 
+                    key={message.id} 
+                    className={`p-4 rounded-lg border ${
+                      message.isInternal 
+                        ? 'bg-yellow-50 border-yellow-200' 
+                        : 'bg-gray-50 border-gray-200'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <p className="font-medium text-gray-9">
+                          {message.userType === 'admin' || message.userType === 'support' 
+                            ? 'Equipe de Suporte' 
+                            : ticket.createdBy.name}
+                        </p>
+                        <p className="text-xs text-gray-6">{formatDate(message.createdAt)}</p>
+                      </div>
+                      {message.isInternal && (
+                        <Badge variant="outline" className="text-xs">Nota Interna</Badge>
+                      )}
                     </div>
-                    {attachments.length > 0 && (
+                    <p className="text-gray-9 whitespace-pre-wrap">{message.message}</p>
+                    {message.attachments && message.attachments.length > 0 && (
                       <div className="mt-2 space-y-1">
-                        {attachments.map((file, index) => (
-                          <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-                            <span className="text-sm truncate">{file.name}</span>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeFile(index)}
-                              className="h-6 w-6 p-0"
-                            >
-                              <X className="w-3 h-3" />
-                            </Button>
-                          </div>
+                        {message.attachments.map((att, idx) => (
+                          <a
+                            key={idx}
+                            href={att.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm text-blue-600 hover:underline"
+                          >
+                            <FileText className="w-4 h-4" />
+                            {att.fileName}
+                          </a>
                         ))}
                       </div>
                     )}
                   </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
+          {/* Add Message */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Adicionar Mensagem</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    checked={isInternal}
+                    onCheckedChange={setIsInternal}
+                  />
+                  <Label>Nota Interna (não visível para o usuário)</Label>
+                </div>
+                <Textarea
+                  value={isInternal ? internalNote : newMessage}
+                  onChange={(e) => isInternal ? setInternalNote(e.target.value) : setNewMessage(e.target.value)}
+                  placeholder={isInternal ? "Adicionar nota interna..." : "Digite sua mensagem..."}
+                  rows={4}
+                />
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-6">
+                    {attachments.length} arquivo(s) anexado(s)
+                  </div>
                   <Button
                     onClick={handleSendMessage}
-                    disabled={!newMessage.trim() || isSubmitting}
-                    className="w-full sm:w-auto"
+                    disabled={addMessage.isPending || (!newMessage.trim() && !internalNote.trim())}
                   >
                     <Send className="w-4 h-4 mr-2" />
-                    Enviar Mensagem
+                    {addMessage.isPending ? 'Enviando...' : 'Enviar Mensagem'}
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-          {/* Sidebar */}
-          <div className="space-y-4 sm:space-y-6">
-            {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Ações Rápidas</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => {
-                    if (ticket.status !== TicketStatus.IN_PROGRESS) {
-                      const updatedTicket = { ...ticket, status: TicketStatus.IN_PROGRESS };
-                      dispatch({ type: 'UPDATE_TICKET', payload: updatedTicket });
-                      setTicket(updatedTicket);
-                    }
-                  }}
-                  disabled={ticket.status === TicketStatus.IN_PROGRESS}
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Status & Actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Status e Ações</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Status</Label>
+                <Select 
+                  value={ticket.status} 
+                  onValueChange={(value) => handleUpdateStatus(value as TicketStatus)}
+                  disabled={updateStatus.isPending}
                 >
-                  <Clock className="w-4 h-4 mr-2" />
-                  Marcar como Em Progresso
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="open">Aberto</SelectItem>
+                    <SelectItem value="in_progress">Em Progresso</SelectItem>
+                    <SelectItem value="waiting_for_user">Aguardando Resposta</SelectItem>
+                    <SelectItem value="waiting_for_third_party">Aguardando Terceiros</SelectItem>
+                    <SelectItem value="resolved">Resolvido</SelectItem>
+                    <SelectItem value="closed">Fechado</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Atribuir a</Label>
+                <Select 
+                  value={ticket.assignedTo?.id || 'none'} 
+                  onValueChange={(value) => value !== 'none' && handleAssign(value)}
+                  disabled={assignTicket.isPending}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Não atribuído</SelectItem>
+                    {users.map((user) => (
+                      <SelectItem key={user.id} value={user.id}>
+                        {user.firstName} {user.lastName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  onClick={() => handleUpdateStatus('in_progress')}
+                  variant="outline"
+                  size="sm"
+                  disabled={updateStatus.isPending || ticket.status === 'in_progress'}
+                >
+                  <Clock className="w-4 h-4 mr-1" />
+                  Em Progresso
                 </Button>
                 <Button
+                  onClick={() => handleUpdateStatus('resolved')}
                   variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => {
-                    if (ticket.status !== TicketStatus.WAITING_FOR_USER) {
-                      const updatedTicket = { ...ticket, status: TicketStatus.WAITING_FOR_USER };
-                      dispatch({ type: 'UPDATE_TICKET', payload: updatedTicket });
-                      setTicket(updatedTicket);
-                    }
-                  }}
-                  disabled={ticket.status === TicketStatus.WAITING_FOR_USER}
+                  size="sm"
+                  disabled={updateStatus.isPending || ticket.status === 'resolved'}
                 >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Aguardando Resposta
+                  <CheckCircle className="w-4 h-4 mr-1" />
+                  Resolver
                 </Button>
                 <Button
+                  onClick={() => handleUpdateStatus('closed')}
                   variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => {
-                    if (ticket.status !== TicketStatus.RESOLVED) {
-                      const updatedTicket = { ...ticket, status: TicketStatus.RESOLVED };
-                      dispatch({ type: 'UPDATE_TICKET', payload: updatedTicket });
-                      setTicket(updatedTicket);
-                    }
-                  }}
-                  disabled={ticket.status === TicketStatus.RESOLVED}
+                  size="sm"
+                  disabled={updateStatus.isPending || ticket.status === 'closed'}
                 >
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Marcar como Resolvido
+                  <X className="w-4 h-4 mr-1" />
+                  Fechar
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => {
-                    if (ticket.status !== TicketStatus.CLOSED) {
-                      const updatedTicket = { ...ticket, status: TicketStatus.CLOSED };
-                      dispatch({ type: 'UPDATE_TICKET', payload: updatedTicket });
-                      setTicket(updatedTicket);
-                    }
-                  }}
-                  disabled={ticket.status === TicketStatus.CLOSED}
-                >
-                  <X className="w-4 h-4 mr-2" />
-                  Fechar Ticket
-                </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* Internal Notes */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Nota Interna</CardTitle>
-                <CardDescription>
-                  Adicione uma nota interna visível apenas para administradores
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Textarea
-                  value={internalNote}
-                  onChange={(e) => setInternalNote(e.target.value)}
-                  placeholder="Digite uma nota interna..."
-                  rows={3}
-                />
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={async () => {
-                    if (!internalNote.trim()) return;
-                    setIsSubmitting(true);
-                    try {
-                      await new Promise(resolve => setTimeout(resolve, 500));
-                      const newMsg = {
-                        id: `msg-${Date.now()}`,
-                        ticketId: ticket.id,
-                        userId: state.user?.id || 'admin',
-                        userType: 'admin' as const,
-                        message: internalNote,
-                        createdAt: new Date().toISOString(),
-                        isInternal: true,
-                        attachments: []
-                      };
-                      const updatedTicket = {
-                        ...ticket,
-                        messages: [...ticket.messages, newMsg],
-                        updatedAt: new Date().toISOString()
-                      };
-                      dispatch({ type: 'UPDATE_TICKET', payload: updatedTicket });
-                      setTicket(updatedTicket);
-                      setInternalNote('');
-                    } catch (error) {
-                      console.error('Error adding internal note:', error);
-                      alert('Erro ao adicionar nota interna. Tente novamente.');
-                    } finally {
-                      setIsSubmitting(false);
-                    }
-                  }}
-                  disabled={!internalNote.trim() || isSubmitting}
-                >
-                  <Tag className="w-4 h-4 mr-2" />
-                  Adicionar Nota Interna
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Ticket Statistics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Estatísticas</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+          {/* Ticket Details */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Detalhes</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-6">Criado por:</span>
+                <span className="font-medium">{ticket.createdBy.name}</span>
+              </div>
+              {ticket.assignedTo && (
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-6">Mensagens:</span>
-                  <span className="font-medium">{ticket.messages.length}</span>
+                  <span className="text-gray-6">Atribuído a:</span>
+                  <span className="font-medium">{ticket.assignedTo.name}</span>
                 </div>
+              )}
+              {ticket.orderId && (
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-6">Tempo Aberto:</span>
-                  <span className="font-medium">
-                    {Math.floor((Date.now() - new Date(ticket.createdAt).getTime()) / (1000 * 60 * 60 * 24))} dias
-                  </span>
+                  <span className="text-gray-6">Pedido:</span>
+                  <a 
+                    href={`/admin/pedidos/${ticket.orderId.id}`}
+                    className="font-medium text-blue-600 hover:underline"
+                  >
+                    {ticket.orderId.orderNumber}
+                  </a>
                 </div>
+              )}
+              {ticket.productId && (
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-6">Última Atualização:</span>
-                  <span className="font-medium text-xs">
-                    {formatDate(ticket.updatedAt)}
-                  </span>
+                  <span className="text-gray-6">Produto:</span>
+                  <a 
+                    href={`/admin/produtos/${ticket.productId.id}`}
+                    className="font-medium text-blue-600 hover:underline"
+                  >
+                    {ticket.productId.name}
+                  </a>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              )}
+              <div className="flex justify-between">
+                <span className="text-gray-6">Criado em:</span>
+                <span className="font-medium text-xs">{formatDate(ticket.createdAt)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-6">Atualizado em:</span>
+                <span className="font-medium text-xs">{formatDate(ticket.updatedAt)}</span>
+              </div>
+              {ticket.stats && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-gray-6">Mensagens:</span>
+                    <span className="font-medium">{ticket.stats.messageCount}</span>
+                  </div>
+                  {ticket.stats.timeOpen !== null && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-6">Tempo aberto:</span>
+                      <span className="font-medium">{ticket.stats.timeOpen} dias</span>
+                    </div>
+                  )}
+                </>
+              )}
+              {ticket.tags && ticket.tags.length > 0 && (
+                <div>
+                  <span className="text-gray-6 block mb-2">Tags:</span>
+                  <div className="flex flex-wrap gap-2">
+                    {ticket.tags.map((tag, idx) => (
+                      <Badge key={idx} variant="secondary">{tag}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </AdminLayout>

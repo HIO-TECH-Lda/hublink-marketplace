@@ -1027,50 +1027,7 @@ export const useDeleteCategory = () => {
 // ============================================
 // Admin Tickets Management
 // ============================================
-
-import { Ticket } from '@/hooks/useTickets';
-
-export const useAdminTickets = (params?: {
-  page?: number;
-  limit?: number;
-  status?: string;
-  priority?: string;
-}) => {
-  return useQuery({
-    queryKey: ['admin', 'tickets', params],
-    queryFn: async () => {
-      const response = await apiClient.get('/admin/tickets', { params });
-      return response.data.data as { tickets: Ticket[]; pagination: any };
-    },
-  });
-};
-
-export const useAdminTicket = (ticketId: string) => {
-  return useQuery({
-    queryKey: ['admin', 'ticket', ticketId],
-    queryFn: async () => {
-      const response = await apiClient.get(`/admin/tickets/${ticketId}`);
-      return response.data.data.ticket as Ticket;
-    },
-    enabled: !!ticketId,
-  });
-};
-
-export const useUpdateTicket = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ ticketId, data }: { ticketId: string; data: Partial<Ticket> }) => {
-      const response = await apiClient.put(`/admin/tickets/${ticketId}`, data);
-      return response.data.data.ticket as Ticket;
-    },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets'] });
-      queryClient.invalidateQueries({ queryKey: ['admin', 'ticket', variables.ticketId] });
-      queryClient.invalidateQueries({ queryKey: ['tickets'] });
-    },
-  });
-};
+// Ticket hooks are defined at the end of the file
 
 // ============================================
 // Admin Blog Management
@@ -1756,6 +1713,325 @@ export const useDeleteCampaign = () => {
     },
     onError: (error: any) => {
       const message = error?.response?.data?.message || 'Falha ao excluir campanha';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+// ============================================
+// Admin Ticket Management
+// ============================================
+
+export interface TicketStats {
+  total: number;
+  open: number;
+  inProgress: number;
+  waitingForUser: number;
+  waitingForThirdParty: number;
+  resolved: number;
+  closed: number;
+  urgent: number;
+  high: number;
+  medium: number;
+  low: number;
+}
+
+export type TicketCategory = 
+  | 'technical_issue'
+  | 'payment_problem'
+  | 'order_issue'
+  | 'return_request'
+  | 'account_issue'
+  | 'product_issue'
+  | 'shipping_problem'
+  | 'general_inquiry'
+  | 'feature_request'
+  | 'bug_report';
+
+export type TicketStatus = 
+  | 'open'
+  | 'in_progress'
+  | 'waiting_for_user'
+  | 'waiting_for_third_party'
+  | 'resolved'
+  | 'closed';
+
+export interface TicketAttachment {
+  fileName: string;
+  fileUrl: string;
+  publicId?: string;
+  fileSize: number;
+  mimeType: string;
+}
+
+export interface TicketMessage {
+  id: string;
+  userId: string;
+  userType: 'buyer' | 'seller' | 'admin' | 'support';
+  message: string;
+  isInternal: boolean;
+  attachments: TicketAttachment[];
+  createdAt: string;
+}
+
+export interface Ticket {
+  id: string;
+  ticketNumber: string;
+  title: string;
+  description: string;
+  category: TicketCategory;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  status: TicketStatus;
+  createdBy: {
+    id: string;
+    name: string;
+    email?: string;
+    phone?: string;
+  };
+  assignedTo?: {
+    id: string;
+    name: string;
+    email?: string;
+  };
+  orderId?: {
+    id: string;
+    orderNumber: string;
+    status?: string;
+    totalAmount?: number;
+  };
+  productId?: {
+    id: string;
+    name: string;
+    image?: string;
+    slug?: string;
+  };
+  tags: string[];
+  attachments?: TicketAttachment[];
+  messageCount?: number;
+  messages?: {
+    public: TicketMessage[];
+    internal: TicketMessage[];
+    all: TicketMessage[];
+  };
+  stats?: {
+    messageCount: number;
+    timeOpen: number | null;
+    lastUpdate: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpdateTicketRequest {
+  title?: string;
+  description?: string;
+  category?: TicketCategory;
+  priority?: 'low' | 'medium' | 'high' | 'urgent';
+  status?: TicketStatus;
+  assignedTo?: string;
+  tags?: string[];
+}
+
+export interface AddMessageRequest {
+  message: string;
+  isInternal?: boolean;
+  attachments?: Array<{
+    base64?: string;
+    fileUrl?: string;
+    fileName: string;
+    fileSize: number;
+    mimeType: string;
+  }>;
+}
+
+export const useAdminTicketStats = () => {
+  return useQuery({
+    queryKey: ['admin', 'tickets', 'stats'],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/tickets/stats');
+      return response.data.data as TicketStats;
+    },
+  });
+};
+
+export const useAdminTickets = (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+  priority?: string;
+  category?: string;
+  assignedTo?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'tickets', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/tickets', { params });
+      return response.data.data as {
+        tickets: Ticket[];
+        pagination: {
+          page: number;
+          limit: number;
+          total: number;
+          totalPages: number;
+        };
+      };
+    },
+  });
+};
+
+export const useAdminTicket = (ticketId: string) => {
+  return useQuery({
+    queryKey: ['admin', 'ticket', ticketId],
+    queryFn: async () => {
+      const response = await apiClient.get(`/admin/tickets/${ticketId}`);
+      return response.data.data as Ticket;
+    },
+    enabled: !!ticketId,
+  });
+};
+
+export const useUpdateTicket = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ ticketId, data }: { ticketId: string; data: UpdateTicketRequest }) => {
+      const response = await apiClient.put(`/admin/tickets/${ticketId}`, data);
+      return response.data.data as Ticket;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'ticket', variables.ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets', 'stats'] });
+      toast({
+        title: 'Ticket atualizado',
+        description: 'As alterações foram salvas com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar ticket';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useUpdateTicketStatus = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ ticketId, status }: { ticketId: string; status: TicketStatus }) => {
+      const response = await apiClient.patch(`/admin/tickets/${ticketId}/status`, { status });
+      return response.data.data as Ticket;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'ticket', variables.ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets', 'stats'] });
+      toast({
+        title: 'Status atualizado',
+        description: 'O status do ticket foi atualizado com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar status do ticket';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useAssignTicket = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ ticketId, userId }: { ticketId: string; userId: string }) => {
+      const response = await apiClient.patch(`/admin/tickets/${ticketId}/assign`, { userId });
+      return response.data.data as Ticket;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'ticket', variables.ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets', 'stats'] });
+      toast({
+        title: 'Ticket atribuído',
+        description: 'O ticket foi atribuído com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atribuir ticket';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useAddTicketMessage = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ ticketId, data }: { ticketId: string; data: AddMessageRequest }) => {
+      const response = await apiClient.post(`/admin/tickets/${ticketId}/messages`, data);
+      return response.data.data as Ticket;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'ticket', variables.ticketId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets', 'stats'] });
+      toast({
+        title: 'Mensagem adicionada',
+        description: 'A mensagem foi adicionada com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao adicionar mensagem';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useDeleteTicket = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (ticketId: string) => {
+      const response = await apiClient.delete(`/admin/tickets/${ticketId}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tickets', 'stats'] });
+      toast({
+        title: 'Ticket excluído',
+        description: 'O ticket foi excluído com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao excluir ticket';
       toast({
         title: 'Erro',
         description: message,
