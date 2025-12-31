@@ -112,35 +112,46 @@ export class AdminTicketService {
       ]);
 
       return {
-        tickets: tickets.map((ticket: any) => ({
-          id: ticket._id.toString(),
-          ticketNumber: ticket.ticketNumber || `TICK-${ticket._id.toString().slice(-3).toUpperCase()}`,
-          title: ticket.title,
-          description: ticket.description,
-          category: ticket.category,
-          priority: ticket.priority,
-          status: ticket.status,
-          createdBy: ticket.userId ? {
-            id: ticket.userId._id.toString(),
-            name: `${ticket.userId.firstName || ''} ${ticket.userId.lastName || ''}`.trim() || ticket.userId.email
-          } : null,
-          assignedTo: ticket.assignedTo ? {
-            id: ticket.assignedTo._id.toString(),
-            name: `${ticket.assignedTo.firstName || ''} ${ticket.assignedTo.lastName || ''}`.trim() || ticket.assignedTo.email
-          } : null,
-          orderId: ticket.orderId ? {
-            id: ticket.orderId._id.toString(),
-            orderNumber: ticket.orderId.orderNumber
-          } : null,
-          productId: ticket.productId ? {
-            id: ticket.productId._id.toString(),
-            name: ticket.productId.name
-          } : null,
-          tags: ticket.tags || [],
-          messageCount: ticket.messages?.length || 0,
-          createdAt: ticket.createdAt,
-          updatedAt: ticket.updatedAt
-        })),
+        tickets: tickets.map((ticket: any) => {
+          const userId = ticket.userId as any;
+          const assignedTo = ticket.assignedTo as any;
+          const orderId = ticket.orderId as any;
+          const productId = ticket.productId as any;
+
+          return {
+            id: ticket._id.toString(),
+            ticketNumber: ticket.ticketNumber || `TICK-${ticket._id.toString().slice(-3).toUpperCase()}`,
+            title: ticket.title,
+            description: ticket.description,
+            category: ticket.category,
+            priority: ticket.priority,
+            status: ticket.status,
+            createdBy: userId ? {
+              id: userId._id?.toString() || userId.toString(),
+              name: userId.firstName && userId.lastName
+                ? `${userId.firstName} ${userId.lastName}`.trim()
+                : userId.firstName || userId.lastName || userId.email || 'Unknown'
+            } : null,
+            assignedTo: assignedTo ? {
+              id: assignedTo._id?.toString() || assignedTo.toString(),
+              name: assignedTo.firstName && assignedTo.lastName
+                ? `${assignedTo.firstName} ${assignedTo.lastName}`.trim()
+                : assignedTo.firstName || assignedTo.lastName || assignedTo.email || 'Unknown'
+            } : null,
+            orderId: orderId ? {
+              id: orderId._id?.toString() || orderId.toString(),
+              orderNumber: orderId.orderNumber || null
+            } : null,
+            productId: productId ? {
+              id: productId._id?.toString() || productId.toString(),
+              name: productId.name || null
+            } : null,
+            tags: ticket.tags || [],
+            messageCount: ticket.messages?.length || 0,
+            createdAt: ticket.createdAt,
+            updatedAt: ticket.updatedAt
+          };
+        }),
         pagination: {
           page,
           limit,
@@ -196,41 +207,50 @@ export class AdminTicketService {
 
       // Calculate statistics
       const messageCount = (ticket.messages || []).length;
-      const timeOpen = ticket.status !== 'closed' && ticket.status !== 'resolved'
+      const timeOpen = ticket.status !== 'closed' && ticket.status !== 'resolved' && ticket.createdAt
         ? Math.floor((Date.now() - new Date(ticket.createdAt).getTime()) / (1000 * 60 * 60 * 24))
         : null;
-      const lastUpdate = ticket.updatedAt || ticket.createdAt;
+      const lastUpdate = ticket.updatedAt || ticket.createdAt || new Date();
+
+      const userId = ticket.userId as any;
+      const assignedTo = ticket.assignedTo as any;
+      const orderId = ticket.orderId as any;
+      const productId = ticket.productId as any;
 
       return {
         id: ticket._id.toString(),
-        ticketNumber: ticket.ticketNumber || `TICK-${ticket._id.toString().slice(-3).toUpperCase()}`,
+        ticketNumber: (ticket as any).ticketNumber || `TICK-${ticket._id.toString().slice(-3).toUpperCase()}`,
         title: ticket.title,
         description: ticket.description,
         category: ticket.category,
         priority: ticket.priority,
         status: ticket.status,
-        createdBy: ticket.userId ? {
-          id: ticket.userId._id.toString(),
-          name: `${ticket.userId.firstName || ''} ${ticket.userId.lastName || ''}`.trim() || ticket.userId.email,
-          email: ticket.userId.email,
-          phone: ticket.userId.phone || null
+        createdBy: userId ? {
+          id: userId._id?.toString() || userId.toString(),
+          name: userId.firstName && userId.lastName
+            ? `${userId.firstName} ${userId.lastName}`.trim()
+            : userId.firstName || userId.lastName || userId.email || 'Unknown',
+          email: userId.email || null,
+          phone: userId.phone || null
         } : null,
-        assignedTo: ticket.assignedTo ? {
-          id: ticket.assignedTo._id.toString(),
-          name: `${ticket.assignedTo.firstName || ''} ${ticket.assignedTo.lastName || ''}`.trim() || ticket.assignedTo.email,
-          email: ticket.assignedTo.email
+        assignedTo: assignedTo ? {
+          id: assignedTo._id?.toString() || assignedTo.toString(),
+          name: assignedTo.firstName && assignedTo.lastName
+            ? `${assignedTo.firstName} ${assignedTo.lastName}`.trim()
+            : assignedTo.firstName || assignedTo.lastName || assignedTo.email || 'Unknown',
+          email: assignedTo.email || null
         } : null,
-        orderId: ticket.orderId ? {
-          id: ticket.orderId._id.toString(),
-          orderNumber: ticket.orderId.orderNumber,
-          status: ticket.orderId.status,
-          totalAmount: ticket.orderId.totalAmount
+        orderId: orderId ? {
+          id: orderId._id?.toString() || orderId.toString(),
+          orderNumber: orderId.orderNumber || null,
+          status: orderId.status || null,
+          totalAmount: orderId.totalAmount || null
         } : null,
-        productId: ticket.productId ? {
-          id: ticket.productId._id.toString(),
-          name: ticket.productId.name,
-          image: ticket.productId.primaryImage,
-          slug: ticket.productId.slug
+        productId: productId ? {
+          id: productId._id?.toString() || productId.toString(),
+          name: productId.name || null,
+          image: productId.primaryImage || null,
+          slug: productId.slug || null
         } : null,
         tags: ticket.tags || [],
         attachments: ticket.attachments || [],
@@ -316,7 +336,7 @@ export class AdminTicketService {
         throw new Error('User not found');
       }
 
-      ticket.assignedTo = new mongoose.Types.ObjectId(userId);
+      ticket.assignedTo = new mongoose.Types.ObjectId(userId) as any;
       await ticket.save();
 
       return await this.getTicketById(ticketId);
