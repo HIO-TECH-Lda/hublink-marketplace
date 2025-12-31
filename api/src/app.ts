@@ -32,6 +32,7 @@ import adminBlogRoutes from './routes/adminBlog';
 import adminNewsletterRoutes from './routes/adminNewsletter';
 import adminTicketRoutes from './routes/adminTickets';
 import adminReportsRoutes from './routes/adminReports';
+import adminAuditLogRoutes from './routes/adminAuditLogs';
 
 // Load environment variables
 dotenv.config();
@@ -263,6 +264,9 @@ app.use('/api/v1/admin/tickets', adminTicketRoutes);
 
 // Admin reports and analytics routes
 app.use('/api/v1/admin/reports', adminReportsRoutes);
+
+// Admin audit logs routes
+app.use('/api/v1/admin/audit-logs', adminAuditLogRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
