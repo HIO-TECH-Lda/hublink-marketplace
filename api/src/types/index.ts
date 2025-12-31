@@ -10,6 +10,8 @@ export interface IUser {
   status: 'active' | 'inactive' | 'suspended';
   emailVerified: boolean;
   phoneVerified: boolean;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   avatar?: string;
   billingAddress?: IAddress;
   shippingAddress?: IAddress;

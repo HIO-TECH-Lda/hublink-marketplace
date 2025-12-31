@@ -30,6 +30,12 @@ router.put('/me', authenticateToken, validateRequest(updateProfileSchema), AuthC
 // Change password
 router.put('/change-password', authenticateToken, validateRequest(changePasswordSchema), AuthController.changePassword);
 
+// Forgot password (request reset)
+router.post('/forgot-password', AuthController.forgotPassword);
+
+// Reset password (with token)
+router.post('/reset-password', AuthController.resetPassword);
+
 // Logout (client-side token removal)
 router.post('/logout', authenticateToken, AuthController.logout);
 

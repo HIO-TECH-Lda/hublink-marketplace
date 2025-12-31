@@ -43,6 +43,9 @@ export class AuditLogService {
     const user = (req as any).user;
     const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
+    // Set flag to skip automatic middleware logging (prevent duplicates)
+    (req as any).skipAuditLog = true;
+
     await this.log({
       userId: user?.userId,
       userName: user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email : undefined,

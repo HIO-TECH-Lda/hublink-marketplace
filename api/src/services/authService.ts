@@ -203,4 +203,57 @@ export class AuthService {
       throw error;
     }
   }
+
+  // Request password reset
+  static async requestPasswordReset(email: string): Promise<{ user: IUserDocument; resetToken: string }> {
+    try {
+      const user = await User.findOne({ email: email.toLowerCase() });
+      
+      if (!user) {
+        // Don't reveal if email exists for security
+        throw new Error('If the email exists, a reset link will be sent');
+      }
+
+      // Generate reset token
+      const crypto = require('crypto');
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+      // Save hashed token and expiry
+      user.passwordResetToken = resetTokenHash;
+      user.passwordResetExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+      await user.save();
+
+      return { user, resetToken };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Reset password with token
+  static async resetPassword(resetToken: string, newPassword: string): Promise<IUserDocument> {
+    try {
+      const crypto = require('crypto');
+      const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+      const user = await User.findOne({
+        passwordResetToken: resetTokenHash,
+        passwordResetExpires: { $gt: new Date() }
+      }).select('+password');
+
+      if (!user) {
+        throw new Error('Invalid or expired reset token');
+      }
+
+      // Update password and clear reset token
+      user.password = newPassword;
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+      await user.save();
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -78,6 +78,14 @@ const userSchema = new Schema<IUserDocument>({
     type: Boolean,
     default: false
   },
+  passwordResetToken: {
+    type: String,
+    select: false
+  },
+  passwordResetExpires: {
+    type: Date,
+    select: false
+  },
   avatar: {
     type: String,
     default: null

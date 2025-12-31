@@ -8,6 +8,8 @@ Quick reference for integrating audit logging into your controllers.
 import { AuditLogService } from '../services/auditLogService';
 ```
 
+**Note:** When you use `AuditLogService.logFromRequest()` for manual logging, it automatically prevents the global middleware from creating a duplicate log entry for the same request.
+
 ---
 
 ## Example 1: Create Operation
@@ -227,6 +229,35 @@ Use these consistent entity types:
 
 ---
 
+## Authentication Events Logged
+
+All authentication-related events are automatically logged:
+
+✅ **Login** - Successful and failed attempts
+✅ **Registration** - New user accounts
+✅ **Logout** - User sessions ending
+✅ **Password Change** - When users change their password
+✅ **Password Reset Request** - When users request password reset (forgot password)
+✅ **Password Reset Complete** - When users complete password reset with token
+✅ **Failed Reset Attempts** - Invalid or expired tokens
+
+**View authentication logs:**
+```
+GET /api/v1/admin/audit-logs?entityType=auth
+```
+
+**View failed login attempts (security monitoring):**
+```
+GET /api/v1/admin/audit-logs?entityType=auth&entityId=failed_login
+```
+
+**View password reset requests:**
+```
+GET /api/v1/admin/audit-logs?entityType=auth&entityName=password_reset_request
+```
+
+---
+
 ## Tips
 
 1. **Track Important Fields Only**: Don't track every field, focus on business-critical data
@@ -234,4 +265,5 @@ Use these consistent entity types:
 3. **Non-blocking**: Audit logging never throws errors that break your main flow
 4. **Entity Names**: Include entity names (order numbers, product names) for readability
 5. **Sensitive Operations**: Always log security-related actions (password changes, role updates)
+6. **Security Monitoring**: Regularly review failed login and password reset attempts
 
