@@ -2041,4 +2041,192 @@ export const useDeleteTicket = () => {
   });
 };
 
+// ============================================
+// Admin Reports and Analytics
+// ============================================
+
+export interface ReportsData {
+  period: {
+    startDate: string;
+    endDate: string;
+    days: number;
+  };
+  metrics: {
+    totalSales: {
+      count: number;
+      revenue: number;
+    };
+    orders: {
+      count: number;
+      avgItemsPerOrder: number;
+    };
+    customers: {
+      new: number;
+    };
+    averageTicket: number;
+  };
+  salesByDay: Array<{
+    date: string;
+    sales: number;
+    revenue: number;
+  }>;
+  topProducts: Array<{
+    rank: number;
+    productId: string;
+    name: string;
+    units: number;
+    revenue: number;
+    sales: number;
+  }>;
+  topSellers: Array<{
+    rank: number;
+    sellerId: string;
+    name: string;
+    products: number;
+    revenue: number;
+    sales: number;
+  }>;
+  performanceMetrics: {
+    conversionRate: string;
+    avgSessionTime: string;
+    abandonmentRate: string;
+    averageRating: string;
+    avgDeliveryTime: string;
+  };
+}
+
+export interface ExportSalesData {
+  orderNumber: string;
+  date: string;
+  customer: string;
+  email: string;
+  total: number;
+  status: string;
+  items: number;
+}
+
+export interface ExportProductsData {
+  productId: string;
+  productName: string;
+  unitsSold: number;
+  revenue: number;
+  salesCount: number;
+}
+
+export const useAdminReports = (params?: {
+  period?: '7' | '30' | '90' | '365' | 'custom';
+  startDate?: string;
+  endDate?: string;
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'reports', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/admin/reports', { params });
+      return response.data.data as ReportsData;
+    },
+  });
+};
+
+export const useExportSalesData = () => {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ startDate, endDate }: { startDate: string; endDate: string }) => {
+      const response = await apiClient.get('/admin/reports/export/sales', {
+        params: { startDate, endDate }
+      });
+      return response.data.data as ExportSalesData[];
+    },
+    onSuccess: (data) => {
+      // Convert to CSV and download
+      const csv = convertToCSV(data, [
+        'orderNumber',
+        'date',
+        'customer',
+        'email',
+        'total',
+        'status',
+        'items'
+      ]);
+      downloadCSV(csv, `sales-export-${new Date().toISOString().split('T')[0]}.csv`);
+      toast({
+        title: 'Exportação concluída',
+        description: 'Os dados de vendas foram exportados com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao exportar dados de vendas';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useExportProductsData = () => {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ startDate, endDate }: { startDate: string; endDate: string }) => {
+      const response = await apiClient.get('/admin/reports/export/products', {
+        params: { startDate, endDate }
+      });
+      return response.data.data as ExportProductsData[];
+    },
+    onSuccess: (data) => {
+      // Convert to CSV and download
+      const csv = convertToCSV(data, [
+        'productId',
+        'productName',
+        'unitsSold',
+        'revenue',
+        'salesCount'
+      ]);
+      downloadCSV(csv, `products-export-${new Date().toISOString().split('T')[0]}.csv`);
+      toast({
+        title: 'Exportação concluída',
+        description: 'Os dados de produtos foram exportados com sucesso.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao exportar dados de produtos';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+// Helper functions for CSV export
+function convertToCSV(data: any[], headers: string[]): string {
+  const csvHeaders = headers.join(',');
+  const csvRows = data.map(row => {
+    return headers.map(header => {
+      const value = row[header];
+      // Escape commas and quotes in values
+      if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+        return `"${value.replace(/"/g, '""')}"`;
+      }
+      return value;
+    }).join(',');
+  });
+  return [csvHeaders, ...csvRows].join('\n');
+}
+
+function downloadCSV(csv: string, filename: string) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 
