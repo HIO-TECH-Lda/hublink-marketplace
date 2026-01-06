@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import ImageUpload from '@/components/ui/image-upload';
+import MultiImageUpload from '@/components/ui/multi-image-upload';
 import SellerSidebar from '@/app/(seller)/components/SellerSidebar';
 
 export default function EditProductPage() {
@@ -96,10 +96,14 @@ export default function EditProductPage() {
     }));
   };
 
-  const handleImagesChange = (newImages: string[]) => {
+  const handleImagesChange = (newImages: any[]) => {
+    // Convert ImageFile[] to string[] (extract preview URLs)
+    const imageUrls = newImages.map((img: any) => 
+      typeof img === 'string' ? img : (img.preview || img.file?.name || '')
+    ).filter(Boolean);
     setFormData(prev => ({
       ...prev,
-      images: newImages
+      images: imageUrls
     }));
   };
 
@@ -450,9 +454,13 @@ export default function EditProductPage() {
                 {/* Images */}
                 <div>
                   <h2 className="text-lg font-semibold text-gray-9 mb-4">Imagens</h2>
-                  <ImageUpload
-                    images={formData.images}
-                    onImagesChange={handleImagesChange}
+                  <MultiImageUpload
+                    images={formData.images.map((url, idx) => ({
+                      id: `img-${idx}`,
+                      preview: url,
+                      file: new File([], '') // Placeholder file
+                    }))}
+                    onChange={handleImagesChange}
                     maxImages={5}
                   />
                 </div>

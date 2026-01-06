@@ -97,13 +97,13 @@ export default function VendorDetailPage() {
   }
 
   const stats = seller.statistics || {
-    productCount: seller.productCount || 0,
-    averageRating: seller.averageRating || 0,
-    totalReviews: seller.totalReviews || 0,
+    productCount: 0,
+    averageRating: 0,
+    totalReviews: 0,
     totalViews: 0,
     totalPurchases: 0,
     totalOrders: 0,
-    totalSales: seller.totalSales || 0,
+    totalSales: 0,
     totalQuantitySold: 0
   };
 

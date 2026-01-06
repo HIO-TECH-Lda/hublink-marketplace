@@ -309,7 +309,7 @@ describe('Review Validation Tests', () => {
         validate: jest.fn().mockReturnValue({ error: undefined, value: {} })
       };
 
-      const middleware = validateRequest(schema);
+      const middleware = validateRequest(schema as any);
       middleware(mockReq, mockRes, mockNext);
 
       expect(mockNext).toHaveBeenCalled();
@@ -325,7 +325,7 @@ describe('Review Validation Tests', () => {
         validate: jest.fn().mockReturnValue({ error: validationError, value: {} })
       };
 
-      const middleware = validateRequest(schema);
+      const middleware = validateRequest(schema as any);
       middleware(mockReq, mockRes, mockNext);
 
       expect(mockNext).not.toHaveBeenCalled();
@@ -348,7 +348,7 @@ describe('Review Validation Tests', () => {
         validate: jest.fn().mockReturnValue({ error: validationError, value: {} })
       };
 
-      const middleware = validateRequest(schema);
+      const middleware = validateRequest(schema as any);
       middleware(mockReq, mockRes, mockNext);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);

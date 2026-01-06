@@ -10,15 +10,16 @@ interface ProtectedRouteProps {
   redirectTo?: string;
 }
 
-export default function ProtectedRoute({ 
+export function ProtectedRoute({ 
   children, 
   allowedRoles, 
   fallback = <div>Loading...</div>,
   redirectTo 
 }: ProtectedRouteProps) {
-  const authResult = allowedRoles 
-    ? useRequireRole(allowedRoles)
-    : useRequireAuth();
+  const requireAuthResult = useRequireAuth();
+  const requireRoleResult = useRequireRole(allowedRoles || ['']);
+  
+  const authResult = allowedRoles ? requireRoleResult : requireAuthResult;
 
   if (authResult.loading) {
     return <>{fallback}</>;

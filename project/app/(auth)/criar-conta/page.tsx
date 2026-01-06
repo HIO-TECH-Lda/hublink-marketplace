@@ -43,6 +43,8 @@ export default function CreateAccountPage() {
       lastName: 'Usuário',
       email: formData.email,
       phone: '',
+      role: 'buyer' as const,
+      status: 'active' as const,
       isSeller: false,
       profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
       billingAddress: {

@@ -37,7 +37,7 @@ export default function ProductsList({ filters }: ProductsListProps) {
     );
   }
 
-  if (!data?.data?.length) {
+  if (!data?.products?.length) {
     return (
       <div className="text-center py-8">
         <p className="text-gray-600">No products found</p>
@@ -47,7 +47,7 @@ export default function ProductsList({ filters }: ProductsListProps) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {data.data.map((product) => (
+      {data.products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}
     </div>

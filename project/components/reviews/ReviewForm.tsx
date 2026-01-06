@@ -123,7 +123,7 @@ export default function ReviewForm({
     <Card>
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-9">Avaliar Produto</CardTitle>
-        <CardDescription>Compartilhe sua experiência com "{productName}"</CardDescription>
+        <CardDescription>Compartilhe sua experiência com &quot;{productName}&quot;</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">

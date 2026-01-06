@@ -194,7 +194,11 @@ export default function AdminTicketDetailPage() {
 
   const handleSaveEdit = async () => {
     try {
-      await updateTicket.mutateAsync({ ticketId, data: editedTicket });
+      const updateData: any = { ...editedTicket };
+      if (updateData.assignedTo && typeof updateData.assignedTo === 'object') {
+        updateData.assignedTo = updateData.assignedTo.id;
+      }
+      await updateTicket.mutateAsync({ ticketId, data: updateData });
       setIsEditing(false);
       setEditedTicket({});
     } catch (error: any) {

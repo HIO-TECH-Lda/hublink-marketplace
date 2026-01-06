@@ -10,7 +10,7 @@ interface RoleGuardProps {
   showForRoles?: boolean; // If true, show for these roles, if false, hide for these roles
 }
 
-export default function RoleGuard({ 
+export function RoleGuard({ 
   children, 
   allowedRoles, 
   fallback = null,

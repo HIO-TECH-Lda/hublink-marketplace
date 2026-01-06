@@ -152,7 +152,7 @@ describe('Review Controller Tests', () => {
         populate: jest.fn().mockReturnValue({
           sort: jest.fn().mockResolvedValue(reviews)
         })
-      });
+      } as any);
 
       const response = await request(app)
         .get(`/api/reviews/product/${testProduct._id}`)
@@ -167,7 +167,7 @@ describe('Review Controller Tests', () => {
         populate: jest.fn().mockReturnValue({
           sort: jest.fn().mockResolvedValue([])
         })
-      });
+      } as any);
 
       const response = await request(app)
         .get(`/api/reviews/product/${testProduct._id}`)
@@ -220,7 +220,7 @@ describe('Review Controller Tests', () => {
     it('should return a specific review', async () => {
       mockReview.findById.mockReturnValue({
         populate: jest.fn().mockResolvedValue(testReview)
-      });
+      } as any);
 
       const response = await request(app)
         .get(`/api/reviews/${testReview._id}`)
@@ -233,7 +233,7 @@ describe('Review Controller Tests', () => {
     it('should return 404 for non-existent review', async () => {
       mockReview.findById.mockReturnValue({
         populate: jest.fn().mockResolvedValue(null)
-      });
+      } as any);
 
       const response = await request(app)
         .get('/api/reviews/nonexistent')
@@ -418,7 +418,7 @@ describe('Review Controller Tests', () => {
         populate: jest.fn().mockReturnValue({
           sort: jest.fn().mockResolvedValue(pendingReviews)
         })
-      });
+      } as any);
 
       const response = await request(app)
         .get('/api/reviews/admin/pending')
@@ -486,7 +486,7 @@ describe('Review Controller Tests', () => {
         populate: jest.fn().mockReturnValue({
           sort: jest.fn().mockResolvedValue(userReviews)
         })
-      });
+      } as any);
 
       const response = await request(app)
         .get('/api/reviews/user/reviews')
@@ -513,7 +513,7 @@ describe('Review Controller Tests', () => {
             limit: jest.fn().mockResolvedValue(recentReviews)
           })
         })
-      });
+      } as any);
 
       const response = await request(app)
         .get('/api/reviews/recent/reviews')

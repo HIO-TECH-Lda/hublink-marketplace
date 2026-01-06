@@ -33,7 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/produto/${product._id}`}>
         <div className="relative">
           <Image
-            src={product.primaryImage || product.images?.[0] || '/placeholder.jpg'}
+            src={product.primaryImage || (typeof product.images?.[0] === 'string' ? product.images[0] : product.images?.[0]?.url) || '/placeholder.jpg'}
             alt={product.name}
             width={300}
             height={200}

@@ -128,7 +128,7 @@ export default function ShopPage() {
           {searchQuery && (
             <>
               <span> / </span>
-              <span className="text-primary">Busca: "{searchQuery}"</span>
+              <span className="text-primary">Busca: &quot;{searchQuery}&quot;</span>
             </>
           )}
         </nav>

@@ -6,6 +6,7 @@ import { Search, Filter, Grid, List, SortAsc, SortDesc } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
+import { Product } from '@/types/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -330,7 +331,7 @@ export default function SearchPage() {
                 {sortedProducts.map((product) => (
                   <ProductCard
                     key={product.id}
-                    product={product}
+                    product={product as unknown as Product}
                   />
                 ))}
               </div>

@@ -22,8 +22,8 @@ describe('Review Model Tests', () => {
         productId: new mongoose.Types.ObjectId(),
         rating: 5,
         title: 'Great Product',
-        comment: 'This is an excellent product!',
-        helpful: 0,
+        content: 'This is an excellent product!',
+        isHelpful: 0,
         status: 'pending'
       });
 
@@ -31,7 +31,7 @@ describe('Review Model Tests', () => {
       expect(savedReview._id).toBeDefined();
       expect(savedReview.rating).toBe(5);
       expect(savedReview.title).toBe('Great Product');
-      expect(savedReview.comment).toBe('This is an excellent product!');
+      expect(savedReview.content).toBe('This is an excellent product!');
       expect(savedReview.status).toBe('pending');
     });
 
@@ -169,7 +169,7 @@ describe('Review Model Tests', () => {
         productId: new mongoose.Types.ObjectId(),
         rating: 5,
         title: 'Great Product',
-        comment: 'This is an excellent product!',
+        content: 'This is an excellent product!',
         status: 'invalid_status'
       });
 
@@ -193,7 +193,7 @@ describe('Review Model Tests', () => {
       });
 
       const savedReview = await reviewWithDefaults.save();
-      expect(savedReview.helpful).toBe(0);
+      expect(savedReview.isHelpful).toBe(0);
       expect(savedReview.status).toBe('pending');
       expect(savedReview.createdAt).toBeDefined();
       expect(savedReview.updatedAt).toBeDefined();
@@ -254,8 +254,8 @@ describe('Review Model Tests', () => {
         productId,
         rating: 5,
         title: 'Great Product',
-        comment: 'This is an excellent product!',
-        helpful: 0,
+        content: 'This is an excellent product!',
+        isHelpful: 0,
         status: 'pending'
       });
       await testReview.save();
@@ -370,15 +370,15 @@ describe('Review Model Tests', () => {
     it('should sort reviews by helpful count', async () => {
       // Update helpful counts
       const reviews = await Review.find();
-      reviews[0].helpful = 5;
-      reviews[1].helpful = 10;
-      reviews[2].helpful = 2;
+      reviews[0].isHelpful = 5;
+      reviews[1].isHelpful = 10;
+      reviews[2].isHelpful = 2;
       await Promise.all(reviews.map(review => review.save()));
 
-      const sortedReviews = await Review.find().sort({ helpful: -1 });
-      expect(sortedReviews[0].helpful).toBe(10);
-      expect(sortedReviews[1].helpful).toBe(5);
-      expect(sortedReviews[2].helpful).toBe(2);
+      const sortedReviews = await Review.find().sort({ isHelpful: -1 });
+      expect(sortedReviews[0].isHelpful).toBe(10);
+      expect(sortedReviews[1].isHelpful).toBe(5);
+      expect(sortedReviews[2].isHelpful).toBe(2);
     });
 
     it('should limit number of reviews', async () => {
