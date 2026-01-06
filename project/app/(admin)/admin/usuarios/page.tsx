@@ -15,7 +15,8 @@ import {
   Calendar,
   ArrowLeft,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Plus
 } from 'lucide-react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -169,7 +170,7 @@ export default function UserManagementPage() {
             <p className="text-gray-6">Gerencie contas de usuários e vendedores</p>
           </div>
           <Button onClick={() => router.push('/admin/usuarios/novo')}>
-            <Users className="w-4 h-4 mr-2" />
+            <Plus className="w-4 h-4 mr-2" />
             Novo Usuário
           </Button>
         </div>
