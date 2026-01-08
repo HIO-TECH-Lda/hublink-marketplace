@@ -2,17 +2,17 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const manifest = {
-    name: 'Txova - Marketplace Orgânico',
-    short_name: 'Txova',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. Conectamos produtores locais com consumidores conscientes.',
+    name: 'VITRINE - Marketplace Completo',
+    short_name: 'VITRINE',
+    description: 'Marketplace completo com produtos de qualidade em todas as categorias',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
-    theme_color: '#10b981',
+    theme_color: '#2563EB',
     orientation: 'portrait-primary',
     scope: '/',
     lang: 'pt-MZ',
-    categories: ['shopping', 'food', 'lifestyle'],
+    categories: ['shopping', 'business', 'lifestyle'],
     icons: [
       {
         src: '/icons/icon-72x72.png',
@@ -65,9 +65,9 @@ export async function GET() {
     ],
     shortcuts: [
       {
-        name: 'Banca',
-        short_name: 'Banca',
-        description: 'Explorar produtos orgânicos',
+        name: 'Produtos em Destaque',
+        short_name: 'Destaque',
+        description: 'Explorar produtos em destaque',
         url: '/loja',
         icons: [
           {
@@ -107,14 +107,14 @@ export async function GET() {
         sizes: '1280x720',
         type: 'image/png',
         form_factor: 'wide',
-        label: 'Página inicial do Txova'
+        label: 'Página inicial da VITRINE'
       },
       {
         src: '/screenshots/shop.png',
         sizes: '1280x720',
         type: 'image/png',
         form_factor: 'wide',
-        label: 'Banca de produtos'
+        label: 'Loja de produtos'
       },
       {
         src: '/screenshots/mobile-home.png',
@@ -128,7 +128,7 @@ export async function GET() {
         sizes: '390x844',
         type: 'image/png',
         form_factor: 'narrow',
-        label: 'Banca no mobile'
+        label: 'Loja no mobile'
       }
     ]
   };

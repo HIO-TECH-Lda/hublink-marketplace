@@ -171,7 +171,7 @@ function UpdatePrompt({ onUpdate, onDismiss }: UpdatePromptProps) {
             </button>
           </div>
           <CardDescription className="text-blue-700">
-            Uma nova versão do Txova está disponível. Atualize para obter as últimas funcionalidades.
+            Uma nova versão do Vitrine está disponível. Atualize para obter as últimas funcionalidades.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0">
@@ -203,7 +203,7 @@ function InstallPrompt({ onInstall, onDismiss }: InstallPromptProps) {
       <Card className="bg-green-50 border-green-200 shadow-lg">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-green-900 text-lg">Instalar Txova</CardTitle>
+            <CardTitle className="text-green-900 text-lg">Instalar Vitrine</CardTitle>
             <button
               onClick={onDismiss}
               className="text-green-600 hover:text-green-800"
@@ -212,7 +212,7 @@ function InstallPrompt({ onInstall, onDismiss }: InstallPromptProps) {
             </button>
           </div>
           <CardDescription className="text-green-700">
-            Instale o Txova no seu dispositivo para acessar mais rapidamente e usar offline.
+            Instale o Vitrine no seu dispositivo para acessar mais rapidamente e usar offline.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0">

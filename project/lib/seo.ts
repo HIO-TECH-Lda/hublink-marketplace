@@ -15,7 +15,7 @@ interface SEOConfig {
 }
 
 export function generateMetadata(config: SEOConfig): Metadata {
-  const baseUrl = 'https://txova.co.mz';
+  const baseUrl = 'https://vitrine.com';
   const defaultImage = '/images/og-image.jpg';
   
   return {
@@ -26,7 +26,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: config.title,
       description: config.description,
       url: config.url ? `${baseUrl}${config.url}` : baseUrl,
-      siteName: 'Txova',
+      siteName: 'VITRINE',
       images: [
         {
           url: config.image || defaultImage,
@@ -48,8 +48,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: config.title,
       description: config.description,
       images: [config.image || defaultImage],
-      site: '@txova',
-      creator: '@txova',
+      site: '@vitrine',
+      creator: '@vitrine',
     },
     alternates: {
       canonical: config.url ? `${baseUrl}${config.url}` : baseUrl,
@@ -60,50 +60,51 @@ export function generateMetadata(config: SEOConfig): Metadata {
 // Predefined SEO configurations for common pages
 export const seoConfigs = {
   home: {
-    title: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes.',
+    title: 'VITRINE - Marketplace Completo',
+    description: 'Marketplace completo com produtos de qualidade em todas as categorias. Eletrônicos, moda, esportes, casa, beleza e muito mais.',
     keywords: [
-      'alimentos orgânicos',
       'marketplace',
-      'Beira',
-      'Moçambique',
-      'produtos frescos',
-      'produtores locais',
-      'comida saudável'
+      'eletrônicos',
+      'moda',
+      'esportes',
+      'casa',
+      'beleza',
+      'compras online',
+      'vitrine'
     ],
     url: '/',
   },
   
   shop: {
-    title: 'Banca de Produtos Orgânicos | Txova',
-    description: 'Explore nossa banca de produtos orgânicos frescos e saudáveis. Encontre vegetais, frutas, grãos e muito mais diretamente dos produtores locais.',
+    title: 'Loja | VITRINE',
+    description: 'Explore nossa loja com produtos de qualidade em todas as categorias. Eletrônicos, moda, esportes, casa, beleza e muito mais.',
     keywords: [
-      'produtos orgânicos',
-      'banca',
-      'vegetais',
-      'frutas',
-      'grãos',
+      'produtos',
+      'loja',
+      'eletrônicos',
+      'moda',
+      'esportes',
       'compras online'
     ],
     url: '/loja',
   },
   
   about: {
-    title: 'Sobre Nós | Txova',
-    description: 'Conheça a Txova, o marketplace que conecta produtores locais de alimentos orgânicos com consumidores conscientes em Beira, Moçambique.',
+    title: 'Sobre Nós | VITRINE',
+    description: 'Conheça a VITRINE, o marketplace completo que oferece produtos de qualidade em todas as categorias.',
     keywords: [
-      'sobre txova',
+      'sobre vitrine',
       'nossa história',
       'missão',
       'valores',
-      'produtores locais'
+      'marketplace'
     ],
     url: '/sobre',
   },
   
   contact: {
-    title: 'Contato | Txova',
-    description: 'Entre em contato com a Txova. Estamos aqui para ajudar com suas dúvidas sobre produtos orgânicos e nosso marketplace.',
+    title: 'Contato | VITRINE',
+    description: 'Entre em contato com a VITRINE. Estamos aqui para ajudar com suas dúvidas sobre produtos e nosso marketplace.',
     keywords: [
       'contato',
       'suporte',
@@ -115,21 +116,22 @@ export const seoConfigs = {
   },
   
   blog: {
-    title: 'Blog | Txova - Dicas e Notícias sobre Alimentos Orgânicos',
-    description: 'Leia artigos sobre alimentação saudável, dicas de culinária, notícias sobre produtos orgânicos e muito mais no blog da Txova.',
+    title: 'Blog | VITRINE - Dicas e Notícias',
+    description: 'Leia artigos sobre tecnologia, moda, esportes, dicas de compras e muito mais no blog da VITRINE.',
     keywords: [
       'blog',
       'artigos',
-      'alimentação saudável',
-      'dicas culinárias',
-      'produtos orgânicos'
+      'tecnologia',
+      'moda',
+      'esportes',
+      'dicas'
     ],
     url: '/blog',
   },
   
   faq: {
-    title: 'Perguntas Frequentes | Txova',
-    description: 'Encontre respostas para as perguntas mais frequentes sobre a Txova, nossos produtos orgânicos e como fazer compras.',
+    title: 'Perguntas Frequentes | VITRINE',
+    description: 'Encontre respostas para as perguntas mais frequentes sobre a VITRINE, nossos produtos e como fazer compras.',
     keywords: [
       'faq',
       'perguntas frequentes',
@@ -141,8 +143,8 @@ export const seoConfigs = {
   },
   
   terms: {
-    title: 'Termos de Uso | Txova',
-    description: 'Leia os termos de uso da Txova. Conheça nossas políticas e condições para uso do marketplace.',
+    title: 'Termos de Uso | VITRINE',
+    description: 'Leia os termos de uso da VITRINE. Conheça nossas políticas e condições para uso do marketplace.',
     keywords: [
       'termos de uso',
       'políticas',
@@ -153,8 +155,8 @@ export const seoConfigs = {
   },
   
   privacy: {
-    title: 'Política de Privacidade | Txova',
-    description: 'Conheça nossa política de privacidade. Saiba como a Txova protege e utiliza seus dados pessoais.',
+    title: 'Política de Privacidade | VITRINE',
+    description: 'Conheça nossa política de privacidade. Saiba como a VITRINE protege e utiliza seus dados pessoais.',
     keywords: [
       'política de privacidade',
       'proteção de dados',
@@ -168,14 +170,13 @@ export const seoConfigs = {
 // Helper function to generate product-specific SEO
 export function generateProductSEO(product: any) {
   return generateMetadata({
-    title: `${product.name} | Txova`,
-    description: product.description || `Compre ${product.name} orgânico na Txova. Produto fresco e saudável diretamente do produtor.`,
+    title: `${product.name} | VITRINE`,
+    description: product.description || `Compre ${product.name} na VITRINE. Produto de qualidade com os melhores preços.`,
     keywords: [
       product.name,
-      'orgânico',
       product.category,
-      'produto fresco',
-      'txova',
+      'produto',
+      'vitrine',
       'compras online'
     ],
     url: `/produto/${product.id}`,
@@ -187,14 +188,14 @@ export function generateProductSEO(product: any) {
 // Helper function to generate seller-specific SEO
 export function generateSellerSEO(seller: any) {
   return generateMetadata({
-    title: `${seller.businessName} | Vendedor Txova`,
-    description: `Conheça ${seller.businessName} na Txova. Produtos orgânicos frescos e de qualidade.`,
+    title: `${seller.businessName} | Vendedor VITRINE`,
+    description: `Conheça ${seller.businessName} na VITRINE. Produtos de qualidade e os melhores preços.`,
     keywords: [
       seller.businessName,
       'vendedor',
-      'produtos orgânicos',
-      'txova',
-      'produtor local'
+      'loja',
+      'vitrine',
+      'marketplace'
     ],
     url: `/vendedor/${seller.id}`,
     type: 'website',
@@ -205,14 +206,14 @@ export function generateSellerSEO(seller: any) {
 // Helper function to generate blog post SEO
 export function generateBlogPostSEO(post: any) {
   return generateMetadata({
-    title: `${post.title} | Blog Txova`,
+    title: `${post.title} | Blog VITRINE`,
     description: post.excerpt || post.description,
     keywords: [
       ...(post.tags || []),
       'blog',
       'artigo',
-      'txova',
-      'alimentação saudável'
+      'vitrine',
+      'dicas'
     ],
     url: `/blog/${post.id}`,
     type: 'article',

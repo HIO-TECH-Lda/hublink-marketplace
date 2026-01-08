@@ -30,7 +30,7 @@ export default function TermosPage() {
             Termos de Uso
           </h1>
           <p className="text-base sm:text-lg text-gray-7 max-w-3xl mx-auto px-4">
-            Estes termos governam o uso da plataforma Txova. Ao usar nossos serviços, 
+            Estes termos governam o uso da plataforma VITRINE. Ao usar nossos serviços, 
             você concorda com estes termos.
           </p>
           <div className="flex items-center justify-center space-x-2 mt-4 text-sm text-gray-6">
@@ -48,7 +48,7 @@ export default function TermosPage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">1. Aceitação dos Termos</h2>
                 <p className="text-gray-7 mb-4">
-                  Ao acessar e usar a plataforma Txova (&quot;Plataforma&quot;), você aceita e concorda 
+                  Ao acessar e usar a plataforma VITRINE (&quot;Plataforma&quot;), você aceita e concorda 
                   em cumprir estes Termos de Uso (&quot;Termos&quot;). Se você não concordar com qualquer 
                   parte destes termos, não deve usar nossos serviços.
                 </p>
@@ -62,7 +62,7 @@ export default function TermosPage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">2. Definições</h2>
                 <ul className="list-disc list-inside space-y-2 text-gray-7">
-                  <li><strong>&quot;Plataforma&quot;</strong> - O website e aplicativo Txova</li>
+                  <li><strong>&quot;Plataforma&quot;</strong> - O website e aplicativo Vitrine</li>
                   <li><strong>&quot;Usuário&quot;</strong> - Qualquer pessoa que acesse ou use a plataforma</li>
                   <li><strong>&quot;Comprador&quot;</strong> - Usuário que adquire produtos através da plataforma</li>
                   <li><strong>&quot;Vendedor&quot;</strong> - Usuário que vende produtos através da plataforma</li>
@@ -102,7 +102,7 @@ export default function TermosPage() {
                 <h3 className="text-lg font-medium text-gray-9 mb-3">4.1 Uso Permitido</h3>
                 <p className="text-gray-7 mb-4">
                   A plataforma deve ser usada apenas para fins legais e de acordo com estes termos. 
-                  Você pode navegar, comprar e vender produtos orgânicos através da plataforma.
+                  Você pode navegar, comprar e vender produtos através da plataforma.
                 </p>
 
                 <h3 className="text-lg font-medium text-gray-9 mb-3">4.2 Uso Proibido</h3>
@@ -244,7 +244,7 @@ export default function TermosPage() {
                 
                 <p className="text-gray-7 mb-4">
                   A plataforma e todo seu conteúdo, incluindo textos, imagens, logos e software, 
-                  são propriedade da Txova ou de nossos licenciadores.
+                  são propriedade da Vitrine ou de nossos licenciadores.
                 </p>
                 
                 <p className="text-gray-7">
@@ -258,7 +258,7 @@ export default function TermosPage() {
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">10. Limitação de Responsabilidade</h2>
                 
                 <p className="text-gray-7 mb-4">
-                  Em nenhuma circunstância a Txova será responsável por danos indiretos, 
+                  Em nenhuma circunstância a Vitrine será responsável por danos indiretos, 
                   incidentais, especiais ou consequenciais decorrentes do uso da plataforma.
                 </p>
                 
@@ -324,7 +324,7 @@ export default function TermosPage() {
                   </p>
                   
                   <div className="space-y-2 text-gray-7">
-                    <p><strong>E-mail:</strong> juridico@ecobazar.com</p>
+                    <p><strong>E-mail:</strong> juridico@vitrine.com</p>
                     <p><strong>Telefone:</strong> (84) 99999-9999</p>
                     <p><strong>Endereço:</strong> Rua das Flores, 123 - Baixa, Beira - 2100</p>
                   </div>

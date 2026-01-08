@@ -123,9 +123,9 @@ export default function BlogPostPage() {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
               </p>
               
-              <h2 className="text-2xl font-bold text-gray-9 mt-8 mb-4">Por que escolher alimentos orgânicos?</h2>
+              <h2 className="text-2xl font-bold text-gray-9 mt-8 mb-4">Por que escolher a VITRINE?</h2>
               <p>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                A VITRINE oferece uma experiência de compra completa com produtos de qualidade em todas as categorias. Encontre tudo que você precisa em um só lugar, com os melhores preços e entrega rápida.
               </p>
               
               <h3 className="text-xl font-semibold text-gray-9 mt-6 mb-3">Benefícios para a saúde</h3>
@@ -142,7 +142,7 @@ export default function BlogPostPage() {
               </p>
               
               <blockquote className="border-l-4 border-primary pl-6 italic text-gray-6 bg-gray-1 p-4 rounded-r-lg">
-                &quot;A escolha por alimentos orgânicos é uma escolha pela saúde do planeta e das futuras gerações.&quot;
+                &quot;A VITRINE transformou minha forma de comprar. Encontro tudo que preciso com qualidade e preços justos.&quot;
               </blockquote>
               
               <p>

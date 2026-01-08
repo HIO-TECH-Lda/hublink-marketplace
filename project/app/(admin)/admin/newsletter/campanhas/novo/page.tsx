@@ -243,7 +243,7 @@ export default function CreateCampaignPage() {
                       id="subject"
                       value={formData.subject}
                       onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                      placeholder="Ex: 🌿 20% OFF em produtos orgânicos"
+                      placeholder="Ex: 🛍️ 20% OFF em produtos selecionados"
                       className={errors.subject ? 'border-red-500' : ''}
                     />
                     {errors.subject && (

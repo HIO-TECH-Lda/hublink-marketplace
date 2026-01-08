@@ -254,7 +254,7 @@ export default function CreateBlogPostPage() {
                       id="title"
                       value={formData.title}
                       onChange={(e) => handleTitleChange(e.target.value)}
-                      placeholder="Ex: Os Benefícios dos Alimentos Orgânicos"
+                      placeholder="Ex: Guia Completo: Como Escolher o Smartphone Ideal"
                       className={errors.title ? 'border-red-500' : ''}
                     />
                     {errors.title && (

@@ -271,7 +271,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller1',
     sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=FV',
     tags: ['orgânico', 'fresco', 'sem agrotóxicos'],
     sku: 'TOM-ORG-001',
     weight: '500g',
@@ -297,7 +297,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller1',
     sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=FV',
     tags: ['orgânico', 'vitaminas', 'minerais'],
     sku: 'REP-CHI-001',
     weight: '300g',
@@ -322,7 +322,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller2',
     sellerName: 'Horta do Vale',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=HV',
     tags: ['orgânico', 'betacaroteno', 'vitamina A'],
     sku: 'CEN-ORG-001',
     weight: '400g',
@@ -346,7 +346,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller1',
     sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=FV',
     tags: ['orgânico', 'fresco', 'verde'],
     sku: 'ALC-CRE-001',
     weight: '200g',
@@ -368,7 +368,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller3',
     sellerName: 'Pomar Orgânico',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=PO',
     tags: ['orgânico', 'doce', 'suculenta'],
     sku: 'MAC-FUJ-001',
     weight: '1kg',
@@ -389,7 +389,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller1',
     sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=FV',
     tags: ['orgânico', 'potássio', 'energia'],
     sku: 'BAN-PRA-001',
     weight: '1kg',
@@ -410,7 +410,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller2',
     sellerName: 'Horta do Vale',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=HV',
     tags: ['orgânico', 'saboroso', 'nutritivo'],
     sku: 'CEB-ROX-001',
     weight: '300g',
@@ -431,7 +431,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller1',
     sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=FV',
     tags: ['orgânico', 'fibras', 'vitaminas'],
     sku: 'BAT-DOC-001',
     weight: '1kg',
@@ -452,7 +452,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller2',
     sellerName: 'Horta do Vale',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=HV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=HV',
     tags: ['orgânico', 'ferro', 'vitaminas'],
     sku: 'ESP-ORG-001',
     weight: '250g',
@@ -474,7 +474,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller3',
     sellerName: 'Pomar Orgânico',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=PO',
     tags: ['orgânico', 'doce', 'suculenta'],
     sku: 'MAN-ORG-001',
     weight: '1kg',
@@ -495,7 +495,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller1',
     sellerName: 'Fazenda Verde',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=FV',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=FV',
     tags: ['orgânico', 'fresco', 'nutritivo'],
     sku: 'COU-FLO-001',
     weight: '400g',
@@ -516,7 +516,7 @@ const mockProducts: Product[] = [
     inStock: true,
     sellerId: 'seller3',
     sellerName: 'Pomar Orgânico',
-    sellerLogo: 'https://placehold.co/40x40/00BE27/ffffff?text=PO',
+    sellerLogo: 'https://placehold.co/40x40/2563EB/ffffff?text=PO',
     tags: ['orgânico', 'doce', 'refrescante'],
     sku: 'ABA-ORG-001',
     weight: '1.5kg',
@@ -529,69 +529,69 @@ const mockProducts: Product[] = [
 const mockBlogPosts: BlogPost[] = [
   {
     id: '1',
-    title: 'Os Benefícios dos Alimentos Orgânicos',
-    excerpt: 'Descubra por que escolher alimentos orgânicos pode fazer toda a diferença na sua saúde e no meio ambiente.',
-    content: 'Conteúdo completo sobre os benefícios dos alimentos orgânicos...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Guia Completo: Como Escolher o Smartphone Ideal',
+    excerpt: 'Descubra os principais fatores a considerar na hora de comprar um novo smartphone e encontre o modelo perfeito para suas necessidades.',
+    content: 'Conteúdo completo sobre como escolher smartphones...',
+    image: 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg',
     date: '2024-01-15',
-    author: 'Dr. Maria Silva',
-    category: 'Saúde',
-    tags: ['orgânico', 'saúde', 'nutrição']
+    author: 'Maria Silva',
+    category: 'Tecnologia',
+    tags: ['smartphone', 'tecnologia', 'eletrônicos']
   },
   {
     id: '2',
-    title: 'Como Cultivar sua Própria Horta Orgânica',
-    excerpt: 'Aprenda técnicas simples para começar sua própria horta orgânica em casa.',
-    content: 'Guia completo para cultivar horta orgânica...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Tendências de Moda 2024: O Que Está em Alta',
+    excerpt: 'Confira as principais tendências de moda para 2024 e descubra como incorporar os looks mais modernos ao seu guarda-roupa.',
+    content: 'Guia completo sobre tendências de moda...',
+    image: 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg',
     date: '2024-01-10',
     author: 'João Santos',
-    category: 'Cultivo',
-    tags: ['horta', 'cultivo', 'orgânico']
+    category: 'Moda',
+    tags: ['moda', 'tendências', 'estilo']
   },
   {
     id: '3',
-    title: 'Receitas Saudáveis com Produtos Orgânicos',
-    excerpt: 'Receitas deliciosas e nutritivas usando apenas ingredientes orgânicos.',
-    content: 'Coleção de receitas saudáveis...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Dicas de Compras Online: Como Comprar com Segurança',
+    excerpt: 'Aprenda dicas essenciais para fazer compras online de forma segura e aproveitar os melhores preços e ofertas.',
+    content: 'Coleção de dicas para compras online...',
+    image: 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg',
     date: '2024-01-05',
     author: 'Ana Costa',
-    category: 'Receitas',
-    tags: ['receitas', 'saudável', 'orgânico']
+    category: 'Dicas',
+    tags: ['compras', 'segurança', 'dicas']
   },
   {
     id: '4',
-    title: 'O Impacto Ambiental da Agricultura Orgânica',
-    excerpt: 'Entenda como a agricultura orgânica contribui para a preservação do meio ambiente.',
-    content: 'Análise do impacto ambiental...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Equipamentos Esportivos Essenciais para Iniciantes',
+    excerpt: 'Descubra quais são os equipamentos esportivos fundamentais para quem está começando a praticar atividades físicas.',
+    content: 'Análise de equipamentos esportivos...',
+    image: 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg',
     date: '2023-12-28',
     author: 'Carlos Oliveira',
-    category: 'Meio Ambiente',
-    tags: ['meio ambiente', 'sustentabilidade', 'orgânico']
+    category: 'Esportes',
+    tags: ['esportes', 'fitness', 'equipamentos']
   },
   {
     id: '5',
-    title: 'Dicas para Escolher os Melhores Produtos Orgânicos',
-    excerpt: 'Saiba como identificar e escolher produtos orgânicos de qualidade.',
-    content: 'Guia para escolher produtos orgânicos...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Decoração de Casa: Ideias Modernas e Acessíveis',
+    excerpt: 'Inspire-se com ideias de decoração modernas e acessíveis para transformar sua casa sem gastar muito.',
+    content: 'Guia de decoração para casa...',
+    image: 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg',
     date: '2023-12-20',
     author: 'Lucia Ferreira',
-    category: 'Dicas',
-    tags: ['dicas', 'qualidade', 'orgânico']
+    category: 'Casa',
+    tags: ['decoração', 'casa', 'interiores']
   },
   {
     id: '6',
-    title: 'A Importância da Estação dos Alimentos',
-    excerpt: 'Descubra por que consumir alimentos da estação é melhor para sua saúde e para o planeta.',
-    content: 'Sobre a importância da sazonalidade...',
-    image: 'https://images.pexels.com/photos/1199562/pexels-photo-1199562.jpeg',
+    title: 'Produtos de Beleza: Guia de Cuidados Pessoais',
+    excerpt: 'Conheça os produtos de beleza essenciais e aprenda a criar uma rotina de cuidados pessoais completa.',
+    content: 'Sobre produtos de beleza e cuidados...',
+    image: 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg',
     date: '2023-12-15',
     author: 'Pedro Lima',
-    category: 'Saúde',
-    tags: ['estação', 'sazonalidade', 'saúde']
+    category: 'Beleza',
+    tags: ['beleza', 'cuidados', 'cosméticos']
   }
 ];
 
@@ -1307,10 +1307,10 @@ const saveToStorage = (key: string, value: any) => {
 };
 
 // Load persisted data
-const persistedCart = loadFromStorage('ecobazar_cart', []);
-const persistedWishlist = loadFromStorage('ecobazar_wishlist', []);
-const persistedUser = loadFromStorage('ecobazar_user', null);
-const persistedAuth = loadFromStorage('ecobazar_authenticated', false);
+const persistedCart = loadFromStorage('vitrine_cart', []);
+const persistedWishlist = loadFromStorage('vitrine_wishlist', []);
+const persistedUser = loadFromStorage('vitrine_user', null);
+const persistedAuth = loadFromStorage('vitrine_authenticated', false);
 
 const initialState: MarketplaceState = {
   products: mockProducts,
@@ -1351,7 +1351,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
           cart: [...state.cart, { product: action.payload.product, quantity: action.payload.quantity }],
         };
       }
-      saveToStorage('ecobazar_cart', newState.cart);
+      saveToStorage('vitrine_cart', newState.cart);
       return newState;
 
     case 'REMOVE_FROM_CART':
@@ -1359,7 +1359,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         cart: state.cart.filter(item => item.product.id !== action.payload),
       };
-      saveToStorage('ecobazar_cart', newState.cart);
+      saveToStorage('vitrine_cart', newState.cart);
       return newState;
 
     case 'UPDATE_CART_QUANTITY':
@@ -1371,7 +1371,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
             : item
         ),
       };
-      saveToStorage('ecobazar_cart', newState.cart);
+      saveToStorage('vitrine_cart', newState.cart);
       return newState;
 
     case 'CLEAR_CART':
@@ -1379,7 +1379,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         cart: [],
       };
-      saveToStorage('ecobazar_cart', newState.cart);
+      saveToStorage('vitrine_cart', newState.cart);
       return newState;
 
     case 'ADD_TO_WISHLIST':
@@ -1390,7 +1390,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         wishlist: [...state.wishlist, action.payload],
       };
-      saveToStorage('ecobazar_wishlist', newState.wishlist);
+      saveToStorage('vitrine_wishlist', newState.wishlist);
       return newState;
 
     case 'REMOVE_FROM_WISHLIST':
@@ -1398,7 +1398,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         wishlist: state.wishlist.filter(item => item.id !== action.payload),
       };
-      saveToStorage('ecobazar_wishlist', newState.wishlist);
+      saveToStorage('vitrine_wishlist', newState.wishlist);
       return newState;
 
     case 'SET_USER':
@@ -1406,7 +1406,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         user: action.payload,
       };
-      saveToStorage('ecobazar_user', newState.user);
+      saveToStorage('vitrine_user', newState.user);
       return newState;
 
     case 'SET_AUTHENTICATED':
@@ -1414,7 +1414,7 @@ function marketplaceReducer(state: MarketplaceState, action: MarketplaceAction):
         ...state,
         isAuthenticated: action.payload,
       };
-      saveToStorage('ecobazar_authenticated', newState.isAuthenticated);
+      saveToStorage('vitrine_authenticated', newState.isAuthenticated);
       return newState;
 
     case 'HIDE_NEWSLETTER_POPUP':

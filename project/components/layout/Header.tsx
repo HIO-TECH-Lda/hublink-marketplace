@@ -84,8 +84,8 @@ export default function Header() {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={14} />
-                <span className="hidden lg:inline">contato@txova.co.mz</span>
-                <span className="lg:hidden">contato@txova.co.mz</span>
+                <span className="hidden lg:inline">contato@vitrine.com</span>
+                <span className="lg:hidden">contato@vitrine.com</span>
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
@@ -107,9 +107,9 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">T</span>
+                <span className="text-white font-bold text-sm">V</span>
               </div>
-              <span className="text-xl sm:text-2xl font-bold text-gray-9">Txova</span>
+              <span className="text-xl sm:text-2xl font-bold text-gray-9">VITRINE</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -290,7 +290,7 @@ export default function Header() {
               <div className="space-y-2">
                 <h4 className="text-sm font-medium text-gray-7">Sugestões populares:</h4>
                 <div className="flex flex-wrap gap-2">
-                  {['Tomates', 'Cebolas', 'Batatas', 'Cenouras', 'Alface'].map((suggestion) => (
+                  {['Smartphones', 'Roupas', 'Eletrônicos', 'Esportes', 'Casa'].map((suggestion) => (
                     <button
                       key={suggestion}
                       type="button"

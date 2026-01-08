@@ -77,13 +77,13 @@ export default function Footer() {
             <div>
               <Link href="/" className="flex items-center space-x-2 mb-6">
                 <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">T</span>
+                  <span className="text-white font-bold text-sm">V</span>
                 </div>
-                <span className="text-xl sm:text-2xl font-bold">Txova</span>
+                <span className="text-xl sm:text-2xl font-bold">VITRINE</span>
               </Link>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
-                Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. 
-                Conectamos produtores locais com consumidores conscientes em Beira.
+                Marketplace completo com produtos de qualidade em todas as categorias. 
+                Eletrônicos, moda, esportes, casa, beleza e muito mais.
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
@@ -92,11 +92,11 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone size={16} className="flex-shrink-0" />
-                  <span>+258 84 123 4567</span>
+                  <span>+258 84 9999-9999</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={16} className="flex-shrink-0" />
-                  <span className="break-all">contato@txova.co.mz</span>
+                  <span className="break-all">contato@vitrine.com</span>
                 </div>
               </div>
             </div>
@@ -148,7 +148,7 @@ export default function Footer() {
         <div className="container">
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <p className="text-gray-4 text-sm text-center lg:text-left">
-              © 2024 Txova. Todos os direitos reservados.
+              © 2024 VITRINE. Todos os direitos reservados.
             </p>
             
             {/* Social Media */}

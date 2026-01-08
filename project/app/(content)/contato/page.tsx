@@ -48,7 +48,7 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'E-mail',
-      content: 'contato@ecobazar.com\nsuporte@ecobazar.com',
+      content: 'contato@vitrine.com\nsuporte@vitrine.com',
       color: 'text-primary'
     },
     {

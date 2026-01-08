@@ -77,7 +77,7 @@ export default function SellerProfilePage() {
     const mockSeller: Seller = {
       id: params.id as string,
       businessName: 'Fazenda Verde',
-      businessDescription: 'Produtos orgânicos frescos direto da fazenda. Cultivamos com amor e respeito pela natureza, garantindo qualidade e sabor em cada produto.',
+      businessDescription: 'Produtos de qualidade em todas as categorias. Encontre tudo que você precisa com os melhores preços e garantia de satisfação.',
       contactPerson: {
         firstName: 'João',
         lastName: 'Silva',

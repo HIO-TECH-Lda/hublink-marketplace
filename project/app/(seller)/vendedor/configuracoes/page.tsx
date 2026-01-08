@@ -162,7 +162,7 @@ export default function SellerSettingsPage() {
   }
 
   const tabs = [
-    { id: 'store', label: 'Banca', icon: Store },
+    { id: 'store', label: 'Loja', icon: Store },
     { id: 'account', label: 'Conta', icon: User },
     { id: 'addresses', label: 'Endereços', icon: MapPin },
     { id: 'preferences', label: 'Preferências', icon: Bell },
@@ -215,17 +215,17 @@ export default function SellerSettingsPage() {
                 {/* Store Profile */}
                 {activeTab === 'store' && (
                   <form onSubmit={handleProfileSubmit} className="space-y-6">
-                    <h3 className="text-lg font-semibold text-gray-9 mb-4">Informações da Banca</h3>
+                    <h3 className="text-lg font-semibold text-gray-9 mb-4">Informações da Loja</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-7 mb-2">Nome da Banca *</label>
+                        <label className="block text-sm font-medium text-gray-7 mb-2">Nome da Loja *</label>
                         <Input
                           value={profileForm.sellerProfile.storeName}
                           onChange={(e) => setProfileForm({
                             ...profileForm,
                             sellerProfile: { ...profileForm.sellerProfile, storeName: e.target.value }
                           })}
-                          placeholder="Nome da sua banca"
+                          placeholder="Nome da sua loja"
                           required
                         />
                       </div>
@@ -293,14 +293,14 @@ export default function SellerSettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-7 mb-2">Descrição da Banca</label>
+                      <label className="block text-sm font-medium text-gray-7 mb-2">Descrição da Loja</label>
                       <Textarea
                         value={profileForm.sellerProfile.storeDescription}
                         onChange={(e) => setProfileForm({
                           ...profileForm,
                           sellerProfile: { ...profileForm.sellerProfile, storeDescription: e.target.value }
                         })}
-                        placeholder="Descreva sua banca e produtos"
+                        placeholder="Descreva sua loja e produtos"
                         rows={4}
                       />
                     </div>

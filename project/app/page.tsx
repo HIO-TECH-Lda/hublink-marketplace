@@ -27,8 +27,8 @@ export default function HomePage() {
     {
       id: 'seller1',
       businessName: 'Fazenda Verde',
-      businessDescription: 'Produtos orgânicos frescos direto da fazenda. Cultivamos com amor e respeito pela natureza.',
-      logo: 'https://placehold.co/64x64/53B046/ffffff?text=FV',
+      businessDescription: 'Produtos de qualidade em todas as categorias. Encontre tudo que você precisa em um só lugar.',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=FV',
       rating: 4.8,
       reviewCount: 127,
       totalProducts: 15,
@@ -42,7 +42,7 @@ export default function HomePage() {
       id: 'seller2',
       businessName: 'Horta Orgânica Silva',
       businessDescription: 'Especialistas em vegetais orgânicos frescos. Qualidade garantida desde 2020.',
-      logo: 'https://placehold.co/64x64/53B046/ffffff?text=HS',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=HS',
       rating: 4.9,
       reviewCount: 89,
       totalProducts: 12,
@@ -56,7 +56,7 @@ export default function HomePage() {
       id: 'seller3',
       businessName: 'Frutas Frescas Costa',
       businessDescription: 'As melhores frutas orgânicas da região. Sabor e qualidade em cada produto.',
-      logo: 'https://placehold.co/64x64/53B046/ffffff?text=FC',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=FC',
       rating: 4.7,
       reviewCount: 156,
       totalProducts: 18,
@@ -70,7 +70,7 @@ export default function HomePage() {
       id: 'seller4',
       businessName: 'Grãos Naturais',
       businessDescription: 'Grãos orgânicos de alta qualidade. Nutrição e sabor em cada grão.',
-      logo: 'https://placehold.co/64x64/53B046/ffffff?text=GN',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=GN',
       rating: 4.6,
       reviewCount: 73,
       totalProducts: 8,
@@ -102,18 +102,18 @@ export default function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-green-gray-1 to-green-gray-2 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg')] bg-cover bg-center opacity-10"></div>
+      <section className="relative bg-gradient-to-r from-blue-gray-1 to-blue-gray-2 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg')] bg-cover bg-center opacity-10"></div>
         <div className="relative container py-12 sm:py-16 lg:py-20">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
               <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-9 leading-tight">
-                Alimentos Orgânicos
-                <span className="text-primary block">Frescos e Saudáveis</span>
+                VITRINE
+                <span className="text-primary block">Tudo que Você Precisa</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Conectamos você diretamente com produtores locais de alimentos orgânicos em Beira. 
-                Qualidade garantida, sabor autêntico e nutrição máxima para sua família.
+                Marketplace completo com produtos de qualidade em todas as categorias. 
+                Eletrônicos, moda, esportes, casa, beleza e muito mais.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3 sm:py-4">
@@ -128,8 +128,8 @@ export default function HomePage() {
             <div className="relative order-first lg:order-last">
               <div className="aspect-square rounded-full bg-gradient-to-br from-primary/20 to-primary-soft/20 flex items-center justify-center">
                 <img
-                  src="https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg"
-                  alt="Alimentos Orgânicos"
+                  src="https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg"
+                  alt="VITRINE Marketplace"
                   className="w-4/5 h-4/5 object-cover rounded-full"
                 />
               </div>
@@ -179,7 +179,7 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos em Destaque</h2>
-            <p className="text-gray-6">Descubra nossa seleção especial de produtos orgânicos</p>
+            <p className="text-gray-6">Descubra nossa seleção especial de produtos de qualidade</p>
           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {featuredProducts?.slice(0, 8).map((product) => (
@@ -203,8 +203,8 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
-                Banca de Alimentos Orgânicos
-                <span className="block">100% Confiável</span>
+                VITRINE Marketplace
+                <span className="block">Tudo que Você Precisa</span>
               </h2>
               <p className="text-lg text-green-gray-1">
                 Nossos produtores são certificados e seguem os mais rigorosos padrões 
@@ -227,8 +227,8 @@ export default function HomePage() {
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
-                alt="Alimentos Orgânicos Confiáveis"
+                src="https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg"
+                alt="VITRINE Marketplace - Produtos de Qualidade"
                 className="rounded-2xl shadow-2xl"
               />
             </div>
@@ -307,11 +307,11 @@ export default function HomePage() {
                 <div className="p-6">
                   <div className="text-sm text-gray-5 mb-2">15 de Janeiro, 2024</div>
                   <h3 className="font-semibold text-gray-9 mb-3 line-clamp-2">
-                    Benefícios dos Alimentos Orgânicos para a Saúde
+                    Guia Completo: Como Escolher o Smartphone Ideal
                   </h3>
                   <p className="text-gray-6 text-sm mb-4 line-clamp-3">
-                    Descubra como os alimentos orgânicos podem transformar sua saúde 
-                    e bem-estar com nutrientes mais potentes e livres de agrotóxicos.
+                    Descubra os principais fatores a considerar na hora de comprar um novo smartphone 
+                    e encontre o modelo perfeito para suas necessidades.
                   </p>
                   <Link href="/blog/1" className="text-primary hover:text-primary-hard font-medium text-sm">
                     Ler Mais →
@@ -348,7 +348,7 @@ export default function HomePage() {
                 name: "Ana Costa",
                 location: "Nampula, Nampula",
                 rating: 5,
-                comment: "A variedade de produtos orgânicos é incrível. Minha família está mais saudável desde que começamos a comprar aqui."
+                comment: "A variedade de produtos é incrível. Encontro tudo que preciso em um só lugar, com ótimos preços e qualidade."
               }
             ].map((testimonial, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-md">

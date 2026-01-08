@@ -41,8 +41,8 @@ export default function SellersPage() {
     {
       id: 'seller1',
       businessName: 'Fazenda Verde',
-      businessDescription: 'Produtos orgânicos frescos direto da fazenda. Cultivamos com amor e respeito pela natureza.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=FV',
+      businessDescription: 'Produtos de qualidade em todas as categorias. Encontre tudo que você precisa em um só lugar.',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=FV',
       rating: 4.8,
       reviewCount: 127,
       totalProducts: 15,
@@ -58,7 +58,7 @@ export default function SellersPage() {
       id: 'seller2',
       businessName: 'Horta Orgânica Silva',
       businessDescription: 'Especialistas em vegetais orgânicos frescos. Qualidade garantida desde 2020.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=HS',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=HS',
       rating: 4.9,
       reviewCount: 89,
       totalProducts: 12,
@@ -74,7 +74,7 @@ export default function SellersPage() {
       id: 'seller3',
       businessName: 'Frutas Frescas Costa',
       businessDescription: 'As melhores frutas orgânicas da região. Sabor e qualidade em cada produto.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=FC',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=FC',
       rating: 4.7,
       reviewCount: 156,
       totalProducts: 18,
@@ -90,7 +90,7 @@ export default function SellersPage() {
       id: 'seller4',
       businessName: 'Grãos Naturais',
       businessDescription: 'Grãos orgânicos de alta qualidade. Nutrição e sabor em cada grão.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=GN',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=GN',
       rating: 4.6,
       reviewCount: 73,
       totalProducts: 8,
@@ -106,7 +106,7 @@ export default function SellersPage() {
       id: 'seller5',
       businessName: 'Mel Orgânico Santos',
       businessDescription: 'Mel puro e natural das abelhas locais. Sabor autêntico e propriedades medicinais.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=MS',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=MS',
       rating: 4.5,
       reviewCount: 45,
       totalProducts: 5,
@@ -122,7 +122,7 @@ export default function SellersPage() {
       id: 'seller6',
       businessName: 'Hortaliças Frescas',
       businessDescription: 'Hortaliças orgânicas cultivadas sem agrotóxicos. Frescor e saúde em cada folha.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=HF',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=HF',
       rating: 4.4,
       reviewCount: 67,
       totalProducts: 10,
@@ -138,7 +138,7 @@ export default function SellersPage() {
       id: 'seller7',
       businessName: 'Raízes Orgânicas',
       businessDescription: 'Raízes e tubérculos orgânicos. Nutrição e sabor da terra.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=RO',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=RO',
       rating: 4.3,
       reviewCount: 34,
       totalProducts: 7,
@@ -154,7 +154,7 @@ export default function SellersPage() {
       id: 'seller8',
       businessName: 'Ervas Aromáticas',
       businessDescription: 'Ervas aromáticas e medicinais. Sabor e benefícios para sua saúde.',
-      logo: 'https://placehold.co/64x64/00BE27/ffffff?text=EA',
+      logo: 'https://placehold.co/64x64/2563EB/ffffff?text=EA',
       rating: 4.2,
       reviewCount: 28,
       totalProducts: 6,
@@ -252,7 +252,7 @@ export default function SellersPage() {
       <Header />
 
       {/* Page Header */}
-      <section className="bg-gradient-to-r from-green-gray-1 to-green-gray-2 py-12">
+      <section className="bg-gradient-to-r from-blue-gray-1 to-blue-gray-2 py-12">
         <div className="container">
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-9 mb-4">

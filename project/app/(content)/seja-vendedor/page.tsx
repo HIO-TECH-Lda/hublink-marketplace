@@ -83,7 +83,7 @@ export default function SejaVendedorPage() {
     {
       icon: Users,
       title: 'Alcance Ampliado',
-      description: 'Conecte-se com milhares de clientes interessados em produtos orgânicos'
+      description: 'Conecte-se com milhares de clientes interessados em seus produtos'
     },
     {
       icon: TrendingUp,
@@ -113,7 +113,7 @@ export default function SejaVendedorPage() {
   ];
 
   const requisitos = [
-    'Produtos orgânicos certificados ou de produção própria',
+    'Produtos de qualidade e em conformidade com as normas',
     'Bilhete de Identidade',
     'NUIT',
     'Localização para armazenamento adequado',
@@ -164,7 +164,7 @@ export default function SejaVendedorPage() {
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">
-            Seja um Vendedor Txova
+            Seja um Vendedor VITRINE
           </h1>
           <p className="text-base sm:text-lg text-gray-7 max-w-3xl mx-auto px-4">
             Junte-se à nossa comunidade de produtores orgânicos e alcance milhares de clientes 
@@ -175,7 +175,7 @@ export default function SejaVendedorPage() {
         {/* Benefits Section */}
         <div className="mb-16">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-9 mb-8 text-center">
-            Por que vender no Txova?
+            Por que vender na VITRINE?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {beneficios.map((beneficio, index) => (
@@ -317,7 +317,7 @@ export default function SejaVendedorPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-9 mb-2">
-                    Nome da Banca *
+                    Nome da Loja *
                   </label>
                   <Input
                     name="nomeLoja"
@@ -331,7 +331,7 @@ export default function SejaVendedorPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-9 mb-2">
-                  Descrição da Banca
+                  Descrição da Loja
                 </label>
                 <Textarea
                   name="descricao"
@@ -447,7 +447,7 @@ export default function SejaVendedorPage() {
               Pronto para começar?
             </h2>
             <p className="text-gray-7 mb-6 max-w-2xl mx-auto">
-              Junte-se a centenas de produtores que já estão vendendo no Txova e 
+              Junte-se a centenas de vendedores que já estão vendendo na VITRINE e 
               crescendo seus negócios conosco.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

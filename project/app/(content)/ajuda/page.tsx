@@ -128,9 +128,9 @@ export default function AjudaPage() {
       icon: Mail,
       title: 'E-mail',
       description: 'Envie sua dúvida por e-mail',
-      contact: 'suporte@ecobazar.com',
+      contact: 'suporte@vitrine.com',
       action: 'Enviar E-mail',
-      href: 'mailto:suporte@ecobazar.com'
+      href: 'mailto:suporte@vitrine.com'
     },
     {
       icon: MessageCircle,

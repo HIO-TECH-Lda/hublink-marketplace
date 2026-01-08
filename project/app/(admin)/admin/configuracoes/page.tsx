@@ -72,9 +72,9 @@ export default function SystemSettingsPage() {
   const { state } = useMarketplace();
   const [settings, setSettings] = useState<SystemSettings>({
     general: {
-      siteName: 'Txova',
-      siteDescription: 'Marketplace moçambicano de produtos e serviços',
-      contactEmail: 'contato@txova.com',
+      siteName: 'VITRINE',
+      siteDescription: 'Marketplace completo com produtos de qualidade',
+      contactEmail: 'contato@vitrine.com',
       supportPhone: '+258 84 9999-9999',
       timezone: 'Africa/Maputo',
       currency: 'MZN',
@@ -99,10 +99,10 @@ export default function SystemSettingsPage() {
     email: {
       smtpHost: 'smtp.gmail.com',
       smtpPort: 587,
-      smtpUser: 'noreply@ecobazar.com',
+      smtpUser: 'noreply@vitrine.com',
       smtpPassword: '********',
-      fromEmail: 'noreply@ecobazar.com',
-      fromName: 'Txova'
+      fromEmail: 'noreply@vitrine.com',
+      fromName: 'VITRINE'
     },
     notifications: {
       orderNotifications: true,

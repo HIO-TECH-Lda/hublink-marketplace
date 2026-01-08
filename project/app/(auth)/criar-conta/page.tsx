@@ -202,7 +202,7 @@ export default function CreateAccountPage() {
                 Quer vender seus produtos?
               </h3>
               <p className="text-sm text-green-7 mb-4">
-                Junte-se aos nossos vendedores e comece a vender produtos orgânicos na nossa plataforma
+                Junte-se aos nossos vendedores e comece a vender seus produtos na nossa plataforma
               </p>
               <Link href="/seja-vendedor">
                 <Button

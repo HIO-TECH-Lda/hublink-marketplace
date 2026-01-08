@@ -18,16 +18,16 @@ export default function FAQPage() {
 
   const faqs = [
     {
-      question: "O que são alimentos orgânicos?",
-      answer: "Alimentos orgânicos são cultivados sem o uso de pesticidas sintéticos, fertilizantes químicos ou organismos geneticamente modificados. Eles seguem práticas agrícolas que promovem a saúde do solo, biodiversidade e sustentabilidade ambiental."
+      question: "Como faço para comprar na VITRINE?",
+      answer: "Comprar na VITRINE é muito simples! Basta criar uma conta, navegar pelos produtos, adicionar ao carrinho e finalizar a compra. Aceitamos diversos métodos de pagamento e oferecemos entrega rápida e segura."
     },
     {
       question: "Como posso ter certeza de que os produtos são realmente orgânicos?",
       answer: "Todos os nossos produtores são certificados por órgãos reconhecidos e passam por rigorosos controles de qualidade. Você pode rastrear a origem de cada produto através do código QR ou número de lote."
     },
     {
-      question: "Qual a diferença entre produtos orgânicos e convencionais?",
-      answer: "Produtos orgânicos são cultivados sem agrotóxicos, têm maior teor de nutrientes, são mais saborosos e não contêm resíduos químicos prejudiciais à saúde. Além disso, promovem a sustentabilidade ambiental."
+      question: "Quais métodos de pagamento são aceitos?",
+      answer: "Aceitamos diversos métodos de pagamento incluindo cartões de crédito e débito, M-Pesa, E-Mola e outras formas de pagamento digital. Todos os pagamentos são processados de forma segura."
     },
     {
       question: "Como funciona o processo de entrega?",
@@ -84,7 +84,7 @@ export default function FAQPage() {
             {/* Page Header */}
             <div className="mb-8">
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-9 mb-4">
-                Bem-vindo, Vamos Falar Sobre Nosso Txova
+                Bem-vindo, Vamos Falar Sobre a VITRINE
               </h1>
               <p className="text-lg text-gray-7">
                 Encontre respostas para as perguntas mais frequentes sobre nossos produtos, 
@@ -189,7 +189,7 @@ export default function FAQPage() {
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">E-mail</p>
-                    <p className="text-gray-7">contato@ecobazar.com</p>
+                    <p className="text-gray-7">contato@vitrine.com</p>
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">Horário</p>
@@ -208,7 +208,7 @@ export default function FAQPage() {
                     onClick={() => toggleItem(0)}
                     className="block text-sm text-gray-7 hover:text-primary transition-colors"
                   >
-                    O que são alimentos orgânicos?
+                    Como faço para comprar na VITRINE?
                   </a>
                   <a
                     href="#"
@@ -238,7 +238,7 @@ export default function FAQPage() {
               <div className="bg-primary/10 rounded-lg p-4">
                 <h3 className="text-lg font-bold text-gray-9 mb-2">Fique por Dentro</h3>
                 <p className="text-sm text-gray-7 mb-4">
-                  Receba dicas sobre alimentação orgânica e novidades do Txova.
+                  Receba dicas sobre produtos e novidades da VITRINE.
                 </p>
                 <div className="space-y-2">
                   <input

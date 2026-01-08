@@ -14,7 +14,7 @@ export default function BlogListPage() {
   const [showSidebar, setShowSidebar] = useState(false);
 
   const categories = ['all', ...Array.from(new Set(state.blogPosts.map(post => post.category)))];
-  const tags = ['orgânico', 'saúde', 'nutrição', 'horta', 'cultivo', 'receitas', 'culinária'];
+  const tags = ['tecnologia', 'moda', 'esportes', 'casa', 'beleza', 'compras', 'dicas'];
 
   const filteredPosts = selectedCategory === 'all' 
     ? state.blogPosts 
@@ -37,7 +37,7 @@ export default function BlogListPage() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Nosso Blog</h1>
-            <p className="text-gray-6 text-sm sm:text-base">Dicas, receitas e novidades sobre alimentos orgânicos</p>
+            <p className="text-gray-6 text-sm sm:text-base">Dicas, tendências e novidades sobre produtos e compras</p>
           </div>
           
           {/* Mobile Filter Button */}
