@@ -70,7 +70,7 @@ app.get('/health', (req: Request, res: Response) => {
 // API routes (to be added)
 app.get('/api/v1', (req: Request, res: Response) => {
   res.json({
-    message: 'Welcome to Txova Marketplace API',
+    message: 'Welcome to Marketplace API',
     version: '1.0.0',
     endpoints: {
       auth: '/api/v1/auth',
