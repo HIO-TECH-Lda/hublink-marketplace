@@ -163,6 +163,42 @@ export class EmailService {
   }
 
   /**
+   * Send email with raw HTML (no template)
+   */
+  static async sendRawEmail(options: {
+    to: string;
+    subject: string;
+    html: string;
+    from?: string;
+    replyTo?: string;
+  }): Promise<void> {
+    if (!this.isInitialized) {
+      await this.initialize();
+    }
+
+    if (!this.transporter) {
+      console.warn('⚠️ Email service not available. Skipping email send.');
+      return;
+    }
+
+    try {
+      const mailOptions = {
+        from: options.from || process.env.SMTP_FROM_EMAIL || 'noreply@txova.com',
+        to: options.to,
+        subject: options.subject,
+        html: options.html,
+        replyTo: options.replyTo
+      };
+
+      const result = await this.transporter.sendMail(mailOptions);
+      console.log(`✅ Email sent successfully to ${options.to}: ${result.messageId}`);
+    } catch (error) {
+      console.error('❌ Failed to send email:', error);
+      throw new Error(`Failed to send email: ${error}`);
+    }
+  }
+
+  /**
    * Get email template from file
    */
   private static async getEmailTemplate(templateName: string): Promise<string> {

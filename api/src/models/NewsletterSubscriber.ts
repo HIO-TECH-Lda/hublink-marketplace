@@ -6,7 +6,7 @@ export interface INewsletterSubscriber {
   firstName?: string;
   lastName?: string;
   status: 'active' | 'unsubscribed' | 'bounced' | 'pending';
-  origin: 'popup' | 'footer' | 'signup' | 'admin' | 'import';
+  origin: 'popup' | 'footer' | 'signup' | 'checkout' | 'admin' | 'import';
   tags: string[];
   preferences?: {
     categories?: string[];
@@ -62,7 +62,7 @@ const newsletterSubscriberSchema = new Schema<INewsletterSubscriberDocument>({
   },
   origin: {
     type: String,
-    enum: ['popup', 'footer', 'signup', 'admin', 'import'],
+    enum: ['popup', 'footer', 'signup', 'checkout', 'admin', 'import'],
     default: 'signup'
   },
   tags: [{
