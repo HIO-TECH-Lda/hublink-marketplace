@@ -2,22 +2,32 @@
 
 import React from 'react';
 import { useParams } from 'next/navigation';
-import { useMarketplace } from '@/contexts/MarketplaceContext';
-import { ArrowLeft, Calendar, User, Tag, Share2, Heart, MessageCircle, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Tag, Share2, Heart, MessageCircle, Clock, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { useBlogPost } from '@/hooks/useBlog';
 
 export default function BlogPostPage() {
   const params = useParams();
-  const { state } = useMarketplace();
-  const postId = params.id as string;
+  const slug = params.id as string;
 
-  // Find the blog post
-  const post = state.blogPosts.find(p => p.id === postId);
+  const { data, isLoading, error } = useBlogPost(slug);
 
-  if (!post) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="container py-16 px-4 sm:px-6 lg:px-8 flex justify-center items-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !data) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
@@ -36,10 +46,8 @@ export default function BlogPostPage() {
     );
   }
 
-  // Get related posts (same category, excluding current post)
-  const relatedPosts = state.blogPosts
-    .filter(p => p.id !== postId && p.category === post.category)
-    .slice(0, 3);
+  const post = data;
+  const relatedPosts = data.relatedPosts || [];
 
   return (
     <div className="min-h-screen bg-white">
@@ -60,11 +68,11 @@ export default function BlogPostPage() {
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-6 mb-4">
               <div className="flex items-center space-x-1">
                 <Calendar size={14} />
-                <span>{new Date(post.date).toLocaleDateString('pt-MZ')}</span>
+                <span>{new Date(post.publishedAt || post.createdAt).toLocaleDateString('pt-MZ')}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <User size={14} />
-                <span>{post.author}</span>
+                <span>{post.authorName}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Clock size={14} />
@@ -92,7 +100,7 @@ export default function BlogPostPage() {
           {/* Featured Image */}
           <div className="mb-8">
             <img
-              src={post.image}
+              src={post.image || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'}
               alt={post.title}
               className="w-full h-auto rounded-2xl shadow-lg"
             />
@@ -118,37 +126,17 @@ export default function BlogPostPage() {
 
           {/* Post Content */}
           <div className="prose prose-lg max-w-none mb-12">
-            <div className="text-gray-7 leading-relaxed space-y-6">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </p>
-              
-              <h2 className="text-2xl font-bold text-gray-9 mt-8 mb-4">Por que escolher alimentos orgânicos?</h2>
-              <p>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-              
-              <h3 className="text-xl font-semibold text-gray-9 mt-6 mb-3">Benefícios para a saúde</h3>
-              <ul className="list-disc list-inside space-y-2 text-gray-7">
-                <li>Livres de agrotóxicos e pesticidas</li>
-                <li>Maior concentração de nutrientes</li>
-                <li>Melhor sabor e aroma</li>
-                <li>Segurança alimentar garantida</li>
-              </ul>
-              
-              <h3 className="text-xl font-semibold text-gray-9 mt-6 mb-3">Benefícios para o meio ambiente</h3>
-              <p>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-              </p>
-              
-              <blockquote className="border-l-4 border-primary pl-6 italic text-gray-6 bg-gray-1 p-4 rounded-r-lg">
-                &quot;A escolha por alimentos orgânicos é uma escolha pela saúde do planeta e das futuras gerações.&quot;
-              </blockquote>
-              
-              <p>
-                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-              </p>
-            </div>
+            {post.content ? (
+              <div 
+                className="text-gray-7 leading-relaxed space-y-6"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+            ) : (
+              <div className="text-gray-7 leading-relaxed space-y-6">
+                <p>{post.excerpt}</p>
+                <p className="text-gray-6 italic">Conteúdo completo não disponível.</p>
+              </div>
+            )}
           </div>
 
           {/* Tags */}
@@ -173,8 +161,8 @@ export default function BlogPostPage() {
                 <User size={24} className="text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-9">{post.author}</h3>
-                <p className="text-gray-6 text-sm">Especialista em {post.category.toLowerCase()}</p>
+                <h3 className="font-semibold text-gray-9">{post.authorName}</h3>
+                <p className="text-gray-6 text-sm">Autor</p>
                 <p className="text-gray-7 text-sm mt-2">
                   Especialista com anos de experiência em {post.category.toLowerCase()}. 
                   Compartilhando conhecimento e dicas valiosas para uma vida mais saudável.
@@ -193,7 +181,7 @@ export default function BlogPostPage() {
                 <article key={relatedPost.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="aspect-video bg-gray-1 overflow-hidden">
                     <img
-                      src={relatedPost.image}
+                      src={relatedPost.image || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'}
                       alt={relatedPost.title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -201,11 +189,11 @@ export default function BlogPostPage() {
                   <div className="p-4">
                     <div className="flex items-center space-x-2 text-xs text-gray-6 mb-2">
                       <Calendar size={12} />
-                      <span>{new Date(relatedPost.date).toLocaleDateString('pt-MZ')}</span>
+                      <span>{new Date(relatedPost.publishedAt || relatedPost.createdAt).toLocaleDateString('pt-MZ')}</span>
                     </div>
                     
                     <h3 className="font-semibold text-gray-9 mb-2 line-clamp-2">
-                      <Link href={`/blog/${relatedPost.id}`} className="hover:text-primary transition-colors">
+                      <Link href={`/blog/${relatedPost.slug}`} className="hover:text-primary transition-colors">
                         {relatedPost.title}
                       </Link>
                     </h3>
