@@ -33,6 +33,9 @@ import adminNewsletterRoutes from './routes/adminNewsletter';
 import adminTicketRoutes from './routes/adminTickets';
 import adminReportsRoutes from './routes/adminReports';
 import adminAuditLogRoutes from './routes/adminAuditLogs';
+import sellerRoutes from './routes/sellers';
+import contactRoutes from './routes/contact';
+import newsletterRoutes from './routes/newsletter';
 
 // Load environment variables
 dotenv.config();
@@ -81,6 +84,10 @@ app.get('/api/v1', (req: Request, res: Response) => {
       orders: '/api/v1/orders',
       payments: '/api/v1/payments',
       reviews: '/api/v1/reviews',
+      blog: '/api/v1/blog',
+      sellers: '/api/v1/sellers',
+      contact: '/api/v1/contact',
+      newsletter: '/api/v1/newsletter',
       test: '/api/v1/test'
     },
     authEndpoints: {
@@ -184,6 +191,27 @@ app.get('/api/v1', (req: Request, res: Response) => {
       getAnyRefundById: 'GET /api/v1/refunds/admin/:refundId (admin)',
       approveRefundByAdmin: 'PATCH /api/v1/refunds/admin/:refundId/approve (admin)',
       rejectRefundByAdmin: 'PATCH /api/v1/refunds/admin/:refundId/reject (admin)'
+    },
+    blogEndpoints: {
+      getPublishedPosts: 'GET /api/v1/blog',
+      getPostBySlug: 'GET /api/v1/blog/slug/:slug',
+      getCategories: 'GET /api/v1/blog/categories',
+      getTags: 'GET /api/v1/blog/tags'
+    },
+    sellerEndpoints: {
+      getSellers: 'GET /api/v1/sellers',
+      getTopSellers: 'GET /api/v1/sellers/top',
+      getFeaturedSellers: 'GET /api/v1/sellers/featured',
+      getSellerProfile: 'GET /api/v1/sellers/:sellerId',
+      getSellerProducts: 'GET /api/v1/sellers/:sellerId/products'
+    },
+    contactEndpoints: {
+      submitContactForm: 'POST /api/v1/contact'
+    },
+    newsletterEndpoints: {
+      subscribe: 'POST /api/v1/newsletter/subscribe',
+      unsubscribe: 'POST /api/v1/newsletter/unsubscribe',
+      checkStatus: 'GET /api/v1/newsletter/status/:email'
     }
   });
 });
@@ -259,6 +287,15 @@ app.use('/api/v1/blog', blogRoutes);
 
 // Admin blog management routes
 app.use('/api/v1/admin/blog', adminBlogRoutes);
+
+// Public seller routes
+app.use('/api/v1/sellers', sellerRoutes);
+
+// Contact form routes
+app.use('/api/v1/contact', contactRoutes);
+
+// Newsletter routes (public)
+app.use('/api/v1/newsletter', newsletterRoutes);
 
 // Admin newsletter routes
 app.use('/api/v1/admin/newsletter', adminNewsletterRoutes);
