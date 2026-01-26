@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { 
   Building, 
@@ -14,7 +14,8 @@ import {
   ArrowLeft,
   Filter,
   Grid,
-  List
+  List,
+  Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -27,113 +28,34 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { formatCurrency } from '@/lib/payment';
-
-interface Seller {
-  id: string;
-  businessName: string;
-  businessDescription: string;
-  contactPerson: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-  };
-  address: {
-    street: string;
-    number: string;
-    complement?: string;
-    neighborhood: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  };
-  status: 'pending' | 'approved' | 'rejected' | 'suspended';
-  commissionRate: number;
-  totalSales: number;
-  totalProducts: number;
-  rating: number;
-  reviewCount: number;
-  joinedDate: string;
-  logo?: string;
-  coverImage?: string;
-}
+import { useSellerProfile, useSellerProducts } from '@/hooks/useSellers';
 
 export default function SellerProfilePage() {
   const params = useParams();
+  const sellerId = params.id as string;
   const { state } = useMarketplace();
-  const [seller, setSeller] = useState<Seller | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [productsPage, setProductsPage] = useState(1);
 
-  useEffect(() => {
-    loadSeller();
-  }, [params.id]);
-
-  const loadSeller = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Mock seller data
-    const mockSeller: Seller = {
-      id: params.id as string,
-      businessName: 'Fazenda Verde',
-      businessDescription: 'Produtos orgânicos frescos direto da fazenda. Cultivamos com amor e respeito pela natureza, garantindo qualidade e sabor em cada produto.',
-      contactPerson: {
-        firstName: 'João',
-        lastName: 'Silva',
-        email: 'joao@fazendaverde.com',
-        phone: '(258) 84-123-4567'
-      },
-      address: {
-        street: 'Estrada Nacional 1',
-        number: 'Km 25',
-        complement: 'Fazenda Verde',
-        neighborhood: 'Zona Rural',
-        city: 'Maputo',
-        state: 'Maputo',
-        zipCode: '1100'
-      },
-      status: 'approved',
-      commissionRate: 10,
-      totalSales: 125000.00,
-      totalProducts: 15,
-      rating: 4.8,
-      reviewCount: 127,
-      joinedDate: '2023-06-15T10:30:00Z',
-      logo: '/images/fazenda-verde-logo.jpg',
-      coverImage: '/images/fazenda-verde-cover.jpg'
-    };
-
-    setSeller(mockSeller);
-    setIsLoading(false);
-  };
-
-  // Get seller's products
-  const sellerProducts = state.products.filter(product => product.sellerId === params.id);
-
-  // Sort products
-  const sortedProducts = [...sellerProducts].sort((a, b) => {
-    switch (sortBy) {
-      case 'price-asc':
-        return a.price - b.price;
-      case 'price-desc':
-        return b.price - a.price;
-      case 'rating':
-        return (b.rating || 0) - (a.rating || 0);
-      case 'name':
-        return a.name.localeCompare(b.name);
-      case 'popular':
-      default:
-        return (b.reviews || 0) - (a.reviews || 0);
-    }
+  const { data: seller, isLoading: sellerLoading } = useSellerProfile(sellerId);
+  const { data: productsData, isLoading: productsLoading } = useSellerProducts(sellerId, {
+    page: productsPage,
+    limit: 12,
+    sortBy,
+      sortOrder: 'desc'
   });
 
-  if (isLoading) {
+  const products = productsData?.products || [];
+  const productsPagination = productsData?.pagination;
+  const isLoading = sellerLoading || productsLoading;
+
+  if (sellerLoading) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
           <p className="text-gray-6">Carregando perfil do vendedor...</p>
         </div>
         <Footer />
@@ -213,15 +135,15 @@ export default function SellerProfilePage() {
                     <div className="flex items-center space-x-1">
                       <Star className="w-4 h-4 text-warning fill-warning flex-shrink-0" />
                       <span>{seller.rating}</span>
-                      <span>({seller.reviewCount} avaliações)</span>
+                      <span>({seller.totalReviews} avaliações)</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Package className="w-4 h-4 flex-shrink-0" />
-                      <span>{seller.totalProducts} produtos</span>
+                      <span>{seller.totalProducts || 0} produtos</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Calendar className="w-4 h-4 flex-shrink-0" />
-                      <span>Membro desde {new Date(seller.joinedDate).toLocaleDateString('pt-MZ')}</span>
+                      <span>Membro desde {new Date(seller.memberSince).toLocaleDateString('pt-MZ')}</span>
                     </div>
                   </div>
                 </div>
@@ -230,10 +152,10 @@ export default function SellerProfilePage() {
               {/* Status Badge */}
               <div className="mt-4 lg:mt-0 lg:ml-4">
                 <Badge 
-                  variant={seller.status === 'approved' ? 'default' : 'secondary'}
+                  variant={seller.isVerified ? 'default' : 'secondary'}
                   className="text-sm"
                 >
-                  {seller.status === 'approved' ? 'Verificado' : 'Pendente'}
+                  {seller.isVerified ? 'Verificado' : 'Pendente'}
                 </Badge>
               </div>
             </div>
@@ -253,7 +175,7 @@ export default function SellerProfilePage() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-7 text-sm leading-relaxed">
-                  {seller.businessDescription}
+                  {seller.description}
                 </p>
               </CardContent>
             </Card>
@@ -264,22 +186,22 @@ export default function SellerProfilePage() {
                 <CardTitle>Informações de Contato</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-start space-x-2">
-                  <Mail className="w-4 h-4 text-gray-4 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-7 break-all">{seller.contactPerson.email}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4 text-gray-4 flex-shrink-0" />
-                  <span className="text-sm text-gray-7">{seller.contactPerson.phone}</span>
-                </div>
+                {seller.contactEmail && (
+                  <div className="flex items-start space-x-2">
+                    <Mail className="w-4 h-4 text-gray-4 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-7 break-all">{seller.contactEmail}</span>
+                  </div>
+                )}
+                {seller.phone && (
+                  <div className="flex items-center space-x-2">
+                    <Phone className="w-4 h-4 text-gray-4 flex-shrink-0" />
+                    <span className="text-sm text-gray-7">{seller.phone}</span>
+                  </div>
+                )}
                 <div className="flex items-start space-x-2">
                   <MapPin className="w-4 h-4 text-gray-4 mt-0.5 flex-shrink-0" />
                   <div className="text-sm text-gray-7 min-w-0">
-                    <p className="break-words">{seller.address.street}, {seller.address.number}</p>
-                    {seller.address.complement && <p className="break-words">{seller.address.complement}</p>}
-                    <p className="break-words">{seller.address.neighborhood}</p>
-                    <p className="break-words">{seller.address.city}, {seller.address.state}</p>
-                    <p>{seller.address.zipCode}</p>
+                    <p className="break-words">{seller.location}</p>
                   </div>
                 </div>
               </CardContent>
@@ -293,11 +215,11 @@ export default function SellerProfilePage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-6">Vendas Totais:</span>
-                  <span className="font-medium">{formatCurrency(seller.totalSales)}</span>
+                  <span className="font-medium">{seller.totalSales}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-6">Produtos:</span>
-                  <span className="font-medium">{seller.totalProducts}</span>
+                  <span className="font-medium">{seller.totalProducts || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-6">Avaliação:</span>
@@ -305,7 +227,7 @@ export default function SellerProfilePage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-6">Avaliações:</span>
-                  <span className="font-medium">{seller.reviewCount}</span>
+                  <span className="font-medium">{seller.totalReviews}</span>
                 </div>
               </CardContent>
             </Card>
@@ -320,7 +242,7 @@ export default function SellerProfilePage() {
                   Produtos de {seller.businessName}
                 </h2>
                 <p className="text-gray-6">
-                  {sortedProducts.length} produto{sortedProducts.length !== 1 ? 's' : ''} encontrado{sortedProducts.length !== 1 ? 's' : ''}
+                  {products.length} produto{products.length !== 1 ? 's' : ''} encontrado{products.length !== 1 ? 's' : ''}
                 </p>
               </div>
 
@@ -332,8 +254,7 @@ export default function SellerProfilePage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="popular">Mais Populares</SelectItem>
-                    <SelectItem value="price-asc">Menor Preço</SelectItem>
-                    <SelectItem value="price-desc">Maior Preço</SelectItem>
+                    <SelectItem value="price">Menor Preço</SelectItem>
                     <SelectItem value="rating">Melhor Avaliação</SelectItem>
                     <SelectItem value="name">Nome A-Z</SelectItem>
                   </SelectContent>
@@ -361,15 +282,19 @@ export default function SellerProfilePage() {
             </div>
 
             {/* Products Grid */}
-            {sortedProducts.length > 0 ? (
+            {productsLoading ? (
+              <div className="flex justify-center items-center py-16">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : products.length > 0 ? (
               <div className={viewMode === 'grid' 
                 ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6'
                 : 'space-y-4'
               }>
-                {sortedProducts.map((product) => (
+                {products.map((product: any) => (
                   <ProductCard
-                    key={product.id}
-                    product={product as unknown as Product}
+                    key={product.id || product._id}
+                    product={product}
                   />
                 ))}
               </div>
