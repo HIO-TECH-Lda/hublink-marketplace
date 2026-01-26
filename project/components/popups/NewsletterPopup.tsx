@@ -1,15 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useNewsletterSubscribe } from '@/hooks/useNewsletter';
 
 export default function NewsletterPopup() {
   const { state, dispatch } = useMarketplace();
   const [email, setEmail] = useState('');
   const [dontShowAgain, setDontShowAgain] = useState(false);
+  const subscribe = useNewsletterSubscribe();
 
   if (!state.showNewsletterPopup) return null;
 
@@ -20,37 +22,13 @@ export default function NewsletterPopup() {
     dispatch({ type: 'HIDE_NEWSLETTER_POPUP' });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter subscription
-    console.log('Newsletter subscription:', email);
-    
-    // Mock: Store subscription in localStorage for demo purposes
-    const subscriptions = JSON.parse(localStorage.getItem('newsletter_subscriptions') || '[]');
-    const newSubscription = {
-      id: Date.now().toString(),
+    await subscribe.mutateAsync({
       email,
-      status: 'active',
-      source: 'popup',
-      tags: ['organic', 'new-subscriber'],
-      preferences: {
-        categories: ['vegetables', 'fruits'],
-        frequency: 'weekly',
-        language: 'pt-MZ'
-      },
-      stats: {
-        emailsSent: 0,
-        emailsOpened: 0,
-        emailsClicked: 0
-      },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    subscriptions.push(newSubscription);
-    localStorage.setItem('newsletter_subscriptions', JSON.stringify(subscriptions));
-    
-    // Show success message
-    alert('Obrigado por se inscrever na nossa newsletter!');
+      source: 'popup'
+    });
+    setEmail('');
     handleClose();
   };
 
@@ -95,8 +73,16 @@ export default function NewsletterPopup() {
             <Button 
               type="submit" 
               className="w-full bg-primary hover:bg-primary-hard text-white py-3"
+              disabled={subscribe.isPending}
             >
-              Assinar Newsletter
+              {subscribe.isPending ? (
+                <>
+                  <Loader2 size={16} className="mr-2 animate-spin" />
+                  Inscrevendo...
+                </>
+              ) : (
+                'Assinar Newsletter'
+              )}
             </Button>
           </form>
 

@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, Loader2 } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useSubmitContactForm } from '@/hooks/useContact';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ export default function ContactPage() {
     message: ''
   });
 
+  const submitContact = useSubmitContactForm();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -24,11 +27,9 @@ export default function ContactPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Contact form submitted:', formData);
-    alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+    await submitContact.mutateAsync(formData);
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
@@ -217,9 +218,19 @@ export default function ContactPage() {
               <Button
                 type="submit"
                 className="w-full bg-primary hover:bg-primary-hard text-white py-3"
+                disabled={submitContact.isPending}
               >
-                <Send size={16} className="mr-2" />
-                Enviar Mensagem
+                {submitContact.isPending ? (
+                  <>
+                    <Loader2 size={16} className="mr-2 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <Send size={16} className="mr-2" />
+                    Enviar Mensagem
+                  </>
+                )}
               </Button>
             </form>
 

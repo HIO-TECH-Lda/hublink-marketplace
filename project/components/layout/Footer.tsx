@@ -1,46 +1,26 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useNewsletterSubscribe } from '@/hooks/useNewsletter';
 
 export default function Footer() {
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const subscribe = useNewsletterSubscribe();
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const email = formData.get('email') as string;
+    if (!newsletterEmail) return;
     
-    if (!email) return;
+    await subscribe.mutateAsync({
+      email: newsletterEmail,
+      source: 'footer'
+    });
     
-    // Mock: Store subscription in localStorage for demo purposes
-    const subscriptions = JSON.parse(localStorage.getItem('newsletter_subscriptions') || '[]');
-    const newSubscription = {
-      id: Date.now().toString(),
-      email,
-      status: 'active',
-      source: 'footer',
-      tags: ['organic', 'new-subscriber'],
-      preferences: {
-        categories: ['vegetables', 'fruits'],
-        frequency: 'weekly',
-        language: 'pt-MZ'
-      },
-      stats: {
-        emailsSent: 0,
-        emailsOpened: 0,
-        emailsClicked: 0
-      },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    subscriptions.push(newSubscription);
-    localStorage.setItem('newsletter_subscriptions', JSON.stringify(subscriptions));
-    
-    // Show success message
-    alert('Obrigado por se inscrever na nossa newsletter!');
-    
-    // Reset form
-    (e.currentTarget as HTMLFormElement).reset();
+    setNewsletterEmail('');
   };
 
   return (
@@ -56,13 +36,25 @@ export default function Footer() {
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2">
               <Input
                 type="email"
-                name="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
                 placeholder="Digite seu e-mail"
                 className="flex-1 bg-white text-gray-9 min-w-0"
                 required
               />
-              <Button type="submit" className="bg-primary hover:bg-primary-hard px-6 sm:px-8 whitespace-nowrap">
-                Assinar
+              <Button 
+                type="submit" 
+                className="bg-primary hover:bg-primary-hard px-6 sm:px-8 whitespace-nowrap"
+                disabled={subscribe.isPending}
+              >
+                {subscribe.isPending ? (
+                  <>
+                    <Loader2 size={16} className="mr-2 animate-spin" />
+                    Enviando
+                  </>
+                ) : (
+                  'Assinar'
+                )}
               </Button>
             </form>
           </div>
