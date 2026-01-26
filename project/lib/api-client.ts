@@ -1,6 +1,19 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3002/api/v1';
+// Determine API URL based on environment
+const getApiBaseUrl = (): string => {
+  // Check if we're in production
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  // Use environment-specific URLs if provided
+  if (isProduction) {
+    return process.env.NEXT_PUBLIC_API_BASE_URL_PROD || 'https://api.example.com/api/v1';
+  } else {
+    return process.env.NEXT_PUBLIC_API_BASE_URL_DEV || 'http://localhost:3002/api/v1';
+  }
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Create axios instance
 export const apiClient = axios.create({
