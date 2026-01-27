@@ -23,21 +23,23 @@ export class SellerService {
 
     const query: any = {
       role: 'seller',
-      isActive: true // Only show active sellers
+      status: 'active' // Only show active sellers
     };
 
-    // Search by business name
+    // Search by business name or description
     if (search) {
       query.$or = [
-        { businessName: { $regex: search, $options: 'i' } },
-        { 'businessInfo.description': { $regex: search, $options: 'i' } }
+        { 'sellerProfile.storeName': { $regex: search, $options: 'i' } },
+        { 'sellerProfile.storeDescription': { $regex: search, $options: 'i' } },
+        { firstName: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } }
       ];
     }
 
     // Filter by verification status
-    if (verified !== undefined) {
-      query.isVerified = verified === 'true' || verified === true;
-    }
+    // if (verified !== undefined) {
+    //   query.isVerified = verified === 'true' || verified === true;
+    // }
 
     // Filter by featured status
     if (featured !== undefined) {
@@ -46,7 +48,11 @@ export class SellerService {
 
     // Filter by location
     if (location) {
-      query.businessAddress = { $regex: location, $options: 'i' };
+      query.$or = query.$or || [];
+      query.$or.push(
+        { 'sellerProfile.city': { $regex: location, $options: 'i' } },
+        { 'sellerProfile.province': { $regex: location, $options: 'i' } }
+      );
     }
 
     // Calculate skip for pagination
@@ -59,14 +65,14 @@ export class SellerService {
     } else if (sortBy === 'sales') {
       sort.totalSales = sortOrder === 'asc' ? 1 : -1;
     } else if (sortBy === 'name') {
-      sort.businessName = sortOrder === 'asc' ? 1 : -1;
+      sort['sellerProfile.storeName'] = sortOrder === 'asc' ? 1 : -1;
     } else {
       sort.createdAt = sortOrder === 'asc' ? 1 : -1;
     }
 
     // Get sellers
     const sellers = await User.find(query)
-      .select('businessName businessInfo.logo businessInfo.description rating totalReviews totalSales businessAddress isVerified isFeatured createdAt')
+      .select('firstName lastName email avatar sellerProfile rating totalReviews totalSales isVerified isFeatured createdAt')
       .sort(sort)
       .skip(skip)
       .limit(parseInt(limit))
@@ -77,7 +83,7 @@ export class SellerService {
 
     // If category filter is provided, get sellers who sell in that category
     if (category) {
-      const sellersInCategory = await Product.distinct('seller', {
+      const sellersInCategory = await Product.distinct('sellerId', {
         category: category,
         status: 'active'
       });
@@ -86,8 +92,33 @@ export class SellerService {
         sellersInCategory.some((id: any) => id.toString() === seller._id.toString())
       );
 
+      // Get product counts for filtered sellers
+      const filteredSellerIds = filteredSellers.map((s: any) => s._id);
+      const productCounts = await Product.aggregate([
+        {
+          $match: {
+            seller: { $in: filteredSellerIds },
+            status: 'active'
+          }
+        },
+        {
+          $group: {
+            _id: '$seller',
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+
+      // Create a map of seller ID to product count
+      const productCountMap = new Map();
+      productCounts.forEach((pc: any) => {
+        productCountMap.set(pc._id.toString(), pc.count);
+      });
+
       return {
-        sellers: filteredSellers.map((seller: any) => this.formatPublicSeller(seller)),
+        sellers: filteredSellers.map((seller: any) => 
+          this.formatPublicSeller(seller, productCountMap.get(seller._id.toString()) || 0)
+        ),
         pagination: {
           page: parseInt(page),
           limit: parseInt(limit),
@@ -97,8 +128,33 @@ export class SellerService {
       };
     }
 
-    // Format sellers for public view
-    const formattedSellers = sellers.map((seller: any) => this.formatPublicSeller(seller));
+    // Get product counts for all sellers
+    const sellerIds = sellers.map((s: any) => s._id);
+    const productCounts = await Product.aggregate([
+      {
+        $match: {
+          sellerId: { $in: sellerIds },
+          status: 'active'
+        }
+      },
+      {
+        $group: {
+          _id: '$sellerId',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Create a map of seller ID to product count
+    const productCountMap = new Map();
+    productCounts.forEach((pc: any) => {
+      productCountMap.set(pc._id.toString(), pc.count);
+    });
+
+    // Format sellers for public view with product counts
+    const formattedSellers = sellers.map((seller: any) => 
+      this.formatPublicSeller(seller, productCountMap.get(seller._id.toString()) || 0)
+    );
 
     return {
       sellers: formattedSellers,
@@ -118,7 +174,7 @@ export class SellerService {
     const seller: any = await User.findOne({
       _id: sellerId,
       role: 'seller',
-      isActive: true
+      status: 'active'
     }).select('-password -refreshTokens -__v').lean();
 
     if (!seller) {
@@ -127,13 +183,13 @@ export class SellerService {
 
     // Get seller's products count
     const totalProducts = await Product.countDocuments({
-      seller: sellerId,
+      sellerId: sellerId,
       status: 'active'
     });
 
     // Get recent products (last 8)
     const recentProducts = await Product.find({
-      seller: sellerId,
+      sellerId: sellerId,
       status: 'active'
     })
       .select('name slug price images rating reviewCount stock category')
@@ -149,24 +205,25 @@ export class SellerService {
 
     return {
       id: seller._id,
-      businessName: seller.businessName,
-      logo: seller.businessInfo?.logo,
-      description: seller.businessInfo?.description,
+      businessName: seller.sellerProfile?.storeName || `${seller.firstName} ${seller.lastName}`,
+      logo: seller.avatar,
+      description: seller.sellerProfile?.storeDescription,
       rating: seller.rating || 0,
       totalReviews: seller.totalReviews || 0,
       totalSales: seller.totalSales || 0,
       totalProducts,
-      location: seller.businessAddress,
+      location: seller.sellerProfile?.address ? 
+        `${seller.sellerProfile.address}, ${seller.sellerProfile.city}, ${seller.sellerProfile.province}` : 
+        undefined,
       isVerified: seller.isVerified || false,
       isFeatured: seller.isFeatured || false,
       memberSince: seller.createdAt,
-      contactEmail: seller.businessInfo?.publicEmail || undefined,
-      phone: seller.businessInfo?.publicPhone || undefined,
-      website: seller.businessInfo?.website || undefined,
+      contactEmail: seller.email,
+      phone: seller.phone,
       policies: {
-        returns: seller.businessInfo?.returnPolicy,
-        shipping: seller.businessInfo?.shippingPolicy,
-        warranty: seller.businessInfo?.warrantyPolicy
+        returns: '30 days return policy', // TODO: Add to seller profile
+        shipping: 'Ships within 2-3 business days', // TODO: Add to seller profile
+        warranty: 'Standard warranty applies' // TODO: Add to seller profile
       },
       statistics: {
         avgResponseTime: '2-4 hours', // TODO: Calculate from tickets/messages
@@ -195,7 +252,7 @@ export class SellerService {
     const seller = await User.findOne({
       _id: sellerId,
       role: 'seller',
-      isActive: true
+      status: 'active'
     });
 
     if (!seller) {
@@ -203,7 +260,7 @@ export class SellerService {
     }
 
     const query: any = {
-      seller: sellerId,
+      sellerId: sellerId,
       status: 'active'
     };
 
@@ -257,15 +314,39 @@ export class SellerService {
   static async getTopSellers(limit: number = 10) {
     const sellers = await User.find({
       role: 'seller',
-      isActive: true,
+      status: 'active',
       rating: { $gte: 4.0 }
     })
-      .select('businessName businessInfo.logo rating totalReviews totalSales isVerified isFeatured')
+      .select('firstName lastName email avatar sellerProfile rating totalReviews totalSales isVerified isFeatured createdAt')
       .sort({ rating: -1, totalReviews: -1 })
       .limit(limit)
       .lean();
 
-    return sellers.map((seller: any) => this.formatPublicSeller(seller));
+    // Get product counts for sellers
+    const sellerIds = sellers.map((s: any) => s._id);
+    const productCounts = await Product.aggregate([
+      {
+        $match: {
+          sellerId: { $in: sellerIds },
+          status: 'active'
+        }
+      },
+      {
+        $group: {
+          _id: '$sellerId',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const productCountMap = new Map();
+    productCounts.forEach((pc: any) => {
+      productCountMap.set(pc._id.toString(), pc.count);
+    });
+
+    return sellers.map((seller: any) => 
+      this.formatPublicSeller(seller, productCountMap.get(seller._id.toString()) || 0)
+    );
   }
 
   /**
@@ -274,30 +355,55 @@ export class SellerService {
   static async getFeaturedSellers(limit: number = 6) {
     const sellers = await User.find({
       role: 'seller',
-      isActive: true,
+      status: 'active',
       isFeatured: true
     })
-      .select('businessName businessInfo.logo businessInfo.description rating totalReviews totalSales isVerified isFeatured')
+      .select('firstName lastName email avatar sellerProfile rating totalReviews totalSales isVerified isFeatured createdAt')
       .sort({ totalSales: -1 })
       .limit(limit)
       .lean();
 
-    return sellers.map((seller: any) => this.formatPublicSeller(seller));
+    // Get product counts for sellers
+    const sellerIds = sellers.map((s: any) => s._id);
+    const productCounts = await Product.aggregate([
+      {
+        $match: {
+          sellerId: { $in: sellerIds },
+          status: 'active'
+        }
+      },
+      {
+        $group: {
+          _id: '$sellerId',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const productCountMap = new Map();
+    productCounts.forEach((pc: any) => {
+      productCountMap.set(pc._id.toString(), pc.count);
+    });
+
+    return sellers.map((seller: any) => 
+      this.formatPublicSeller(seller, productCountMap.get(seller._id.toString()) || 0)
+    );
   }
 
   /**
    * Format seller data for public view
    */
-  private static formatPublicSeller(seller: any) {
+  private static formatPublicSeller(seller: any, totalProducts: number = 0) {
     return {
       id: seller._id,
-      businessName: seller.businessName,
-      logo: seller.businessInfo?.logo,
-      description: seller.businessInfo?.description,
+      businessName: seller.sellerProfile?.storeName || `${seller.firstName} ${seller.lastName}`,
+      logo: seller.avatar,
+      description: seller.sellerProfile?.storeDescription,
       rating: seller.rating || 0,
       totalReviews: seller.totalReviews || 0,
       totalSales: seller.totalSales || 0,
-      location: seller.businessAddress,
+      totalProducts,
+      location: seller.sellerProfile?.city ? `${seller.sellerProfile.city}, ${seller.sellerProfile.province}` : undefined,
       isVerified: seller.isVerified || false,
       isFeatured: seller.isFeatured || false,
       memberSince: seller.createdAt
