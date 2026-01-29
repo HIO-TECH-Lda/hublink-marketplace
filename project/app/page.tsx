@@ -13,6 +13,9 @@ import QuickViewPopup from '@/components/popups/QuickViewPopup';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useFeaturedProducts, useBestSellers, useNewArrivals } from '@/hooks/useProducts';
+import { useTopSellers } from '@/hooks/useSellers';
+import { useFeaturedPosts } from '@/hooks/useBlog';
+import { Loader2 } from 'lucide-react';
 
 export default function HomePage() {
   const { state } = useMarketplace();
@@ -21,66 +24,10 @@ export default function HomePage() {
   const { data: featuredProducts, isLoading: featuredLoading } = useFeaturedProducts();
   const { data: bestSellerProducts, isLoading: bestSellerLoading } = useBestSellers();
   const { data: newArrivals, isLoading: newArrivalsLoading } = useNewArrivals();
-
-  // Mock top sellers data
-  const topSellers = [
-    {
-      id: 'seller1',
-      businessName: 'Fazenda Verde',
-      businessDescription: 'Produtos orgânicos frescos direto da fazenda. Cultivamos com amor e respeito pela natureza.',
-      logo: 'https://placehold.co/64x64/53B046/ffffff?text=FV',
-      rating: 4.8,
-      reviewCount: 127,
-      totalProducts: 15,
-      totalSales: 125000,
-      location: 'Beira, Sofala',
-      isVerified: true,
-      isTopSeller: true,
-      joinedDate: '2023-06-15'
-    },
-    {
-      id: 'seller2',
-      businessName: 'Horta Orgânica Silva',
-      businessDescription: 'Especialistas em vegetais orgânicos frescos. Qualidade garantida desde 2020.',
-      logo: 'https://placehold.co/64x64/53B046/ffffff?text=HS',
-      rating: 4.9,
-      reviewCount: 89,
-      totalProducts: 12,
-      totalSales: 98000,
-      location: 'Maputo, Maputo',
-      isVerified: true,
-      isTopSeller: true,
-      joinedDate: '2020-03-10'
-    },
-    {
-      id: 'seller3',
-      businessName: 'Frutas Frescas Costa',
-      businessDescription: 'As melhores frutas orgânicas da região. Sabor e qualidade em cada produto.',
-      logo: 'https://placehold.co/64x64/53B046/ffffff?text=FC',
-      rating: 4.7,
-      reviewCount: 156,
-      totalProducts: 18,
-      totalSales: 145000,
-      location: 'Nampula, Nampula',
-      isVerified: true,
-      isTopSeller: false,
-      joinedDate: '2022-08-22'
-    },
-    {
-      id: 'seller4',
-      businessName: 'Grãos Naturais',
-      businessDescription: 'Grãos orgânicos de alta qualidade. Nutrição e sabor em cada grão.',
-      logo: 'https://placehold.co/64x64/53B046/ffffff?text=GN',
-      rating: 4.6,
-      reviewCount: 73,
-      totalProducts: 8,
-      totalSales: 67000,
-      location: 'Beira, Sofala',
-      isVerified: true,
-      isTopSeller: false,
-      joinedDate: '2023-01-15'
-    }
-  ];
+  const { data: topSellers, isLoading: sellersLoading } = useTopSellers(4);
+  const { data: featuredPostsData, isLoading: blogLoading } = useFeaturedPosts();
+  
+  const featuredBlogPosts = featuredPostsData?.posts || [];
 
   // Loading state
   if (featuredLoading || bestSellerLoading || newArrivalsLoading) {
@@ -89,8 +36,8 @@ export default function HomePage() {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-gray-600">Carregando produtos...</p>
+            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
+            <p className="mt-4 text-gray-600">Carregando...</p>
           </div>
         </div>
       </div>
@@ -273,19 +220,47 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Melhores Vendedores</h2>
             <p className="text-gray-6">Conheça os produtores mais confiáveis e bem avaliados</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
-            {topSellers.map((seller) => (
-              <SellerCard key={seller.id} seller={seller} />
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link href="/vendedores">
-              <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white">
-                Ver Todos os Vendedores
-                <ArrowRight className="ml-2" size={20} />
-              </Button>
-            </Link>
-          </div>
+          {sellersLoading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : topSellers && topSellers.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
+                {topSellers.map((seller) => (
+                  <SellerCard 
+                    key={seller.id} 
+                    seller={{
+                      id: seller.id,
+                      businessName: seller.businessName,
+                      businessDescription: seller.description,
+                      logo: seller.logo,
+                      rating: seller.rating,
+                      reviewCount: seller.totalReviews,
+                      totalProducts: seller.totalProducts || 0,
+                      totalSales: seller.totalSales,
+                      location: seller.location,
+                      isVerified: seller.isVerified,
+                      isTopSeller: seller.isFeatured,
+                      joinedDate: seller.memberSince,
+                      category: '',
+                      tags: []
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="text-center mt-12">
+                <Link href="/vendedores">
+                  <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white">
+                    Ver Todos os Vendedores
+                    <ArrowRight className="ml-2" size={20} />
+                  </Button>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <p className="text-center text-gray-6">Nenhum vendedor disponível no momento</p>
+          )}
         </div>
       </section>
 
@@ -296,30 +271,63 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Últimas Notícias</h2>
             <p className="text-gray-6">Mantenha-se atualizado com dicas e novidades</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <img
-                  src={`https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg`}
-                  alt="Blog Post"
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <div className="text-sm text-gray-5 mb-2">15 de Janeiro, 2024</div>
-                  <h3 className="font-semibold text-gray-9 mb-3 line-clamp-2">
-                    Benefícios dos Alimentos Orgânicos para a Saúde
-                  </h3>
-                  <p className="text-gray-6 text-sm mb-4 line-clamp-3">
-                    Descubra como os alimentos orgânicos podem transformar sua saúde 
-                    e bem-estar com nutrientes mais potentes e livres de agrotóxicos.
-                  </p>
-                  <Link href="/blog/1" className="text-primary hover:text-primary-hard font-medium text-sm">
-                    Ler Mais →
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+          {blogLoading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : featuredBlogPosts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredBlogPosts.slice(0, 3).map((post) => (
+                <Link key={post.id} href={`/blog/${post.slug}`}>
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">
+                    {post.image ? (
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-48 object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-gradient-to-br from-primary/20 to-primary-soft/20 flex items-center justify-center">
+                        <span className="text-4xl text-primary">📝</span>
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <div className="text-sm text-gray-5 mb-2">
+                        {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('pt-MZ', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        }) : 'Data não disponível'}
+                      </div>
+                      <h3 className="font-semibold text-gray-9 mb-3 line-clamp-2">
+                        {post.title}
+                      </h3>
+                      {post.excerpt && (
+                        <p className="text-gray-6 text-sm mb-4 line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                      )}
+                      <span className="text-primary hover:text-primary-hard font-medium text-sm">
+                        Ler Mais →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-6">Nenhum artigo disponível no momento</p>
+          )}
+          {featuredBlogPosts.length > 0 && (
+            <div className="text-center mt-12">
+              <Link href="/blog">
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white">
+                  Ver Todos os Artigos
+                  <ArrowRight className="ml-2" size={20} />
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
