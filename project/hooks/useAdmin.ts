@@ -1264,6 +1264,36 @@ export const useDeleteBlogPost = () => {
   });
 };
 
+export const useToggleBlogPostFeatured = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ postId, isFeatured }: { postId: string; isFeatured: boolean }) => {
+      const response = await apiClient.patch(`/admin/blog/${postId}/featured`, { isFeatured });
+      return response.data.data as BlogPost;
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'blog', 'post', variables.postId] });
+      toast({
+        title: variables.isFeatured ? 'Post marcado como destaque' : 'Post removido dos destaques',
+        description: variables.isFeatured 
+          ? 'O post agora aparecerá na lista de destaques.' 
+          : 'O post foi removido da lista de destaques.',
+      });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Falha ao atualizar status de destaque';
+      toast({
+        title: 'Erro',
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
 // ============================================
 // Admin Newsletter Management
 // ============================================

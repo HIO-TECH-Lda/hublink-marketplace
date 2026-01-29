@@ -257,6 +257,35 @@ export class AdminBlogController {
     }
   }
 
+  // Toggle featured status
+  static async toggleFeatured(req: Request, res: Response): Promise<void> {
+    try {
+      const { postId } = req.params;
+      const { isFeatured } = req.body;
+
+      if (typeof isFeatured !== 'boolean') {
+        res.status(400).json({
+          success: false,
+          message: 'isFeatured must be a boolean value (true or false)'
+        });
+        return;
+      }
+
+      const post = await AdminBlogService.toggleFeatured(postId, isFeatured);
+      res.json({
+        success: true,
+        message: `Post ${isFeatured ? 'marked as featured' : 'unmarked as featured'} successfully`,
+        data: post
+      });
+    } catch (error) {
+      const statusCode = error instanceof Error && error.message === 'Post not found' ? 404 : 500;
+      res.status(statusCode).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to update featured status'
+      });
+    }
+  }
+
   // Delete post
   static async deletePost(req: Request, res: Response): Promise<void> {
     try {

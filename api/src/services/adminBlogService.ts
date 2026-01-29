@@ -333,6 +333,27 @@ export class AdminBlogService {
     }
   }
 
+  // Toggle featured status
+  static async toggleFeatured(postId: string, isFeatured: boolean): Promise<any> {
+    try {
+      const post = await BlogPost.findById(postId);
+
+      if (!post) {
+        throw new Error('Post not found');
+      }
+
+      post.isFeatured = isFeatured;
+      await post.save();
+
+      // Return updated post with populated data
+      return await this.getPostById(postId);
+    } catch (error) {
+      throw new Error(
+        `Failed to update featured status: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
   // Delete post
   static async deletePost(postId: string): Promise<void> {
     try {

@@ -16,7 +16,8 @@ import {
   MoreVertical,
   TrendingUp,
   BookOpen,
-  Archive
+  Archive,
+  Star
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,7 +30,8 @@ import {
   useAdminBlogPosts, 
   useAdminBlogCategories,
   useUpdateBlogPostStatus, 
-  useDeleteBlogPost 
+  useDeleteBlogPost,
+  useToggleBlogPostFeatured
 } from '@/hooks/useAdmin';
 import { useToast } from '@/hooks/use-toast';
 
@@ -39,6 +41,7 @@ export default function BlogManagementPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [featuredFilter, setFeaturedFilter] = useState<boolean | undefined>(undefined);
   const [page, setPage] = useState(1);
   const limit = 20;
 
@@ -50,12 +53,14 @@ export default function BlogManagementPage() {
     search: searchTerm || undefined,
     status: statusFilter === 'all' ? undefined : statusFilter,
     category: categoryFilter === 'all' ? undefined : categoryFilter,
+    isFeatured: featuredFilter,
     sortBy: 'createdAt',
     sortOrder: 'desc'
   });
 
   const updateStatus = useUpdateBlogPostStatus();
   const deletePost = useDeleteBlogPost();
+  const toggleFeatured = useToggleBlogPostFeatured();
 
   const posts = postsData?.posts || [];
   const categories = categoriesData || [];
@@ -96,6 +101,10 @@ export default function BlogManagementPage() {
     if (confirm(`Tem certeza que deseja excluir o post "${postTitle}"?`)) {
       deletePost.mutate(postId);
     }
+  };
+
+  const handleToggleFeatured = (postId: string, currentStatus: boolean) => {
+    toggleFeatured.mutate({ postId, isFeatured: !currentStatus });
   };
 
   const totalPages = postsData?.totalPages || 1;
@@ -241,21 +250,38 @@ export default function BlogManagementPage() {
                 ))}
               </SelectContent>
             </Select>
-            {(searchTerm || statusFilter !== 'all' || categoryFilter !== 'all') && (
+          </form>
+          <div className="flex items-center gap-4 mt-3 pt-3 border-t">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={featuredFilter === true}
+                onChange={(e) => {
+                  setFeaturedFilter(e.target.checked ? true : undefined);
+                  setPage(1);
+                }}
+                className="w-4 h-4 text-primary rounded"
+              />
+              <Star className={`w-4 h-4 ${featuredFilter ? 'fill-yellow-500 text-yellow-500' : 'text-gray-400'}`} />
+              <span className="text-sm font-medium">Apenas destaques</span>
+            </label>
+            {(searchTerm || statusFilter !== 'all' || categoryFilter !== 'all' || featuredFilter) && (
               <Button 
                 type="button"
                 variant="outline"
+                size="sm"
                 onClick={() => {
                   setSearchTerm('');
                   setStatusFilter('all');
                   setCategoryFilter('all');
+                  setFeaturedFilter(undefined);
                   setPage(1);
                 }}
               >
-                Limpar
+                Limpar filtros
               </Button>
             )}
-          </form>
+          </div>
         </CardContent>
       </Card>
 
@@ -343,6 +369,16 @@ export default function BlogManagementPage() {
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center space-x-2">
+                        <Button
+                          onClick={() => handleToggleFeatured(post.id, post.isFeatured)}
+                          disabled={toggleFeatured.isPending}
+                          size="sm"
+                          variant="ghost"
+                          className={`${post.isFeatured ? 'text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50' : 'text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'}`}
+                          title={post.isFeatured ? 'Remover dos destaques' : 'Marcar como destaque'}
+                        >
+                          <Star className={`w-4 h-4 ${post.isFeatured ? 'fill-current' : ''}`} />
+                        </Button>
                         <Button
                           onClick={() => router.push(`/admin/blog/${post.id}`)}
                           size="sm"

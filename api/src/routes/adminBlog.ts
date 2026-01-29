@@ -30,6 +30,9 @@ router.put('/:postId', uploadSingleImage, AdminBlogController.updatePost);
 // Update post status
 router.patch('/:postId/status', AdminBlogController.updatePostStatus);
 
+// Toggle featured status
+router.patch('/:postId/featured', AdminBlogController.toggleFeatured);
+
 // Delete post
 router.delete('/:postId', AdminBlogController.deletePost);
 
