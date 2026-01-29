@@ -137,7 +137,13 @@ export default function AdminDashboard() {
             <div className="text-lg font-bold text-gray-9">{dashboard.reviews.averageRating.toFixed(1)}</div>
             <p className="text-xs text-gray-5">{dashboard.reviews.total} total</p>
             {dashboard.reviews.pending > 0 && (
-              <Badge variant="secondary" className="mt-1 text-xs">{dashboard.reviews.pending} pendentes</Badge>
+              <Badge 
+                variant="secondary" 
+                className="mt-1 text-xs cursor-pointer hover:bg-yellow-200"
+                onClick={() => router.push('/admin/avaliacoes')}
+              >
+                {dashboard.reviews.pending} pendentes
+              </Badge>
             )}
           </CardContent>
         </Card>

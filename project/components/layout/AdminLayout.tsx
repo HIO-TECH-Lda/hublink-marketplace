@@ -20,7 +20,8 @@ import {
   RotateCcw,
   Mail,
   FileText,
-  FileSearch
+  FileSearch,
+  Star
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -37,6 +38,7 @@ const navigation = [
   { name: 'Produtos', href: '/admin/produtos', icon: Package },
   { name: 'Vendedores', href: '/admin/vendedores', icon: Shield },
   { name: 'Categorias', href: '/admin/categorias', icon: Tag },
+  { name: 'Avaliações', href: '/admin/avaliacoes', icon: Star },
   { name: 'Blog', href: '/admin/blog', icon: FileText },
   { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },
   { name: 'Tickets', href: '/admin/tickets', icon: MessageSquare },
