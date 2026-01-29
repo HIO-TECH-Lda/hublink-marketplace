@@ -18,7 +18,8 @@ interface Seller {
   totalSales: number;
   location: string;
   isVerified: boolean;
-  isTopSeller: boolean;
+  isTopSeller?: boolean;
+  isFeatured?: boolean;
   joinedDate: string;
 }
 
@@ -37,15 +38,15 @@ export default function SellerCard({ seller, showStats = true }: SellerCardProps
         {/* Subtle background pattern */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         
-        {/* Top Seller Badge - Positioned absolutely */}
-        {/* {seller.isTopSeller && (
-          <div className="absolute top-3 right-3 z-10 animate-pulse">
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-semibold shadow-lg">
-              <Award size={12} className="mr-1" />
-              Top Vendedor
+        {/* Featured Badge */}
+        {seller.isFeatured && (
+          <div className="absolute top-3 right-3 z-10">
+            <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs font-semibold shadow-lg">
+              <Star size={12} className="mr-1 fill-white" />
+              Destaque
             </Badge>
           </div>
-        )} */}
+        )}
 
         <CardContent className="p-6 h-full flex flex-col relative z-10">
           {/* Header with Logo and Basic Info */}
@@ -78,22 +79,26 @@ export default function SellerCard({ seller, showStats = true }: SellerCardProps
                 {seller.businessName}
               </h3>
 
-              {/* Rating */}
-              <div className="flex items-center space-x-2 mb-2">
-                <div className="flex items-center space-x-1">
-                  {[...Array(5)].map((_, i) => (
+              {/* Rating with Stars */}
+              <div className="flex items-center gap-1.5 mb-2">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
                     <Star
-                      key={i}
+                      key={star}
                       size={14}
-                      className={i < Math.floor(seller.rating) ? 'text-amber-400 fill-amber-400' : 'text-gray-300'}
+                      className={
+                        star <= Math.round(seller.rating)
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'fill-gray-300 text-gray-300'
+                      }
                     />
                   ))}
                 </div>
-                <span className="text-sm text-gray-600 font-medium">
+                <span className="text-sm font-semibold text-gray-900">
                   {seller.rating.toFixed(1)}
                 </span>
-                <span className="text-sm text-gray-500">
-                  ({seller.reviewCount})
+                <span className="text-xs text-gray-500">
+                  ({seller.reviewCount.toLocaleString()})
                 </span>
               </div>
 
@@ -114,14 +119,15 @@ export default function SellerCard({ seller, showStats = true }: SellerCardProps
 
           {/* Stats Section */}
           {showStats && (
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 mb-4 border border-gray-200 group-hover:bg-gradient-to-r group-hover:from-primary/5 group-hover:to-primary/10 transition-all duration-200">
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200">
-                  <Package size={16} className="text-primary" />
+            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-3 mb-4 border border-gray-200 group-hover:bg-gradient-to-r group-hover:from-primary/5 group-hover:to-primary/10 transition-all duration-200">
+              <div className="grid grid-cols-2 gap-3 text-center">
+                <div>
+                  <div className="text-lg font-bold text-gray-900">{seller.totalProducts.toLocaleString()}</div>
+                  <div className="text-xs text-gray-600">Produtos</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-lg font-bold text-gray-900">{seller.totalProducts}</div>
-                  <div className="text-xs text-gray-600 font-medium">Produtos</div>
+                <div>
+                  <div className="text-lg font-bold text-gray-900">{seller.totalSales.toLocaleString()}</div>
+                  <div className="text-xs text-gray-600">Vendas</div>
                 </div>
               </div>
             </div>

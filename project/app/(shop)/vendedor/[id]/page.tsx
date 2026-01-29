@@ -131,32 +131,57 @@ export default function SellerProfilePage() {
                   <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2 break-words">
                     {seller.businessName}
                   </h1>
-                  <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-gray-6">
-                    <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 text-warning fill-warning flex-shrink-0" />
-                      <span>{seller.rating}</span>
-                      <span>({seller.totalReviews} avaliações)</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-sm text-gray-6 flex-wrap">
+                    {/* Rating with Stars */}
+                    <div className="flex items-center gap-2">
+                      <div className="flex">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            className={`w-4 h-4 ${
+                              star <= Math.round(seller.rating)
+                                ? 'fill-yellow-400 text-yellow-400'
+                                : 'fill-gray-300 text-gray-300'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="font-semibold text-gray-9">{seller.rating.toFixed(1)}</span>
+                      <span className="text-gray-500">({seller.totalReviews.toLocaleString()} avaliações)</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Package className="w-4 h-4 flex-shrink-0" />
-                      <span>{seller.totalProducts || 0} produtos</span>
+                    
+                    <div className="flex items-center gap-1">
+                      <Package className="w-4 h-4" />
+                      <span>{(seller.totalProducts || 0).toLocaleString()} produtos</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4 flex-shrink-0" />
-                      <span>Membro desde {new Date(seller.memberSince).toLocaleDateString('pt-MZ')}</span>
+                    
+                    <div className="flex items-center gap-1">
+                      <Users className="w-4 h-4" />
+                      <span>{seller.totalSales.toLocaleString()} vendas</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>Desde {new Date(seller.memberSince).toLocaleDateString('pt-MZ', { month: 'short', year: 'numeric' })}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Status Badge */}
-              <div className="mt-4 lg:mt-0 lg:ml-4">
-                <Badge 
-                  variant={seller.isVerified ? 'default' : 'secondary'}
-                  className="text-sm"
-                >
-                  {seller.isVerified ? 'Verificado' : 'Pendente'}
-                </Badge>
+              {/* Status Badges */}
+              <div className="mt-4 lg:mt-0 lg:ml-4 flex flex-wrap gap-2">
+                {seller.isVerified && (
+                  <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200 border-blue-200">
+                    <Star className="w-3 h-3 mr-1 fill-blue-700" />
+                    Verificado
+                  </Badge>
+                )}
+                {seller.isFeatured && (
+                  <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200 border-purple-200">
+                    <Star className="w-3 h-3 mr-1 fill-purple-700" />
+                    Destaque
+                  </Badge>
+                )}
               </div>
             </div>
           </div>
@@ -207,30 +232,120 @@ export default function SellerProfilePage() {
               </CardContent>
             </Card>
 
-            {/* Stats */}
+            {/* Performance Stats */}
             <Card>
               <CardHeader>
-                <CardTitle>Estatísticas</CardTitle>
+                <CardTitle>Desempenho</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-6">Vendas Totais:</span>
-                  <span className="font-medium">{seller.totalSales}</span>
+              <CardContent className="space-y-4">
+                {/* Rating */}
+                <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-lg border border-yellow-200">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-yellow-700 mb-1">
+                      {seller.rating.toFixed(1)}
+                    </div>
+                    <div className="flex justify-center mb-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`w-4 h-4 ${
+                            star <= Math.round(seller.rating)
+                              ? 'fill-yellow-500 text-yellow-500'
+                              : 'fill-gray-300 text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      {seller.totalReviews.toLocaleString()} avaliações
+                    </div>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-6">Produtos:</span>
-                  <span className="font-medium">{seller.totalProducts || 0}</span>
+
+                {/* Sales & Products */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-green-50 p-3 rounded-lg border border-green-200 text-center">
+                    <div className="text-2xl font-bold text-green-700">
+                      {seller.totalSales.toLocaleString()}
+                    </div>
+                    <div className="text-xs text-gray-600 mt-1">Vendas</div>
+                  </div>
+                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 text-center">
+                    <div className="text-2xl font-bold text-blue-700">
+                      {(seller.totalProducts || 0).toLocaleString()}
+                    </div>
+                    <div className="text-xs text-gray-600 mt-1">Produtos</div>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-6">Avaliação:</span>
-                  <span className="font-medium">{seller.rating}/5</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-6">Avaliações:</span>
-                  <span className="font-medium">{seller.totalReviews}</span>
-                </div>
+
+                {/* Additional Statistics */}
+                {seller.statistics && (
+                  <div className="space-y-3 pt-3 border-t">
+                    {seller.statistics.avgResponseTime && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-gray-600">Tempo de Resposta:</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {seller.statistics.avgResponseTime}
+                        </span>
+                      </div>
+                    )}
+                    {seller.statistics.responseRate && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-gray-600">Taxa de Resposta:</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {seller.statistics.responseRate}%
+                        </span>
+                      </div>
+                    )}
+                    {seller.statistics.avgShippingTime && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-gray-600">Tempo de Envio:</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {seller.statistics.avgShippingTime}
+                        </span>
+                      </div>
+                    )}
+                    {seller.statistics.successfulOrders && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-gray-600">Pedidos Bem-Sucedidos:</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {seller.statistics.successfulOrders.toLocaleString()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
+
+            {/* Policies */}
+            {seller.policies && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Políticas</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  {seller.policies.returns && (
+                    <div>
+                      <div className="font-medium text-gray-900 mb-1">Devoluções</div>
+                      <div className="text-gray-600">{seller.policies.returns}</div>
+                    </div>
+                  )}
+                  {seller.policies.shipping && (
+                    <div>
+                      <div className="font-medium text-gray-900 mb-1">Envio</div>
+                      <div className="text-gray-600">{seller.policies.shipping}</div>
+                    </div>
+                  )}
+                  {seller.policies.warranty && (
+                    <div>
+                      <div className="font-medium text-gray-900 mb-1">Garantia</div>
+                      <div className="text-gray-600">{seller.policies.warranty}</div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Main Content */}
