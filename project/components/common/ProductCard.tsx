@@ -87,7 +87,7 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
       brand: product.brand || '',
       rating: (product as any).averageRating || product.rating || 0,
       reviews: (product as any).totalReviews || product.reviews || 0,
-      inStock: product.inStock || false,
+      inStock: product.stock > 0,
       sellerId: typeof product.sellerId === 'object' ? (product.sellerId as any)._id : product.sellerId || '',
       sellerName: product.sellerName || '',
       sellerLogo: product.sellerLogo,
@@ -130,7 +130,7 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
           />
           
           {/* Stock Badge */}
-          {!product.inStock && (
+          {product.stock < 0 && (
             <div className="absolute top-3 left-3 bg-danger text-white text-xs px-2 py-1 rounded-full">
               Fora de Estoque
             </div>
@@ -183,10 +183,10 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
             <Button
               onClick={handleAddToCart}
               className="w-full bg-primary hover:bg-primary-hard text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2 font-medium shadow-lg"
-              disabled={!product.inStock}
+              disabled={product.stock < 0}
             >
               <ShoppingCart size={18} />
-              <span>{product.inStock ? 'Adicionar ao Carrinho' : 'Fora de Estoque'}</span>
+              <span>{product.stock > 0 ? 'Adicionar ao Carrinho' : 'Fora de Estoque'}</span>
             </Button>
           </div>
         </div>
@@ -251,10 +251,10 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
                 onClick={handleAddToCart}
                 size="sm"
                 className="w-full bg-primary hover:bg-primary-hard text-white py-2 px-4 rounded-lg flex items-center justify-center space-x-2"
-                disabled={!product.inStock}
+                disabled={product.stock < 0}
               >
                 <ShoppingCart size={16} />
-                <span>{product.inStock ? 'Adicionar ao Carrinho' : 'Fora de Estoque'}</span>
+                <span>{product.stock > 0 ? 'Adicionar ao Carrinho' : 'Fora de Estoque'}</span>
               </Button>
             </div>
           </div>
