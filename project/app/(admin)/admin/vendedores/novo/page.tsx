@@ -11,7 +11,6 @@ import {
   MapPin,
   Lock
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -117,7 +116,7 @@ export default function AdminCreateSellerPage() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -434,6 +433,6 @@ export default function AdminCreateSellerPage() {
           </div>
         </div>
       </form>
-    </AdminLayout>
+    </>
   );
 }

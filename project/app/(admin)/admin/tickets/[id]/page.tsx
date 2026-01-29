@@ -22,7 +22,6 @@ import {
   Eye,
   Download
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -218,20 +217,20 @@ export default function AdminTicketDetailPage() {
 
   if (isLoading) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-6">Carregando ticket...</p>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   if (!ticket) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <AlertCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -242,7 +241,7 @@ export default function AdminTicketDetailPage() {
             </Button>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
@@ -251,7 +250,7 @@ export default function AdminTicketDetailPage() {
   const allMessages = ticket.messages?.all || [];
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -629,6 +628,6 @@ export default function AdminTicketDetailPage() {
           </Card>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 }

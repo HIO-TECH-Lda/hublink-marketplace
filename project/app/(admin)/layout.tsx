@@ -4,21 +4,12 @@ import React from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminGroupLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading, user, hasRole } = useAuth();
-
-  // Debug logging (remove in production)
-  if (typeof window !== 'undefined' && !loading) {
-    console.log('Admin Layout Check:', {
-      isAuthenticated,
-      userRole: user?.role,
-      hasAdminRole: hasRole('admin'),
-      user: user
-    });
-  }
 
   if (loading) {
     return (
@@ -74,6 +65,7 @@ export default function AdminGroupLayout({ children }: { children: React.ReactNo
     );
   }
 
-  return <>{children}</>;
+  // Wrap all admin pages with AdminLayout
+  return <AdminLayout>{children}</AdminLayout>;
 }
 

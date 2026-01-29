@@ -8,7 +8,6 @@ import {
   Package,
   X
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -169,7 +168,7 @@ export default function AdminCreateProductPage() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
@@ -547,6 +546,6 @@ export default function AdminCreateProductPage() {
           </div>
         </div>
       </form>
-    </AdminLayout>
+    </>
   );
 }

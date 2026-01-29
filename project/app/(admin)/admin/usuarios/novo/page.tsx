@@ -11,7 +11,6 @@ import {
   Lock,
   AlertCircle
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -111,7 +110,7 @@ export default function CreateUserPage() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -366,7 +365,7 @@ export default function CreateUserPage() {
           </div>
         </div>
       </form>
-    </AdminLayout>
+    </>
   );
 }
 

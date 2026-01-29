@@ -15,7 +15,6 @@ import {
   CheckCircle2,
   XCircle
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -119,20 +118,20 @@ export default function OrderDetailsPage() {
 
   if (isLoading) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-6">Carregando detalhes do pedido...</p>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   if (!order) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <ShoppingCart className="w-12 h-12 text-gray-4 mx-auto mb-4" />
@@ -142,7 +141,7 @@ export default function OrderDetailsPage() {
             </Button>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
@@ -159,7 +158,7 @@ export default function OrderDetailsPage() {
   const timeline = orderData.timeline || [];
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -476,6 +475,6 @@ export default function OrderDetailsPage() {
           </Card>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 }

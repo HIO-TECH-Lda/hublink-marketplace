@@ -14,7 +14,6 @@ import {
   Eye,
   EyeOff
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -135,7 +134,7 @@ export default function SystemSettingsPage() {
   };
 
   return (
-    <AdminLayout>
+    <>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-9 mb-2">Configurações do Sistema</h1>
@@ -602,6 +601,6 @@ export default function SystemSettingsPage() {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 } 

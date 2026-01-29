@@ -25,6 +25,7 @@ export default function AdminReviewsPage() {
   const [selectedReview, setSelectedReview] = useState<AdminReview | null>(null);
   const [rejectNotes, setRejectNotes] = useState('');
   const [showRejectModal, setShowRejectModal] = useState(false);
+  const [showApproveModal, setShowApproveModal] = useState(false);
   const [expandedReviews, setExpandedReviews] = useState<Set<string>>(new Set());
 
   const { data: analytics, isLoading: analyticsLoading } = useReviewAnalytics();
@@ -36,9 +37,19 @@ export default function AdminReviewsPage() {
 
   const moderateMutation = useModerateReview();
 
-  const handleApprove = (reviewId: string) => {
-    if (confirm('Aprovar esta avaliação?')) {
-      moderateMutation.mutate({ reviewId, status: 'approved' });
+  const handleApprove = (review: AdminReview) => {
+    setSelectedReview(review);
+    setShowApproveModal(true);
+  };
+
+  const confirmApprove = () => {
+    if (selectedReview) {
+      moderateMutation.mutate({
+        reviewId: selectedReview._id,
+        status: 'approved',
+      });
+      setShowApproveModal(false);
+      setSelectedReview(null);
     }
   };
 
@@ -352,7 +363,7 @@ export default function AdminReviewsPage() {
                   {review.status === 'pending' && (
                     <div className="flex gap-2 pt-4 border-t">
                       <Button
-                        onClick={() => handleApprove(review._id)}
+                        onClick={() => handleApprove(review)}
                         className="flex-1 bg-green-600 hover:bg-green-700"
                         disabled={moderateMutation.isPending}
                       >
@@ -405,6 +416,75 @@ export default function AdminReviewsPage() {
           >
             Próxima
           </Button>
+        </div>
+      )}
+
+      {/* Approve Modal */}
+      {showApproveModal && selectedReview && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <h3 className="text-xl font-bold mb-2">Aprovar Avaliação</h3>
+            <p className="text-gray-600 mb-4 text-sm">
+              Tem certeza que deseja aprovar esta avaliação de{' '}
+              <strong>{selectedReview.userId.firstName} {selectedReview.userId.lastName}</strong>?
+            </p>
+
+            <div className="bg-gray-50 border border-gray-200 rounded p-3 mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-4 h-4 ${
+                        star <= selectedReview.rating
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="font-semibold">{selectedReview.rating}.0</span>
+              </div>
+              <p className="font-semibold text-sm mb-1">{selectedReview.title}</p>
+              <p className="text-sm text-gray-600 line-clamp-2">{selectedReview.content}</p>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
+              <p className="text-sm text-blue-800">
+                ℹ️ Ao aprovar, esta avaliação será visível publicamente e a classificação do produto/vendedor será atualizada.
+              </p>
+            </div>
+
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => {
+                  setShowApproveModal(false);
+                  setSelectedReview(null);
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                className="flex-1 bg-green-600 hover:bg-green-700"
+                onClick={confirmApprove}
+                disabled={moderateMutation.isPending}
+              >
+                {moderateMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Aprovando...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Confirmar Aprovação
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 

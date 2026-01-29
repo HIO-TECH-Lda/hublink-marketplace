@@ -12,7 +12,6 @@ import {
   Calendar,
   X
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -197,7 +196,7 @@ export default function CreateCampaignPage() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -532,6 +531,6 @@ export default function CreateCampaignPage() {
           </div>
         </div>
       </form>
-    </AdminLayout>
+    </>
   );
 }

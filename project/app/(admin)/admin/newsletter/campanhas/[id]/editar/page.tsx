@@ -12,7 +12,6 @@ import {
   Calendar,
   X
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -194,20 +193,20 @@ export default function EditCampaignPage() {
 
   if (isLoading) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-6">Carregando campanha...</p>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   if (!campaign) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <Mail className="w-12 h-12 text-gray-4 mx-auto mb-4" />
@@ -217,14 +216,14 @@ export default function EditCampaignPage() {
             </Button>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   // Only allow editing draft or scheduled campaigns
   if (campaign.status !== 'draft' && campaign.status !== 'scheduled') {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <Mail className="w-12 h-12 text-gray-4 mx-auto mb-4" />
@@ -234,12 +233,12 @@ export default function EditCampaignPage() {
             </Button>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -548,7 +547,7 @@ export default function EditCampaignPage() {
           </div>
         </div>
       </form>
-    </AdminLayout>
+    </>
   );
 }
 

@@ -10,7 +10,6 @@ import {
   Shield,
   AlertCircle
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -173,20 +172,20 @@ export default function OrderEditPage() {
 
   if (isLoading) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-6">Carregando dados do pedido...</p>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   if (!order) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <p className="text-gray-6">Pedido não encontrado</p>
@@ -195,7 +194,7 @@ export default function OrderEditPage() {
             </Button>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
@@ -206,7 +205,7 @@ export default function OrderEditPage() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -482,6 +481,6 @@ export default function OrderEditPage() {
           </div>
         </div>
       </form>
-    </AdminLayout>
+    </>
   );
 }

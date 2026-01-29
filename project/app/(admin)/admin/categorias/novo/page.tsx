@@ -8,7 +8,6 @@ import {
   ArrowLeft, 
   Image as ImageIcon
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -129,7 +128,7 @@ export default function AdminCreateCategoryPage() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -433,7 +432,7 @@ export default function AdminCreateCategoryPage() {
           </div>
         </div>
       </form>
-    </AdminLayout>
+    </>
   );
 }
 

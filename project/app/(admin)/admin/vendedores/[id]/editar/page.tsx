@@ -10,7 +10,6 @@ import {
   User,
   MapPin
 } from 'lucide-react';
-import AdminLayout from '@/components/layout/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -139,20 +138,20 @@ export default function EditVendorPage() {
 
   if (isLoading) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-6">Carregando vendedor...</p>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   if (!seller) {
     return (
-      <AdminLayout>
+      <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <Shield className="w-12 h-12 text-gray-4 mx-auto mb-4" />
@@ -162,12 +161,12 @@ export default function EditVendorPage() {
             </Button>
           </div>
         </div>
-      </AdminLayout>
+      </>
     );
   }
 
   return (
-    <AdminLayout>
+    <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
@@ -457,6 +456,6 @@ export default function EditVendorPage() {
           </div>
         </div>
       </form>
-    </AdminLayout>
+    </>
   );
 }
