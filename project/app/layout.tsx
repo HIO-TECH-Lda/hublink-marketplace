@@ -8,6 +8,7 @@ import PWAProvider from '@/components/pwa/PWAProvider';
 import StructuredData from '@/components/seo/StructuredData';
 import { getOrganizationData } from '@/components/seo/StructuredData';
 import { Toaster } from '@/components/ui/toaster';
+import { logoConfig } from '@/lib/logo-config';
 
 export const metadata: Metadata = {
   title: {
@@ -90,11 +91,15 @@ export const metadata: Metadata = {
     title: 'Txova',
   },
   icons: {
-    icon: [
+    icon: logoConfig.favicon ? [
+      { url: logoConfig.favicon, type: 'image/png' },
+    ] : [
       { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
-    apple: [
+    apple: logoConfig.favicon ? [
+      { url: logoConfig.favicon, type: 'image/png' },
+    ] : [
       { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
     ],
   },

@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import { Button } from '@/components/ui/button';
+import Logo from '@/components/common/Logo';
 
 export default function Header() {
   const { state, dispatch } = useMarketplace();
@@ -105,12 +106,13 @@ export default function Header() {
         <div className="container py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">T</span>
-              </div>
-              <span className="text-xl sm:text-2xl font-bold text-gray-9">Txova</span>
-            </Link>
+            <Logo 
+              variant="main" 
+              width={120} 
+              height={40} 
+              clickable={true}
+              className="h-8 sm:h-10 w-auto"
+            />
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-8">

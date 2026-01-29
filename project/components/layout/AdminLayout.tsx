@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import Logo from '@/components/common/Logo';
 import { 
   Users, 
   Package, 
@@ -98,12 +99,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         {/* App name header - sticky */}
         <div className="sticky top-0 z-20 bg-white border-b border-gray-200">
           <div className="flex items-center justify-between h-16 px-6">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">T</span>
-              </div>
-              <span className="ml-3 text-xl font-bold text-gray-9">Txova</span>
-            </div>
+            <Logo 
+              variant="main" 
+              width={100} 
+              height={32} 
+              clickable={true}
+              className="h-8 w-auto"
+            />
             <button
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden p-1 rounded-md text-gray-400 hover:text-gray-500"

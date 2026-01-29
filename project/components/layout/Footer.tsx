@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube, Loader2 } f
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNewsletterSubscribe } from '@/hooks/useNewsletter';
+import Logo from '@/components/common/Logo';
 
 export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -67,12 +68,15 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
             <div>
-              <Link href="/" className="flex items-center space-x-2 mb-6">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">T</span>
-                </div>
-                <span className="text-xl sm:text-2xl font-bold">Txova</span>
-              </Link>
+              <div className="mb-6">
+                <Logo 
+                  variant="white" 
+                  width={120} 
+                  height={40} 
+                  clickable={true}
+                  className="h-10 w-auto"
+                />
+              </div>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
                 Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. 
                 Conectamos produtores locais com consumidores conscientes em Beira.
