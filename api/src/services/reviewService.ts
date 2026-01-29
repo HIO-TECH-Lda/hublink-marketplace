@@ -3,6 +3,7 @@ import Product from '../models/Product';
 import Order from '../models/Order';
 import User from '../models/User';
 import { EmailService } from './emailService';
+import { SellerRatingService } from './sellerRatingService';
 
 export interface CreateReviewData {
   productId: string;
@@ -88,6 +89,9 @@ export class ReviewService {
 
       // Update product rating
       await this.updateProductRating(data.productId);
+
+      // Update seller rating (new feature)
+      await SellerRatingService.updateSellerRatingFromProductReview(data.productId);
 
       return review;
     } catch (error) {
@@ -197,6 +201,9 @@ export class ReviewService {
 
       // Update product rating
       await this.updateProductRating(productId);
+
+      // Update seller rating (new feature)
+      await SellerRatingService.updateSellerRatingFromProductReview(productId);
     } catch (error) {
       console.error('Error deleting review:', error);
       throw error;
@@ -223,6 +230,8 @@ export class ReviewService {
       // Update product rating if approved
       if (status === 'approved') {
         await this.updateProductRating(review.productId.toString());
+        // Update seller rating (new feature)
+        await SellerRatingService.updateSellerRatingFromProductReview(review.productId.toString());
       }
 
       return review;

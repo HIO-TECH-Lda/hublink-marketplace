@@ -113,6 +113,31 @@ const userSchema = new Schema<IUserDocument>({
     type: Schema.Types.ObjectId,
     ref: 'Seller',
     default: null
+  },
+  // Seller metrics (only applicable when role is 'seller')
+  rating: {
+    type: Number,
+    default: 0,
+    min: [0, 'Rating cannot be negative'],
+    max: [5, 'Rating cannot exceed 5']
+  },
+  totalReviews: {
+    type: Number,
+    default: 0,
+    min: [0, 'Total reviews cannot be negative']
+  },
+  totalSales: {
+    type: Number,
+    default: 0,
+    min: [0, 'Total sales cannot be negative']
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true,
@@ -126,6 +151,10 @@ userSchema.index({ phone: 1 }, { unique: true });
 userSchema.index({ role: 1 });
 userSchema.index({ status: 1 });
 userSchema.index({ createdAt: -1 });
+// Seller-specific indexes
+userSchema.index({ role: 1, rating: -1 }); // For sorting sellers by rating
+userSchema.index({ role: 1, totalSales: -1 }); // For sorting sellers by sales
+userSchema.index({ role: 1, isFeatured: 1 }); // For filtering featured sellers
 
 // Virtual for full name
 userSchema.virtual('fullName').get(function() {

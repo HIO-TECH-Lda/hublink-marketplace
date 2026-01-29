@@ -394,6 +394,9 @@ export class OrderService {
           await order.deliverOrder();
           // Sync marketplace sales to finance for all sellers in this order
           await this.syncFinanceForDeliveredOrder(order);
+          // Update seller sales count (new feature)
+          const { SellerRatingService } = await import('./sellerRatingService');
+          await SellerRatingService.updateSellerSalesFromOrder(orderId);
           break;
         case 'cancelled':
           if (!options.cancelledBy || !options.cancelReason) {

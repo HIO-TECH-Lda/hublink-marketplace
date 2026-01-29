@@ -18,6 +18,12 @@ export interface IUser {
   preferences?: IUserPreferences;
   sellerProfile?: ISellerProfile;
   sellerId?: string;
+  // Seller metrics (only applicable when role is 'seller')
+  rating?: number;
+  totalReviews?: number;
+  totalSales?: number;
+  isVerified?: boolean;
+  isFeatured?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
