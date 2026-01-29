@@ -112,6 +112,7 @@ export default function Header() {
               height={40} 
               clickable={true}
               className="h-8 sm:h-10 w-auto"
+              priority={true}
             />
 
             {/* Desktop Navigation */}

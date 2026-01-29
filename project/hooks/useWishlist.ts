@@ -21,6 +21,8 @@ export const useWishlist = () => {
       return normalized;
     },
     enabled: isAuthenticated, // Only fetch when user is authenticated
+    staleTime: 5 * 60 * 1000, // 5 minutes - wishlist doesn't change that often
+    gcTime: 30 * 60 * 1000, // 30 minutes - keep in cache longer
   });
 };
 
@@ -54,13 +56,14 @@ export const useRemoveFromWishlist = () => {
 
 export const useCheckWishlistStatus = (productId: string) => {
   const { isAuthenticated } = useAuth();
+  const { data: wishlist } = useWishlist();
   
-  return useQuery({
-    queryKey: ['wishlist', 'check', productId],
-    queryFn: async () => {
-      const response = await apiClient.get(`/wishlist/check/${productId}`);
-      return response.data.data.isInWishlist as boolean;
-    },
-    enabled: !!productId && isAuthenticated, // Only fetch when user is authenticated and productId exists
-  });
+  // Check from cached wishlist data instead of making individual API calls
+  // This eliminates N API calls per page (where N = number of products)
+  const isInWishlist = wishlist?.some(item => item.product._id === productId) ?? false;
+  
+  return {
+    data: isInWishlist,
+    isLoading: false,
+  };
 };

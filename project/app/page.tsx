@@ -6,6 +6,7 @@ import { ArrowRight, Truck, CreditCard, Headphones, Trophy, Star, ChevronLeft, C
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
+import ProductCardSkeleton from '@/components/common/ProductCardSkeleton';
 import SellerCard from '@/components/common/SellerCard';
 import NewsletterPopup from '@/components/popups/NewsletterPopup';
 import CartPopup from '@/components/popups/CartPopup';
@@ -28,21 +29,6 @@ export default function HomePage() {
   const { data: featuredPostsData, isLoading: blogLoading } = useFeaturedPosts();
   
   const featuredBlogPosts = featuredPostsData?.posts || [];
-
-  // Loading state
-  if (featuredLoading || bestSellerLoading || newArrivalsLoading) {
-    return (
-      <div className="min-h-screen bg-white">
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center py-12">
-            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
-            <p className="mt-4 text-gray-600">Carregando...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -129,9 +115,21 @@ export default function HomePage() {
             <p className="text-gray-6">Descubra nossa seleção especial de produtos orgânicos</p>
           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredProducts?.slice(0, 8).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
+              {featuredLoading ? (
+                <>
+                  {[...Array(8)].map((_, i) => (
+                    <ProductCardSkeleton key={i} />
+                  ))}
+                </>
+              ) : featuredProducts && featuredProducts.length > 0 ? (
+                featuredProducts.slice(0, 8).map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))
+              ) : (
+                <div className="col-span-full text-center py-8 text-gray-500">
+                  Nenhum produto em destaque disponível
+                </div>
+              )}
             </div>
           <div className="text-center mt-12">
             <Link href="/loja">
@@ -191,9 +189,21 @@ export default function HomePage() {
             <p className="text-gray-6">Os favoritos dos nossos clientes</p>
           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {bestSellerProducts?.slice(0, 4).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
+              {bestSellerLoading ? (
+                <>
+                  {[...Array(4)].map((_, i) => (
+                    <ProductCardSkeleton key={i} />
+                  ))}
+                </>
+              ) : bestSellerProducts && bestSellerProducts.length > 0 ? (
+                bestSellerProducts.slice(0, 4).map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))
+              ) : (
+                <div className="col-span-full text-center py-8 text-gray-500">
+                  Nenhum produto mais vendido disponível
+                </div>
+              )}
             </div>
         </div>
       </section>
@@ -206,9 +216,21 @@ export default function HomePage() {
             <p className="text-gray-6">Os produtos mais recentes em nossa loja</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {newArrivals?.slice(0, 4).map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {newArrivalsLoading ? (
+              <>
+                {[...Array(4)].map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
+              </>
+            ) : newArrivals && newArrivals.length > 0 ? (
+              newArrivals.slice(0, 4).map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-8 text-gray-500">
+                Nenhuma novidade disponível
+              </div>
+            )}
           </div>
         </div>
       </section>

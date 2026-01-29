@@ -20,6 +20,8 @@ interface LogoProps {
   brandNameClassName?: string;
   /** Container classes when clickable */
   containerClassName?: string;
+  /** Whether to prioritize loading (use only for above-fold logos) */
+  priority?: boolean;
 }
 
 export default function Logo({
@@ -31,6 +33,7 @@ export default function Logo({
   showBrandName = false,
   brandNameClassName = 'text-xl sm:text-2xl font-bold text-gray-9',
   containerClassName = 'flex items-center space-x-2',
+  priority = false,
 }: LogoProps) {
   const logoPath = logoConfig[variant];
   
@@ -65,7 +68,7 @@ export default function Logo({
         width={width}
         height={height}
         className={className}
-        priority
+        priority={priority}
       />
       {showBrandName && (
         <span className={brandNameClassName}>{logoConfig.brandName}</span>

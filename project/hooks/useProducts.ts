@@ -39,6 +39,8 @@ export const useFeaturedProducts = () => {
       const response = await apiClient.get('/products/featured');
       return response.data.data.products as Product[];
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes - featured products don't change often
+    gcTime: 30 * 60 * 1000, // 30 minutes
   });
 };
 
@@ -49,6 +51,8 @@ export const useBestSellers = () => {
       const response = await apiClient.get('/products/best-sellers');
       return response.data.data.products as Product[];
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 30 * 60 * 1000, // 30 minutes
   });
 };
 
@@ -59,6 +63,8 @@ export const useNewArrivals = () => {
       const response = await apiClient.get('/products/new-arrivals');
       return response.data.data.products as Product[];
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes - new arrivals may change more frequently
+    gcTime: 15 * 60 * 1000, // 15 minutes
   });
 };
 

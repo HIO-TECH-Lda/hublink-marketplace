@@ -6,6 +6,7 @@ import { Filter, Grid, List, ChevronDown, Star } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
+import ProductCardSkeleton from '@/components/common/ProductCardSkeleton';
 import CartPopup from '@/components/popups/CartPopup';
 import QuickViewPopup from '@/components/popups/QuickViewPopup';
 import { Button } from '@/components/ui/button';
@@ -55,21 +56,14 @@ export default function ShopPage() {
   const pagination = productsData?.pagination || { page: 1, pages: 1, total: 0 };
   const sellers = Array.from(new Set(products.map(p => p.sellerName || 'Unknown Seller')));
 
+  // Remove client-side filtering - API already handles filtering
+  // Only apply non-API filters if needed
   const filteredProducts = products.filter(product => {
-    // Search filter
-    const searchMatch = !searchQuery || 
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (product.categoryId?.name && product.categoryId.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (product.sellerName && product.sellerName.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    const categoryMatch = selectedCategories.length === 0 || 
-      selectedCategories.includes(product.categoryId?.name || product.category || '');
     const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
     const ratingMatch = selectedRating === 0 || (product.averageRating && product.averageRating >= selectedRating);
     const sellerMatch = selectedSellers.length === 0 || selectedSellers.includes(product.sellerName || 'Unknown Seller');
     
-    return searchMatch && categoryMatch && priceMatch && ratingMatch && sellerMatch;
+    return priceMatch && ratingMatch && sellerMatch;
   });
 
   const handleCategoryChange = (category: string, checked: boolean) => {
@@ -293,9 +287,32 @@ export default function ShopPage() {
           {/* Products Grid */}
           <div className="lg:col-span-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
+              {productsLoading ? (
+                <>
+                  {[...Array(12)].map((_, i) => (
+                    <ProductCardSkeleton key={i} />
+                  ))}
+                </>
+              ) : filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))
+              ) : (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-gray-6 mb-4">Nenhum produto encontrado com os filtros selecionados.</p>
+                  <Button
+                    onClick={() => {
+                      setSelectedCategories([]);
+                      setSelectedSellers([]);
+                      setPriceRange([0, 10000]);
+                      setSelectedRating(0);
+                      setSearchQuery('');
+                    }}
+                  >
+                    Limpar Filtros
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Pagination */}
