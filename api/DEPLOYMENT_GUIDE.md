@@ -142,7 +142,25 @@ pm2 save
 
 ### 7. Configure Nginx
 
-Create the Nginx configuration file:
+**Important:** If Apache is running (you see Apache default page), you need to stop it first:
+
+```bash
+# Check if Apache is running
+systemctl status apache2
+
+# Stop Apache (if running)
+systemctl stop apache2
+
+# Disable Apache from starting on boot (optional)
+systemctl disable apache2
+
+# Check what's using port 80
+netstat -tulpn | grep :80
+# OR
+ss -tulpn | grep :80
+```
+
+Now create the Nginx configuration file:
 
 ```bash
 nano /etc/nginx/sites-available/marketplace
@@ -356,6 +374,123 @@ pm2 restart frontend
 - Check if port 3000 is in use: `netstat -tulpn | grep 3000`
 - Ensure Next.js build completed: `ls -la .next`
 
+### Frontend changes not reflecting after rebuild
+If you've made changes to the frontend but they're not showing online:
+
+1. **Check PM2 status and logs:**
+   ```bash
+   pm2 status
+   pm2 logs frontend --lines 50
+   ```
+
+2. **Verify the build actually succeeded:**
+   ```bash
+   cd /var/www/project-bolt-sb1-uqyvamjw/project
+   npm run build
+   # Check for any errors in the build output
+   ```
+
+3. **Clear Next.js cache and rebuild:**
+   ```bash
+   cd /var/www/project-bolt-sb1-uqyvamjw/project
+   rm -rf .next
+   npm run build
+   pm2 restart frontend
+   ```
+
+4. **Hard restart PM2 (delete and recreate):**
+   ```bash
+   pm2 delete frontend
+   cd /var/www/project-bolt-sb1-uqyvamjw/project
+   pm2 start npm --name "frontend" -- start
+   pm2 save
+   ```
+
+5. **Check if changes are in the right directory:**
+   ```bash
+   # Verify you're editing files in the correct location
+   cd /var/www/project-bolt-sb1-uqyvamjw/project
+   ls -la
+   # Check the last modified time of files you changed
+   ```
+
+6. **Clear browser cache or test in incognito mode:**
+   - Browser may be caching old assets
+   - Try: `Ctrl+Shift+R` (hard refresh) or `Ctrl+F5`
+   - Or test in incognito/private browsing mode
+
+7. **Check Nginx caching (if configured):**
+   ```bash
+   # If using aaPanel's nginx, check for cache settings
+   # You may need to disable caching for development
+   ```
+
+8. **Verify the app is actually running:**
+   ```bash
+   curl http://localhost:3000
+   # Compare with what you see at http://192.145.237.193/
+   ```
+
+### ChunkLoadError: Loading chunk failed (404 errors)
+If you see errors like `ChunkLoadError: Loading chunk 9113 failed` or `404 (Not Found)` for `/_next/static/chunks/` files:
+
+**This happens when:**
+- Browser has cached old HTML with references to old chunk files
+- Build output changed but browser still has old references
+- Static files aren't being served correctly
+
+**Solutions:**
+
+1. **Clear browser cache completely:**
+   - Hard refresh: `Ctrl+Shift+R` (Windows/Linux) or `Cmd+Shift+R` (Mac)
+   - Or clear browser cache completely
+   - Or test in incognito/private mode
+
+2. **Verify the chunk file exists on server:**
+   ```bash
+   cd /var/www/project-bolt-sb1-uqyvamjw/project
+   # Check if the chunk file exists (replace with actual filename from error)
+   find .next -name "*9113*" -o -name "*2568e32d9d80452c*"
+   # List all chunks
+   ls -la .next/static/chunks/ | head -20
+   ```
+
+3. **Do a complete clean rebuild:**
+   ```bash
+   cd /var/www/project-bolt-sb1-uqyvamjw/project
+   rm -rf .next
+   rm -rf node_modules/.cache
+   npm run build
+   pm2 restart frontend
+   ```
+
+4. **Check if nginx is properly serving static files:**
+   ```bash
+   # Test if the chunk file is accessible
+   curl -I http://localhost:3000/_next/static/chunks/webpack-*.js | head -5
+   # Should return 200 OK, not 404
+   ```
+
+5. **Verify nginx configuration includes `/_next/static` location:**
+   - Make sure your nginx config has the `location /_next/static` block
+   - It should proxy to `http://localhost:3000`
+
+6. **If using aaPanel, check nginx config:**
+   ```bash
+   # Find your site config
+   ls -la /www/server/panel/vhost/nginx/
+   # Edit and ensure /_next/static is proxied correctly
+   ```
+
+7. **Temporary fix - disable browser cache headers in nginx (for development):**
+   ```nginx
+   location / {
+       proxy_pass http://localhost:3000;
+       # ... other headers ...
+       add_header Cache-Control "no-cache, no-store, must-revalidate";
+   }
+   ```
+
 ### API won't start
 - Check logs: `pm2 logs api`
 - Verify environment variables: `cat .env`
@@ -367,6 +502,56 @@ pm2 restart frontend
 - Verify Nginx is running: `systemctl status nginx`
 - Check Nginx logs: `tail -f /var/log/nginx/error.log`
 - Test Nginx config: `nginx -t`
+- **If you see Apache default page instead of your app:**
+  ```bash
+  # Stop Apache
+  systemctl stop apache2
+  
+  # Check what's using port 80
+  netstat -tulpn | grep :80
+  
+  # Make sure Nginx is running
+  systemctl start nginx
+  systemctl status nginx
+  
+  # Verify Nginx config is enabled
+  ls -la /etc/nginx/sites-enabled/
+  ```
+
+### Nginx can't bind to port 80 (Address already in use)
+- **If you have aaPanel installed**, aaPanel's nginx is likely using port 80
+- **Check what's using port 80:**
+  ```bash
+  netstat -tulpn | grep :80
+  # OR
+  ss -tulpn | grep :80
+  ```
+- **If you see aaPanel's nginx processes:**
+  ```bash
+  ps aux | grep nginx
+  # You'll see processes like:
+  # /www/server/nginx/sbin/nginx
+  # /www/server/panel/webserver/sbin/webserver
+  ```
+- **Option 1: Use aaPanel's nginx (Recommended if using aaPanel)**
+  - Configure aaPanel's nginx via the web panel at `http://your-server-ip:22773`
+  - Or edit the config file: `/www/server/panel/vhost/nginx/your-domain.conf`
+  - Add the reverse proxy configuration there instead of `/etc/nginx/sites-available/`
+- **Option 2: Stop aaPanel's nginx and use system nginx**
+  ```bash
+  # Stop aaPanel's nginx
+  /etc/init.d/nginx stop
+  # OR
+  systemctl stop nginx
+  
+  # Disable aaPanel's nginx from auto-starting
+  systemctl disable nginx
+  
+  # Now start system nginx
+  systemctl start nginx
+  systemctl enable nginx
+  ```
+  **Note:** This may affect aaPanel's functionality. It's better to use aaPanel's nginx if you're using the panel.
 
 ### API requests failing
 - Verify API is running: `pm2 status`
