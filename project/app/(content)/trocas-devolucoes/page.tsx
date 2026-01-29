@@ -42,8 +42,8 @@ export default function TrocasDevolucoesPage() {
         {/* Quick Info Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Clock size={24} className="text-green-600" />
+            <div className="w-12 h-12 bg-primary-lighter rounded-full flex items-center justify-center mx-auto mb-4">
+              <Clock size={24} className="text-primary" />
             </div>
             <h3 className="font-semibold text-gray-9 mb-2">24 Horas</h3>
             <p className="text-gray-7 text-sm">Prazo para solicitar devolução</p>
@@ -98,12 +98,12 @@ export default function TrocasDevolucoesPage() {
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">Quando Você Pode Devolver</h2>
                 
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-green-50 rounded-lg p-4">
-                    <h3 className="font-medium text-green-800 mb-3 flex items-center">
+                  <div className="bg-primary-lighter rounded-lg p-4">
+                    <h3 className="font-medium text-primary-hard mb-3 flex items-center">
                       <CheckCircle size={16} className="mr-2" />
                       Motivos Aceitos
                     </h3>
-                    <ul className="text-green-700 text-sm space-y-2">
+                    <ul className="text-primary text-sm space-y-2">
                       <li>• Produto danificado na entrega</li>
                       <li>• Produto diferente do pedido</li>
                       <li>• Produto fora da validade</li>
@@ -257,7 +257,7 @@ export default function TrocasDevolucoesPage() {
                     </p>
                   </div>
                   
-                  <div className="border-l-4 border-green-400 pl-4">
+                  <div className="border-l-4 border-primary pl-4">
                     <h3 className="font-medium text-gray-9 mb-2">Produtos Danificados</h3>
                     <p className="text-gray-7 text-sm">
                       Se o produto chegar danificado, tire fotos e entre em contato imediatamente. 

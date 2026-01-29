@@ -200,18 +200,18 @@ function UpdatePrompt({ onUpdate, onDismiss }: UpdatePromptProps) {
 function InstallPrompt({ onInstall, onDismiss }: InstallPromptProps) {
   return (
     <div className="fixed bottom-4 right-4 z-50 max-w-sm">
-      <Card className="bg-green-50 border-green-200 shadow-lg">
+      <Card className="bg-primary-lighter border-primary/20 shadow-lg">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-green-900 text-lg">Instalar Txova</CardTitle>
+            <CardTitle className="text-primary-hard text-lg">Instalar Txova</CardTitle>
             <button
               onClick={onDismiss}
-              className="text-green-600 hover:text-green-800"
+              className="text-primary hover:text-primary-hard"
             >
               <X size={20} />
             </button>
           </div>
-          <CardDescription className="text-green-700">
+          <CardDescription className="text-primary-soft">
             Instale o Txova no seu dispositivo para acessar mais rapidamente e usar offline.
           </CardDescription>
         </CardHeader>
@@ -219,7 +219,7 @@ function InstallPrompt({ onInstall, onDismiss }: InstallPromptProps) {
           <div className="flex space-x-2">
             <Button
               onClick={onInstall}
-              className="bg-green-600 hover:bg-green-700 text-white flex-1"
+              className="bg-primary hover:bg-primary-hard text-white flex-1"
             >
               <Download size={16} className="mr-2" />
               Instalar
@@ -227,7 +227,7 @@ function InstallPrompt({ onInstall, onDismiss }: InstallPromptProps) {
             <Button
               onClick={onDismiss}
               variant="outline"
-              className="border-green-300 text-green-700 hover:bg-green-100"
+              className="border-primary/30 text-primary hover:bg-primary-lighter"
             >
               Depois
             </Button>

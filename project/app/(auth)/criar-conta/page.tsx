@@ -196,19 +196,19 @@ export default function CreateAccountPage() {
           </div>
 
           {/* Become a Seller */}
-          <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mt-8 p-4 bg-primary-lighter border border-primary/20 rounded-lg">
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-green-8 mb-2">
+              <h3 className="text-lg font-semibold text-primary-hard mb-2">
                 Quer vender seus produtos?
               </h3>
-              <p className="text-sm text-green-7 mb-4">
+              <p className="text-sm text-primary mb-4">
                 Junte-se aos nossos vendedores e comece a vender produtos orgânicos na nossa plataforma
               </p>
               <Link href="/seja-vendedor">
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full border-green-300 text-green-7 hover:bg-green-100 hover:text-green-8"
+                  className="w-full border-primary/30 text-primary hover:bg-primary-lighter hover:text-primary-hard"
                 >
                   Seja um Vendedor
                 </Button>

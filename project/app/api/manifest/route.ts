@@ -8,7 +8,7 @@ export async function GET() {
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
-    theme_color: '#10b981',
+    theme_color: '#097019',
     orientation: 'portrait-primary',
     scope: '/',
     lang: 'pt-MZ',
