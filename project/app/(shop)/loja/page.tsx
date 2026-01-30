@@ -274,13 +274,13 @@ export default function ShopPage() {
               </div>
 
               {/* Sale Products */}
-              <div className="bg-primary/5 p-4 rounded-lg">
+              {/* <div className="bg-primary/5 p-4 rounded-lg">
                 <h3 className="font-semibold text-gray-9 mb-2">Produtos em Promoção</h3>
                 <p className="text-sm text-gray-6 mb-3">Até 79% de desconto</p>
                 <Button size="sm" className="bg-primary hover:bg-primary-hard text-white">
                   Ver Ofertas
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
 
