@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   useAdminUsers, 
@@ -77,6 +78,13 @@ export default function UserManagementPage() {
       suspended: 'Suspenso'
     };
     return statusMap[status] || status;
+  };
+
+  const getAvatarFallback = (user: User | any) => {
+    const first = (user?.firstName ?? '').trim().charAt(0).toUpperCase();
+    const last = (user?.lastName ?? '').trim().charAt(0).toUpperCase();
+    if (first || last) return `${first}${last}`;
+    return (user?.email ?? '?').charAt(0).toUpperCase();
   };
 
   const getRoleBadge = (role: string) => {
@@ -318,11 +326,23 @@ export default function UserManagementPage() {
                 {users.map((user) => (
                   <tr key={user._id || user.id} className="border-b border-gray-2 hover:bg-gray-1/50">
                     <td className="py-4 px-4">
-                      <div>
-                        <p className="font-medium text-gray-9">
-                          {user.firstName} {user.lastName}
-                        </p>
-                        <p className="text-xs text-gray-5">{user._id || user.id}</p>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10 rounded-full flex-shrink-0">
+                          <AvatarImage
+                            src={(user as any).avatar ?? (user as any).profileImage ?? undefined}
+                            alt={`${user.firstName} ${user.lastName}`}
+                            className="object-cover"
+                          />
+                          <AvatarFallback className="bg-primary/10 text-primary font-semibold text-sm">
+                            {getAvatarFallback(user)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium text-gray-9">
+                            {user.firstName} {user.lastName}
+                          </p>
+                          <p className="text-xs text-gray-5">{user._id || user.id}</p>
+                        </div>
                       </div>
                     </td>
                     <td className="py-4 px-4">
