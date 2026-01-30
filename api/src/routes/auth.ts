@@ -1,6 +1,8 @@
+import { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
 import { AuthController } from '../controllers/authController';
 import { authenticateToken, requireBuyer, requireSeller, requireAdmin } from '../middleware/auth';
+import { uploadAvatar } from '../middleware/upload';
 import { 
   validateRequest, 
   registerSchema, 
@@ -11,6 +13,25 @@ import {
 } from '../utils/validation';
 
 const router = Router();
+
+// Normalize FormData body before validation (parse JSON strings, set avatar from file)
+const normalizeProfileBody = (req: Request, _res: Response, next: NextFunction) => {
+  if ((req as any).file) {
+    const file = (req as any).file;
+    (req as any).body.avatar = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+  }
+  const body = req.body as Record<string, unknown>;
+  for (const key of ['billingAddress', 'shippingAddress', 'preferences']) {
+    if (typeof body[key] === 'string') {
+      try {
+        body[key] = JSON.parse(body[key] as string);
+      } catch {
+        delete body[key];
+      }
+    }
+  }
+  next();
+};
 
 // Register new user
 router.post('/register', validateRequest(registerSchema), AuthController.register);
@@ -24,8 +45,8 @@ router.post('/refresh', validateRequest(refreshTokenSchema), AuthController.refr
 // Get current user profile
 router.get('/me', authenticateToken, AuthController.getProfile);
 
-// Update user profile
-router.put('/me', authenticateToken, validateRequest(updateProfileSchema), AuthController.updateProfile);
+// Update user profile (supports FormData with avatar)
+router.put('/me', authenticateToken, uploadAvatar, normalizeProfileBody, validateRequest(updateProfileSchema), AuthController.updateProfile);
 
 // Change password
 router.put('/change-password', authenticateToken, validateRequest(changePasswordSchema), AuthController.changePassword);

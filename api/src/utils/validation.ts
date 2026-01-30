@@ -275,6 +275,10 @@ export const updateProfileSchema = Joi.object({
       'string.max': 'Last name cannot exceed 50 characters'
     }),
   
+  avatar: Joi.string()
+    .optional()
+    .allow(''),
+  
   phone: Joi.string()
     .pattern(/^\+258[0-9]{9}$/)
     .messages({

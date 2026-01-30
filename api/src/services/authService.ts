@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import User, { IUserDocument } from '../models/User';
 import { JWTPayload } from '../types';
 import Messages from '../utils/messages';
+import { uploadBase64Image } from '../utils/cloudinary';
 
 export class AuthService {
   // Generate JWT token
@@ -165,8 +166,14 @@ export class AuthService {
   static async updateUserProfile(userId: string, updateData: Partial<IUserDocument>): Promise<IUserDocument | null> {
     try {
       // Remove sensitive fields that shouldn't be updated directly
-      const { password, email, role, status, ...safeUpdateData } = updateData;
-      
+      const { password, email, role, status, ...safeUpdateData } = updateData as any;
+
+      // Upload avatar to Cloudinary if provided (base64 or file data)
+      if (safeUpdateData.avatar) {
+        const uploaded = await uploadBase64Image(safeUpdateData.avatar, 'avatars');
+        safeUpdateData.avatar = uploaded.url;
+      }
+
       const user = await User.findByIdAndUpdate(
         userId,
         safeUpdateData,

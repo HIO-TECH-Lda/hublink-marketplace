@@ -26,6 +26,9 @@ export const upload = multer({
 // Middleware for single image upload (field name: 'image')
 export const uploadSingleImage = upload.single('image');
 
+// Middleware for avatar upload (field name: 'avatar')
+export const uploadAvatar = upload.single('avatar');
+
 // Middleware for multiple images (field name: 'images')
 export const uploadMultipleImages = upload.array('images', 10);
 
