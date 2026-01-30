@@ -5,6 +5,7 @@ export interface PublicSeller {
   id: string;
   businessName: string;
   logo?: string;
+  coverImage?: string;
   description: string;
   rating: number;
   totalReviews: number;

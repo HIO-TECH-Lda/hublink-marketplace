@@ -212,10 +212,9 @@ export default function SellersPage() {
                       totalSales: seller.totalSales,
                       location: seller.location,
                       isVerified: seller.isVerified,
+                      isFeatured: seller.isFeatured,
                       isTopSeller: seller.isFeatured,
                       joinedDate: seller.memberSince,
-                      category: '',
-                      tags: []
                     }} 
                     showStats={viewMode === 'grid'}
                   />
