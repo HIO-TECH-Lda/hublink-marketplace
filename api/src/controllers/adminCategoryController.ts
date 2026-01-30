@@ -65,7 +65,32 @@ export class AdminCategoryController {
   // Create category
   static async createCategory(req: Request, res: Response): Promise<void> {
     try {
-      const categoryData = req.body;
+      // Handle file upload from multer (if present)
+      if ((req as any).file) {
+        // Convert file buffer to base64
+        const file = (req as any).file;
+        const base64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+        req.body.image = base64;
+      }
+
+      // Parse form data (strings need to be converted)
+      const categoryData: any = {
+        ...req.body
+      };
+
+      // Convert boolean strings to booleans
+      if (categoryData.isActive !== undefined) {
+        categoryData.isActive = categoryData.isActive === 'true' || categoryData.isActive === true;
+      }
+      if (categoryData.isFeatured !== undefined) {
+        categoryData.isFeatured = categoryData.isFeatured === 'true' || categoryData.isFeatured === true;
+      }
+
+      // Convert sortOrder to number if it's a string
+      if (categoryData.sortOrder !== undefined && typeof categoryData.sortOrder === 'string') {
+        categoryData.sortOrder = parseInt(categoryData.sortOrder, 10) || 0;
+      }
+
       const category = await AdminCategoryService.createCategory(categoryData);
       res.status(201).json({
         success: true,
@@ -85,7 +110,33 @@ export class AdminCategoryController {
   static async updateCategory(req: Request, res: Response): Promise<void> {
     try {
       const { categoryId } = req.params;
-      const updateData = req.body;
+
+      // Handle file upload from multer (if present)
+      if ((req as any).file) {
+        // Convert file buffer to base64
+        const file = (req as any).file;
+        const base64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+        req.body.image = base64;
+      }
+
+      // Parse form data (strings need to be converted)
+      const updateData: any = {
+        ...req.body
+      };
+
+      // Convert boolean strings to booleans
+      if (updateData.isActive !== undefined) {
+        updateData.isActive = updateData.isActive === 'true' || updateData.isActive === true;
+      }
+      if (updateData.isFeatured !== undefined) {
+        updateData.isFeatured = updateData.isFeatured === 'true' || updateData.isFeatured === true;
+      }
+
+      // Convert sortOrder to number if it's a string
+      if (updateData.sortOrder !== undefined && typeof updateData.sortOrder === 'string') {
+        updateData.sortOrder = parseInt(updateData.sortOrder, 10);
+      }
+
       const category = await AdminCategoryService.updateCategory(categoryId, updateData);
       res.json({
         success: true,

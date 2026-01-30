@@ -1,6 +1,7 @@
 import Category from '../models/Category';
 import Product from '../models/Product';
 import mongoose, { Types } from 'mongoose';
+import { uploadBase64Image } from '../utils/cloudinary';
 
 export interface CategoryListFilters {
   search?: string;
@@ -237,6 +238,12 @@ export class AdminCategoryService {
         }
       }
 
+      // Upload image to Cloudinary if provided (base64 or URL)
+      if (categoryData.image) {
+        const uploaded = await uploadBase64Image(categoryData.image, 'categories');
+        categoryData.image = uploaded.url;
+      }
+
       const category = new Category(categoryData);
       await category.save();
 
@@ -264,6 +271,12 @@ export class AdminCategoryService {
         if (existing) {
           throw new Error('Category slug already exists');
         }
+      }
+
+      // Upload new image to Cloudinary if provided (base64 or URL)
+      if (updateData.image) {
+        const uploaded = await uploadBase64Image(updateData.image, 'categories');
+        updateData.image = uploaded.url;
       }
 
       // Update fields
