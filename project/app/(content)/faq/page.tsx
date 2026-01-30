@@ -189,7 +189,7 @@ export default function FAQPage() {
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">E-mail</p>
-                    <p className="text-gray-7">contato@ecobazar.com</p>
+                    <p className="text-gray-7">contato@txova.co.mz</p>
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">Horário</p>

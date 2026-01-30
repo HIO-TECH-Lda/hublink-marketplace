@@ -128,9 +128,9 @@ export default function AjudaPage() {
       icon: Mail,
       title: 'E-mail',
       description: 'Envie sua dúvida por e-mail',
-      contact: 'suporte@ecobazar.com',
+      contact: 'suporte@txova.co.mz',
       action: 'Enviar E-mail',
-      href: 'mailto:suporte@ecobazar.com'
+      href: 'mailto:suporte@txova.co.mz'
     },
     {
       icon: MessageCircle,

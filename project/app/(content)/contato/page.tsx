@@ -49,7 +49,7 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'E-mail',
-      content: 'contato@ecobazar.com\nsuporte@ecobazar.com',
+      content: 'contato@txova.co.mz\nsuporte@txova.co.mz',
       color: 'text-primary'
     },
     {

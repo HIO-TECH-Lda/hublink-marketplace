@@ -98,9 +98,9 @@ export default function SystemSettingsPage() {
     email: {
       smtpHost: 'smtp.gmail.com',
       smtpPort: 587,
-      smtpUser: 'noreply@ecobazar.com',
+      smtpUser: 'noreply@txova.co.mz',
       smtpPassword: '********',
-      fromEmail: 'noreply@ecobazar.com',
+      fromEmail: 'noreply@txova.co.mz',
       fromName: 'Txova'
     },
     notifications: {
