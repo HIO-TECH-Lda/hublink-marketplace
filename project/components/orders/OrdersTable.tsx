@@ -140,31 +140,28 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                 {order.items?.length ?? 0}
               </td>
               <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
-                <div className="flex items-center justify-end gap-3">
-                  <Link
-                    href={`/pedido/${order._id || order.id}`}
-                    className="inline-flex items-center text-green-600 hover:text-green-700"
-                  >
-                    <Eye className="mr-1 h-4 w-4" />
-                    Ver
-                  </Link>
-                  {order.status === 'pending' && (
-                    <Link
-                      href={`/pagamento/${order._id || order.id}`}
-                      className="inline-flex items-center text-blue-600 hover:text-blue-700"
-                    >
-                      <DollarSign className="mr-1 h-4 w-4" />
-                      Pagar
+                <div className="flex items-center justify-end gap-2 flex-nowrap">
+                  <Button asChild size="sm" variant="default" className="text-primary-foreground">
+                    <Link href={`/pedido/${order._id || order.id}`} className="inline-flex items-center gap-1.5">
+                      <Eye className="h-4 w-4" />
+                      Ver
                     </Link>
+                  </Button>
+                  {order.status === 'pending' && (
+                    <Button asChild size="sm" variant="outline" className="border-blue-500 text-blue-600 hover:bg-blue-50 hover:text-blue-700">
+                      <Link href={`/pagamento/${order._id || order.id}`} className="inline-flex items-center gap-1.5">
+                        <DollarSign className="h-4 w-4" />
+                        Pagar
+                      </Link>
+                    </Button>
                   )}
                   {(order.status === 'delivered' || order.status === 'shipped') && (
-                    <Link
-                      href={`/reembolso/${order._id || order.id}`}
-                      className="inline-flex items-center text-orange-600 hover:text-orange-700"
-                    >
-                      <ArrowLeft className="mr-1 h-4 w-4" />
-                      Reembolso
-                    </Link>
+                    <Button asChild size="sm" variant="outline" className="border-amber-500 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                      <Link href={`/reembolso/${order._id || order.id}`} className="inline-flex items-center gap-1.5">
+                        <ArrowLeft className="h-4 w-4" />
+                        Reembolso
+                      </Link>
+                    </Button>
                   )}
                 </div>
               </td>
