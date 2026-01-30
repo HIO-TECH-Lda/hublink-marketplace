@@ -49,13 +49,17 @@ export default function HomePage() {
                 Qualidade garantida, sabor autêntico e nutrição máxima para sua família.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3 sm:py-4">
-                  Compre Agora
-                  <ArrowRight className="ml-2" size={20} />
-                </Button>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white px-6 sm:px-8 py-3 sm:py-4">
-                  Seja um Vendedor
-                </Button>
+                <Link href="/loja">
+                  <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3 sm:py-4">
+                    Compre Agora
+                    <ArrowRight className="ml-2" size={20} />
+                  </Button>
+                </Link>
+                <Link href="/seja-vendedor">
+                  <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white px-6 sm:px-8 py-3 sm:py-4">
+                    Seja um Vendedor
+                  </Button>
+                </Link>
               </div>
             </div>
             <div className="relative order-first lg:order-last">
@@ -148,7 +152,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
-                Banca de Alimentos Orgânicos
+                Marketplace de Alimentos Orgânicos
                 <span className="block">100% Confiável</span>
               </h2>
               <p className="text-lg text-green-gray-1">
@@ -264,10 +268,8 @@ export default function HomePage() {
                       location: seller.location,
                       isVerified: seller.isVerified,
                       isTopSeller: seller.isFeatured,
-                      joinedDate: seller.memberSince,
-                      category: '',
-                      tags: []
-                    }}
+                      joinedDate: seller.memberSince
+                    } as Parameters<typeof SellerCard>[0]['seller']}
                   />
                 ))}
               </div>

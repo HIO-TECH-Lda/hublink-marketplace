@@ -78,7 +78,7 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-6">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-9 leading-tight">
-                Banca de Alimentos Orgânicos
+                Marketplace de Alimentos Orgânicos
                 <span className="text-primary block">100% Confiável</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
@@ -294,12 +294,12 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/loja">
-              <Button size="lg" className="bg-white text-primary hover:bg-gray-1 px-6 sm:px-8 py-3">
+              <Button size="lg" className="bg-white text-primary hover:bg-gray-1 hover:shadow-lg transition-all duration-200 px-6 sm:px-8 py-3">
                 Começar a Comprar
               </Button>
             </Link>
             <Link href="/contato">
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary px-6 sm:px-8 py-3">
+              <Button variant="outline" size="lg" className="border-white bg-transparent text-white hover:bg-white hover:text-primary hover:shadow-lg transition-all duration-200 px-6 sm:px-8 py-3">
                 Fale Conosco
               </Button>
             </Link>

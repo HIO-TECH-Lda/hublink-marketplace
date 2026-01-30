@@ -237,18 +237,18 @@ export default function SignInPage() {
                   variant="outline"
                   size="sm"
                   disabled={isLoading || authLoading}
-                  onClick={() => handleDemoLogin('admin@test.com')}
+                  onClick={() => handleDemoLogin('helton@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
                 >
                   {isLoading ? 'Entrando...' : 'Login Admin'}
                 </Button>
               </div>
-              <div className="text-xs text-gray-7 space-y-1">
+              {/* <div className="text-xs text-gray-7 space-y-1">
                 <p><strong>Cliente:</strong> cliente@exemplo.com</p>
                 <p><strong>Vendedor:</strong> vendedor@exemplo.com</p>
                 <p><strong>Admin:</strong> admin@exemplo.com</p>
                 <p><strong>Senha:</strong> H2Furau2711@</p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

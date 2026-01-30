@@ -117,13 +117,12 @@ export default function Header() {
             />
 
             {/* Desktop Navigation */}
-            <nav className={`hidden lg:flex items-center ${isAdmin ? 'space-x-6' : 'space-x-8'}`}>
-              <Link href="/" className="hover:text-primary transition-colors">Início</Link>
+            <nav className={`hidden lg:flex items-center ${isAdmin ? 'space-x-6 ml-6' : 'space-x-8 ml-8'}`}>
               <Link href="/loja" className="hover:text-primary transition-colors">Comprar Agora</Link>
               <Link href="/sobre" className="hover:text-primary transition-colors">Sobre</Link>
               <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
               <Link href="/contato" className="hover:text-primary transition-colors">Contato</Link>
-              <Link href="/faqs" className="hover:text-primary transition-colors">FAQs</Link>
+              <Link href="/faq" className="hover:text-primary transition-colors">FAQs</Link>
               {isAdmin && (
                 <Link 
                   href="/admin" 
@@ -238,12 +237,11 @@ export default function Header() {
           {isMobileMenuOpen && (
             <div className="lg:hidden mt-4 pb-4 border-t border-gray-3">
               <nav className="flex flex-col space-y-2 mt-4">
-                <Link href="/" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Início</Link>
                 <Link href="/loja" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Comprar Agora</Link>
                 <Link href="/sobre" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Sobre</Link>
                 <Link href="/blog" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Blog</Link>
                 <Link href="/contato" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Contato</Link>
-                <Link href="/faqs" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">FAQs</Link>
+                <Link href="/faq" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">FAQs</Link>
                 {hasRole('admin') && (
                   <Link 
                     href="/admin" 
