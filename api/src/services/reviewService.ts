@@ -102,6 +102,73 @@ export class ReviewService {
   }
 
   /**
+   * Get all reviews (no product filter)
+   */
+  static async getAllReviews(
+    options: {
+      page?: number;
+      limit?: number;
+      status?: string;
+      sortBy?: string;
+      sortOrder?: 'asc' | 'desc';
+    } = {}
+  ): Promise<ReviewListResponse> {
+    try {
+      const { page = 1, limit = 10, status = 'all', sortBy = 'createdAt', sortOrder = 'desc' } = options;
+
+      // Build query
+      const query: any = {};
+      if (status && status !== 'all') {
+        query.status = status;
+      }
+
+      // Build sort
+      const sort: any = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
+
+      // Get reviews
+      const reviews = await Review.find(query)
+        .populate('userId', 'firstName lastName email avatar')
+        .populate('productId', 'name primaryImage')
+        .populate('moderatedBy', 'firstName lastName')
+        .sort(sort)
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+      // Get total count
+      const total = await Review.countDocuments(query);
+
+      // Get average rating across all reviews
+      const stats = await Review.aggregate([
+        ...(status && status !== 'all' ? [{ $match: { status } }] : []),
+        {
+          $group: {
+            _id: null,
+            averageRating: { $avg: '$rating' }
+          }
+        },
+        {
+          $addFields: {
+            averageRating: { $round: ['$averageRating', 1] }
+          }
+        }
+      ]);
+      const averageRating = stats.length > 0 ? stats[0].averageRating : 0;
+
+      return {
+        reviews,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        averageRating
+      };
+    } catch (error) {
+      console.error('Error getting all reviews:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Get reviews for a product
    */
   static async getProductReviews(

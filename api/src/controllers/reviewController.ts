@@ -36,6 +36,41 @@ export class ReviewController {
   }
 
   /**
+   * Get all reviews (no product filter)
+   */
+  static async getAllReviews(req: Request, res: Response) {
+    try {
+      const { 
+        page = 1, 
+        limit = 10, 
+        status = 'all',
+        sortBy = 'createdAt',
+        sortOrder = 'desc'
+      } = req.query;
+
+      const result = await ReviewService.getAllReviews({
+        page: Number(page),
+        limit: Number(limit),
+        status: status as string,
+        sortBy: sortBy as string,
+        sortOrder: sortOrder as 'asc' | 'desc'
+      });
+
+      return res.json({
+        success: true,
+        message: Messages.REVIEW.FETCH_SUCCESS,
+        data: result
+      });
+    } catch (error: any) {
+      console.error('Get all reviews error:', error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || Messages.REVIEW.FETCH_FAILED
+      });
+    }
+  }
+
+  /**
    * Get reviews for a product
    */
   static async getProductReviews(req: Request, res: Response) {

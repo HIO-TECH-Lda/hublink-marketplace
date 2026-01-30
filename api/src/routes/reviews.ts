@@ -17,6 +17,11 @@ router.post('/',
   ReviewController.createReview
 );
 
+// Get all reviews (public) - must be before /product/:productId
+router.get('/product/all', 
+  ReviewController.getAllReviews
+);
+
 // Get reviews for a product (public)
 router.get('/product/:productId', 
   ReviewController.getProductReviews
