@@ -13,8 +13,7 @@ export class AuthService {
       email: user.email,
       role: user.role,
       firstName: user.firstName,
-      lastName: user.lastName,
-      sellerId: user.sellerId?.toString()
+      lastName: user.lastName
     };
 
     return jwt.sign(payload, process.env.JWT_SECRET!, {
@@ -29,8 +28,7 @@ export class AuthService {
       email: user.email,
       role: user.role,
       firstName: user.firstName,
-      lastName: user.lastName,
-      sellerId: user.sellerId?.toString()
+      lastName: user.lastName
     };
 
     return jwt.sign(payload, process.env.JWT_SECRET!, {
@@ -72,34 +70,20 @@ export class AuthService {
     firstName: string;
     lastName: string;
     email: string;
-    phone: string;
     password: string;
     role?: string;
-    sellerProfile?: {
-      storeName: string;
-      storeDescription: string;
-      address: string;
-      city: string;
-      province: string;
-      postalCode: string;
-      productTypes: string;
-      experience?: string;
-    };
   }): Promise<{ user: IUserDocument; token: string }> {
     try {
-      // Check if user already exists
-      const existingUser = await User.findOne({
-        $or: [{ email: userData.email }, { phone: userData.phone }]
-      });
+      const existingUser = await User.findOne({ email: userData.email });
 
       if (existingUser) {
-        throw new Error(Messages.AUTH.EMAIL_PHONE_EXISTS);
+        throw new Error(Messages.AUTH.EMAIL_ALREADY_EXISTS);
       }
 
       // Create new user
       const user = new User({
         ...userData,
-        role: userData.role || 'buyer'
+        role: userData.role || 'user'
       });
 
       await user.save();

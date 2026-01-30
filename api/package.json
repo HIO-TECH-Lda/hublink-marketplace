@@ -1,7 +1,7 @@
 {
-  "name": "api",
+  "name": "api-starter-kit",
   "version": "1.0.0",
-  "description": "Comprehensive review system API with full test coverage",
+  "description": "Express + TypeScript + MongoDB API starter kit with auth, upload (Cloudinary), and audit logging",
   "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
@@ -10,31 +10,21 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:integration": "jest --testPathPattern=integration",
-    "test:unit": "jest --testPathPattern=unit",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
-    "@types/multer": "^2.0.0",
-    "@types/nodemailer": "^7.0.1",
-    "@types/qrcode": "^1.5.5",
-    "axios": "^1.11.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.8.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-rate-limit": "^6.10.0",
-    "express-validator": "^7.0.1",
     "helmet": "^7.0.0",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.0",
     "multer": "^2.0.2",
-    "nodemailer": "^7.0.6",
-    "qrcode": "^1.5.4",
-    "stripe": "^18.5.0",
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
@@ -43,6 +33,7 @@
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.4",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/multer": "^2.0.0",
     "@types/node": "^20.5.0",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
@@ -56,13 +47,16 @@
     "typescript": "^5.1.6"
   },
   "keywords": [
-    "review-system",
     "api",
+    "starter-kit",
     "express",
     "typescript",
     "mongodb",
-    "testing"
+    "mongoose",
+    "jwt",
+    "cloudinary",
+    "audit-log"
   ],
-  "author": "Your Name",
+  "author": "",
   "license": "MIT"
 }

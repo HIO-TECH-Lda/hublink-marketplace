@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuditLogService } from '../services/auditLogService';
 
-// Routes to exclude from audit logging (high volume, read-only, etc.)
 const EXCLUDED_ROUTES = [
+  '/health',
+  '/api/v1',
   '/api/v1/health',
-  '/api/v1/admin/audit-logs', // Don't log audit log queries
-  '/api/v1/admin/reports' // Don't log report queries
-  // Note: login, register, logout, password changes are logged manually in authController
+  '/api/v1/test'
 ];
 
 // Map HTTP methods to audit actions
@@ -185,16 +184,8 @@ function generateDescription(action: string, entityType: string): string {
   };
   
   const entityMap: { [key: string]: string } = {
-    users: 'User',
-    orders: 'Order',
-    products: 'Product',
-    categories: 'Category',
-    sellers: 'Seller',
-    blog: 'Blog post',
-    newsletter: 'Newsletter',
-    tickets: 'Ticket',
-    refunds: 'Refund',
-    payments: 'Payment'
+    auth: 'Auth',
+    users: 'User'
   };
   
   const entity = entityMap[entityType] || entityType;

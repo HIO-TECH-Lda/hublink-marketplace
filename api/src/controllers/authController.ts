@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/authService';
-import { EmailService } from '../services/emailService';
 import Messages from '../utils/messages';
 
 export class AuthController {
@@ -157,26 +156,12 @@ export class AuthController {
     });
   }
 
-  // Request password reset
-  static async forgotPassword(req: Request, res: Response) {
-    try {
-      const { email } = req.body;
-      const result = await AuthService.requestPasswordReset(email);
-      
-      // Send password reset email
-      await EmailService.sendPasswordReset(result.user, result.resetToken);
-      
-      return res.json({
-        success: true,
-        message: Messages.AUTH.PASSWORD_RESET_EMAIL_SENT
-      });
-    } catch (error) {
-      console.error('Forgot password error:', error);
-      return res.json({
-        success: true,
-        message: Messages.AUTH.PASSWORD_RESET_EMAIL_SENT
-      });
-    }
+  // Request password reset (add email service in your project to send the link)
+  static async forgotPassword(_req: Request, res: Response) {
+    return res.json({
+      success: true,
+      message: Messages.AUTH.PASSWORD_RESET_EMAIL_SENT
+    });
   }
 
   // Reset password with token
@@ -198,30 +183,4 @@ export class AuthController {
     }
   }
 
-  // Test protected route for buyers
-  static async buyerTest(req: Request, res: Response) {
-    return res.json({
-      success: true,
-      message: Messages.AUTH.BUYER_ACCESS,
-      data: { user: req.user }
-    });
-  }
-
-  // Test protected route for sellers
-  static async sellerTest(req: Request, res: Response) {
-    return res.json({
-      success: true,
-      message: Messages.AUTH.SELLER_ACCESS,
-      data: { user: req.user }
-    });
-  }
-
-  // Test protected route for admins
-  static async adminTest(req: Request, res: Response) {
-    return res.json({
-      success: true,
-      message: Messages.AUTH.ADMIN_ACCESS,
-      data: { user: req.user }
-    });
-  }
 }

@@ -18,8 +18,9 @@ export async function uploadBase64Image(base64OrUrl: string, folder = 'products'
     return { url: base64OrUrl, publicId: '' };
   }
 
+  const baseFolder = process.env.CLOUDINARY_FOLDER_NAME || 'api-starter';
   const res = await cloudinary.uploader.upload(base64OrUrl, {
-    folder: `${process.env.CLOUDINARY_FOLDER_NAME}/${folder}`,
+    folder: `${baseFolder}/${folder}`,
     resource_type: 'image'
   });
 

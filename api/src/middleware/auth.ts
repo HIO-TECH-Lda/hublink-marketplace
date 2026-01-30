@@ -71,11 +71,8 @@ export const authorizeRoles = (...roles: string[]) => {
   };
 };
 
-// Specific role middlewares for convenience
-export const requireBuyer = authorizeRoles('buyer');
-export const requireSeller = authorizeRoles('seller');
+// Convenience middleware: admin-only
 export const requireAdmin = authorizeRoles('admin');
-export const requireSupport = authorizeRoles('support');
 
 // Optional authentication - doesn't fail if no token
 export const optionalAuth = (req: Request, res: Response, next: NextFunction) => {

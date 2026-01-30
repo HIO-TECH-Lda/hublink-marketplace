@@ -4,7 +4,7 @@ module.exports = {
   roots: ['<rootDir>/src'],
   testMatch: [
     '**/__tests__/**/*.test.ts',
-    '**/?(*.)+(spec|test).ts'
+    '**/__tests__/**/*.spec.ts'
   ],
   transform: {
     '^.+\\.ts$': ['ts-jest', {
