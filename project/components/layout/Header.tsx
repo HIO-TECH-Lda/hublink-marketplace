@@ -23,6 +23,7 @@ export default function Header() {
 
   const cartItemsCount = cart?.totalItems || cart?.items?.length || 0;
   const wishlistCount = wishlist?.length || 0;
+  const isAdmin = hasRole('admin');
 
   // Debug cart data
   React.useEffect(() => {
@@ -116,17 +117,17 @@ export default function Header() {
             />
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8">
+            <nav className={`hidden lg:flex items-center ${isAdmin ? 'space-x-6' : 'space-x-8'}`}>
               <Link href="/" className="hover:text-primary transition-colors">Início</Link>
               <Link href="/loja" className="hover:text-primary transition-colors">Comprar Agora</Link>
               <Link href="/sobre" className="hover:text-primary transition-colors">Sobre</Link>
               <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
               <Link href="/contato" className="hover:text-primary transition-colors">Contato</Link>
               <Link href="/faqs" className="hover:text-primary transition-colors">FAQs</Link>
-              {hasRole('admin') && (
+              {isAdmin && (
                 <Link 
                   href="/admin" 
-                  className="flex items-center space-x-1 hover:text-primary transition-colors text-primary font-medium"
+                  className="flex items-center space-x-1 hover:text-primary transition-colors text-primary font-medium whitespace-nowrap"
                 >
                   <Shield size={16} />
                   <span>Admin</span>
@@ -153,8 +154,8 @@ export default function Header() {
               </div>
             </form>
 
-            {/* Action Icons */}
-            <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* Action Icons - Tighter spacing when admin is logged in */}
+            <div className={`flex items-center ${isAdmin ? 'space-x-1.5 sm:space-x-2' : 'space-x-2 sm:space-x-4'}`}>
               {/* Search - Mobile */}
               <button 
                 onClick={handleSearchIconClick}
