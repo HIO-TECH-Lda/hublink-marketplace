@@ -17,6 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { SingleImageUpload } from '@/components/ui/single-image-upload';
 import { useAdminCategory, useUpdateCategory, useAdminCategories } from '@/hooks/useAdmin';
 import { useToast } from '@/hooks/use-toast';
 
@@ -36,7 +37,8 @@ export default function EditCategoryPage() {
     description: '',
     slug: '',
     parentId: '',
-    image: '',
+    image: '', // existing image URL (for preview)
+    imageFile: null as File | null, // new file to upload
     icon: '',
     isActive: true,
     isFeatured: false,
@@ -51,12 +53,23 @@ export default function EditCategoryPage() {
 
   useEffect(() => {
     if (category) {
+      // Handle parentId - API may return it as object or string
+      let parentIdValue = '';
+      if (category.parentId) {
+        parentIdValue = typeof category.parentId === 'string' 
+          ? category.parentId 
+          : (category.parentId as any)?._id || (category.parentId as any)?.id || '';
+      } else if (category.parent?.id) {
+        parentIdValue = category.parent.id;
+      }
+
       setFormData({
         name: category.name || '',
         description: category.description || '',
         slug: category.slug || '',
-        parentId: category.parentId || category.parent?.id || '',
+        parentId: parentIdValue,
         image: category.image || '',
+        imageFile: null,
         icon: category.icon || '',
         isActive: category.isActive ?? true,
         isFeatured: category.isFeatured ?? false,
@@ -128,25 +141,22 @@ export default function EditCategoryPage() {
     }
 
     try {
-      const updateData: any = {
-        name: formData.name,
-        slug: formData.slug,
-        isActive: formData.isActive,
-        isFeatured: formData.isFeatured
-      };
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('slug', formData.slug);
+      formDataToSend.append('isActive', formData.isActive.toString());
+      formDataToSend.append('isFeatured', formData.isFeatured.toString());
+      if (formData.description) formDataToSend.append('description', formData.description);
+      if (formData.parentId) formDataToSend.append('parentId', formData.parentId);
+      else if (category?.parent) formDataToSend.append('parentId', '');
+      if (formData.icon) formDataToSend.append('icon', formData.icon);
+      formDataToSend.append('sortOrder', formData.sortOrder.toString());
+      if (formData.metaTitle) formDataToSend.append('metaTitle', formData.metaTitle);
+      if (formData.metaDescription) formDataToSend.append('metaDescription', formData.metaDescription);
+      if (formData.keywords.length > 0) formDataToSend.append('keywords', JSON.stringify(formData.keywords));
+      if (formData.imageFile) formDataToSend.append('image', formData.imageFile);
 
-      if (formData.description) updateData.description = formData.description;
-      if (formData.parentId) updateData.parentId = formData.parentId;
-      if (!formData.parentId && category?.parent) updateData.parentId = null;
-      if (formData.icon) updateData.icon = formData.icon;
-      if (formData.sortOrder) updateData.sortOrder = formData.sortOrder;
-      if (formData.metaTitle) updateData.metaTitle = formData.metaTitle;
-      if (formData.metaDescription) updateData.metaDescription = formData.metaDescription;
-      if (formData.keywords.length > 0) updateData.keywords = formData.keywords;
-
-      if (formData.image) updateData.image = formData.image;
-
-      await updateCategory.mutateAsync({ categoryId, data: updateData });
+      await updateCategory.mutateAsync({ categoryId, data: formDataToSend });
       router.push(`/admin/categorias/${categoryId}`);
     } catch (error: any) {
       // Error is handled by the hook
@@ -256,28 +266,13 @@ export default function EditCategoryPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div>
-                  <Label htmlFor="image">URL da Imagem</Label>
-                  <Input
-                    id="image"
-                    type="url"
-                    value={formData.image}
-                    onChange={(e) => setFormData({...formData, image: e.target.value})}
-                    placeholder="https://example.com/categoria.jpg"
-                  />
-                  {formData.image && (
-                    <div className="mt-4">
-                      <img 
-                        src={formData.image} 
-                        alt="Preview"
-                        className="w-32 h-32 object-cover rounded-lg border"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
+                <SingleImageUpload
+                  image={formData.imageFile}
+                  preview={formData.image || undefined}
+                  onChange={(file) => setFormData({ ...formData, imageFile: file })}
+                  label="Imagem da Categoria"
+                  maxSizeMB={5}
+                />
               </CardContent>
             </Card>
 

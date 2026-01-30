@@ -911,8 +911,9 @@ export const useCreateCategory = () => {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (data: CreateCategoryRequest) => {
-      const response = await apiClient.post('/admin/categories', data);
+    mutationFn: async (data: FormData | CreateCategoryRequest) => {
+      const config = data instanceof FormData ? {} : {};
+      const response = await apiClient.post('/admin/categories', data, config);
       return response.data.data as CategoryDetails;
     },
     onSuccess: () => {
@@ -940,8 +941,9 @@ export const useUpdateCategory = () => {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ categoryId, data }: { categoryId: string; data: Partial<CreateCategoryRequest> }) => {
-      const response = await apiClient.put(`/admin/categories/${categoryId}`, data);
+    mutationFn: async ({ categoryId, data }: { categoryId: string; data: FormData | Partial<CreateCategoryRequest> }) => {
+      const config = data instanceof FormData ? {} : {};
+      const response = await apiClient.put(`/admin/categories/${categoryId}`, data, config);
       return response.data.data as CategoryDetails;
     },
     onSuccess: (_, variables) => {

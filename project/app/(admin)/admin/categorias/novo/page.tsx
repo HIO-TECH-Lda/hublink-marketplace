@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { SingleImageUpload } from '@/components/ui/single-image-upload';
 import { useCreateCategory, useAdminCategories } from '@/hooks/useAdmin';
 import { useToast } from '@/hooks/use-toast';
 
@@ -31,7 +32,7 @@ export default function AdminCreateCategoryPage() {
     description: '',
     slug: '',
     parentId: '',
-    image: '',
+    imageFile: null as File | null,
     icon: '',
     isActive: true,
     isFeatured: false,
@@ -103,24 +104,21 @@ export default function AdminCreateCategoryPage() {
     }
 
     try {
-      const categoryData: any = {
-        name: formData.name,
-        slug: formData.slug,
-        isActive: formData.isActive,
-        isFeatured: formData.isFeatured
-      };
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('slug', formData.slug);
+      formDataToSend.append('isActive', formData.isActive.toString());
+      formDataToSend.append('isFeatured', formData.isFeatured.toString());
+      if (formData.description) formDataToSend.append('description', formData.description);
+      if (formData.parentId) formDataToSend.append('parentId', formData.parentId);
+      if (formData.icon) formDataToSend.append('icon', formData.icon);
+      formDataToSend.append('sortOrder', formData.sortOrder.toString());
+      if (formData.metaTitle) formDataToSend.append('metaTitle', formData.metaTitle);
+      if (formData.metaDescription) formDataToSend.append('metaDescription', formData.metaDescription);
+      if (formData.keywords.length > 0) formDataToSend.append('keywords', JSON.stringify(formData.keywords));
+      if (formData.imageFile) formDataToSend.append('image', formData.imageFile);
 
-      if (formData.description) categoryData.description = formData.description;
-      if (formData.parentId) categoryData.parentId = formData.parentId;
-      if (formData.icon) categoryData.icon = formData.icon;
-      if (formData.sortOrder) categoryData.sortOrder = formData.sortOrder;
-      if (formData.metaTitle) categoryData.metaTitle = formData.metaTitle;
-      if (formData.metaDescription) categoryData.metaDescription = formData.metaDescription;
-      if (formData.keywords.length > 0) categoryData.keywords = formData.keywords;
-
-      if (formData.image) categoryData.image = formData.image;
-
-      const newCategory = await createCategory.mutateAsync(categoryData);
+      const newCategory = await createCategory.mutateAsync(formDataToSend);
       router.push(`/admin/categorias/${newCategory.id}`);
     } catch (error: any) {
       // Error is handled by the hook
@@ -207,28 +205,12 @@ export default function AdminCreateCategoryPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div>
-                  <Label htmlFor="image">URL da Imagem</Label>
-                  <Input
-                    id="image"
-                    type="url"
-                    value={formData.image}
-                    onChange={(e) => setFormData({...formData, image: e.target.value})}
-                    placeholder="https://example.com/categoria.jpg"
-                  />
-                  {formData.image && (
-                    <div className="mt-4">
-                      <img 
-                        src={formData.image} 
-                        alt="Preview"
-                        className="w-32 h-32 object-cover rounded-lg border"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
+                <SingleImageUpload
+                  image={formData.imageFile}
+                  onChange={(file) => setFormData({ ...formData, imageFile: file })}
+                  label="Imagem da Categoria"
+                  maxSizeMB={5}
+                />
               </CardContent>
             </Card>
 
