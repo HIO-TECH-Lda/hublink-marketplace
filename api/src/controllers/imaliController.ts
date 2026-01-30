@@ -257,8 +257,8 @@ export class ImaliController {
 
     // Set default values and prepare request body for iMali API
       const payByLinkData = {
-      short_description: `Pedido #${order.orderNumber || order._id.toString().slice(-8)}`.slice(0, 255),
-      title: order.items.map((item: any) => `${item.quantity}x ${item.productName || 'Item'}`).join(', ').slice(0, 100),
+      title: `Pedido #${order.orderNumber || order._id.toString().slice(-8)}`.slice(0, 30),
+      short_description: order.items.map((item: any) => `${item.quantity}x ${item.productName || 'Item'}`).join(', ').slice(0, 255),
       amount: order.total.toFixed(2),
       type: body.type || 'DIRECT',
       payment_frequence: body.payment_frequence,
