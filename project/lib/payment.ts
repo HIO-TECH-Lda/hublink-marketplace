@@ -497,7 +497,7 @@ export class OrderTrackingService {
           id: 'ev_4',
           status: 'in_transit',
           description: 'Em trânsito',
-          location: 'Maputo, Maputo',
+          location: 'Beira, Sofala',
           timestamp: new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString()
         }
       ]

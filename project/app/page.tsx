@@ -372,13 +372,13 @@ export default function HomePage() {
               },
               {
                 name: "João Santos",
-                location: "Maputo, Maputo",
+                location: "Beira, Sofala",
                 rating: 5,
                 comment: "Finalmente encontrei um marketplace que conecta diretamente com produtores locais. Recomendo!"
               },
               {
                 name: "Ana Costa",
-                location: "Nampula, Nampula",
+                location: "Beira, Sofala",
                 rating: 5,
                 comment: "A variedade de produtos orgânicos é incrível. Minha família está mais saudável desde que começamos a comprar aqui."
               }

@@ -45,8 +45,8 @@ This document summarizes all changes made to adapt the Txova marketplace applica
 
 **Customer Testimonials:**
 - **Maria Silva:** Beira, Sofala
-- **João Santos:** Maputo, Maputo  
-- **Ana Costa:** Nampula, Nampula
+- **João Santos:** Beira, Sofala  
+- **Ana Costa:** Beira, Sofala
 
 ### 4. Header Component (`components/layout/Header.tsx`)
 
