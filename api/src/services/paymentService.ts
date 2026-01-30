@@ -1030,7 +1030,7 @@ export class PaymentService {
       if (lastHourPayments === 0) {
         alerts.push({
           type: 'info',
-          message: 'No payment activity in the last hour',
+          message: Messages.PAYMENT.NO_RECENT_ACTIVITY,
           timestamp: now
         });
       }

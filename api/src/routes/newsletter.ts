@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { PublicNewsletterController } from '../controllers/publicNewsletterController';
 import rateLimit from 'express-rate-limit';
+import Messages from '../utils/messages';
 
 const router = Router();
 
@@ -8,7 +9,7 @@ const router = Router();
 const subscribeLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hours
   max: 3,
-  message: 'Muitas tentativas de inscrição. Por favor, tente novamente amanhã.',
+  message: Messages.NEWSLETTER.TOO_MANY_ATTEMPTS,
   standardHeaders: true,
   legacyHeaders: false,
 });

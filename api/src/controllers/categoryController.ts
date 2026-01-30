@@ -161,7 +161,7 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Category tree built successfully',
+        message: Messages.CATEGORY.TREE_BUILT,
         data: { tree }
       });
     } catch (error) {
@@ -189,7 +189,7 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Category updated successfully',
+        message: Messages.CATEGORY.UPDATED,
         data: { category }
       });
     } catch (error) {
@@ -210,7 +210,7 @@ export class CategoryController {
       if (!deleted) {
         return res.status(404).json({
           success: false,
-          message: 'Category not found or has children'
+          message: Messages.CATEGORY.HAS_CHILDREN
         });
       }
 
@@ -249,7 +249,7 @@ export class CategoryController {
       console.error('Get category with product count error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve category with product count'
+        message: Messages.CATEGORY.WITH_COUNT_FAILED
       });
     }
   }
@@ -310,7 +310,7 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Category search completed successfully',
+        message: Messages.CATEGORY.SEARCH_COMPLETED,
         data: { categories }
       });
     } catch (error) {

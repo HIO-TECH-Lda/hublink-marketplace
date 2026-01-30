@@ -103,7 +103,7 @@ export class AdminTicketController {
       const ticket = await AdminTicketService.updateTicketStatus(ticketId, status);
       res.json({
         success: true,
-        message: 'Ticket status updated successfully',
+        message: Messages.ADMIN_TICKET.STATUS_UPDATED,
         data: ticket
       });
     } catch (error) {
@@ -124,7 +124,7 @@ export class AdminTicketController {
       if (!userId) {
         res.status(400).json({
           success: false,
-          message: 'User ID is required'
+          message: Messages.VALIDATION.REQUIRED_FIELD
         });
         return;
       }
@@ -187,7 +187,7 @@ export class AdminTicketController {
 
       res.json({
         success: true,
-        message: 'Message added successfully',
+        message: Messages.ADMIN_TICKET.MESSAGE_ADDED,
         data: ticket
       });
     } catch (error) {
@@ -206,7 +206,7 @@ export class AdminTicketController {
       await AdminTicketService.deleteTicket(ticketId);
       res.json({
         success: true,
-        message: 'Ticket deleted successfully'
+        message: Messages.TICKET.DELETED
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Ticket not found' ? 404 : 500;

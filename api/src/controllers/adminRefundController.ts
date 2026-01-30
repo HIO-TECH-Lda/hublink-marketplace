@@ -120,7 +120,7 @@ export class AdminRefundController {
 
       res.status(200).json({
         success: true,
-        message: 'Refund rejected successfully',
+        message: Messages.ADMIN_REFUND.REJECTED,
         data: refund
       });
     } catch (error) {

@@ -48,7 +48,7 @@ export class ProductController {
       console.error('Get product error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve product'
+        message: Messages.PRODUCT.FETCH_FAILED
       });
     }
   }
@@ -62,20 +62,20 @@ export class ProductController {
       if (!product) {
         return res.status(404).json({
           success: false,
-          message: 'Product not found'
+          message: Messages.PRODUCT.NOT_FOUND
         });
       }
 
       return res.json({
         success: true,
-        message: 'Product retrieved successfully',
+        message: Messages.PRODUCT.RETRIEVED,
         data: { product }
       });
     } catch (error) {
       console.error('Get product by slug error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve product'
+        message: Messages.PRODUCT.FETCH_FAILED
       });
     }
   }
@@ -118,7 +118,7 @@ export class ProductController {
       console.error('Get products error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve products'
+        message: Messages.PRODUCT.FETCH_FAILED
       });
     }
   }
@@ -171,7 +171,7 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'New arrivals retrieved successfully',
+        message: Messages.PRODUCT.FETCH_SUCCESS, // New arrivals são produtos obtidos
         data: { products }
       });
     } catch (error) {
@@ -195,7 +195,7 @@ export class ProductController {
       if (!product) {
         return res.status(404).json({
           success: false,
-          message: 'Product not found or access denied'
+          message: Messages.PRODUCT.NOT_FOUND_OR_DENIED
         });
       }
 
@@ -253,7 +253,7 @@ export class ProductController {
       if (!product) {
         return res.status(404).json({
           success: false,
-          message: 'Product not found or access denied'
+          message: Messages.PRODUCT.NOT_FOUND_OR_DENIED
         });
       }
 
@@ -283,7 +283,7 @@ export class ProductController {
       if (!product) {
         return res.status(404).json({
           success: false,
-          message: 'Product not found or access denied'
+          message: Messages.PRODUCT.NOT_FOUND_OR_DENIED
         });
       }
 
@@ -323,7 +323,7 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Search completed successfully',
+        message: Messages.PRODUCT.SEARCH_COMPLETED,
         data: { products }
       });
     } catch (error) {
@@ -349,7 +349,7 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Category products retrieved successfully',
+        message: Messages.PRODUCT.CATEGORY_PRODUCTS_RETRIEVED,
         data: { products }
       });
     } catch (error) {
@@ -374,7 +374,7 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Seller products retrieved successfully',
+        message: Messages.PRODUCT.SELLER_PRODUCTS_RETRIEVED,
         data: { products }
       });
     } catch (error) {

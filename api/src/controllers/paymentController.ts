@@ -101,7 +101,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Refund processed successfully',
+        message: Messages.PAYMENT.REFUND_PROCESSED,
         data: payment
       });
     } catch (error: any) {
@@ -125,7 +125,7 @@ export class PaymentController {
         console.error('Stripe webhook secret not configured');
         return res.status(500).json({
           success: false,
-          message: 'Webhook secret not configured'
+          message: Messages.PAYMENT.WEBHOOK_SECRET_NOT_CONFIGURED
         });
       }
 
@@ -140,7 +140,7 @@ export class PaymentController {
         console.error('Webhook signature verification failed:', err.message);
         return res.status(400).json({
           success: false,
-          message: 'Webhook signature verification failed'
+          message: Messages.PAYMENT.WEBHOOK_SIGNATURE_FAILED
         });
       }
 
@@ -149,7 +149,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Webhook processed successfully'
+        message: Messages.PAYMENT.WEBHOOK_PROCESSED,
       });
     } catch (error: any) {
       console.error('Webhook error:', error);
@@ -173,7 +173,7 @@ export class PaymentController {
       if (!payment) {
         return res.status(404).json({
           success: false,
-          message: 'Payment not found'
+          message: Messages.PAYMENT.NOT_FOUND
         });
       }
 
@@ -181,13 +181,13 @@ export class PaymentController {
       if (payment.userId.toString() !== userId && (req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied'
+          message: Messages.AUTH.ACCESS_DENIED
         });
       }
 
       return res.json({
         success: true,
-        message: 'Payment retrieved successfully',
+        message: Messages.PAYMENT.RETRIEVED,
         data: payment
       });
     } catch (error: any) {
@@ -210,7 +210,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Payments retrieved successfully',
+        message: Messages.PAYMENT.LIST_RETRIEVED,
         data: payments
       });
     } catch (error: any) {
@@ -235,7 +235,7 @@ export class PaymentController {
       if (!payment) {
         return res.status(404).json({
           success: false,
-          message: 'Payment not found'
+          message: Messages.PAYMENT.NOT_FOUND
         });
       }
 
@@ -243,13 +243,13 @@ export class PaymentController {
       if (payment.userId.toString() !== userId && (req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied'
+          message: Messages.AUTH.ACCESS_DENIED
         });
       }
 
       return res.json({
         success: true,
-        message: 'Payment retrieved successfully',
+        message: Messages.PAYMENT.RETRIEVED,
         data: payment
       });
     } catch (error: any) {
@@ -272,7 +272,7 @@ export class PaymentController {
       if ((req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied. Admin only.'
+          message: Messages.AUTH.ADMIN_ONLY
         });
       }
 
@@ -280,7 +280,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Payments retrieved successfully',
+        message: Messages.PAYMENT.LIST_RETRIEVED,
         data: payments
       });
     } catch (error: any) {
@@ -310,7 +310,7 @@ export class PaymentController {
 
       return res.status(201).json({
         success: true,
-        message: 'Manual payment created successfully',
+        message: Messages.PAYMENT.MANUAL_PAYMENT_CREATED,
         data: payment
       });
     } catch (error: any) {
@@ -333,7 +333,7 @@ export class PaymentController {
       if (!['admin', 'seller'].includes((req as any).user.role)) {
         return res.status(403).json({
           success: false,
-          message: 'Access denied. Admin or seller only.'
+          message: Messages.AUTH.ACCESS_DENIED
         });
       }
 
@@ -341,7 +341,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Manual payment marked as completed',
+        message: Messages.PAYMENT.MANUAL_PAYMENT_COMPLETED,
         data: payment
       });
     } catch (error: any) {
@@ -362,7 +362,7 @@ export class PaymentController {
       if ((req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied. Admin only.'
+          message: Messages.AUTH.ADMIN_ONLY
         });
       }
 
@@ -371,7 +371,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Payment statistics retrieved successfully',
+        message: Messages.PAYMENT.STATS_RETRIEVED,
         data: statistics
       });
     } catch (error: any) {
@@ -392,7 +392,7 @@ export class PaymentController {
       if ((req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied. Admin only.'
+          message: Messages.AUTH.ADMIN_ONLY
         });
       }
 
@@ -424,7 +424,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Payment analytics retrieved successfully',
+        message: Messages.PAYMENT.ANALYTICS_RETRIEVED,
         data: {
           period,
           dateRange: {
@@ -452,7 +452,7 @@ export class PaymentController {
       if ((req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied. Admin only.'
+          message: Messages.AUTH.ADMIN_ONLY
         });
       }
 
@@ -461,7 +461,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Payment performance data retrieved successfully',
+        message: Messages.PAYMENT.PERFORMANCE_RETRIEVED,
         data: performance
       });
     } catch (error: any) {

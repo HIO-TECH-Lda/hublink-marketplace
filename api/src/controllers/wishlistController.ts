@@ -16,7 +16,7 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Wishlist retrieved successfully',
+        message: Messages.WISHLIST.RETRIEVED,
         data: wishlist
       });
     } catch (error: any) {
@@ -51,7 +51,7 @@ export class WishlistController {
 
       return res.status(201).json({
         success: true,
-        message: 'Product added to wishlist successfully',
+        message: Messages.WISHLIST.ITEM_ADDED,
         data: wishlist
       });
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class WishlistController {
       if (!productId) {
         return res.status(400).json({
           success: false,
-          message: 'Product ID is required'
+          message: Messages.WISHLIST.PRODUCT_ID_REQUIRED
         });
       }
 
@@ -88,7 +88,7 @@ export class WishlistController {
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to remove from wishlist',
+        message: Messages.WISHLIST.REMOVE_FAILED,
         error: error.message
       });
     }
@@ -106,7 +106,7 @@ export class WishlistController {
       if (!productId) {
         return res.status(400).json({
           success: false,
-          message: 'Product ID is required'
+          message: Messages.WISHLIST.PRODUCT_ID_REQUIRED
         });
       }
 
@@ -141,7 +141,7 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Wishlist cleared successfully'
+        message: Messages.WISHLIST.CLEARED,
       });
     } catch (error: any) {
       return res.status(500).json({
@@ -165,14 +165,14 @@ export class WishlistController {
       if (!productId) {
         return res.status(400).json({
           success: false,
-          message: 'Product ID is required'
+          message: Messages.WISHLIST.PRODUCT_ID_REQUIRED
         });
       }
 
       if (quantity < 1) {
         return res.status(400).json({
           success: false,
-          message: 'Quantity must be at least 1'
+          message: Messages.WISHLIST.QUANTITY_MIN_1
         });
       }
 
@@ -185,7 +185,7 @@ export class WishlistController {
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to move to cart',
+        message: Messages.WISHLIST.MOVE_TO_CART_FAILED,
         error: error.message
       });
     }
@@ -264,7 +264,7 @@ export class WishlistController {
       if (!productId) {
         return res.status(400).json({
           success: false,
-          message: 'Product ID is required'
+          message: Messages.WISHLIST.PRODUCT_ID_REQUIRED
         });
       }
 
@@ -347,7 +347,7 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Bulk add to wishlist completed',
+        message: Messages.WISHLIST.BULK_ADD_COMPLETED,
         data: {
           wishlist,
           results,
@@ -375,7 +375,7 @@ export class WishlistController {
       if (!Array.isArray(productIds) || productIds.length === 0) {
         return res.status(400).json({
           success: false,
-          message: 'Product IDs array is required and must not be empty'
+          message: Messages.WISHLIST.PRODUCT_IDS_ARRAY_REQUIRED
         });
       }
 
@@ -402,7 +402,7 @@ export class WishlistController {
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to bulk remove from wishlist',
+        message: Messages.WISHLIST.BULK_REMOVE_FAILED,
         error: error.message
       });
     }

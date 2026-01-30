@@ -23,7 +23,7 @@ export class ReviewController {
 
       return res.status(201).json({
         success: true,
-        message: 'Review created successfully',
+        message: Messages.REVIEW.CREATED,
         data: review
       });
     } catch (error: any) {
@@ -89,7 +89,7 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Review updated successfully',
+        message: Messages.REVIEW.UPDATED,
         data: review
       });
     } catch (error: any) {
@@ -137,7 +137,7 @@ export class ReviewController {
       if ((req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied. Admin only.'
+          message: Messages.AUTH.ADMIN_ONLY
         });
       }
 
@@ -219,7 +219,7 @@ export class ReviewController {
       if ((req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied. Admin only.'
+          message: Messages.AUTH.ADMIN_ONLY
         });
       }
 
@@ -271,7 +271,7 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'User reviews retrieved successfully',
+        message: Messages.REVIEW.FETCH_SUCCESS,
         data: result
       });
     } catch (error: any) {
@@ -294,7 +294,7 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Recent reviews retrieved successfully',
+        message: Messages.REVIEW.RECENT_REVIEWS_RETRIEVED,
         data: reviews
       });
     } catch (error: any) {
@@ -315,7 +315,7 @@ export class ReviewController {
       if ((req as any).user.role !== 'admin') {
         return res.status(403).json({
           success: false,
-          message: 'Access denied. Admin only.'
+          message: Messages.AUTH.ADMIN_ONLY
         });
       }
 
@@ -323,7 +323,7 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Review analytics retrieved successfully',
+        message: Messages.REVIEW.ANALYTICS_RETRIEVED,
         data: analytics
       });
     } catch (error: any) {
@@ -346,7 +346,7 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Review request sent successfully'
+        message: Messages.REVIEW.REQUEST_SENT,
       });
     } catch (error: any) {
       console.error('Send review request error:', error);
@@ -377,7 +377,7 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Seller reviews retrieved successfully',
+        message: Messages.REVIEW.SELLER_REVIEWS_RETRIEVED,
         data: result
       });
     } catch (error: any) {

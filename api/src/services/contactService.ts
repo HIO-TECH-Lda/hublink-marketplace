@@ -1,5 +1,6 @@
 import { EmailService } from './emailService';
 import { ApiError } from '../utils/ApiError';
+import Messages from '../utils/messages';
 
 interface ContactFormData {
   name: string;
@@ -75,7 +76,7 @@ export class ContactService {
 
       return {
         success: true,
-        message: 'Sua mensagem foi enviada com sucesso! Responderemos em até 24 horas.'
+        message: Messages.CONTACT.MESSAGE_SENT
       };
     } catch (error) {
       console.error('Error sending contact form email:', error);

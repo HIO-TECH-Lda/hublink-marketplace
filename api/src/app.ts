@@ -58,7 +58,7 @@ app.use(auditLogMiddleware);
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 1000, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
+  message: Messages.API.TOO_MANY_REQUESTS
 });
 app.use(limiter);
 
@@ -66,7 +66,7 @@ app.use(limiter);
 app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'OK',
-    message: 'Txova Marketplace API is running',
+    message: Messages.API.RUNNING,
     timestamp: new Date().toISOString()
   });
 });
@@ -74,7 +74,7 @@ app.get('/health', (req: Request, res: Response) => {
 // API routes (to be added)
 app.get('/api/v1', (req: Request, res: Response) => {
   res.json({
-    message: 'Welcome to Marketplace API',
+    message: Messages.API.WELCOME,
     version: '1.0.0',
     endpoints: {
       auth: '/api/v1/auth',

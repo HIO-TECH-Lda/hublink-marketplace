@@ -302,7 +302,7 @@ export class CartService {
 
       return {
         success: false,
-        message: 'Discount system not implemented yet'
+        message: Messages.CART.DISCOUNT_FAILED
       };
     } catch (error) {
       throw new Error(`Failed to apply discount: ${error instanceof Error ? error.message : 'Unknown error'}`);

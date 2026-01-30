@@ -94,7 +94,7 @@ export class FinanceController {
 
       return res.status(200).json({
         success: true,
-        message: 'Transaction retrieved successfully',
+        message: Messages.FINANCE.TRANSACTION_RETRIEVED,
         data: transaction
       });
     } catch (error: any) {
@@ -215,7 +215,7 @@ export class FinanceController {
 
       return res.status(200).json({
         success: true,
-        message: 'Transaction deleted successfully'
+        message: Messages.FINANCE.TRANSACTION_DELETED
       });
     } catch (error: any) {
       console.error('Delete transaction error:', error);
@@ -336,7 +336,7 @@ export class FinanceController {
       } else {
         return res.status(400).json({
           success: false,
-          message: 'Either orderId or syncAll=true is required'
+          message: Messages.FINANCE.ORDER_ID_OR_SYNC_ALL_REQUIRED
         });
       }
     } catch (error: any) {

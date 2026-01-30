@@ -11,14 +11,14 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund statistics retrieved successfully',
+        message: Messages.REFUND.STATS_RETRIEVED,
         data: stats
       });
     } catch (error) {
       console.error('Get refund statistics error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve refund statistics',
+        message: Messages.REFUND.STATS_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -66,7 +66,7 @@ export class RefundController {
       if (!refund) {
         return res.status(404).json({
           success: false,
-          message: 'Refund not found'
+          message: Messages.REFUND.NOT_FOUND
         });
       }
 
@@ -79,7 +79,7 @@ export class RefundController {
       console.error('Get refund error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve refund',
+        message: Messages.REFUND.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -96,7 +96,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund approved successfully',
+        message: Messages.REFUND.APPROVED,
         data: { refund }
       });
     } catch (error) {
@@ -133,7 +133,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund rejected successfully',
+        message: Messages.REFUND.REJECTED,
         data: { refund }
       });
     } catch (error) {
@@ -163,7 +163,7 @@ export class RefundController {
 
       return res.status(201).json({
         success: true,
-        message: 'Refund request created successfully',
+        message: Messages.REFUND.REQUESTED,
         data: { refund }
       });
     } catch (error) {
@@ -217,7 +217,7 @@ export class RefundController {
       if (!refund) {
         return res.status(404).json({
           success: false,
-          message: 'Refund not found'
+          message: Messages.REFUND.NOT_FOUND
         });
       }
 
@@ -230,7 +230,7 @@ export class RefundController {
       console.error('Get buyer refund error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve refund',
+        message: Messages.REFUND.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -282,7 +282,7 @@ export class RefundController {
       console.error('Get all refund statistics error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve refund statistics',
+        message: Messages.REFUND.STATS_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -298,7 +298,7 @@ export class RefundController {
       if (!refund) {
         return res.status(404).json({
           success: false,
-          message: 'Refund not found'
+          message: Messages.REFUND.NOT_FOUND
         });
       }
 
@@ -311,7 +311,7 @@ export class RefundController {
       console.error('Get refund error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve refund',
+        message: Messages.REFUND.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -327,7 +327,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund approved successfully',
+        message: Messages.REFUND.APPROVED,
         data: { refund }
       });
     } catch (error) {
@@ -362,7 +362,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund rejected successfully',
+        message: Messages.REFUND.REJECTED,
         data: { refund }
       });
     } catch (error) {

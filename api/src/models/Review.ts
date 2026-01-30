@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import Messages from '../utils/messages';
 
 export interface IReview extends Document {
   productId: mongoose.Types.ObjectId;
@@ -65,7 +66,7 @@ const reviewSchema = new Schema<IReview>({
       validator: function(v: string) {
         return /^https?:\/\/.+/.test(v);
       },
-      message: 'Image URL must be a valid HTTP/HTTPS URL'
+      message: Messages.VALIDATION.INVALID_URL
     }
   }],
   isVerified: {
@@ -86,7 +87,7 @@ const reviewSchema = new Schema<IReview>({
     type: String,
     enum: {
       values: ['pending', 'approved', 'rejected'],
-      message: 'Status must be pending, approved, or rejected'
+      message: Messages.VALIDATION.INVALID_REVIEW_STATUS
     },
     default: 'pending',
     index: true

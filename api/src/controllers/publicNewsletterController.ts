@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PublicNewsletterService } from '../services/publicNewsletterService';
+import Messages from '../utils/messages';
 
 export class PublicNewsletterController {
   /**
@@ -12,7 +13,7 @@ export class PublicNewsletterController {
       if (!email) {
         res.status(400).json({
           success: false,
-          message: 'Email é obrigatório'
+          message: Messages.NEWSLETTER.EMAIL_REQUIRED
         });
         return;
       }
@@ -55,7 +56,7 @@ export class PublicNewsletterController {
       if (!email) {
         res.status(400).json({
           success: false,
-          message: 'Email é obrigatório'
+          message: Messages.NEWSLETTER.EMAIL_REQUIRED
         });
         return;
       }
@@ -85,7 +86,7 @@ export class PublicNewsletterController {
       if (!email) {
         res.status(400).json({
           success: false,
-          message: 'Email é obrigatório'
+          message: Messages.NEWSLETTER.EMAIL_REQUIRED
         });
         return;
       }

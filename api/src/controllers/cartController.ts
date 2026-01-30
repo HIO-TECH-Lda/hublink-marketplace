@@ -36,7 +36,7 @@ export class CartController {
       console.error('Get cart error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve cart',
+        message: Messages.CART.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -72,7 +72,7 @@ export class CartController {
       console.error('Add to cart error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to add item to cart',
+        message: Messages.CART.ADD_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -108,7 +108,7 @@ export class CartController {
       console.error('Remove from cart error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to remove item from cart',
+        message: Messages.CART.REMOVE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -144,7 +144,7 @@ export class CartController {
       console.error('Update cart item error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to update cart item',
+        message: Messages.CART.UPDATE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -178,7 +178,7 @@ export class CartController {
       console.error('Clear cart error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to clear cart',
+        message: Messages.CART.CLEAR_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -199,7 +199,7 @@ export class CartController {
       console.error('Get cart summary error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to get cart summary',
+        message: Messages.CART.SUMMARY_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -220,7 +220,7 @@ export class CartController {
       console.error('Check cart availability error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to check cart availability',
+        message: Messages.CART.AVAILABILITY_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -256,7 +256,7 @@ export class CartController {
       console.error('Merge guest cart error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to merge guest cart',
+        message: Messages.CART.MERGE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }

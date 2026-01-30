@@ -2,6 +2,7 @@ import NewsletterSubscriber from '../models/NewsletterSubscriber';
 import { EmailService } from './emailService';
 import { ApiError } from '../utils/ApiError';
 import crypto from 'crypto';
+import Messages from '../utils/messages';
 
 interface SubscribeData {
   email: string;
@@ -29,7 +30,7 @@ export class PublicNewsletterService {
       if (existing.status === 'active') {
         return {
           success: true,
-          message: 'Este email já está inscrito na nossa newsletter!',
+          message: Messages.NEWSLETTER.ALREADY_SUBSCRIBED,
           alreadySubscribed: true
         };
       } else if (existing.status === 'unsubscribed') {
@@ -52,7 +53,7 @@ export class PublicNewsletterService {
 
         return {
           success: true,
-          message: 'Bem-vindo de volta! Sua inscrição foi reativada.'
+          message: Messages.NEWSLETTER.REACTIVATED
         };
       }
     }
@@ -80,7 +81,7 @@ export class PublicNewsletterService {
 
     return {
       success: true,
-      message: 'Inscrição realizada com sucesso! Bem-vindo à newsletter da Txova.'
+      message: Messages.NEWSLETTER.SUBSCRIBED
     };
   }
 
@@ -97,7 +98,7 @@ export class PublicNewsletterService {
     if (subscriber.status === 'unsubscribed') {
       return {
         success: true,
-        message: 'Este email já estava cancelado'
+        message: Messages.NEWSLETTER.ALREADY_CANCELLED
       };
     }
 
@@ -112,7 +113,7 @@ export class PublicNewsletterService {
 
     return {
       success: true,
-      message: 'Inscrição cancelada com sucesso. Sentiremos sua falta!'
+      message: Messages.NEWSLETTER.CANCELLED
     };
   }
 

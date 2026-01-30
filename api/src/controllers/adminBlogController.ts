@@ -74,7 +74,7 @@ export class AdminBlogController {
       if (!req.body || Object.keys(req.body).length === 0) {
         res.status(400).json({
           success: false,
-          message: 'Request body is empty. Ensure Content-Type is set correctly (application/x-www-form-urlencoded or multipart/form-data)'
+          message: Messages.BLOG.REQUEST_BODY_EMPTY
         });
         return;
       }
@@ -237,7 +237,7 @@ export class AdminBlogController {
       if (!status || !['draft', 'published', 'archived'].includes(status)) {
         res.status(400).json({
           success: false,
-          message: 'Status inválido. Deve ser: draft, published ou archived'
+          message: Messages.BLOG.INVALID_STATUS
         });
         return;
       }
@@ -269,7 +269,7 @@ export class AdminBlogController {
       if (typeof isFeatured !== 'boolean') {
         res.status(400).json({
           success: false,
-          message: 'isFeatured deve ser um valor booleano (true ou false)'
+          message: Messages.BLOG.IS_FEATURED_BOOLEAN
         });
         return;
       }

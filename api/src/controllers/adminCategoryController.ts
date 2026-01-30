@@ -69,7 +69,7 @@ export class AdminCategoryController {
       const category = await AdminCategoryService.createCategory(categoryData);
       res.status(201).json({
         success: true,
-        message: 'Category created successfully',
+        message: Messages.ADMIN_CATEGORY.CREATED,
         data: category
       });
     } catch (error) {
@@ -89,7 +89,7 @@ export class AdminCategoryController {
       const category = await AdminCategoryService.updateCategory(categoryId, updateData);
       res.json({
         success: true,
-        message: 'Category updated successfully',
+        message: Messages.ADMIN_CATEGORY.UPDATED,
         data: category
       });
     } catch (error) {
@@ -118,7 +118,7 @@ export class AdminCategoryController {
       const category = await AdminCategoryService.updateCategoryStatus(categoryId, isActive);
       res.json({
         success: true,
-        message: 'Category status updated successfully',
+        message: Messages.ADMIN_CATEGORY.STATUS_UPDATED,
         data: category
       });
     } catch (error) {
@@ -137,7 +137,7 @@ export class AdminCategoryController {
       await AdminCategoryService.deleteCategory(categoryId);
       res.json({
         success: true,
-        message: 'Category deleted successfully'
+        message: Messages.ADMIN_CATEGORY.DELETED
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Category not found' ? 404 : 500;

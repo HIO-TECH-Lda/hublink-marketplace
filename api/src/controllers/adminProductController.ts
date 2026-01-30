@@ -90,7 +90,7 @@ export class AdminProductController {
       const product = await AdminProductService.updateProduct(productId, updateData);
       res.json({
         success: true,
-        message: 'Product updated successfully',
+        message: Messages.ADMIN_PRODUCT.UPDATED,
         data: product
       });
     } catch (error) {
@@ -111,7 +111,7 @@ export class AdminProductController {
       if (!status || !['draft', 'active', 'inactive', 'archived'].includes(status)) {
         res.status(400).json({
           success: false,
-          message: 'Invalid status. Must be one of: draft, active, inactive, archived'
+          message: Messages.ADMIN_PRODUCT.INVALID_STATUS
         });
         return;
       }
@@ -141,7 +141,7 @@ export class AdminProductController {
       await AdminProductService.deleteProduct(productId);
       res.json({
         success: true,
-        message: 'Product deleted successfully'
+        message: Messages.ADMIN_PRODUCT.DELETED
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Product not found' ? 404 : 500;

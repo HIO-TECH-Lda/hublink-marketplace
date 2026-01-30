@@ -23,15 +23,28 @@ export const Messages = {
     TOKEN_INVALID: 'Token inválido',
     TOKEN_EXPIRED: 'Token expirado',
     TOKEN_MISSING: 'Token não fornecido',
+    TOKEN_REQUIRED: 'Token não fornecido',
     UNAUTHORIZED: 'Não autorizado. Faça login para continuar',
+    AUTHENTICATION_REQUIRED: 'Autenticação necessária. Faça login para continuar',
     ACCESS_DENIED: 'Acesso negado',
+    INSUFFICIENT_PERMISSIONS: 'Permissões insuficientes para esta ação',
     ADMIN_ONLY: 'Acesso restrito a administradores',
     SELLER_ONLY: 'Acesso restrito a vendedores',
     EMAIL_ALREADY_EXISTS: 'Este email já está cadastrado',
     PHONE_ALREADY_EXISTS: 'Este telefone já está cadastrado',
-    PASSWORD_RESET_EMAIL_SENT: 'Email de recuperação enviado com sucesso',
+    PASSWORD_RESET_EMAIL_SENT: 'Se o email existir, um link de recuperação será enviado',
     PASSWORD_RESET_SUCCESS: 'Senha alterada com sucesso',
     PASSWORD_RESET_INVALID: 'Link de recuperação inválido ou expirado',
+    INVALID_CREDENTIALS: 'Credenciais inválidas',
+    INVALID_REFRESH_TOKEN: 'Token de atualização inválido',
+    INVALID_RESET_TOKEN: 'Token de recuperação inválido ou expirado',
+    PASSWORD_CHANGED: 'Senha alterada com sucesso',
+    CURRENT_PASSWORD_INCORRECT: 'Senha atual incorreta',
+    EMAIL_PHONE_EXISTS: 'Este email ou telefone já está cadastrado',
+    BUYER_ACCESS: 'Acesso de comprador concedido',
+    ADMIN_ACCESS: 'Acesso de administrador concedido',
+    SELLER_ACCESS: 'Acesso de vendedor concedido',
+    TOKEN_REFRESHED: 'Token atualizado com sucesso',
   },
 
   // Users
@@ -41,6 +54,7 @@ export const Messages = {
     DELETED: 'Usuário excluído com sucesso',
     NOT_FOUND: 'Usuário não encontrado',
     PROFILE_UPDATED: 'Perfil atualizado com sucesso',
+    PROFILE_RETRIEVED: 'Perfil obtido com sucesso',
     PASSWORD_UPDATED: 'Senha atualizada com sucesso',
     FETCH_SUCCESS: 'Usuários obtidos com sucesso',
     FETCH_FAILED: 'Falha ao obter usuários',
@@ -62,6 +76,25 @@ export const Messages = {
     FETCH_FAILED: 'Falha ao obter produtos',
     ADDED_TO_WISHLIST: 'Produto adicionado à lista de desejos',
     REMOVED_FROM_WISHLIST: 'Produto removido da lista de desejos',
+    CREATE_FAILED: 'Falha ao criar produto',
+    RETRIEVED: 'Produto obtido com sucesso',
+    LIST_RETRIEVED: 'Lista de produtos obtida com sucesso',
+    FEATURED_RETRIEVED: 'Produtos em destaque obtidos com sucesso',
+    FEATURED_FAILED: 'Falha ao obter produtos em destaque',
+    BESTSELLERS_RETRIEVED: 'Produtos mais vendidos obtidos com sucesso',
+    BESTSELLERS_FAILED: 'Falha ao obter produtos mais vendidos',
+    NEW_ARRIVALS_FAILED: 'Falha ao obter produtos recém-chegados',
+    NOT_FOUND_OR_DENIED: 'Produto não encontrado ou acesso negado',
+    STATUS_UPDATED: 'Status do produto atualizado com sucesso',
+    STOCK_UPDATED: 'Estoque do produto atualizado com sucesso',
+    SEARCH_TERM_REQUIRED: 'Termo de busca é obrigatório',
+    SEARCH_FAILED: 'Falha ao buscar produtos',
+    CATEGORY_FAILED: 'Falha ao obter produtos da categoria',
+    SELLER_PRODUCTS_FAILED: 'Falha ao obter produtos do vendedor',
+    SEARCH_COMPLETED: 'Busca concluída com sucesso',
+    CATEGORY_PRODUCTS_RETRIEVED: 'Produtos da categoria obtidos com sucesso',
+    SELLER_PRODUCTS_RETRIEVED: 'Produtos do vendedor obtidos com sucesso',
+    NEW_ARRIVALS_RETRIEVED: 'Produtos recém-chegados obtidos com sucesso',
   },
 
   // Cart
@@ -73,6 +106,18 @@ export const Messages = {
     NOT_FOUND: 'Carrinho não encontrado',
     FETCH_SUCCESS: 'Carrinho obtido com sucesso',
     FETCH_FAILED: 'Falha ao obter carrinho',
+    RETRIEVED: 'Carrinho obtido com sucesso',
+    SUMMARY_RETRIEVED: 'Resumo do carrinho obtido com sucesso',
+    AVAILABILITY_CHECKED: 'Disponibilidade verificada com sucesso',
+    GUEST_MERGED: 'Carrinho de convidado mesclado com sucesso',
+    DISCOUNT_FAILED: 'Falha ao aplicar desconto',
+    ADD_FAILED: 'Falha ao adicionar item ao carrinho',
+    REMOVE_FAILED: 'Falha ao remover item do carrinho',
+    UPDATE_FAILED: 'Falha ao atualizar item do carrinho',
+    CLEAR_FAILED: 'Falha ao esvaziar carrinho',
+    SUMMARY_FAILED: 'Falha ao obter resumo do carrinho',
+    AVAILABILITY_FAILED: 'Falha ao verificar disponibilidade',
+    MERGE_FAILED: 'Falha ao mesclar carrinho de convidado',
   },
 
   // Orders
@@ -107,6 +152,9 @@ export const Messages = {
     INVALID_STATUS: 'Status do pedido inválido',
     GET_ALL_FAILED: 'Falha ao obter pedidos',
     STATS_FAILED: 'Falha ao obter estatísticas de pedidos',
+    STATS_RETRIEVED: 'Estatísticas de pedidos obtidas com sucesso',
+    TRACKING_RETRIEVED: 'Informações de rastreamento obtidas com sucesso',
+    TRACKING_FAILED: 'Falha ao obter informações de rastreamento',
   },
 
   // Reviews
@@ -120,6 +168,11 @@ export const Messages = {
     APPROVED: 'Avaliação aprovada com sucesso',
     REJECTED: 'Avaliação rejeitada com sucesso',
     FETCH_SUCCESS: 'Avaliações obtidas com sucesso',
+    USER_REVIEWS_RETRIEVED: 'Avaliações do usuário obtidas com sucesso',
+    RECENT_REVIEWS_RETRIEVED: 'Avaliações recentes obtidas com sucesso',
+    ANALYTICS_RETRIEVED: 'Análises de avaliações obtidas com sucesso',
+    REQUEST_SENT: 'Solicitação de avaliação enviada com sucesso',
+    SELLER_REVIEWS_RETRIEVED: 'Avaliações do vendedor obtidas com sucesso',
     FETCH_FAILED: 'Falha ao obter avaliações',
     HELPFUL_MARKED: 'Avaliação marcada como útil',
     ORDER_REQUIRED: 'É necessário ter comprado o produto para avaliar',
@@ -139,6 +192,9 @@ export const Messages = {
     FETCH_FAILED: 'Falha ao obter posts',
     SLUG_EXISTS: 'Este slug já existe',
     MISSING_FIELDS: 'Campos obrigatórios faltando: título, conteúdo, autorId, autorName e categoria são obrigatórios',
+    REQUEST_BODY_EMPTY: 'Corpo da requisição está vazio. Certifique-se de que Content-Type está configurado corretamente (application/x-www-form-urlencoded ou multipart/form-data)',
+    INVALID_STATUS: 'Status inválido. Deve ser: draft, published ou archived',
+    IS_FEATURED_BOOLEAN: 'isFeatured deve ser um valor booleano (true ou false)',
   },
 
   // Sellers
@@ -186,6 +242,20 @@ export const Messages = {
     IMALI_MISSING_LINK: 'Link de pagamento não retornado pela Imali',
     IMALI_FAILED: 'Falha no pagamento Imali',
     MANUAL_PAYMENT_CREATED: 'Pagamento registrado. O administrador marcará como concluído quando receber.',
+    RETRIEVED: 'Pagamento obtido com sucesso',
+    LIST_RETRIEVED: 'Pagamentos obtidos com sucesso',
+    STATS_RETRIEVED: 'Estatísticas de pagamento obtidas com sucesso',
+    ANALYTICS_RETRIEVED: 'Análises de pagamento obtidas com sucesso',
+    PERFORMANCE_RETRIEVED: 'Dados de desempenho de pagamento obtidos com sucesso',
+    MANUAL_PAYMENT_COMPLETED: 'Pagamento manual marcado como concluído',
+    WEBHOOK_SECRET_NOT_CONFIGURED: 'Secret do webhook não configurado',
+    WEBHOOK_SIGNATURE_FAILED: 'Falha na verificação da assinatura do webhook',
+    WEBHOOK_PROCESSED: 'Webhook processado com sucesso',
+    REFUND_PROCESSED: 'Reembolso processado com sucesso',
+    INVALID_PAYMENT_METHOD: 'Método de pagamento inválido',
+    INVALID_PAYMENT_STATUS: 'Status de pagamento inválido',
+    INVALID_PAYMENT_GATEWAY: 'Gateway de pagamento inválido',
+    NO_RECENT_ACTIVITY: 'Nenhuma atividade de pagamento na última hora',
   },
 
   // Refunds
@@ -251,16 +321,22 @@ export const Messages = {
     MESSAGE_FAILED: 'Falha ao enviar mensagem. Por favor, tente novamente.',
     INVALID_EMAIL: 'Formato de email inválido',
     MISSING_FIELDS: 'Campos obrigatórios faltando',
+    TOO_MANY_REQUESTS: 'Muitas mensagens enviadas. Por favor, tente novamente em 1 hora.',
   },
 
   // Newsletter
   NEWSLETTER: {
-    SUBSCRIBED: 'Inscrito na newsletter com sucesso',
     UNSUBSCRIBED: 'Desinscrito da newsletter',
-    ALREADY_SUBSCRIBED: 'Este email já está inscrito',
     NOT_FOUND: 'Inscrição não encontrada',
     EMAIL_SENT: 'Email enviado com sucesso',
     EMAIL_FAILED: 'Falha ao enviar email',
+    EMAIL_REQUIRED: 'Email é obrigatório',
+    SUBSCRIBED: 'Inscrição realizada com sucesso! Bem-vindo à newsletter da Txova.',
+    ALREADY_SUBSCRIBED: 'Este email já está inscrito na nossa newsletter!',
+    REACTIVATED: 'Bem-vindo de volta! Sua inscrição foi reativada.',
+    ALREADY_CANCELLED: 'Este email já estava cancelado',
+    CANCELLED: 'Inscrição cancelada com sucesso. Sentiremos sua falta!',
+    TOO_MANY_ATTEMPTS: 'Muitas tentativas de inscrição. Por favor, tente novamente amanhã.',
   },
 
   // Categories
@@ -349,6 +425,8 @@ export const Messages = {
     MAX_LENGTH: 'Comprimento máximo excedido',
     INVALID_VALUE: 'Valor inválido',
     PASSWORDS_DONT_MATCH: 'As senhas não coincidem',
+    INVALID_URL: 'URL da imagem deve ser uma URL HTTP/HTTPS válida',
+    INVALID_REVIEW_STATUS: 'Status deve ser: pending, approved ou rejected',
   },
 
   // Analytics
@@ -500,6 +578,7 @@ export const Messages = {
     DELETE_FAILED: 'Falha ao excluir categoria',
   },
 
+
   // Admin - Newsletter
   ADMIN_NEWSLETTER: {
     STATS_RETRIEVED: 'Estatísticas de newsletter obtidas com sucesso',
@@ -560,6 +639,7 @@ export const Messages = {
     TO_SUBJECT_TEMPLATE_REQUIRED: 'Destinatário, assunto e template são obrigatórios',
     TO_SUBJECT_CONTENT_REQUIRED: 'Destinatário, assunto e conteúdo são obrigatórios',
     EMAIL_TOKEN_REQUIRED: 'Email e token de recuperação são obrigatórios',
+    TEST_MESSAGE: 'Este é um email de teste para verificar se o serviço de email está funcionando corretamente.',
   },
 
   // Finance
@@ -618,6 +698,14 @@ export const Messages = {
     ROUTE_NOT_FOUND: 'Rota não encontrada',
     VALIDATION_FAILED: 'Falha na validação',
   },
+
+  // General API Messages
+  API: {
+    TOO_MANY_REQUESTS: 'Muitas solicitações deste IP. Por favor, tente novamente mais tarde.',
+    RUNNING: 'API Txova Marketplace está em execução',
+    WELCOME: 'Bem-vindo à API Marketplace',
+  },
+
 };
 
 /**

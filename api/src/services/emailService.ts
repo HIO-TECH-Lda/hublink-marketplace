@@ -5,6 +5,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IUser } from '../types';
 import { IOrder, IPayment } from '../types';
+import Messages from '../utils/messages';
 
 // Email configuration interface
 interface EmailConfig {
@@ -433,7 +434,7 @@ export class EmailService {
         subject: 'Email Service Test',
         template: 'test',
         data: {
-          message: 'This is a test email to verify the email service is working correctly.',
+          message: Messages.EMAIL.TEST_MESSAGE,
           timestamp: new Date().toISOString()
         }
       });

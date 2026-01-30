@@ -25,7 +25,7 @@ export class EmailController {
       if (isWorking) {
         return res.status(200).json(
           new ApiResponse(200, {
-            message: 'Email service test completed successfully',
+            message: Messages.EMAIL.TEST_SUCCESS,
             email: email,
             status: 'working'
           })
@@ -42,7 +42,7 @@ export class EmailController {
     } catch (error: any) {
       return res.status(500).json(
         new ApiResponse(500, {
-          message: 'Email service test failed',
+          message: Messages.EMAIL.TEST_FAILED,
           error: error.message,
           status: 'error'
         })
@@ -61,7 +61,7 @@ export class EmailController {
     if (!to || !subject || !template) {
       return res.status(400).json({
         success: false,
-        message: 'To, subject, and template are required'
+        message: Messages.EMAIL.TO_SUBJECT_TEMPLATE_REQUIRED
       });
     }
 
@@ -84,7 +84,7 @@ export class EmailController {
     } catch (error: any) {
       return res.status(500).json(
         new ApiResponse(500, {
-          message: 'Failed to send email',
+          message: Messages.EMAIL.SEND_FAILED,
           error: error.message
         })
       );
@@ -106,7 +106,7 @@ export class EmailController {
 
       return res.status(200).json(
         new ApiResponse(200, {
-          message: 'Email service status retrieved',
+          message: Messages.EMAIL.STATUS_RETRIEVED,
           status: {
             configured: isConfigured,
             smtpHost: smtpHost ? 'Configured' : 'Not configured',
@@ -150,7 +150,7 @@ export class EmailController {
 
       return res.status(200).json(
         new ApiResponse(200, {
-          message: 'Welcome email sent successfully',
+          message: Messages.EMAIL.WELCOME_SENT,
           email
         })
       );
@@ -174,7 +174,7 @@ export class EmailController {
     if (!email || !resetToken) {
       return res.status(400).json({
         success: false,
-        message: 'Email and reset token are required'
+        message: Messages.EMAIL.EMAIL_TOKEN_REQUIRED
       });
     }
 
@@ -196,7 +196,7 @@ export class EmailController {
     } catch (error: any) {
       return res.status(500).json(
         new ApiResponse(500, {
-          message: 'Failed to send password reset email',
+          message: Messages.EMAIL.PASSWORD_RESET_FAILED,
           error: error.message
         })
       );

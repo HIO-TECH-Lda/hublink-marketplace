@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import Messages from '../utils/messages';
 
 export interface IPayment extends Document {
   orderId: mongoose.Types.ObjectId;
@@ -65,7 +66,7 @@ const paymentSchema = new Schema<IPayment>({
     required: [true, 'Payment method is required'],
     enum: {
       values: ['stripe', 'paypal', 'bank_transfer', 'cash_on_delivery', 'mpesa', 'emola', 'imali'],
-      message: 'Invalid payment method'
+      message: Messages.PAYMENT.INVALID_METHOD
     }
   },
   status: {
@@ -73,7 +74,7 @@ const paymentSchema = new Schema<IPayment>({
     required: [true, 'Payment status is required'],
     enum: {
       values: ['pending', 'processing', 'completed', 'failed', 'refunded'],
-      message: 'Invalid payment status'
+      message: Messages.PAYMENT.INVALID_PAYMENT_STATUS
     },
     default: 'pending'
   },
@@ -82,7 +83,7 @@ const paymentSchema = new Schema<IPayment>({
     required: [true, 'Payment gateway is required'],
     enum: {
       values: ['stripe', 'paypal', 'manual', 'mpesa', 'emola', 'imali'],
-      message: 'Invalid payment gateway'
+      message: Messages.PAYMENT.INVALID_PAYMENT_GATEWAY
     }
   },
   gatewayTransactionId: {

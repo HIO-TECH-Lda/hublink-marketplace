@@ -122,7 +122,7 @@ export class AdminUserController {
 
       res.status(201).json({
         success: true,
-        message: 'User created successfully',
+        message: Messages.ADMIN_USER.CREATED,
         data: userResponse
       });
     } catch (error) {
@@ -183,7 +183,7 @@ export class AdminUserController {
 
       res.status(200).json({
         success: true,
-        message: 'User status updated successfully',
+        message: Messages.ADMIN_USER.STATUS_UPDATED,
         data: userResponse
       });
     } catch (error) {
@@ -204,7 +204,7 @@ export class AdminUserController {
 
       res.status(200).json({
         success: true,
-        message: 'User deleted successfully'
+        message: Messages.ADMIN_USER.DELETED
       });
     } catch (error) {
       const statusCode =

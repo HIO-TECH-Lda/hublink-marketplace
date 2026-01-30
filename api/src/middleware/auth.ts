@@ -32,20 +32,20 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     if (error instanceof jwt.JsonWebTokenError) {
       return res.status(403).json({
         success: false,
-        message: 'Invalid token'
+        message: Messages.AUTH.TOKEN_INVALID
       });
     }
     
     if (error instanceof jwt.TokenExpiredError) {
       return res.status(401).json({
         success: false,
-        message: 'Token expired'
+        message: Messages.AUTH.TOKEN_EXPIRED
       });
     }
 
     return res.status(500).json({
       success: false,
-      message: 'Token verification failed'
+      message: Messages.AUTH.TOKEN_INVALID
     });
   }
 };

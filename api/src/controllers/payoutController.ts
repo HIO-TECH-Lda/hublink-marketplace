@@ -67,7 +67,7 @@ export class PayoutController {
 
       return res.status(201).json({
         success: true,
-        message: 'Payout requested successfully',
+        message: Messages.PAYOUT.REQUESTED,
         data: { payout }
       });
     } catch (error) {
@@ -97,7 +97,7 @@ export class PayoutController {
 
       return res.status(200).json({
         success: true,
-        message: 'Payout retrieved successfully',
+        message: Messages.PAYOUT.RETRIEVED,
         data: { payout }
       });
     } catch (error) {

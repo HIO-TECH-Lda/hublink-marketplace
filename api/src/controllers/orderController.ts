@@ -202,7 +202,7 @@ export class OrderController {
 
       return res.status(200).json({
         success: true,
-        message: 'All orders retrieved successfully',
+        message: Messages.ORDER.LIST_RETRIEVED,
         data: {
           orders: result.orders,
           pagination: result.pagination
@@ -212,7 +212,7 @@ export class OrderController {
       console.error('Get all orders error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve orders',
+        message: Messages.ORDER.LIST_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -293,7 +293,7 @@ export class OrderController {
 
       return res.status(200).json({
         success: true,
-        message: 'Order cancelled successfully',
+        message: Messages.ORDER.CANCELLED,
         data: { order }
       });
     } catch (error) {
@@ -317,14 +317,14 @@ export class OrderController {
 
       return res.status(200).json({
         success: true,
-        message: 'Order statistics retrieved successfully',
+        message: Messages.ORDER.STATS_RETRIEVED,
         data: stats
       });
     } catch (error) {
       console.error('Get order statistics error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve order statistics',
+        message: Messages.ORDER.STATS_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -389,14 +389,14 @@ export class OrderController {
 
       return res.status(200).json({
         success: true,
-        message: 'Order tracking information retrieved successfully',
+        message: Messages.ORDER.TRACKING_RETRIEVED,
         data: trackingInfo
       });
     } catch (error) {
       console.error('Get order tracking error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve order tracking information',
+        message: Messages.ORDER.TRACKING_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }

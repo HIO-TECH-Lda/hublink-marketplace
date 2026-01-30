@@ -13,7 +13,7 @@ export class AuthController {
       
       return res.status(201).json({
         success: true,
-        message: 'User registered successfully',
+        message: Messages.AUTH.REGISTER_SUCCESS,
         data: {
           user: result.user,
           token: result.token
@@ -37,7 +37,7 @@ export class AuthController {
       
       return res.json({
         success: true,
-        message: 'Login successful',
+        message: Messages.AUTH.LOGIN_SUCCESS,
         data: {
           user: result.user,
           token: result.token,
@@ -62,7 +62,7 @@ export class AuthController {
       
       return res.json({
         success: true,
-        message: 'Token refreshed successfully',
+        message: Messages.AUTH.TOKEN_REFRESHED,
         data: {
           token: result.token,
           refreshToken: result.refreshToken
@@ -85,7 +85,7 @@ export class AuthController {
       if (!user) {
         return res.status(404).json({
           success: false,
-          message: 'User not found'
+          message: Messages.USER.NOT_FOUND
         });
       }
       
@@ -98,7 +98,7 @@ export class AuthController {
       console.error('Get profile error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve user profile'
+        message: Messages.USER.FETCH_FAILED
       });
     }
   }
@@ -111,7 +111,7 @@ export class AuthController {
       if (!updatedUser) {
         return res.status(404).json({
           success: false,
-          message: 'User not found'
+          message: Messages.USER.NOT_FOUND
         });
       }
       
@@ -168,7 +168,7 @@ export class AuthController {
       
       return res.json({
         success: true,
-        message: 'If the email exists, a reset link will be sent'
+        message: Messages.AUTH.PASSWORD_RESET_EMAIL_SENT
       });
     } catch (error) {
       console.error('Forgot password error:', error);
@@ -211,7 +211,7 @@ export class AuthController {
   static async sellerTest(req: Request, res: Response) {
     return res.json({
       success: true,
-      message: 'Seller access granted',
+      message: Messages.AUTH.SELLER_ACCESS,
       data: { user: req.user }
     });
   }
