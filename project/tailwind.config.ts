@@ -15,6 +15,7 @@ const config: Config = {
       colors: {
         primary: {
           DEFAULT: '#097019',
+          foreground: '#ffffff',
           soft: '#14B32E',
           hard: '#083427',
           light: '#0A8C21',
