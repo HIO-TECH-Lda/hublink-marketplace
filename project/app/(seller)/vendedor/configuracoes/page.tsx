@@ -317,7 +317,7 @@ export default function SellerSettingsPage() {
                       />
                     </div>
                     <div className="flex justify-end pt-4 border-t border-gray-2">
-                      <Button type="submit" disabled={updateProfile.isPending} className="bg-primary hover:bg-primary-hard text-white">
+                      <Button type="submit" disabled={updateProfile.isPending}>
                         <Save size={16} className="mr-2" />
                         {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
                       </Button>
@@ -363,7 +363,7 @@ export default function SellerSettingsPage() {
                       />
                     </div>
                     <div className="flex justify-end pt-4 border-t border-gray-2">
-                      <Button type="submit" disabled={updateProfile.isPending} className="bg-primary hover:bg-primary-hard text-white">
+                      <Button type="submit" disabled={updateProfile.isPending}>
                         <Save size={16} className="mr-2" />
                         {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
                       </Button>
@@ -499,7 +499,7 @@ export default function SellerSettingsPage() {
                     </div>
 
                     <div className="flex justify-end pt-4 border-t border-gray-2">
-                      <Button type="submit" disabled={updateProfile.isPending} className="bg-primary hover:bg-primary-hard text-white">
+                      <Button type="submit" disabled={updateProfile.isPending}>
                         <Save size={16} className="mr-2" />
                         {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
                       </Button>
@@ -589,7 +589,7 @@ export default function SellerSettingsPage() {
                       </div>
                     </div>
                     <div className="flex justify-end pt-4 border-t border-gray-2">
-                      <Button type="submit" disabled={updateProfile.isPending} className="bg-primary hover:bg-primary-hard text-white">
+                      <Button type="submit" disabled={updateProfile.isPending}>
                         <Save size={16} className="mr-2" />
                         {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
                       </Button>
@@ -634,7 +634,7 @@ export default function SellerSettingsPage() {
                       />
                     </div>
                     <div className="flex justify-end pt-4 border-t border-gray-2">
-                      <Button type="submit" disabled={changePassword.isPending} className="bg-primary hover:bg-primary-hard text-white">
+                      <Button type="submit" disabled={changePassword.isPending}>
                         <Lock size={16} className="mr-2" />
                         {changePassword.isPending ? 'Alterando...' : 'Alterar Senha'}
                       </Button>

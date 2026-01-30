@@ -386,7 +386,7 @@ export default function RefundManagement({
                         <div className="flex gap-2">
                           <Button
                             size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white"
+                            className="bg-primary text-primary-foreground hover:bg-primary-hard"
                             onClick={() => onApprove(refund.id)}
                             disabled={isProcessing}
                           >

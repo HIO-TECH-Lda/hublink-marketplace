@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { Button } from '@/components/ui/button';
 
 export default function FAQPage() {
   const [openItems, setOpenItems] = useState<number[]>([]);
@@ -246,9 +247,9 @@ export default function FAQPage() {
                     placeholder="Seu e-mail"
                     className="w-full px-3 py-2 border border-gray-3 rounded-lg text-sm focus:outline-none focus:border-primary"
                   />
-                  <button className="w-full px-3 py-2 bg-primary hover:bg-primary-hard text-white rounded-lg text-sm transition-colors">
+                  <Button type="button" className="w-full">
                     Inscrever-se
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

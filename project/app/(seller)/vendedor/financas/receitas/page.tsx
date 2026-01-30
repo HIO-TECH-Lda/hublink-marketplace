@@ -99,7 +99,7 @@ export default function IncomePage() {
                   {syncSales.isPending ? 'Sincronizando...' : 'Sincronizar'}
                 </Button>
                 <Link href="/vendedor/financas/receitas/nova">
-                  <Button className="bg-green-600 hover:bg-green-700 text-white">
+                  <Button className="bg-primary text-primary-foreground hover:bg-primary-hard">
                     <Plus className="w-4 h-4 mr-2" />
                     Adicionar Receita
                   </Button>
@@ -167,7 +167,7 @@ export default function IncomePage() {
                   <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhuma receita encontrada</h3>
                   <p className="text-gray-6 mb-6">Comece adicionando sua primeira receita.</p>
                   <Link href="/vendedor/financas/receitas/nova">
-                    <Button className="bg-green-600 hover:bg-green-700 text-white">
+                    <Button className="bg-primary text-primary-foreground hover:bg-primary-hard">
                       <Plus className="w-4 h-4 mr-2" />
                       Adicionar Receita
                     </Button>

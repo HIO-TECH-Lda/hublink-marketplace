@@ -205,7 +205,7 @@ export default function PayoutsPage() {
                 <h2 className="text-lg font-semibold text-gray-900">Histórico de Repasses</h2>
                 <Dialog open={showPayoutModal} onOpenChange={setShowPayoutModal}>
                   <DialogTrigger asChild>
-                    <Button className="bg-green-600 hover:bg-green-700 text-white">
+                    <Button className="bg-primary text-primary-foreground hover:bg-primary-hard">
                       <Plus className="w-4 h-4 mr-2" />
                       Solicitar Repasse
                     </Button>
@@ -264,7 +264,7 @@ export default function PayoutsPage() {
                         <Button
                           type="submit"
                           disabled={requestPayout.isPending || (balance && parseFloat(payoutAmount) > balance.available)}
-                          className="bg-green-600 hover:bg-green-700 text-white"
+                          className="bg-primary text-primary-foreground hover:bg-primary-hard"
                         >
                           {requestPayout.isPending ? 'Enviando...' : 'Solicitar Repasse'}
                         </Button>

@@ -198,7 +198,7 @@ export default function SellerProductsPage() {
               <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-lg font-semibold text-gray-900">Produtos ({filteredProducts.length})</h2>
                 <Link href="/vendedor/produtos/novo">
-                  <Button className="bg-green-600 hover:bg-green-700 text-white">
+                  <Button className="bg-primary text-primary-foreground hover:bg-primary-hard">
                     <Plus size={16} className="mr-2" />
                     Adicionar Produto
                   </Button>
@@ -223,7 +223,7 @@ export default function SellerProductsPage() {
                     }
                   </p>
                   <Link href="/vendedor/produtos/novo">
-                    <Button className="bg-green-600 hover:bg-green-700 text-white">
+                    <Button className="bg-primary text-primary-foreground hover:bg-primary-hard">
                       <Plus size={16} className="mr-2" />
                       Adicionar Primeiro Produto
                     </Button>

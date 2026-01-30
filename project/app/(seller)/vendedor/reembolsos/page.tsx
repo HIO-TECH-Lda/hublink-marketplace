@@ -433,7 +433,7 @@ export default function SellerRefundsPage() {
                                           <Button
                                             onClick={() => handleApprove(refund._id)}
                                             disabled={approveRefund.isPending}
-                                            className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                                            className="flex-1 bg-primary text-primary-foreground hover:bg-primary-hard"
                                           >
                                             <CheckCircle className="w-4 h-4 mr-2" />
                                             {approveRefund.isPending ? 'Aprovando...' : 'Aprovar'}

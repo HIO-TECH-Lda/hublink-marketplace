@@ -364,7 +364,7 @@ export default function AdminReviewsPage() {
                     <div className="flex gap-2 pt-4 border-t">
                       <Button
                         onClick={() => handleApprove(review)}
-                        className="flex-1 bg-green-600 hover:bg-green-700"
+                        className="flex-1 bg-primary text-primary-foreground hover:bg-primary-hard"
                         disabled={moderateMutation.isPending}
                       >
                         <CheckCircle className="w-4 h-4 mr-2" />
@@ -467,7 +467,7 @@ export default function AdminReviewsPage() {
                 Cancelar
               </Button>
               <Button
-                className="flex-1 bg-green-600 hover:bg-green-700"
+                className="flex-1 bg-primary text-primary-foreground hover:bg-primary-hard"
                 onClick={confirmApprove}
                 disabled={moderateMutation.isPending}
               >

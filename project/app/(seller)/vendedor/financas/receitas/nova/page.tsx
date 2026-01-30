@@ -227,7 +227,7 @@ export default function NewIncomePage() {
                     <Button type="button" variant="outline" onClick={() => router.back()} disabled={createIncome.isPending}>
                       Cancelar
                     </Button>
-                    <Button type="submit" disabled={createIncome.isPending} className="bg-green-600 hover:bg-green-700 text-white">
+                    <Button type="submit" disabled={createIncome.isPending} className="bg-primary text-primary-foreground hover:bg-primary-hard">
                       {createIncome.isPending ? 'Salvando...' : 'Adicionar Receita'}
                     </Button>
                   </div>

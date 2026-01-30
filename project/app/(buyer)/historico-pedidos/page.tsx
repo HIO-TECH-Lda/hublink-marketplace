@@ -119,7 +119,7 @@ export default function OrderHistoryPage() {
                   <p className="text-gray-600 mb-6">Você ainda não realizou nenhum pedido.</p>
                   <Link 
                     href="/loja" 
-                    className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary-hard"
                   >
                     Fazer Primeira Compra
                   </Link>
@@ -140,9 +140,9 @@ export default function OrderHistoryPage() {
                   <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
                     Anterior
                   </button>
-                  <button className="px-3 py-2 text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md hover:bg-green-700">
+                  <Button size="sm" className="px-3 py-2">
                     1
-                  </button>
+                  </Button>
                   <button className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
                     Próximo
                   </button>

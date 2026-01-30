@@ -542,7 +542,7 @@ export default function AdminRefundsPage() {
                                       </div>
                                       <div className="flex gap-2">
                                         <Button
-                                          className="flex-1 bg-green-600 hover:bg-green-700"
+                                          className="flex-1 bg-primary text-primary-foreground hover:bg-primary-hard"
                                           onClick={() => handleApproveRefund(refund.id || refund._id)}
                                           disabled={approveRefund.isPending}
                                         >

@@ -134,7 +134,7 @@ export default function RecentProductsTable({
                       </Button>
                     </Link>
                     <Link href={`/vendedor/produtos/editar/${product._id || product.id}`}>
-                      <Button size="sm" variant="outline" className="w-8 h-8 p-0 border-green-600 text-green-600 hover:bg-green-600 hover:text-white flex items-center justify-center">
+                      <Button size="sm" variant="outline" className="w-8 h-8 p-0 border-primary text-primary hover:bg-primary hover:text-primary-foreground flex items-center justify-center">
                         <Edit size={14} />
                       </Button>
                     </Link>

@@ -220,7 +220,7 @@ export default function SettingsPage() {
                         type="text"
                         value={profileForm.firstName}
                         onChange={(e) => setProfileForm({...profileForm, firstName: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                         minLength={2}
                         maxLength={50}
@@ -234,7 +234,7 @@ export default function SettingsPage() {
                         type="text"
                         value={profileForm.lastName}
                         onChange={(e) => setProfileForm({...profileForm, lastName: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                         minLength={2}
                         maxLength={50}
@@ -248,7 +248,7 @@ export default function SettingsPage() {
                         type="tel"
                         value={profileForm.phone}
                         onChange={(e) => setProfileForm({...profileForm, phone: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="+258XXXXXXXXX"
                         pattern="^\+258[0-9]{9}$"
                         required
@@ -257,13 +257,12 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="flex justify-end">
-                    <button
+                    <Button
                       type="submit"
                       disabled={updateProfile.isPending}
-                      className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {updateProfile.isPending ? 'Salvando...' : 'Salvar Alterações'}
-                    </button>
+                    </Button>
                   </div>
                 </form>
               </div>
@@ -292,7 +291,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           shippingAddress: {...profileForm.shippingAddress, street: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -307,7 +306,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           shippingAddress: {...profileForm.shippingAddress, city: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -322,7 +321,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           shippingAddress: {...profileForm.shippingAddress, state: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -337,7 +336,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           shippingAddress: {...profileForm.shippingAddress, postalCode: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -352,7 +351,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           shippingAddress: {...profileForm.shippingAddress, country: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -365,7 +364,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           shippingAddress: {...profileForm.shippingAddress, isDefault: e.target.checked}
                         })}
-                        className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                        className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                       />
                       <label htmlFor="shippingDefault" className="ml-2 text-sm font-medium text-gray-700">
                         Endereço padrão de entrega
@@ -399,7 +398,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           billingAddress: {...profileForm.billingAddress, street: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -414,7 +413,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           billingAddress: {...profileForm.billingAddress, city: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -429,7 +428,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           billingAddress: {...profileForm.billingAddress, state: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -444,7 +443,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           billingAddress: {...profileForm.billingAddress, postalCode: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -459,7 +458,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           billingAddress: {...profileForm.billingAddress, country: e.target.value}
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         required
                       />
                     </div>
@@ -472,7 +471,7 @@ export default function SettingsPage() {
                           ...profileForm, 
                           billingAddress: {...profileForm.billingAddress, isDefault: e.target.checked}
                         })}
-                        className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                        className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                       />
                       <label htmlFor="billingDefault" className="ml-2 text-sm font-medium text-gray-700">
                         Endereço padrão de faturamento
@@ -508,7 +507,7 @@ export default function SettingsPage() {
                               notifications: {...profileForm.preferences.notifications, email: e.target.checked}
                             }
                           })}
-                          className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                          className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                         />
                         <label htmlFor="emailNotifications" className="ml-2 text-sm font-medium text-gray-700">
                           Notificações por e-mail
@@ -526,7 +525,7 @@ export default function SettingsPage() {
                               notifications: {...profileForm.preferences.notifications, sms: e.target.checked}
                             }
                           })}
-                          className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                          className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                         />
                         <label htmlFor="smsNotifications" className="ml-2 text-sm font-medium text-gray-700">
                           Notificações por SMS
@@ -544,7 +543,7 @@ export default function SettingsPage() {
                               notifications: {...profileForm.preferences.notifications, push: e.target.checked}
                             }
                           })}
-                          className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                          className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                         />
                         <label htmlFor="pushNotifications" className="ml-2 text-sm font-medium text-gray-700">
                           Notificações push
@@ -576,7 +575,7 @@ export default function SettingsPage() {
                           type={showCurrentPassword ? 'text' : 'password'}
                           value={passwordForm.currentPassword}
                           onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
-                          className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                          className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                           required
                         />
                         <button
@@ -597,7 +596,7 @@ export default function SettingsPage() {
                           type={showNewPassword ? 'text' : 'password'}
                           value={passwordForm.newPassword}
                           onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
-                          className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                          className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                           required
                         />
                         <button
@@ -618,7 +617,7 @@ export default function SettingsPage() {
                           type={showConfirmPassword ? 'text' : 'password'}
                           value={passwordForm.confirmNewPassword}
                           onChange={(e) => setPasswordForm({...passwordForm, confirmNewPassword: e.target.value})}
-                          className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                          className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                           required
                         />
                         <button
@@ -633,13 +632,12 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="flex justify-end">
-                    <button
+                    <Button
                       type="submit"
                       disabled={changePassword.isPending}
-                      className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {changePassword.isPending ? 'Alterando...' : 'Alterar Senha'}
-                    </button>
+                    </Button>
                   </div>
                 </form>
               </div>

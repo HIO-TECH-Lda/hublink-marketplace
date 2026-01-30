@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, Heart, ShoppingCart, User, Menu, X, Phone, Mail, Shield } from 'lucide-react';
+import { Search, Heart, ShoppingCart, User, Menu, X, Phone, Mail, Shield, LogOut } from 'lucide-react';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/hooks/useCart';
@@ -210,8 +210,9 @@ export default function Header() {
                       onClick={logout}
                       variant="outline"
                       size="sm"
-                      className="hidden sm:inline"
+                      className="hidden sm:inline-flex rounded-lg hover:text-danger hover:bg-danger/5"
                     >
+                      <LogOut size={16} className="mr-1.5" />
                       Sair
                     </Button>
                   </div>

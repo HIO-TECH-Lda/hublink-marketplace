@@ -173,7 +173,7 @@ export default function FinanceDashboardPage() {
             {/* Quick Actions */}
             <div className="flex flex-wrap gap-3">
               <Link href="/vendedor/financas/receitas/nova">
-                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary-hard">
                   <Plus className="w-4 h-4 mr-2" />
                   Adicionar Receita
                 </Button>
