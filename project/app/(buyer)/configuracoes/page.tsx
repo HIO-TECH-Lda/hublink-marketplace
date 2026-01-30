@@ -1,24 +1,32 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUpdateProfile, useChangePassword } from '@/hooks/useProfile';
-import { ArrowLeft, User, MapPin, Lock, Eye, EyeOff, Camera } from 'lucide-react';
+import { User, MapPin, Lock, Eye, EyeOff, Camera } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import BuyerSidebar from '../components/BuyerSidebar';
+import { useToast } from '@/hooks/use-toast';
+
+const MAX_AVATAR_MB = 2;
+const MAX_AVATAR_BYTES = MAX_AVATAR_MB * 1024 * 1024;
 
 export default function SettingsPage() {
   const { user } = useAuth();
   const updateProfile = useUpdateProfile();
   const changePassword = useChangePassword();
+  const { toast } = useToast();
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const [profileForm, setProfileForm] = useState({
     firstName: '',
@@ -93,9 +101,41 @@ export default function SettingsPage() {
     confirmNewPassword: '',
   });
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast({ title: 'Formato inválido', description: 'Use JPG, PNG ou GIF.', variant: 'destructive' });
+      return;
+    }
+    if (file.size > MAX_AVATAR_BYTES) {
+      toast({ title: 'Arquivo grande', description: `Máximo ${MAX_AVATAR_MB}MB.`, variant: 'destructive' });
+      return;
+    }
+    setAvatarFile(file);
+    const reader = new FileReader();
+    reader.onload = () => setAvatarPreview(reader.result as string);
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile.mutate(profileForm);
+    if (avatarFile) {
+      const formData = new FormData();
+      formData.append('firstName', profileForm.firstName);
+      formData.append('lastName', profileForm.lastName);
+      formData.append('phone', profileForm.phone);
+      formData.append('avatar', avatarFile);
+      formData.append('billingAddress', JSON.stringify(profileForm.billingAddress));
+      formData.append('shippingAddress', JSON.stringify(profileForm.shippingAddress));
+      formData.append('preferences', JSON.stringify(profileForm.preferences));
+      updateProfile.mutate(formData as any);
+      setAvatarFile(null);
+      setAvatarPreview(null);
+    } else {
+      updateProfile.mutate(profileForm);
+    }
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -144,14 +184,22 @@ export default function SettingsPage() {
                 <form onSubmit={handleProfileSubmit} className="space-y-6">
                   <div className="flex items-center space-x-6">
                     <div className="relative">
-                      <img 
-                        src={user?.profileImage || 'https://placehold.co/100x100/cccccc/000000?text=User'} 
-                        alt="Profile" 
-                        className="w-20 h-20 rounded-full object-cover"
+                      <input
+                        ref={avatarInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/gif"
+                        onChange={handleAvatarChange}
+                        className="hidden"
                       />
-                      <button 
+                      <img
+                        src={avatarPreview || user?.avatar || user?.profileImage || 'https://placehold.co/100x100/cccccc/000000?text=User'}
+                        alt="Profile"
+                        className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
+                      />
+                      <button
                         type="button"
-                        className="absolute bottom-0 right-0 bg-green-600 text-white p-1 rounded-full hover:bg-green-700"
+                        onClick={() => avatarInputRef.current?.click()}
+                        className="absolute bottom-0 right-0 bg-primary text-primary-foreground p-1.5 rounded-full hover:bg-primary-hard shadow"
                       >
                         <Camera className="w-4 h-4" />
                       </button>
@@ -159,6 +207,7 @@ export default function SettingsPage() {
                     <div>
                       <h3 className="text-sm font-medium text-gray-900">Foto do Perfil</h3>
                       <p className="text-sm text-gray-500">JPG, PNG ou GIF. Máximo 2MB.</p>
+                      {avatarFile && <p className="text-xs text-primary mt-1">{avatarFile.name} — clique em Salvar para enviar</p>}
                     </div>
                   </div>
 

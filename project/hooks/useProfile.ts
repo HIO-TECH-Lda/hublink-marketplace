@@ -7,47 +7,18 @@ export const useUpdateProfile = () => {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (profileData: {
+    mutationFn: async (profileData: FormData | {
       firstName?: string;
       lastName?: string;
       phone?: string;
-      billingAddress?: {
-        street: string;
-        city: string;
-        state: string;
-        postalCode: string;
-        country: string;
-        isDefault: boolean;
-      };
-      shippingAddress?: {
-        street: string;
-        city: string;
-        state: string;
-        postalCode: string;
-        country: string;
-        isDefault: boolean;
-      };
-      preferences?: {
-        language: string;
-        currency: string;
-        notifications: {
-          email: boolean;
-          sms: boolean;
-          push: boolean;
-        };
-      };
-      sellerProfile?: {
-        storeName: string;
-        storeDescription: string;
-        address: string;
-        city: string;
-        province: string;
-        postalCode: string;
-        productTypes: string;
-        experience?: string;
-      };
+      avatar?: File;
+      billingAddress?: { street: string; city: string; state: string; postalCode: string; country: string; isDefault: boolean };
+      shippingAddress?: { street: string; city: string; state: string; postalCode: string; country: string; isDefault: boolean };
+      preferences?: { language: string; currency: string; notifications: { email: boolean; sms: boolean; push: boolean } };
+      sellerProfile?: { storeName: string; storeDescription: string; address: string; city: string; province: string; postalCode: string; productTypes: string; experience?: string };
     }) => {
-      const response = await apiClient.put('/auth/me', profileData);
+      const config = profileData instanceof FormData ? {} : {};
+      const response = await apiClient.put('/auth/me', profileData, config);
       return response.data.data;
     },
     onSuccess: () => {
