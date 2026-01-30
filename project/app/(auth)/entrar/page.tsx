@@ -217,7 +217,7 @@ export default function SignInPage() {
                   variant="outline"
                   size="sm"
                   disabled={isLoading || authLoading}
-                  onClick={() => handleDemoLogin('helton@test.com')}
+                  onClick={() => handleDemoLogin('buyer.test@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
                 >
                   {isLoading ? 'Entrando...' : 'Login Cliente'}
@@ -227,7 +227,7 @@ export default function SignInPage() {
                   variant="outline"
                   size="sm"
                   disabled={isLoading || authLoading}
-                  onClick={() => handleDemoLogin('vendedor@test.com')}
+                  onClick={() => handleDemoLogin('vendedor.update@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
                 >
                   {isLoading ? 'Entrando...' : 'Login Vendedor'}
