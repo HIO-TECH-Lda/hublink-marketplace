@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { User, LoginData, RegisterData, AuthResponse } from '@/types/api';
 import apiClient from '@/lib/api-client';
 
@@ -19,11 +20,26 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/** Query key prefixes for user-specific data; cleared on logout so badges/UI don't show stale data */
+const USER_QUERY_KEY_PREFIXES: readonly (readonly string[])[] = [
+  ['cart'],
+  ['wishlist'],
+  ['orders'],
+  ['order'],
+  ['tickets'],
+  ['products', 'my'],
+  ['seller-finances'],
+  ['refunds'],
+  ['payouts'],
+  ['auth'],
+];
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -57,12 +73,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const clearUserCache = () => {
+    USER_QUERY_KEY_PREFIXES.forEach((queryKey) => {
+      queryClient.removeQueries({ queryKey: [...queryKey] });
+    });
+  };
+
   const clearAuth = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('refreshToken');
     setToken(null);
     setRefreshToken(null);
     setUser(null);
+    clearUserCache();
   };
 
   const login = async (email: string, password: string) => {
