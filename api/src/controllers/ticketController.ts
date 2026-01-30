@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { TicketService } from '../services/ticketService';
+import Messages from '../utils/messages';
 
 export class TicketController {
   /**
@@ -24,14 +25,14 @@ export class TicketController {
 
       return res.status(201).json({
         success: true,
-        message: 'Ticket created successfully',
+        message: Messages.TICKET.CREATED,
         data: ticket
       });
     } catch (error: any) {
       console.error('Create ticket error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to create ticket'
+        message: error.message || Messages.TICKET.CREATE_FAILED
       });
     }
   }
@@ -66,14 +67,14 @@ export class TicketController {
 
       return res.status(200).json({
         success: true,
-        message: 'Tickets retrieved successfully',
+        message: Messages.TICKET.FETCH_SUCCESS,
         data: result
       });
     } catch (error: any) {
       console.error('Get user tickets error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve tickets'
+        message: error.message || Messages.TICKET.FETCH_FAILED
       });
     }
   }
@@ -92,13 +93,13 @@ export class TicketController {
       if (!ticket) {
         return res.status(404).json({
           success: false,
-          message: 'Ticket not found'
+          message: Messages.TICKET.NOT_FOUND
         });
       }
 
       return res.status(200).json({
         success: true,
-        message: 'Ticket retrieved successfully',
+        message: Messages.TICKET.RETRIEVED,
         data: ticket
       });
     } catch (error: any) {
@@ -111,7 +112,7 @@ export class TicketController {
       }
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve ticket'
+        message: error.message || Messages.TICKET.FETCH_FAILED
       });
     }
   }
@@ -135,7 +136,7 @@ export class TicketController {
 
       return res.status(200).json({
         success: true,
-        message: 'Ticket updated successfully',
+        message: Messages.TICKET.UPDATED,
         data: ticket
       });
     } catch (error: any) {
@@ -148,7 +149,7 @@ export class TicketController {
       }
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to update ticket'
+        message: error.message || Messages.TICKET.UPDATE_FAILED
       });
     }
   }
@@ -171,14 +172,14 @@ export class TicketController {
 
       return res.status(201).json({
         success: true,
-        message: 'Message added successfully',
+        message: Messages.TICKET.MESSAGE_ADDED,
         data: ticket.messages[ticket.messages.length - 1]
       });
     } catch (error: any) {
       console.error('Add message error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to add message'
+        message: error.message || Messages.TICKET.ADD_MESSAGE_FAILED
       });
     }
   }
@@ -216,14 +217,14 @@ export class TicketController {
 
       return res.status(200).json({
         success: true,
-        message: 'Tickets retrieved successfully',
+        message: Messages.TICKET.FETCH_SUCCESS,
         data: result
       });
     } catch (error: any) {
       console.error('Get all tickets error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve tickets'
+        message: error.message || Messages.TICKET.FETCH_FAILED
       });
     }
   }
@@ -244,14 +245,14 @@ export class TicketController {
 
       return res.status(200).json({
         success: true,
-        message: 'Statistics retrieved successfully',
+        message: Messages.TICKET.STATS_RETRIEVED,
         data: result
       });
     } catch (error: any) {
       console.error('Get statistics error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve statistics'
+        message: error.message || Messages.TICKET.STATS_FAILED
       });
     }
   }
@@ -267,13 +268,13 @@ export class TicketController {
 
       return res.status(200).json({
         success: true,
-        message: 'Ticket deleted successfully'
+        message: Messages.TICKET.DELETED
       });
     } catch (error: any) {
       console.error('Delete ticket error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to delete ticket'
+        message: error.message || Messages.TICKET.DELETE_FAILED
       });
     }
   }
@@ -294,14 +295,14 @@ export class TicketController {
 
       return res.status(201).json({
         success: true,
-        message: 'Attachment uploaded successfully',
+        message: Messages.TICKET.ATTACHMENT_UPLOADED,
         data: attachment
       });
     } catch (error: any) {
       console.error('Upload attachment error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to upload attachment'
+        message: error.message || Messages.TICKET.ATTACHMENT_UPLOAD_FAILED
       });
     }
   }
@@ -319,7 +320,7 @@ export class TicketController {
 
       return res.status(200).json({
         success: true,
-        message: 'Attachment deleted successfully'
+        message: Messages.TICKET.ATTACHMENT_DELETED
       });
     } catch (error: any) {
       console.error('Delete attachment error:', error);
@@ -331,7 +332,7 @@ export class TicketController {
       }
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to delete attachment'
+        message: error.message || Messages.TICKET.ATTACHMENT_DELETE_FAILED
       });
     }
   }

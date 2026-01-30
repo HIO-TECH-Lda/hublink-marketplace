@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { FinanceService } from '../services/financeService';
+import Messages from '../utils/messages';
 
 export class FinanceController {
   /**
@@ -18,7 +19,7 @@ export class FinanceController {
 
       return res.status(200).json({
         success: true,
-        message: 'Dashboard data retrieved successfully',
+        message: Messages.FINANCE.DASHBOARD_RETRIEVED,
         data: result
       });
     } catch (error: any) {
@@ -62,7 +63,7 @@ export class FinanceController {
 
       return res.status(200).json({
         success: true,
-        message: 'Transactions retrieved successfully',
+        message: Messages.FINANCE.TRANSACTIONS_RETRIEVED,
         data: result
       });
     } catch (error: any) {
@@ -87,7 +88,7 @@ export class FinanceController {
       if (!transaction) {
         return res.status(404).json({
           success: false,
-          message: 'Transaction not found'
+          message: Messages.FINANCE.TRANSACTION_NOT_FOUND
         });
       }
 
@@ -100,7 +101,7 @@ export class FinanceController {
       console.error('Get transaction error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve transaction'
+        message: error.message || Messages.FINANCE.TRANSACTION_FAILED
       });
     }
   }
@@ -124,7 +125,7 @@ export class FinanceController {
 
       return res.status(201).json({
         success: true,
-        message: 'Income entry created successfully',
+        message: Messages.FINANCE.INCOME_CREATED,
         data: transaction
       });
     } catch (error: any) {
@@ -157,7 +158,7 @@ export class FinanceController {
 
       return res.status(201).json({
         success: true,
-        message: 'Expense entry created successfully',
+        message: Messages.FINANCE.EXPENSE_CREATED,
         data: transaction
       });
     } catch (error: any) {
@@ -190,14 +191,14 @@ export class FinanceController {
 
       return res.status(200).json({
         success: true,
-        message: 'Transaction updated successfully',
+        message: Messages.FINANCE.TRANSACTION_UPDATED,
         data: transaction
       });
     } catch (error: any) {
       console.error('Update transaction error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to update transaction'
+        message: error.message || Messages.FINANCE.TRANSACTION_UPDATE_FAILED
       });
     }
   }
@@ -245,7 +246,7 @@ export class FinanceController {
 
       return res.status(200).json({
         success: true,
-        message: 'Report generated successfully',
+        message: Messages.FINANCE.REPORT_GENERATED,
         data: result
       });
     } catch (error: any) {
@@ -266,7 +267,7 @@ export class FinanceController {
 
       return res.status(200).json({
         success: true,
-        message: 'Categories retrieved successfully',
+        message: Messages.FINANCE.CATEGORIES_RETRIEVED,
         data: { categories }
       });
     } catch (error: any) {
@@ -296,14 +297,14 @@ export class FinanceController {
 
       return res.status(201).json({
         success: true,
-        message: 'Attachment uploaded successfully',
+        message: Messages.FINANCE.ATTACHMENT_UPLOADED,
         data: attachment
       });
     } catch (error: any) {
       console.error('Upload attachment error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to upload attachment'
+        message: error.message || Messages.FINANCE.ATTACHMENT_UPLOAD_FAILED
       });
     }
   }
@@ -329,7 +330,7 @@ export class FinanceController {
         const finance = await FinanceService.syncMarketplaceSales(sellerId, orderId);
         return res.status(200).json({
           success: true,
-          message: finance ? 'Sales synced successfully' : 'No income entry created (order not delivered or payment not confirmed)',
+          message: finance ? Messages.FINANCE.SALES_SYNCED : Messages.FINANCE.NO_INCOME_CREATED,
           data: finance
         });
       } else {
@@ -342,7 +343,7 @@ export class FinanceController {
       console.error('Sync sales error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to sync sales'
+        message: error.message || Messages.FINANCE.SALES_SYNC_FAILED
       });
     }
   }

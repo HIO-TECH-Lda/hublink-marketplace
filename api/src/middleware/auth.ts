@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { JWTPayload } from '../types';
+import Messages from '../utils/messages';
 
 // Extend Express Request interface
 declare global {
@@ -20,7 +21,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: 'Access token required'
+        message: Messages.AUTH.TOKEN_REQUIRED
       });
     }
 
@@ -55,14 +56,14 @@ export const authorizeRoles = (...roles: string[]) => {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: 'Authentication required'
+        message: Messages.AUTH.AUTHENTICATION_REQUIRED
       });
     }
 
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
-        message: 'Insufficient permissions'
+        message: Messages.AUTH.INSUFFICIENT_PERMISSIONS
       });
     }
 

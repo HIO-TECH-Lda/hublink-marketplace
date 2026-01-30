@@ -1,5 +1,6 @@
 import Category, { ICategoryDocument } from '../models/Category';
 import { ICategory } from '../types';
+import Messages from '../utils/messages';
 
 export class CategoryService {
   // Create new category
@@ -96,7 +97,7 @@ export class CategoryService {
       // Check if category has children
       const children = await Category.find({ parentId: categoryId });
       if (children.length > 0) {
-        throw new Error('Cannot delete category with children. Please delete children first.');
+        throw new Error(Messages.CATEGORY.HAS_CHILDREN);
       }
 
       await Category.findByIdAndDelete(categoryId);
@@ -126,7 +127,7 @@ export class CategoryService {
     try {
       const category = await Category.findById(categoryId);
       if (!category) {
-        throw new Error('Category not found');
+        throw new Error(Messages.CATEGORY.NOT_FOUND);
       }
 
       return await category.getAncestors();
@@ -140,7 +141,7 @@ export class CategoryService {
     try {
       const category = await Category.findById(categoryId);
       if (!category) {
-        throw new Error('Category not found');
+        throw new Error(Messages.CATEGORY.NOT_FOUND);
       }
 
       return await category.getDescendants();

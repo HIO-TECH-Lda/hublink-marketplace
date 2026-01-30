@@ -3,6 +3,7 @@ import Refund, { IRefundDocument } from '../models/Refund';
 import Order from '../models/Order';
 import { IRefund } from '../types';
 import { uploadBase64Image } from '../utils/cloudinary';
+import Messages from '../utils/messages';
 
 export class RefundService {
   // Get refund statistics for seller
@@ -126,11 +127,11 @@ export class RefundService {
     try {
       const refund = await Refund.findOne({ _id: refundId, sellerId });
       if (!refund) {
-        throw new Error('Refund not found');
+        throw new Error(Messages.REFUND.NOT_FOUND);
       }
 
       if (refund.status !== 'pending') {
-        throw new Error('Refund is not pending');
+        throw new Error(Messages.REFUND.NOT_PENDING);
       }
 
       refund.status = 'approved';
@@ -157,11 +158,11 @@ export class RefundService {
     try {
       const refund = await Refund.findOne({ _id: refundId, sellerId });
       if (!refund) {
-        throw new Error('Refund not found');
+        throw new Error(Messages.REFUND.NOT_FOUND);
       }
 
       if (refund.status !== 'pending') {
-        throw new Error('Refund is not pending');
+        throw new Error(Messages.REFUND.NOT_PENDING);
       }
 
       refund.status = 'rejected';
@@ -192,11 +193,11 @@ export class RefundService {
       // Verify order belongs to buyer
       const order = await Order.findById(data.orderId);
       if (!order) {
-        throw new Error('Order not found');
+        throw new Error(Messages.ORDER.NOT_FOUND);
       }
 
       if (order.userId.toString() !== buyerId) {
-        throw new Error('Order does not belong to buyer');
+        throw new Error(Messages.REFUND.ORDER_NOT_BELONG);
       }
 
       // Find the product in order items
@@ -205,7 +206,7 @@ export class RefundService {
       );
 
       if (!orderItem) {
-        throw new Error('Product not found in order');
+        throw new Error(Messages.REFUND.PRODUCT_NOT_IN_ORDER);
       }
 
       // Check if refund already exists for this order item
@@ -217,7 +218,7 @@ export class RefundService {
       });
 
       if (existingRefund) {
-        throw new Error('Refund request already exists for this product');
+        throw new Error(Messages.REFUND.REQUEST_EXISTS);
       }
 
       // Upload images to Cloudinary
@@ -411,11 +412,11 @@ export class RefundService {
     try {
       const refund = await Refund.findById(refundId);
       if (!refund) {
-        throw new Error('Refund not found');
+        throw new Error(Messages.REFUND.NOT_FOUND);
       }
 
       if (refund.status !== 'pending') {
-        throw new Error('Refund is not pending');
+        throw new Error(Messages.REFUND.NOT_PENDING);
       }
 
       refund.status = 'approved';
@@ -438,11 +439,11 @@ export class RefundService {
     try {
       const refund = await Refund.findById(refundId);
       if (!refund) {
-        throw new Error('Refund not found');
+        throw new Error(Messages.REFUND.NOT_FOUND);
       }
 
       if (refund.status !== 'pending') {
-        throw new Error('Refund is not pending');
+        throw new Error(Messages.REFUND.NOT_PENDING);
       }
 
       refund.status = 'rejected';

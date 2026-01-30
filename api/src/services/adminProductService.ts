@@ -5,6 +5,7 @@ import Review from '../models/Review';
 import Order from '../models/Order';
 import { ProductService } from './productService';
 import mongoose, { Types } from 'mongoose';
+import Messages from '../utils/messages';
 
 export interface ProductListFilters {
   search?: string;
@@ -54,9 +55,7 @@ export class AdminProductService {
         averageRating: Math.round(averageRating * 10) / 10 // Round to 1 decimal place
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get product statistics: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.STATS_FAILED);
     }
   }
 
@@ -184,9 +183,7 @@ export class AdminProductService {
         totalPages: Math.ceil(total / limit)
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get products: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.LIST_FAILED);
     }
   }
 
@@ -195,12 +192,12 @@ export class AdminProductService {
     try {
       // Validate seller exists
       if (!productData.sellerId) {
-        throw new Error('Seller ID is required');
+        throw new Error(Messages.SELLER.NOT_FOUND);
       }
 
       const seller = await User.findById(productData.sellerId);
       if (!seller) {
-        throw new Error('Seller not found');
+        throw new Error(Messages.SELLER.NOT_FOUND);
       }
 
       const sellerName = seller.sellerProfile?.storeName || 
@@ -217,9 +214,7 @@ export class AdminProductService {
       // Return created product with populated data
       return await this.getProductById(product._id.toString());
     } catch (error) {
-      throw new Error(
-        `Failed to create product: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.CREATE_FAILED);
     }
   }
 
@@ -233,7 +228,7 @@ export class AdminProductService {
         .lean();
 
       if (!product) {
-        throw new Error('Product not found');
+        throw new Error(Messages.PRODUCT.NOT_FOUND);
       }
 
       // Get additional statistics
@@ -322,9 +317,7 @@ export class AdminProductService {
           : product.price
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get product: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.FETCH_FAILED);
     }
   }
 
@@ -334,7 +327,7 @@ export class AdminProductService {
       const product = await Product.findById(productId);
 
       if (!product) {
-        throw new Error('Product not found');
+        throw new Error(Messages.PRODUCT.NOT_FOUND);
       }
 
       // Update fields
@@ -364,7 +357,7 @@ export class AdminProductService {
       const product = await Product.findById(productId);
 
       if (!product) {
-        throw new Error('Product not found');
+        throw new Error(Messages.PRODUCT.NOT_FOUND);
       }
 
       product.status = status;
@@ -373,9 +366,7 @@ export class AdminProductService {
       // Return updated product with populated data
       return await this.getProductById(productId);
     } catch (error) {
-      throw new Error(
-        `Failed to update product status: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.UPDATE_FAILED);
     }
   }
 
@@ -385,16 +376,14 @@ export class AdminProductService {
       const product = await Product.findById(productId);
 
       if (!product) {
-        throw new Error('Product not found');
+        throw new Error(Messages.PRODUCT.NOT_FOUND);
       }
 
       // Soft delete by archiving
       product.status = 'archived';
       await product.save();
     } catch (error) {
-      throw new Error(
-        `Failed to delete product: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.DELETE_FAILED);
     }
   }
 }

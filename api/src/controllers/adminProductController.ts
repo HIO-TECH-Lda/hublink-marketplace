@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AdminProductService } from '../services/adminProductService';
+import Messages from '../utils/messages';
 
 export class AdminProductController {
   // Get product statistics
@@ -13,7 +14,7 @@ export class AdminProductController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get product statistics'
+        message: error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.STATS_FAILED
       });
     }
   }
@@ -51,7 +52,7 @@ export class AdminProductController {
       const product = await AdminProductService.createProduct(productData);
       res.status(201).json({
         success: true,
-        message: 'Product created successfully',
+        message: Messages.ADMIN_PRODUCT.CREATED,
         data: product
       });
     } catch (error) {
@@ -76,7 +77,7 @@ export class AdminProductController {
       const statusCode = error instanceof Error && error.message === 'Product not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get product'
+        message: error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.FETCH_FAILED
       });
     }
   }
@@ -96,7 +97,7 @@ export class AdminProductController {
       const statusCode = error instanceof Error && error.message === 'Product not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update product'
+        message: error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.UPDATE_FAILED
       });
     }
   }
@@ -121,14 +122,14 @@ export class AdminProductController {
       );
       res.json({
         success: true,
-        message: 'Product status updated successfully',
+        message: Messages.ADMIN_PRODUCT.STATUS_UPDATED,
         data: product
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Product not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update product status'
+        message: error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.UPDATE_FAILED
       });
     }
   }
@@ -146,7 +147,7 @@ export class AdminProductController {
       const statusCode = error instanceof Error && error.message === 'Product not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to delete product'
+        message: error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.DELETE_FAILED
       });
     }
   }

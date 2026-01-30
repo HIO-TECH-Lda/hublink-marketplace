@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/authService';
 import { EmailService } from '../services/emailService';
+import Messages from '../utils/messages';
 
 export class AuthController {
   // Register new user
@@ -22,7 +23,7 @@ export class AuthController {
       console.error('Registration error:', error);
       return res.status(400).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Registration failed'
+        message: error instanceof Error ? error.message : Messages.AUTH.REGISTER_FAILED
       });
     }
   }
@@ -47,7 +48,7 @@ export class AuthController {
       console.error('Login error:', error);
       return res.status(401).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Invalid credentials'
+        message: error instanceof Error ? error.message : Messages.AUTH.INVALID_CREDENTIALS
       });
     }
   }
@@ -71,7 +72,7 @@ export class AuthController {
       console.error('Token refresh error:', error);
       return res.status(401).json({
         success: false,
-        message: 'Invalid refresh token'
+        message: Messages.AUTH.INVALID_REFRESH_TOKEN
       });
     }
   }
@@ -90,7 +91,7 @@ export class AuthController {
       
       return res.json({
         success: true,
-        message: 'User profile retrieved successfully',
+        message: Messages.USER.PROFILE_RETRIEVED,
         data: { user }
       });
     } catch (error) {
@@ -116,7 +117,7 @@ export class AuthController {
       
       return res.json({
         success: true,
-        message: 'Profile updated successfully',
+        message: Messages.USER.UPDATED,
         data: { user: updatedUser }
       });
     } catch (error) {
@@ -137,7 +138,7 @@ export class AuthController {
       
       return res.json({
         success: true,
-        message: 'Password changed successfully'
+        message: Messages.AUTH.PASSWORD_CHANGED
       });
     } catch (error) {
       console.error('Change password error:', error);
@@ -152,7 +153,7 @@ export class AuthController {
   static async logout(req: Request, res: Response) {
     return res.json({
       success: true,
-      message: 'Logout successful'
+      message: Messages.AUTH.LOGOUT_SUCCESS
     });
   }
 
@@ -173,7 +174,7 @@ export class AuthController {
       console.error('Forgot password error:', error);
       return res.json({
         success: true,
-        message: 'If the email exists, a reset link will be sent'
+        message: Messages.AUTH.PASSWORD_RESET_EMAIL_SENT
       });
     }
   }
@@ -186,7 +187,7 @@ export class AuthController {
       
       return res.json({
         success: true,
-        message: 'Password reset successful. You can now login with your new password.'
+        message: Messages.AUTH.PASSWORD_RESET_SUCCESS
       });
     } catch (error) {
       console.error('Reset password error:', error);
@@ -201,7 +202,7 @@ export class AuthController {
   static async buyerTest(req: Request, res: Response) {
     return res.json({
       success: true,
-      message: 'Buyer access granted',
+      message: Messages.AUTH.BUYER_ACCESS,
       data: { user: req.user }
     });
   }
@@ -219,7 +220,7 @@ export class AuthController {
   static async adminTest(req: Request, res: Response) {
     return res.json({
       success: true,
-      message: 'Admin access granted',
+      message: Messages.AUTH.ADMIN_ACCESS,
       data: { user: req.user }
     });
   }

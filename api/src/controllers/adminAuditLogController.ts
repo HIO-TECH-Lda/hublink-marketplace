@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AuditLogService } from '../services/auditLogService';
+import Messages from '../utils/messages';
 
 export class AdminAuditLogController {
   // Get audit logs
@@ -24,7 +25,7 @@ export class AdminAuditLogController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get audit logs'
+        message: error instanceof Error ? error.message : Messages.ADMIN_AUDIT.FETCH_FAILED
       });
     }
   }
@@ -43,7 +44,7 @@ export class AdminAuditLogController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get audit statistics'
+        message: error instanceof Error ? error.message : Messages.ADMIN_AUDIT.STATS_FAILED
       });
     }
   }

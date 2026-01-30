@@ -3,6 +3,7 @@ import Order from '../models/Order';
 import Payment from '../models/Payment';
 import Review from '../models/Review';
 import mongoose, { Types } from 'mongoose';
+import Messages from '../utils/messages';
 
 export interface UserListFilters {
   search?: string;
@@ -45,9 +46,7 @@ export class AdminUserService {
         active
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get user statistics: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_USER.STATS_FAILED);
     }
   }
 
@@ -179,9 +178,7 @@ export class AdminUserService {
         totalPages: Math.ceil(total / limit)
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get users: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_USER.LIST_FAILED);
     }
   }
 
@@ -203,9 +200,7 @@ export class AdminUserService {
         fullName: `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || seller.email
       }));
     } catch (error) {
-      throw new Error(
-        `Failed to get sellers: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_USER.SELLERS_FAILED);
     }
   }
 
@@ -349,9 +344,7 @@ export class AdminUserService {
         lastLogin: lastPayment?.createdAt || user.updatedAt
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get user: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_USER.FETCH_FAILED);
     }
   }
 
@@ -372,7 +365,13 @@ export class AdminUserService {
       });
 
       if (existingUser) {
-        throw new Error('User with this email or phone already exists');
+        if (existingUser.email === userData.email) {
+          throw new Error(Messages.ADMIN_USER.EMAIL_EXISTS);
+        }
+        if (existingUser.phone === userData.phone) {
+          throw new Error(Messages.ADMIN_USER.PHONE_EXISTS);
+        }
+        throw new Error(Messages.AUTH.EMAIL_PHONE_EXISTS);
       }
 
       // Create user
@@ -417,14 +416,14 @@ export class AdminUserService {
       if (updateData.email && updateData.email !== user.email) {
         const existingUser = await User.findOne({ email: updateData.email });
         if (existingUser) {
-          throw new Error('Email already in use');
+          throw new Error(Messages.ADMIN_USER.EMAIL_EXISTS);
         }
       }
 
       if (updateData.phone && updateData.phone !== user.phone) {
         const existingUser = await User.findOne({ phone: updateData.phone });
         if (existingUser) {
-          throw new Error('Phone number already in use');
+          throw new Error(Messages.ADMIN_USER.PHONE_EXISTS);
         }
       }
 
@@ -458,9 +457,7 @@ export class AdminUserService {
 
       return user;
     } catch (error) {
-      throw new Error(
-        `Failed to update user status: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_USER.UPDATE_FAILED);
     }
   }
 
@@ -481,9 +478,7 @@ export class AdminUserService {
 
       await User.findByIdAndDelete(userId);
     } catch (error) {
-      throw new Error(
-        `Failed to delete user: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_USER.DELETE_FAILED);
     }
   }
 }

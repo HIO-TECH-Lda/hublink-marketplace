@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PayoutService } from '../services/payoutService';
+import Messages from '../utils/messages';
 
 export class PayoutController {
   // Get seller balance
@@ -10,15 +11,15 @@ export class PayoutController {
 
       return res.status(200).json({
         success: true,
-        message: 'Balance retrieved successfully',
+        message: Messages.PAYOUT.BALANCE_RETRIEVED,
         data: balance
       });
     } catch (error) {
       console.error('Get balance error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve balance',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        message: Messages.PAYOUT.BALANCE_FAILED,
+        error: error instanceof Error ? error.message : Messages.ERROR.SOMETHING_WENT_WRONG
       });
     }
   }
@@ -37,7 +38,7 @@ export class PayoutController {
 
       return res.status(200).json({
         success: true,
-        message: 'Payout history retrieved successfully',
+        message: Messages.PAYOUT.HISTORY_RETRIEVED,
         data: {
           payouts: result.payouts,
           pagination: result.pagination
@@ -47,8 +48,8 @@ export class PayoutController {
       console.error('Get payout history error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve payout history',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        message: Messages.PAYOUT.HISTORY_FAILED,
+        error: error instanceof Error ? error.message : Messages.ERROR.SOMETHING_WENT_WRONG
       });
     }
   }
@@ -73,8 +74,8 @@ export class PayoutController {
       console.error('Request payout error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to request payout',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        message: Messages.PAYOUT.REQUEST_FAILED,
+        error: error instanceof Error ? error.message : Messages.ERROR.SOMETHING_WENT_WRONG
       });
     }
   }
@@ -90,7 +91,7 @@ export class PayoutController {
       if (!payout) {
         return res.status(404).json({
           success: false,
-          message: 'Payout not found'
+          message: Messages.PAYOUT.NOT_FOUND
         });
       }
 
@@ -103,8 +104,8 @@ export class PayoutController {
       console.error('Get payout error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve payout',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        message: Messages.PAYOUT.FETCH_FAILED,
+        error: error instanceof Error ? error.message : Messages.ERROR.SOMETHING_WENT_WRONG
       });
     }
   }

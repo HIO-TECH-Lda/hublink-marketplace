@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { CategoryService } from '../services/categoryService';
+import Messages from '../utils/messages';
 
 export class CategoryController {
   // Create new category
@@ -10,14 +11,14 @@ export class CategoryController {
 
       return res.status(201).json({
         success: true,
-        message: 'Category created successfully',
+        message: Messages.CATEGORY.CREATED,
         data: { category }
       });
     } catch (error) {
       console.error('Create category error:', error);
       return res.status(400).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to create category'
+        message: error instanceof Error ? error.message : Messages.CATEGORY.CREATE_FAILED
       });
     }
   }
@@ -31,20 +32,20 @@ export class CategoryController {
       if (!category) {
         return res.status(404).json({
           success: false,
-          message: 'Category not found'
+          message: Messages.CATEGORY.NOT_FOUND
         });
       }
 
       return res.json({
         success: true,
-        message: 'Category retrieved successfully',
+        message: Messages.CATEGORY.RETRIEVED,
         data: { category }
       });
     } catch (error) {
       console.error('Get category error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve category'
+        message: Messages.CATEGORY.FETCH_FAILED
       });
     }
   }
@@ -58,20 +59,20 @@ export class CategoryController {
       if (!category) {
         return res.status(404).json({
           success: false,
-          message: 'Category not found'
+          message: Messages.CATEGORY.NOT_FOUND
         });
       }
 
       return res.json({
         success: true,
-        message: 'Category retrieved successfully',
+        message: Messages.CATEGORY.RETRIEVED,
         data: { category }
       });
     } catch (error) {
       console.error('Get category by slug error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve category'
+        message: Messages.CATEGORY.FETCH_FAILED
       });
     }
   }
@@ -83,14 +84,14 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Categories retrieved successfully',
+        message: Messages.CATEGORY.FETCH_SUCCESS,
         data: { categories }
       });
     } catch (error) {
       console.error('Get all categories error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve categories'
+        message: Messages.CATEGORY.FETCH_FAILED
       });
     }
   }
@@ -102,14 +103,14 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Root categories retrieved successfully',
+        message: Messages.CATEGORY.ROOT_RETRIEVED,
         data: { categories }
       });
     } catch (error) {
       console.error('Get root categories error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve root categories'
+        message: Messages.CATEGORY.ROOT_FAILED
       });
     }
   }
@@ -122,14 +123,14 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Category children retrieved successfully',
+        message: Messages.CATEGORY.CHILDREN_RETRIEVED,
         data: { categories }
       });
     } catch (error) {
       console.error('Get category children error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve category children'
+        message: Messages.CATEGORY.CHILDREN_FAILED
       });
     }
   }
@@ -141,14 +142,14 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Featured categories retrieved successfully',
+        message: Messages.CATEGORY.FEATURED_RETRIEVED,
         data: { categories }
       });
     } catch (error) {
       console.error('Get featured categories error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve featured categories'
+        message: Messages.CATEGORY.FEATURED_FAILED
       });
     }
   }
@@ -167,7 +168,7 @@ export class CategoryController {
       console.error('Build category tree error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to build category tree'
+        message: Messages.CATEGORY.TREE_FAILED
       });
     }
   }
@@ -182,7 +183,7 @@ export class CategoryController {
       if (!category) {
         return res.status(404).json({
           success: false,
-          message: 'Category not found'
+          message: Messages.CATEGORY.NOT_FOUND
         });
       }
 
@@ -195,7 +196,7 @@ export class CategoryController {
       console.error('Update category error:', error);
       return res.status(400).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update category'
+        message: error instanceof Error ? error.message : Messages.CATEGORY.UPDATE_FAILED
       });
     }
   }
@@ -215,7 +216,7 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Category deleted successfully'
+        message: Messages.CATEGORY.DELETED
       });
     } catch (error) {
       console.error('Delete category error:', error);
@@ -235,13 +236,13 @@ export class CategoryController {
       if (!category) {
         return res.status(404).json({
           success: false,
-          message: 'Category not found'
+          message: Messages.CATEGORY.NOT_FOUND
         });
       }
 
       return res.json({
         success: true,
-        message: 'Category with product count retrieved successfully',
+        message: Messages.CATEGORY.WITH_COUNT_RETRIEVED,
         data: { category }
       });
     } catch (error) {
@@ -261,7 +262,7 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Category path retrieved successfully',
+        message: Messages.CATEGORY.PATH_RETRIEVED,
         data: { path }
       });
     } catch (error) {
@@ -281,7 +282,7 @@ export class CategoryController {
 
       return res.json({
         success: true,
-        message: 'Category descendants retrieved successfully',
+        message: Messages.CATEGORY.DESCENDANTS_RETRIEVED,
         data: { descendants }
       });
     } catch (error) {
@@ -301,7 +302,7 @@ export class CategoryController {
       if (!searchTerm || typeof searchTerm !== 'string') {
         return res.status(400).json({
           success: false,
-          message: 'Search term is required'
+          message: Messages.CATEGORY.SEARCH_TERM_REQUIRED
         });
       }
 
@@ -316,7 +317,7 @@ export class CategoryController {
       console.error('Search categories error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to search categories'
+        message: Messages.CATEGORY.SEARCH_FAILED
       });
     }
   }

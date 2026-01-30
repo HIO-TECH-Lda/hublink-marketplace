@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AdminNewsletterService } from '../services/adminNewsletterService';
+import Messages from '../utils/messages';
 
 export class AdminNewsletterController {
   // ==================== STATISTICS ====================
@@ -14,7 +15,7 @@ export class AdminNewsletterController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get newsletter statistics'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.STATS_FAILED
       });
     }
   }
@@ -41,7 +42,7 @@ export class AdminNewsletterController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get subscribers'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.LIST_FAILED
       });
     }
   }
@@ -58,7 +59,7 @@ export class AdminNewsletterController {
       const statusCode = error instanceof Error && error.message === 'Subscriber not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get subscriber'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.FETCH_FAILED
       });
     }
   }
@@ -69,14 +70,14 @@ export class AdminNewsletterController {
       const subscriber = await AdminNewsletterService.createSubscriber(subscriberData);
       res.status(201).json({
         success: true,
-        message: 'Subscriber created successfully',
+        message: Messages.ADMIN_NEWSLETTER.CREATED,
         data: subscriber
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message.includes('already subscribed') ? 400 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to create subscriber'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.CREATE_FAILED
       });
     }
   }
@@ -88,14 +89,14 @@ export class AdminNewsletterController {
       const subscriber = await AdminNewsletterService.updateSubscriber(subscriberId, updateData);
       res.json({
         success: true,
-        message: 'Subscriber updated successfully',
+        message: Messages.ADMIN_NEWSLETTER.UPDATED,
         data: subscriber
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Subscriber not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update subscriber'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.UPDATE_FAILED
       });
     }
   }
@@ -108,7 +109,7 @@ export class AdminNewsletterController {
       if (!status || !['active', 'unsubscribed', 'bounced', 'pending'].includes(status)) {
         res.status(400).json({
           success: false,
-          message: 'Invalid status. Must be one of: active, unsubscribed, bounced, pending'
+          message: Messages.VALIDATION.INVALID_VALUE
         });
         return;
       }
@@ -116,14 +117,14 @@ export class AdminNewsletterController {
       const subscriber = await AdminNewsletterService.updateSubscriberStatus(subscriberId, status);
       res.json({
         success: true,
-        message: 'Subscriber status updated successfully',
+        message: Messages.ADMIN_NEWSLETTER.STATUS_UPDATED,
         data: subscriber
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Subscriber not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update subscriber status'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.STATUS_UPDATE_FAILED
       });
     }
   }
@@ -134,13 +135,13 @@ export class AdminNewsletterController {
       await AdminNewsletterService.deleteSubscriber(subscriberId);
       res.json({
         success: true,
-        message: 'Subscriber deleted successfully'
+        message: Messages.ADMIN_NEWSLETTER.DELETED
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Subscriber not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to delete subscriber'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.DELETE_FAILED
       });
     }
   }
@@ -167,7 +168,7 @@ export class AdminNewsletterController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get campaigns'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.LIST_FAILED
       });
     }
   }
@@ -184,7 +185,7 @@ export class AdminNewsletterController {
       const statusCode = error instanceof Error && error.message === 'Campaign not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get campaign'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.FETCH_FAILED
       });
     }
   }
@@ -196,13 +197,13 @@ export class AdminNewsletterController {
       const campaign = await AdminNewsletterService.createCampaign(campaignData, createdBy);
       res.status(201).json({
         success: true,
-        message: 'Campaign created successfully',
+        message: Messages.ADMIN_NEWSLETTER.CREATED,
         data: campaign
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to create campaign'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.CREATE_FAILED
       });
     }
   }
@@ -214,14 +215,14 @@ export class AdminNewsletterController {
       const campaign = await AdminNewsletterService.updateCampaign(campaignId, updateData);
       res.json({
         success: true,
-        message: 'Campaign updated successfully',
+        message: Messages.ADMIN_NEWSLETTER.UPDATED,
         data: campaign
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Campaign not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update campaign'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.UPDATE_FAILED
       });
     }
   }
@@ -234,7 +235,7 @@ export class AdminNewsletterController {
       if (!status || !['draft', 'scheduled', 'sending', 'sent', 'cancelled'].includes(status)) {
         res.status(400).json({
           success: false,
-          message: 'Invalid status. Must be one of: draft, scheduled, sending, sent, cancelled'
+          message: Messages.VALIDATION.INVALID_VALUE
         });
         return;
       }
@@ -246,14 +247,14 @@ export class AdminNewsletterController {
       );
       res.json({
         success: true,
-        message: 'Campaign status updated successfully',
+        message: Messages.ADMIN_NEWSLETTER.STATUS_UPDATED,
         data: campaign
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Campaign not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update campaign status'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.STATUS_UPDATE_FAILED
       });
     }
   }
@@ -264,13 +265,13 @@ export class AdminNewsletterController {
       await AdminNewsletterService.deleteCampaign(campaignId);
       res.json({
         success: true,
-        message: 'Campaign deleted successfully'
+        message: Messages.ADMIN_NEWSLETTER.DELETED
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Campaign not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to delete campaign'
+        message: error instanceof Error ? error.message : Messages.ADMIN_NEWSLETTER.DELETE_FAILED
       });
     }
   }

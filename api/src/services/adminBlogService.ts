@@ -2,6 +2,7 @@ import BlogPost from '../models/BlogPost';
 import User from '../models/User';
 import { uploadBase64Image } from '../utils/cloudinary';
 import mongoose, { Types } from 'mongoose';
+import Messages from '../utils/messages';
 
 export interface BlogListFilters {
   search?: string;
@@ -180,7 +181,7 @@ export class AdminBlogService {
         .lean();
 
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error(Messages.BLOG.POST_NOT_FOUND);
       }
 
       const author = post.authorId as any;
@@ -214,7 +215,7 @@ export class AdminBlogService {
       if (postData.slug) {
         const existing = await BlogPost.findOne({ slug: postData.slug });
         if (existing) {
-          throw new Error('Post slug already exists');
+          throw new Error(Messages.BLOG.SLUG_EXISTS);
         }
       }
 
@@ -255,14 +256,14 @@ export class AdminBlogService {
       const post = await BlogPost.findById(postId);
 
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error(Messages.BLOG.POST_NOT_FOUND);
       }
 
       // Check slug uniqueness if being updated
       if (updateData.slug && updateData.slug !== post.slug) {
         const existing = await BlogPost.findOne({ slug: updateData.slug });
         if (existing) {
-          throw new Error('Post slug already exists');
+          throw new Error(Messages.BLOG.SLUG_EXISTS);
         }
       }
 
@@ -312,7 +313,7 @@ export class AdminBlogService {
       const post = await BlogPost.findById(postId);
 
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error(Messages.BLOG.POST_NOT_FOUND);
       }
 
       post.status = status;
@@ -339,7 +340,7 @@ export class AdminBlogService {
       const post = await BlogPost.findById(postId);
 
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error(Messages.BLOG.POST_NOT_FOUND);
       }
 
       post.isFeatured = isFeatured;
@@ -360,7 +361,7 @@ export class AdminBlogService {
       const post = await BlogPost.findById(postId);
 
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error(Messages.BLOG.POST_NOT_FOUND);
       }
 
       await BlogPost.findByIdAndDelete(postId);

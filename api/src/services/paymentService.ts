@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 import Payment, { IPayment } from '../models/Payment';
 import Order from '../models/Order';
 import { IOrder } from '../models/Order';
+import Messages from '../utils/messages';
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
@@ -51,15 +52,15 @@ export class PaymentService {
       // Get the order to determine payment method
       const order = await Order.findById(data.orderId);
       if (!order) {
-        throw new Error('Order not found');
+        throw new Error(Messages.ORDER.NOT_FOUND);
       }
       
       if (order.userId.toString() !== data.userId) {
-        throw new Error('Order does not belong to user');
+        throw new Error(Messages.PAYMENT.ORDER_NOT_BELONG_TO_USER);
       }
 
       if (order.payment.status === 'completed') {
-        throw new Error('Order is already paid');
+        throw new Error(Messages.PAYMENT.ORDER_ALREADY_PAID);
       }
 
       // Route to appropriate payment method based on order.payment.method
@@ -82,7 +83,7 @@ export class PaymentService {
           break;
         
         default:
-          throw new Error(`Unsupported payment method: ${order.payment.method}`);
+          throw new Error(`${Messages.PAYMENT.UNSUPPORTED_METHOD}: ${order.payment.method}`);
       }
 
       return result;
@@ -202,12 +203,12 @@ export class PaymentService {
 
       // Check if response has the expected structure
       if (!response.data || !response.data.data) {
-        throw new Error('Invalid Imali API response structure');
+        throw new Error(Messages.PAYMENT.IMALI_INVALID_RESPONSE);
       }
 
       const linkData = response.data.data;
       if (!linkData.link_id) {
-        throw new Error('Missing link_id in Imali response');
+        throw new Error(Messages.PAYMENT.IMALI_MISSING_LINK);
       }
 
       // Update order with payment link information
@@ -235,7 +236,7 @@ export class PaymentService {
       }; 
     } catch (error: any) {
       console.error('Imali payment error:', error);
-      throw new Error(error.response?.data?.message || 'Imali payment failed');
+      throw new Error(error.response?.data?.message || Messages.PAYMENT.IMALI_FAILED);
     }
   }
 
@@ -286,17 +287,17 @@ export class PaymentService {
       // Validate order exists and belongs to user
       const order = await Order.findById(data.orderId);
       if (!order) {
-        throw new Error('Order not found');
+        throw new Error(Messages.ORDER.NOT_FOUND);
       }
 
       if (order.userId.toString() !== data.userId) {
-        throw new Error('Order does not belong to user');
+        throw new Error(Messages.PAYMENT.ORDER_NOT_BELONG_TO_USER);
       }
 
       // Check if payment already exists
       const existingPayment = await Payment.findOne({ orderId: data.orderId });
       if (existingPayment) {
-        throw new Error('Payment already exists for this order');
+        throw new Error(Messages.PAYMENT.PAYMENT_ALREADY_EXISTS);
       }
 
       // Create Stripe payment intent
@@ -378,15 +379,15 @@ export class PaymentService {
     try {
       const payment = await Payment.findById(data.paymentId);
       if (!payment) {
-        throw new Error('Payment not found');
+        throw new Error(Messages.PAYMENT.NOT_FOUND);
       }
 
       if (!payment.canRefund) {
-        throw new Error('Payment cannot be refunded');
+        throw new Error(Messages.PAYMENT.CANNOT_REFUND);
       }
 
       if (data.amount > payment.amount) {
-        throw new Error('Refund amount cannot exceed payment amount');
+        throw new Error(Messages.PAYMENT.REFUND_AMOUNT_EXCEEDED);
       }
 
       // Process refund through Stripe if it's a Stripe payment
@@ -560,17 +561,17 @@ export class PaymentService {
       // Validate order exists and belongs to user
       const order = await Order.findById(data.orderId);
       if (!order) {
-        throw new Error('Order not found');
+        throw new Error(Messages.ORDER.NOT_FOUND);
       }
 
       if (order.userId.toString() !== data.userId) {
-        throw new Error('Order does not belong to user');
+        throw new Error(Messages.PAYMENT.ORDER_NOT_BELONG_TO_USER);
       }
 
       // Check if payment already exists
       const existingPayment = await Payment.findOne({ orderId: data.orderId });
       if (existingPayment) {
-        throw new Error('Payment already exists for this order');
+        throw new Error(Messages.PAYMENT.PAYMENT_ALREADY_EXISTS);
       }
 
       // Create manual payment record
@@ -599,11 +600,11 @@ export class PaymentService {
     try {
       const payment = await Payment.findById(paymentId);
       if (!payment) {
-        throw new Error('Payment not found');
+        throw new Error(Messages.PAYMENT.NOT_FOUND);
       }
 
       if (payment.gateway !== 'manual') {
-        throw new Error('Payment is not a manual payment');
+        throw new Error(Messages.PAYMENT.NOT_MANUAL_PAYMENT);
       }
 
       await payment.markAsCompleted();

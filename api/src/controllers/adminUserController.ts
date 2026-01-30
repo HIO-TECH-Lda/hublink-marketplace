@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AdminUserService } from '../services/adminUserService';
+import Messages from '../utils/messages';
 
 export class AdminUserController {
   // Get sellers list for dropdown
@@ -13,7 +14,7 @@ export class AdminUserController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get sellers'
+        message: error instanceof Error ? error.message : Messages.ADMIN_USER.SELLERS_FAILED
       });
     }
   }
@@ -67,7 +68,7 @@ export class AdminUserController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to fetch users'
+        message: error instanceof Error ? error.message : Messages.ADMIN_USER.LIST_FAILED
       });
     }
   }
@@ -100,7 +101,7 @@ export class AdminUserController {
       if (!firstName || !lastName || !email || !phone || !password) {
         res.status(400).json({
           success: false,
-          message: 'Missing required fields: firstName, lastName, email, phone, password'
+          message: Messages.ADMIN_USER.REQUIRED_FIELDS
         });
         return;
       }
@@ -129,7 +130,7 @@ export class AdminUserController {
         error instanceof Error && error.message.includes('already exists') ? 409 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to create user'
+        message: error instanceof Error ? error.message : Messages.ADMIN_USER.CREATE_FAILED
       });
     }
   }
@@ -148,7 +149,7 @@ export class AdminUserController {
 
       res.status(200).json({
         success: true,
-        message: 'User updated successfully',
+        message: Messages.ADMIN_USER.UPDATED,
         data: userResponse
       });
     } catch (error) {
@@ -169,7 +170,7 @@ export class AdminUserController {
       if (!status || !['active', 'inactive', 'suspended'].includes(status)) {
         res.status(400).json({
           success: false,
-          message: 'Invalid status. Must be: active, inactive, or suspended'
+          message: Messages.VALIDATION.INVALID_VALUE
         });
         return;
       }
@@ -189,7 +190,7 @@ export class AdminUserController {
       const statusCode = error instanceof Error && error.message === 'User not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update user status'
+        message: error instanceof Error ? error.message : Messages.ADMIN_USER.UPDATE_FAILED
       });
     }
   }
@@ -210,7 +211,7 @@ export class AdminUserController {
         error instanceof Error && error.message === 'User not found' ? 404 : 400;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to delete user'
+        message: error instanceof Error ? error.message : Messages.ADMIN_USER.DELETE_FAILED
       });
     }
   }

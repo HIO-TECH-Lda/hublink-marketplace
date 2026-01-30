@@ -1,4 +1,5 @@
 import * as Joi from 'joi';
+import Messages from './messages';
 
 // User registration validation schema
 export const registerSchema = Joi.object({
@@ -1225,7 +1226,7 @@ export const validateRequest = (schema: Joi.ObjectSchema) => {
       const errorMessages = error.details.map((detail: any) => detail.message);
       return res.status(400).json({
         success: false,
-        message: 'Validation failed',
+        message: Messages.ERROR.VALIDATION_FAILED,
         errors: errorMessages
       });
     }

@@ -2,6 +2,7 @@ import Product, { IProductDocument } from '../models/Product';
 import Category from '../models/Category';
 import { IProduct, IProductImage } from '../types';
 import { uploadBase64Image } from '../utils/cloudinary';
+import Messages from '../utils/messages';
 
 export class ProductService {
   // Create new product
@@ -10,7 +11,7 @@ export class ProductService {
       // Validate category exists
       const category = await Category.findById(productData.categoryId);
       if (!category) {
-        throw new Error('Category not found');
+        throw new Error(Messages.CATEGORY.NOT_FOUND);
       }
 
       // Normalize and upload images (base64 or URLs)
@@ -245,7 +246,7 @@ export class ProductService {
       // Verify product belongs to seller
       const product = await Product.findOne({ _id: productId, sellerId });
       if (!product) {
-        throw new Error('Product not found or access denied');
+        throw new Error(Messages.PRODUCT.NOT_FOUND_OR_DENIED);
       }
 
       // Normalize and upload images if provided
@@ -293,7 +294,7 @@ export class ProductService {
       // Verify product belongs to seller
       const product = await Product.findOne({ _id: productId, sellerId });
       if (!product) {
-        throw new Error('Product not found or access denied');
+        throw new Error(Messages.PRODUCT.NOT_FOUND_OR_DENIED);
       }
 
       await Product.findByIdAndDelete(productId);
@@ -309,7 +310,7 @@ export class ProductService {
       // Verify product belongs to seller
       const product = await Product.findOne({ _id: productId, sellerId });
       if (!product) {
-        throw new Error('Product not found or access denied');
+        throw new Error(Messages.PRODUCT.NOT_FOUND_OR_DENIED);
       }
 
       const updatedProduct = await Product.findByIdAndUpdate(
@@ -331,7 +332,7 @@ export class ProductService {
       // Verify product belongs to seller
       const product = await Product.findOne({ _id: productId, sellerId });
       if (!product) {
-        throw new Error('Product not found or access denied');
+        throw new Error(Messages.PRODUCT.NOT_FOUND_OR_DENIED);
       }
 
       const newStock = Math.max(0, product.stock + quantity);

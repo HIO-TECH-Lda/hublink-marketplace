@@ -4,6 +4,7 @@ import Product from '../models/Product';
 import User from '../models/User';
 import { ITicket, ITicketMessage, ITicketAttachment, TicketStatus, TicketCategory, TicketPriority } from '../types';
 import { uploadBase64Image, deleteImage } from '../utils/cloudinary';
+import Messages from '../utils/messages';
 
 export interface CreateTicketData {
   title: string;
@@ -58,7 +59,7 @@ export class TicketService {
       if (data.orderId) {
         const order = await Order.findOne({ _id: data.orderId, userId });
         if (!order) {
-          throw new Error('Order not found or does not belong to you');
+          throw new Error(Messages.TICKET.ORDER_NOT_BELONG);
         }
       }
 
@@ -226,7 +227,7 @@ export class TicketService {
       
       // Allow access if user is admin/support OR if user is the ticket owner
       if (!isAdmin && !isOwner) {
-        throw new Error('You do not have permission to view this ticket');
+        throw new Error(Messages.TICKET.NO_PERMISSION);
       }
 
       // Filter out internal messages for non-admin users
@@ -252,7 +253,7 @@ export class TicketService {
     try {
       const ticket = await Ticket.findById(ticketId);
       if (!ticket) {
-        throw new Error('Ticket not found');
+        throw new Error(Messages.TICKET.NOT_FOUND);
       }
 
       // Only admins/support can update tickets
@@ -265,7 +266,7 @@ export class TicketService {
       if (data.assignedTo) {
         const assignedUser = await User.findById(data.assignedTo);
         if (!assignedUser || (assignedUser.role !== 'admin' && assignedUser.role !== 'support')) {
-          throw new Error('Assigned user must be an admin or support agent');
+          throw new Error(Messages.TICKET.ASSIGNED_MUST_BE_ADMIN);
         }
       }
 
@@ -300,7 +301,7 @@ export class TicketService {
     try {
       const ticket = await Ticket.findById(ticketId);
       if (!ticket) {
-        throw new Error('Ticket not found');
+        throw new Error(Messages.TICKET.NOT_FOUND);
       }
 
       // Check authorization
@@ -541,7 +542,7 @@ export class TicketService {
     try {
       const ticket = await Ticket.findById(ticketId);
       if (!ticket) {
-        throw new Error('Ticket not found');
+        throw new Error(Messages.TICKET.NOT_FOUND);
       }
 
       // Delete attachments from Cloudinary
@@ -578,19 +579,19 @@ export class TicketService {
     try {
       const ticket = await Ticket.findById(ticketId);
       if (!ticket) {
-        throw new Error('Ticket not found');
+        throw new Error(Messages.TICKET.NOT_FOUND);
       }
 
       // Validate file size (5MB max)
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (fileData.fileSize > maxSize) {
-        throw new Error('File size exceeds 5MB limit');
+        throw new Error(Messages.TICKET.FILE_SIZE_EXCEEDED);
       }
 
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
       if (!allowedTypes.includes(fileData.mimeType)) {
-        throw new Error('Invalid file type. Allowed types: JPEG, PNG, GIF, PDF');
+        throw new Error(Messages.TICKET.INVALID_FILE_TYPE);
       }
 
       // Upload to Cloudinary
@@ -637,7 +638,7 @@ export class TicketService {
     try {
       const ticket = await Ticket.findById(ticketId);
       if (!ticket) {
-        throw new Error('Ticket not found');
+        throw new Error(Messages.TICKET.NOT_FOUND);
       }
 
       const isAdmin = userRole === 'admin' || userRole === 'support';
@@ -673,7 +674,7 @@ export class TicketService {
         }
       }
 
-      throw new Error('Attachment not found');
+      throw new Error(Messages.TICKET.ATTACHMENT_NOT_FOUND);
     } catch (error) {
       throw error;
     }

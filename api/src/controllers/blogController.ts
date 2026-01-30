@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { BlogService } from '../services/blogService';
+import Messages from '../utils/messages';
 
 export class BlogController {
   // Get published posts (public)
@@ -24,7 +25,7 @@ export class BlogController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get posts'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -46,10 +47,10 @@ export class BlogController {
         }
       });
     } catch (error) {
-      const statusCode = error instanceof Error && error.message === 'Post not found' ? 404 : 500;
+      const statusCode = error instanceof Error && error.message.includes('não encontrado') ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get post'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -81,7 +82,7 @@ export class BlogController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get tags'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }

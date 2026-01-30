@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AdminRefundService } from '../services/adminRefundService';
+import Messages from '../utils/messages';
 
 export class AdminRefundController {
   // Get refund statistics
@@ -14,7 +15,7 @@ export class AdminRefundController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to fetch refund statistics'
+        message: error instanceof Error ? error.message : Messages.ADMIN_REFUND.STATS_FAILED
       });
     }
   }
@@ -49,7 +50,7 @@ export class AdminRefundController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to fetch refunds'
+        message: error instanceof Error ? error.message : Messages.ADMIN_REFUND.LIST_FAILED
       });
     }
   }
@@ -84,7 +85,7 @@ export class AdminRefundController {
 
       res.status(200).json({
         success: true,
-        message: 'Refund approved successfully',
+        message: Messages.ADMIN_REFUND.APPROVED,
         data: refund
       });
     } catch (error) {
@@ -106,7 +107,7 @@ export class AdminRefundController {
       if (!rejectionReason) {
         res.status(400).json({
           success: false,
-          message: 'Rejection reason is required'
+          message: Messages.REFUND.REJECTION_REASON_REQUIRED
         });
         return;
       }
@@ -126,7 +127,7 @@ export class AdminRefundController {
       const statusCode = error instanceof Error && error.message === 'Refund not found' ? 404 : 400;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to reject refund'
+        message: error instanceof Error ? error.message : Messages.ADMIN_REFUND.REJECT_FAILED
       });
     }
   }

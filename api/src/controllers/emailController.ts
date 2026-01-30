@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { EmailService } from '../services/emailService';
 import { catchAsync } from '../utils/catchAsync';
 import { ApiResponse } from '../utils/ApiResponse';
+import Messages from '../utils/messages';
 
 export class EmailController {
   /**
@@ -14,7 +15,7 @@ export class EmailController {
     if (!email) {
       return res.status(400).json({
         success: false,
-        message: 'Email address is required'
+          message: Messages.EMAIL.EMAIL_REQUIRED
       });
     }
 
@@ -32,7 +33,7 @@ export class EmailController {
       } else {
         return res.status(500).json(
           new ApiResponse(500, {
-            message: 'Email service test failed',
+            message: Messages.EMAIL.TEST_FAILED,
             email: email,
             status: 'failed'
           })
@@ -74,7 +75,7 @@ export class EmailController {
 
       return res.status(200).json(
         new ApiResponse(200, {
-          message: 'Email sent successfully',
+          message: Messages.EMAIL.SENT,
           to,
           subject,
           template
@@ -117,7 +118,7 @@ export class EmailController {
     } catch (error: any) {
       return res.status(500).json(
         new ApiResponse(500, {
-          message: 'Failed to get email service status',
+          message: Messages.EMAIL.STATUS_FAILED,
           error: error.message
         })
       );
@@ -134,7 +135,7 @@ export class EmailController {
     if (!email) {
       return res.status(400).json({
         success: false,
-        message: 'Email address is required'
+          message: Messages.EMAIL.EMAIL_REQUIRED
       });
     }
 
@@ -156,7 +157,7 @@ export class EmailController {
     } catch (error: any) {
       return res.status(500).json(
         new ApiResponse(500, {
-          message: 'Failed to send welcome email',
+          message: Messages.EMAIL.WELCOME_FAILED,
           error: error.message
         })
       );
@@ -188,7 +189,7 @@ export class EmailController {
 
       return res.status(200).json(
         new ApiResponse(200, {
-          message: 'Password reset email sent successfully',
+          message: Messages.EMAIL.PASSWORD_RESET_SENT,
           email
         })
       );
@@ -212,7 +213,7 @@ export class EmailController {
     if (!to || !subject || !content) {
       return res.status(400).json({
         success: false,
-        message: 'To, subject, and content are required'
+          message: Messages.EMAIL.TO_SUBJECT_CONTENT_REQUIRED
       });
     }
 
@@ -221,7 +222,7 @@ export class EmailController {
 
       return res.status(200).json(
         new ApiResponse(200, {
-          message: 'Newsletter email sent successfully',
+          message: Messages.EMAIL.NEWSLETTER_SENT,
           to,
           subject
         })
@@ -229,7 +230,7 @@ export class EmailController {
     } catch (error: any) {
       return res.status(500).json(
         new ApiResponse(500, {
-          message: 'Failed to send newsletter email',
+          message: Messages.EMAIL.NEWSLETTER_FAILED,
           error: error.message
         })
       );

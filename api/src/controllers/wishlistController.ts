@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { WishlistService } from '../services/wishlistService';
 import { validateWishlistAdd, validateWishlistUpdate } from '../utils/validation';
 import { AuthenticatedRequest } from '../types';
+import Messages from '../utils/messages';
 
 export class WishlistController {
   /**
@@ -21,7 +22,7 @@ export class WishlistController {
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to get wishlist',
+        message: Messages.WISHLIST.FETCH_FAILED,
         error: error.message
       });
     }
@@ -41,7 +42,7 @@ export class WishlistController {
       if (error) {
         return res.status(400).json({
           success: false,
-          message: 'Validation error',
+          message: Messages.VALIDATION_ERROR,
           error: error.details[0].message
         });
       }
@@ -56,7 +57,7 @@ export class WishlistController {
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to add to wishlist',
+        message: Messages.WISHLIST.ADD_FAILED,
         error: error.message
       });
     }
@@ -82,7 +83,7 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Product removed from wishlist successfully'
+        message: Messages.WISHLIST.ITEM_REMOVED
       });
     } catch (error: any) {
       return res.status(500).json({
@@ -113,7 +114,7 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Wishlist status checked successfully',
+        message: Messages.WISHLIST.STATUS_CHECKED,
         data: {
           productId,
           isInWishlist
@@ -122,7 +123,7 @@ export class WishlistController {
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to check wishlist status',
+        message: Messages.WISHLIST.STATUS_CHECK_FAILED,
         error: error.message
       });
     }
@@ -145,7 +146,7 @@ export class WishlistController {
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to clear wishlist',
+        message: Messages.WISHLIST.CLEAR_FAILED,
         error: error.message
       });
     }
@@ -179,7 +180,7 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Product moved to cart successfully'
+        message: Messages.WISHLIST.MOVED_TO_CART
       });
     } catch (error: any) {
       return res.status(500).json({
@@ -201,13 +202,13 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Wishlist statistics retrieved successfully',
+        message: Messages.WISHLIST.STATS_RETRIEVED,
         data: stats
       });
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to get wishlist statistics',
+        message: Messages.WISHLIST.STATS_FAILED,
         error: error.message
       });
     }
@@ -227,14 +228,14 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Wishlist items retrieved successfully',
+        message: Messages.WISHLIST.ITEMS_RETRIEVED,
         data: result.items,
         pagination: result.pagination
       });
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to get wishlist items',
+        message: Messages.WISHLIST.ITEMS_FAILED,
         error: error.message
       });
     }
@@ -255,7 +256,7 @@ export class WishlistController {
       if (error) {
         return res.status(400).json({
           success: false,
-          message: 'Validation error',
+          message: Messages.VALIDATION_ERROR,
           error: error.details[0].message
         });
       }
@@ -271,12 +272,12 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Wishlist item notes updated successfully'
+        message: Messages.WISHLIST.NOTES_UPDATED
       });
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to update wishlist item notes',
+        message: Messages.WISHLIST.NOTES_UPDATE_FAILED,
         error: error.message
       });
     }
@@ -295,13 +296,13 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Recommendations retrieved successfully',
+        message: Messages.WISHLIST.RECOMMENDATIONS_RETRIEVED,
         data: recommendations
       });
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to get recommendations',
+        message: Messages.WISHLIST.RECOMMENDATIONS_FAILED,
         error: error.message
       });
     }
@@ -319,7 +320,7 @@ export class WishlistController {
       if (!Array.isArray(products) || products.length === 0) {
         return res.status(400).json({
           success: false,
-          message: 'Products array is required and must not be empty'
+          message: Messages.WISHLIST.PRODUCTS_ARRAY_REQUIRED
         });
       }
 
@@ -331,7 +332,7 @@ export class WishlistController {
           const { productId, notes } = product;
           
           if (!productId) {
-            errors.push({ productId, error: 'Product ID is required' });
+            errors.push({ productId, error: Messages.WISHLIST.PRODUCT_ID_REQUIRED });
             continue;
           }
 
@@ -356,7 +357,7 @@ export class WishlistController {
     } catch (error: any) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to bulk add to wishlist',
+        message: Messages.WISHLIST.BULK_ADD_FAILED,
         error: error.message
       });
     }
@@ -392,7 +393,7 @@ export class WishlistController {
 
       return res.status(200).json({
         success: true,
-        message: 'Bulk remove from wishlist completed',
+        message: Messages.WISHLIST.BULK_REMOVE_COMPLETED,
         data: {
           results,
           errors

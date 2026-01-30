@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AdminReportsService } from '../services/adminReportsService';
+import Messages from '../utils/messages';
 
 export class AdminReportsController {
   // Get comprehensive reports
@@ -24,7 +25,7 @@ export class AdminReportsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get reports'
+        message: error instanceof Error ? error.message : Messages.ADMIN_REPORTS.FETCH_FAILED
       });
     }
   }
@@ -37,7 +38,7 @@ export class AdminReportsController {
       if (!startDate || !endDate) {
         res.status(400).json({
           success: false,
-          message: 'Start date and end date are required'
+          message: Messages.VALIDATION.REQUIRED_FIELD
         });
         return;
       }
@@ -50,12 +51,12 @@ export class AdminReportsController {
       res.json({
         success: true,
         data,
-        message: 'Sales data exported successfully'
+        message: Messages.ADMIN_REPORTS.SALES_EXPORTED
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to export sales'
+        message: error instanceof Error ? error.message : Messages.ADMIN_REPORTS.SALES_EXPORT_FAILED
       });
     }
   }
@@ -68,7 +69,7 @@ export class AdminReportsController {
       if (!startDate || !endDate) {
         res.status(400).json({
           success: false,
-          message: 'Start date and end date are required'
+          message: Messages.VALIDATION.REQUIRED_FIELD
         });
         return;
       }
@@ -81,12 +82,12 @@ export class AdminReportsController {
       res.json({
         success: true,
         data,
-        message: 'Products data exported successfully'
+        message: Messages.ADMIN_REPORTS.PRODUCTS_EXPORTED
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to export products'
+        message: error instanceof Error ? error.message : Messages.ADMIN_REPORTS.PRODUCTS_EXPORT_FAILED
       });
     }
   }

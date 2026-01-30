@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { DashboardService } from '../services/dashboardService';
+import Messages from '../utils/messages';
 
 export class DashboardController {
   static async getDashboard(req: Request, res: Response): Promise<void> {
@@ -13,7 +14,7 @@ export class DashboardController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to fetch dashboard data'
+        message: error instanceof Error ? error.message : Messages.DASHBOARD.FETCH_FAILED
       });
     }
   }

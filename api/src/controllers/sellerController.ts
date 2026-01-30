@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { SellerService } from '../services/sellerService';
+import Messages from '../utils/messages';
 
 export class SellerController {
   /**
@@ -50,7 +51,7 @@ export class SellerController {
       const statusCode = error instanceof Error && error.message === 'Seller not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get seller profile'
+        message: error instanceof Error ? error.message : Messages.SELLER.FETCH_FAILED
       });
     }
   }
@@ -80,7 +81,7 @@ export class SellerController {
       const statusCode = error instanceof Error && error.message === 'Seller not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get seller products'
+        message: error instanceof Error ? error.message : Messages.PRODUCT.FETCH_FAILED
       });
     }
   }
@@ -120,7 +121,7 @@ export class SellerController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get featured sellers'
+        message: error instanceof Error ? error.message : Messages.SELLER.FETCH_FAILED
       });
     }
   }

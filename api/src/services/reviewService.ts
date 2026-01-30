@@ -4,6 +4,7 @@ import Order from '../models/Order';
 import User from '../models/User';
 import { EmailService } from './emailService';
 import { SellerRatingService } from './sellerRatingService';
+import Messages from '../utils/messages';
 
 export interface CreateReviewData {
   productId: string;
@@ -157,17 +158,17 @@ export class ReviewService {
     try {
       const review = await Review.findById(reviewId);
       if (!review) {
-        throw new Error('Review not found');
+        throw new Error(Messages.REVIEW.NOT_FOUND);
       }
 
       // Check ownership
       if (review.userId.toString() !== userId) {
-        throw new Error('You can only update your own reviews');
+        throw new Error(Messages.AUTH.ACCESS_DENIED);
       }
 
       // Check if review is approved (can't edit approved reviews)
       if (review.status === 'approved') {
-        throw new Error('Cannot edit approved reviews');
+        throw new Error('Não é possível editar avaliações aprovadas');
       }
 
       // Update review
@@ -188,12 +189,12 @@ export class ReviewService {
     try {
       const review = await Review.findById(reviewId);
       if (!review) {
-        throw new Error('Review not found');
+        throw new Error(Messages.REVIEW.NOT_FOUND);
       }
 
       // Check ownership
       if (review.userId.toString() !== userId) {
-        throw new Error('You can only delete your own reviews');
+        throw new Error(Messages.AUTH.ACCESS_DENIED);
       }
 
       const productId = review.productId.toString();
@@ -222,7 +223,7 @@ export class ReviewService {
     try {
       const review = await Review.findById(reviewId);
       if (!review) {
-        throw new Error('Review not found');
+        throw new Error(Messages.REVIEW.NOT_FOUND);
       }
 
       await (review as any).moderate(status, moderatorId, notes);
@@ -252,7 +253,7 @@ export class ReviewService {
     try {
       const review = await Review.findById(reviewId);
       if (!review) {
-        throw new Error('Review not found');
+        throw new Error(Messages.REVIEW.NOT_FOUND);
       }
 
       if (isHelpful) {

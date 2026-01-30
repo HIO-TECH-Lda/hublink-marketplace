@@ -4,6 +4,7 @@ import Order from '../models/Order';
 import Review from '../models/Review';
 import Payment from '../models/Payment';
 import mongoose, { Types } from 'mongoose';
+import Messages from '../utils/messages';
 
 export interface SellerListFilters {
   search?: string;
@@ -90,9 +91,7 @@ export class AdminSellerService {
         averageRating: Math.round(averageRating * 10) / 10
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get seller statistics: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_SELLER.STATS_FAILED);
     }
   }
 
@@ -253,9 +252,7 @@ export class AdminSellerService {
         totalPages: Math.ceil(total / limit)
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get sellers: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_SELLER.LIST_FAILED);
     }
   }
 
@@ -394,9 +391,7 @@ export class AdminSellerService {
         status: seller.status
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get seller: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_SELLER.FETCH_FAILED);
     }
   }
 
@@ -438,9 +433,7 @@ export class AdminSellerService {
       // Return created seller with populated data
       return await this.getSellerById(seller._id.toString());
     } catch (error) {
-      throw new Error(
-        `Failed to create seller: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_SELLER.CREATE_FAILED);
     }
   }
 
@@ -531,9 +524,7 @@ export class AdminSellerService {
       // Return updated seller with populated data
       return await this.getSellerById(sellerId);
     } catch (error) {
-      throw new Error(
-        `Failed to update seller status: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_SELLER.UPDATE_FAILED);
     }
   }
 }

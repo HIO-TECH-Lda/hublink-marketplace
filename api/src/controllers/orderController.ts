@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { OrderService } from '../services/orderService';
+import Messages from '../utils/messages';
 
 export class OrderController {
   // Create order from cart
@@ -17,7 +18,7 @@ export class OrderController {
 
       return res.status(201).json({
         success: true,
-        message: 'Order created successfully',
+        message: Messages.ORDER.CREATED,
         data: {
           order: {
             orderNumber: order.orderNumber,
@@ -37,7 +38,7 @@ export class OrderController {
       console.error('Create order from cart error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to create order',
+        message: Messages.ORDER.CREATE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -59,7 +60,7 @@ export class OrderController {
 
       return res.status(201).json({
         success: true,
-        message: 'Order created successfully',
+        message: Messages.ORDER.CREATED,
         data: {
           order: {
             orderNumber: order.orderNumber,
@@ -79,7 +80,7 @@ export class OrderController {
       console.error('Create order error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to create order',
+        message: Messages.ORDER.CREATE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -98,20 +99,20 @@ export class OrderController {
       if (!order) {
         return res.status(404).json({
           success: false,
-          message: 'Order not found'
+          message: Messages.ORDER.NOT_FOUND
         });
       }
 
       return res.status(200).json({
         success: true,
-        message: 'Order retrieved successfully',
+        message: Messages.ORDER.RETRIEVED,
         data: { order }
       });
     } catch (error) {
       console.error('Get order by ID error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve order',
+        message: Messages.ORDER.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -130,20 +131,20 @@ export class OrderController {
       if (!order) {
         return res.status(404).json({
           success: false,
-          message: 'Order not found'
+          message: Messages.ORDER.NOT_FOUND
         });
       }
 
       return res.status(200).json({
         success: true,
-        message: 'Order retrieved successfully',
+        message: Messages.ORDER.RETRIEVED,
         data: { order }
       });
     } catch (error) {
       console.error('Get order by number error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve order',
+        message: Messages.ORDER.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -167,7 +168,7 @@ export class OrderController {
 
       return res.status(200).json({
         success: true,
-        message: 'User orders retrieved successfully',
+        message: Messages.ORDER.LIST_RETRIEVED,
         data: {
           orders: result.orders,
           pagination: result.pagination
@@ -177,7 +178,7 @@ export class OrderController {
       console.error('Get user orders error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve user orders',
+        message: Messages.ORDER.LIST_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -234,14 +235,14 @@ export class OrderController {
 
       return res.status(200).json({
         success: true,
-        message: 'Order status updated successfully',
+        message: Messages.ORDER.STATUS_UPDATED,
         data: { order }
       });
     } catch (error) {
       console.error('Update order status error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to update order status',
+        message: Messages.ORDER.STATUS_UPDATE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -265,7 +266,7 @@ export class OrderController {
 
       return res.status(200).json({
         success: true,
-        message: 'Seller orders retrieved successfully',
+        message: Messages.ORDER.SELLER_ORDERS_RETRIEVED,
         data: {
           orders: result.orders,
           pagination: result.pagination
@@ -275,7 +276,7 @@ export class OrderController {
       console.error('Get seller orders error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve seller orders',
+        message: Messages.ORDER.SELLER_ORDERS_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -299,7 +300,7 @@ export class OrderController {
       console.error('Cancel order error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to cancel order',
+        message: Messages.ORDER.CANCEL_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -341,7 +342,7 @@ export class OrderController {
       if (!order) {
         return res.status(404).json({
           success: false,
-          message: 'Order not found'
+          message: Messages.ORDER.NOT_FOUND
         });
       }
 

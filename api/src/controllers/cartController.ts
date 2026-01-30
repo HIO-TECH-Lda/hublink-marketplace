@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { CartService } from '../services/cartService';
+import Messages from '../utils/messages';
 
 export class CartController {
   // Get user's cart
@@ -11,13 +12,13 @@ export class CartController {
       if (!cart) {
         return res.status(404).json({
           success: false,
-          message: 'Cart not found'
+          message: Messages.CART.NOT_FOUND
         });
       }
 
       return res.status(200).json({
         success: true,
-        message: 'Cart retrieved successfully',
+        message: Messages.CART.RETRIEVED,
         data: {
           items: cart.items,
           summary: {
@@ -51,7 +52,7 @@ export class CartController {
 
       return res.status(200).json({
         success: true,
-        message: 'Item added to cart successfully',
+        message: Messages.CART.ITEM_ADDED,
         data: {
           cart: {
             items: cart.items,
@@ -87,7 +88,7 @@ export class CartController {
 
       return res.status(200).json({
         success: true,
-        message: 'Item removed from cart successfully',
+        message: Messages.CART.ITEM_REMOVED,
         data: {
           cart: {
             items: cart.items,
@@ -123,7 +124,7 @@ export class CartController {
 
       return res.status(200).json({
         success: true,
-        message: 'Cart item updated successfully',
+        message: Messages.CART.ITEM_UPDATED,
         data: {
           cart: {
             items: cart.items,
@@ -157,7 +158,7 @@ export class CartController {
 
       return res.status(200).json({
         success: true,
-        message: 'Cart cleared successfully',
+        message: Messages.CART.CLEARED,
         data: {
           cart: {
             items: cart.items,
@@ -191,7 +192,7 @@ export class CartController {
 
       return res.status(200).json({
         success: true,
-        message: 'Cart summary retrieved successfully',
+        message: Messages.CART.SUMMARY_RETRIEVED,
         data: summary
       });
     } catch (error) {
@@ -212,7 +213,7 @@ export class CartController {
 
       return res.status(200).json({
         success: true,
-        message: 'Cart availability checked successfully',
+        message: Messages.CART.AVAILABILITY_CHECKED,
         data: availability
       });
     } catch (error) {
@@ -235,7 +236,7 @@ export class CartController {
 
       return res.status(200).json({
         success: true,
-        message: 'Guest cart merged successfully',
+        message: Messages.CART.GUEST_MERGED,
         data: {
           cart: {
             items: cart.items,
@@ -280,7 +281,7 @@ export class CartController {
       console.error('Apply discount error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to apply discount',
+        message: Messages.CART.DISCOUNT_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }

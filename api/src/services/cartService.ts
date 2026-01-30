@@ -1,6 +1,7 @@
 import Cart, { ICart } from '../models/Cart';
 import Product from '../models/Product';
 import User from '../models/User';
+import Messages from '../utils/messages';
 
 export class CartService {
   // Get user's cart
@@ -39,14 +40,14 @@ export class CartService {
       }
 
       if (product.stock < quantity) {
-        throw new Error(`Insufficient stock. Available: ${product.stock}`);
+        throw new Error(Messages.PRODUCT.INSUFFICIENT_STOCK.replace('{available}', product.stock.toString()));
       }
 
       // Check variant if specified
       if (variantId) {
         const variant = product.variants?.find((v: any) => v._id.toString() === variantId);
         if (!variant) {
-          throw new Error('Product variant not found');
+          throw new Error(Messages.PRODUCT.VARIANT_NOT_FOUND);
         }
         if (variant.stock < quantity) {
           throw new Error(`Insufficient stock for variant. Available: ${variant.stock}`);
@@ -65,7 +66,7 @@ export class CartService {
     try {
       const cart = await this.getUserCart(userId);
       if (!cart) {
-        throw new Error('Cart not found');
+        throw new Error(Messages.CART.NOT_FOUND);
       }
 
       await cart.removeItem(productId, variantId);
@@ -92,14 +93,14 @@ export class CartService {
       if (variantId) {
         const variant = product.variants?.find((v: any) => v._id.toString() === variantId);
         if (!variant) {
-          throw new Error('Product variant not found');
+          throw new Error(Messages.PRODUCT.VARIANT_NOT_FOUND);
         }
         if (variant.stock < quantity) {
-          throw new Error(`Insufficient stock for variant. Available: ${variant.stock}`);
+          throw new Error(Messages.PRODUCT.VARIANT_INSUFFICIENT_STOCK.replace('{available}', variant.stock.toString()));
         }
       } else {
         if (product.stock < quantity) {
-          throw new Error(`Insufficient stock. Available: ${product.stock}`);
+          throw new Error(Messages.PRODUCT.INSUFFICIENT_STOCK.replace('{available}', product.stock.toString()));
         }
       }
 
@@ -138,7 +139,7 @@ export class CartService {
     try {
       const cart = await this.getUserCart(userId);
       if (!cart) {
-        throw new Error('Cart not found');
+        throw new Error(Messages.CART.NOT_FOUND);
       }
 
       return {
@@ -289,7 +290,7 @@ export class CartService {
     try {
       const cart = await this.getUserCart(userId);
       if (!cart) {
-        throw new Error('Cart not found');
+        throw new Error(Messages.CART.NOT_FOUND);
       }
 
       // Placeholder for discount logic

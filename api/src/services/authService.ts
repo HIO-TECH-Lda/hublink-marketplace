@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import User, { IUserDocument } from '../models/User';
 import { JWTPayload } from '../types';
+import Messages from '../utils/messages';
 
 export class AuthService {
   // Generate JWT token
@@ -91,7 +92,7 @@ export class AuthService {
       });
 
       if (existingUser) {
-        throw new Error('User with this email or phone already exists');
+        throw new Error(Messages.AUTH.EMAIL_PHONE_EXISTS);
       }
 
       // Create new user
@@ -117,7 +118,7 @@ export class AuthService {
       const user = await this.verifyCredentials(email, password);
       
       if (!user) {
-        throw new Error('Invalid credentials');
+        throw new Error(Messages.AUTH.INVALID_CREDENTIALS);
       }
 
       // Generate tokens
@@ -138,7 +139,7 @@ export class AuthService {
       const user = await User.findById(decoded.userId);
       
       if (!user || user.status !== 'active') {
-        throw new Error('Invalid refresh token');
+        throw new Error(Messages.AUTH.INVALID_REFRESH_TOKEN);
       }
 
       // Generate new tokens
@@ -184,14 +185,14 @@ export class AuthService {
       const user = await User.findById(userId).select('+password');
       
       if (!user) {
-        throw new Error('User not found');
+        throw new Error(Messages.USER.NOT_FOUND);
       }
 
       // Verify current password
       const isCurrentPasswordValid = await user.comparePassword(currentPassword);
       
       if (!isCurrentPasswordValid) {
-        throw new Error('Current password is incorrect');
+        throw new Error(Messages.AUTH.CURRENT_PASSWORD_INCORRECT);
       }
 
       // Update password
@@ -242,7 +243,7 @@ export class AuthService {
       }).select('+password');
 
       if (!user) {
-        throw new Error('Invalid or expired reset token');
+        throw new Error(Messages.AUTH.INVALID_RESET_TOKEN);
       }
 
       // Update password and clear reset token

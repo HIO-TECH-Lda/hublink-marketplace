@@ -2,6 +2,7 @@ import User from '../models/User';
 import Product from '../models/Product';
 import Order from '../models/Order';
 import { ApiError } from '../utils/ApiError';
+import Messages from '../utils/messages';
 
 export class SellerService {
   /**
@@ -178,7 +179,7 @@ export class SellerService {
     }).select('-password -refreshTokens -__v').lean();
 
     if (!seller) {
-      throw new ApiError(404, 'Seller not found');
+      throw new ApiError(404, Messages.SELLER.NOT_FOUND);
     }
 
     // Get seller's products count
@@ -256,7 +257,7 @@ export class SellerService {
     });
 
     if (!seller) {
-      throw new ApiError(404, 'Seller not found');
+      throw new ApiError(404, Messages.SELLER.NOT_FOUND);
     }
 
     const query: any = {

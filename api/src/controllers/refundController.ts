@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { RefundService } from '../services/refundService';
+import Messages from '../utils/messages';
 
 export class RefundController {
   // Get refund statistics
@@ -38,7 +39,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refunds retrieved successfully',
+        message: Messages.REFUND.FETCH_SUCCESS,
         data: {
           refunds: result.refunds,
           pagination: result.pagination
@@ -48,7 +49,7 @@ export class RefundController {
       console.error('Get refunds error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve refunds',
+        message: Messages.REFUND.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -71,7 +72,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund retrieved successfully',
+        message: Messages.REFUND.RETRIEVED,
         data: { refund }
       });
     } catch (error) {
@@ -102,7 +103,7 @@ export class RefundController {
       console.error('Approve refund error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to approve refund',
+        message: Messages.REFUND.APPROVE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -119,7 +120,7 @@ export class RefundController {
       if (!rejectionReason) {
         return res.status(400).json({
           success: false,
-          message: 'Rejection reason is required'
+          message: Messages.REFUND.REJECTION_REASON_REQUIRED
         });
       }
 
@@ -139,7 +140,7 @@ export class RefundController {
       console.error('Reject refund error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to reject refund',
+        message: Messages.REFUND.REJECT_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -169,7 +170,7 @@ export class RefundController {
       console.error('Create refund request error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to create refund request',
+        message: Messages.REFUND.CREATE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -189,7 +190,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refunds retrieved successfully',
+        message: Messages.REFUND.FETCH_SUCCESS,
         data: {
           refunds: result.refunds,
           pagination: result.pagination
@@ -199,7 +200,7 @@ export class RefundController {
       console.error('Get buyer refunds error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve refunds',
+        message: Messages.REFUND.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -222,7 +223,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund retrieved successfully',
+        message: Messages.REFUND.RETRIEVED,
         data: { refund }
       });
     } catch (error) {
@@ -251,7 +252,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'All refunds retrieved successfully',
+        message: Messages.REFUND.FETCH_SUCCESS,
         data: {
           refunds: result.refunds,
           pagination: result.pagination
@@ -261,7 +262,7 @@ export class RefundController {
       console.error('Get all refunds error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve refunds',
+        message: Messages.REFUND.FETCH_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -274,7 +275,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund statistics retrieved successfully',
+        message: Messages.REFUND.STATS_RETRIEVED,
         data: stats
       });
     } catch (error) {
@@ -303,7 +304,7 @@ export class RefundController {
 
       return res.status(200).json({
         success: true,
-        message: 'Refund retrieved successfully',
+        message: Messages.REFUND.RETRIEVED,
         data: { refund }
       });
     } catch (error) {
@@ -333,7 +334,7 @@ export class RefundController {
       console.error('Approve refund error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to approve refund',
+        message: Messages.REFUND.APPROVE_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -349,7 +350,7 @@ export class RefundController {
       if (!rejectionReason) {
         return res.status(400).json({
           success: false,
-          message: 'Rejection reason is required'
+          message: Messages.REFUND.REJECTION_REASON_REQUIRED
         });
       }
 
@@ -368,7 +369,7 @@ export class RefundController {
       console.error('Reject refund error:', error);
       return res.status(400).json({
         success: false,
-        message: 'Failed to reject refund',
+        message: Messages.REFUND.REJECT_FAILED,
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     }

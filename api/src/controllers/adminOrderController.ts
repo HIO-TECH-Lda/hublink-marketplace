@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AdminOrderService } from '../services/adminOrderService';
 import { OrderService } from '../services/orderService';
+import Messages from '../utils/messages';
 
 export class AdminOrderController {
   // Get order statistics
@@ -15,7 +16,7 @@ export class AdminOrderController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to fetch order statistics'
+        message: error instanceof Error ? error.message : Messages.ADMIN_ORDER.STATS_FAILED
       });
     }
   }
@@ -50,7 +51,7 @@ export class AdminOrderController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to fetch orders'
+        message: error instanceof Error ? error.message : Messages.ADMIN_ORDER.LIST_FAILED
       });
     }
   }
@@ -70,7 +71,7 @@ export class AdminOrderController {
       const statusCode = error instanceof Error && error.message === 'Order not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to fetch order'
+        message: error instanceof Error ? error.message : Messages.ADMIN_ORDER.FETCH_FAILED
       });
     }
   }
@@ -91,14 +92,14 @@ export class AdminOrderController {
 
       res.status(200).json({
         success: true,
-        message: 'Order status updated successfully',
+        message: Messages.ADMIN_ORDER.STATUS_UPDATED,
         data: order
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Order not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update order status'
+        message: error instanceof Error ? error.message : Messages.ADMIN_ORDER.STATUS_UPDATE_FAILED
       });
     }
   }
@@ -113,14 +114,14 @@ export class AdminOrderController {
 
       res.status(200).json({
         success: true,
-        message: 'Order updated successfully',
+        message: Messages.ADMIN_ORDER.UPDATED,
         data: order
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Order not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update order'
+        message: error instanceof Error ? error.message : Messages.ADMIN_ORDER.UPDATE_FAILED
       });
     }
   }

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AdminTicketService } from '../services/adminTicketService';
 import { uploadBase64Image } from '../utils/cloudinary';
+import Messages from '../utils/messages';
 
 export class AdminTicketController {
   // Get ticket statistics
@@ -42,7 +43,7 @@ export class AdminTicketController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get tickets'
+        message: error instanceof Error ? error.message : Messages.ADMIN_TICKET.LIST_FAILED
       });
     }
   }
@@ -73,7 +74,7 @@ export class AdminTicketController {
       const ticket = await AdminTicketService.updateTicket(ticketId, updateData);
       res.json({
         success: true,
-        message: 'Ticket updated successfully',
+        message: Messages.ADMIN_TICKET.UPDATED,
         data: ticket
       });
     } catch (error) {
@@ -94,7 +95,7 @@ export class AdminTicketController {
       if (!status || !['open', 'in_progress', 'waiting_for_user', 'waiting_for_third_party', 'resolved', 'closed'].includes(status)) {
         res.status(400).json({
           success: false,
-          message: 'Invalid status. Must be one of: open, in_progress, waiting_for_user, waiting_for_third_party, resolved, closed'
+          message: Messages.VALIDATION.INVALID_VALUE
         });
         return;
       }
@@ -109,7 +110,7 @@ export class AdminTicketController {
       const statusCode = error instanceof Error && error.message === 'Ticket not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update ticket status'
+        message: error instanceof Error ? error.message : Messages.ADMIN_TICKET.STATUS_UPDATE_FAILED
       });
     }
   }
@@ -131,7 +132,7 @@ export class AdminTicketController {
       const ticket = await AdminTicketService.assignTicket(ticketId, userId);
       res.json({
         success: true,
-        message: 'Ticket assigned successfully',
+        message: Messages.ADMIN_TICKET.ASSIGNED,
         data: ticket
       });
     } catch (error) {
@@ -154,7 +155,7 @@ export class AdminTicketController {
       if (!message) {
         res.status(400).json({
           success: false,
-          message: 'Message is required'
+          message: Messages.VALIDATION.REQUIRED_FIELD
         });
         return;
       }
@@ -193,7 +194,7 @@ export class AdminTicketController {
       const statusCode = error instanceof Error && error.message === 'Ticket not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to add message'
+        message: error instanceof Error ? error.message : Messages.ADMIN_TICKET.MESSAGE_FAILED
       });
     }
   }
@@ -211,7 +212,7 @@ export class AdminTicketController {
       const statusCode = error instanceof Error && error.message === 'Ticket not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to delete ticket'
+        message: error instanceof Error ? error.message : Messages.TICKET.DELETE_FAILED
       });
     }
   }

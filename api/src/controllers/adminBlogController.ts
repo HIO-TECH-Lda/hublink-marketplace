@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AdminBlogService } from '../services/adminBlogService';
+import Messages from '../utils/messages';
 
 export class AdminBlogController {
   // Get blog statistics
@@ -13,7 +14,7 @@ export class AdminBlogController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get blog statistics'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -36,12 +37,13 @@ export class AdminBlogController {
       const result = await AdminBlogService.getPosts(filters);
       res.json({
         success: true,
+        message: Messages.BLOG.FETCH_SUCCESS,
         data: result
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get posts'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -53,13 +55,14 @@ export class AdminBlogController {
       const post = await AdminBlogService.getPostById(postId);
       res.json({
         success: true,
+        message: Messages.BLOG.FETCH_SUCCESS,
         data: post
       });
     } catch (error) {
-      const statusCode = error instanceof Error && error.message === 'Post not found' ? 404 : 500;
+      const statusCode = error instanceof Error && error.message.includes('não encontrado') ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get post'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -138,7 +141,7 @@ export class AdminBlogController {
       if (!postData.title || !postData.content || !postData.authorId || !postData.authorName || !postData.category) {
         res.status(400).json({
           success: false,
-          message: 'Missing required fields: title, content, authorId, authorName, and category are required'
+          message: Messages.BLOG.MISSING_FIELDS
         });
         return;
       }
@@ -146,14 +149,14 @@ export class AdminBlogController {
       const post = await AdminBlogService.createPost(postData);
       res.status(201).json({
         success: true,
-        message: 'Post created successfully',
+        message: Messages.BLOG.POST_CREATED,
         data: post
       });
     } catch (error) {
-      const statusCode = error instanceof Error && error.message.includes('already exists') ? 400 : 500;
+      const statusCode = error instanceof Error && error.message.includes('já existe') ? 400 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to create post'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -213,14 +216,14 @@ export class AdminBlogController {
       const post = await AdminBlogService.updatePost(postId, updateData);
       res.json({
         success: true,
-        message: 'Post updated successfully',
+        message: Messages.BLOG.POST_UPDATED,
         data: post
       });
     } catch (error) {
-      const statusCode = error instanceof Error && error.message === 'Post not found' ? 404 : 500;
+      const statusCode = error instanceof Error && error.message.includes('não encontrado') ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update post'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -234,7 +237,7 @@ export class AdminBlogController {
       if (!status || !['draft', 'published', 'archived'].includes(status)) {
         res.status(400).json({
           success: false,
-          message: 'Invalid status. Must be one of: draft, published, archived'
+          message: 'Status inválido. Deve ser: draft, published ou archived'
         });
         return;
       }
@@ -245,14 +248,14 @@ export class AdminBlogController {
       );
       res.json({
         success: true,
-        message: 'Post status updated successfully',
+        message: Messages.BLOG.STATUS_UPDATED,
         data: post
       });
     } catch (error) {
-      const statusCode = error instanceof Error && error.message === 'Post not found' ? 404 : 500;
+      const statusCode = error instanceof Error && error.message.includes('não encontrado') ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update post status'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -266,22 +269,24 @@ export class AdminBlogController {
       if (typeof isFeatured !== 'boolean') {
         res.status(400).json({
           success: false,
-          message: 'isFeatured must be a boolean value (true or false)'
+          message: 'isFeatured deve ser um valor booleano (true ou false)'
         });
         return;
       }
 
       const post = await AdminBlogService.toggleFeatured(postId, isFeatured);
+      const message = isFeatured ? Messages.BLOG.FEATURED_MARKED : Messages.BLOG.FEATURED_UNMARKED;
+      
       res.json({
         success: true,
-        message: `Post ${isFeatured ? 'marked as featured' : 'unmarked as featured'} successfully`,
+        message,
         data: post
       });
     } catch (error) {
-      const statusCode = error instanceof Error && error.message === 'Post not found' ? 404 : 500;
+      const statusCode = error instanceof Error && error.message.includes('não encontrado') ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update featured status'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -293,13 +298,13 @@ export class AdminBlogController {
       await AdminBlogService.deletePost(postId);
       res.json({
         success: true,
-        message: 'Post deleted successfully'
+        message: Messages.BLOG.POST_DELETED
       });
     } catch (error) {
-      const statusCode = error instanceof Error && error.message === 'Post not found' ? 404 : 500;
+      const statusCode = error instanceof Error && error.message.includes('não encontrado') ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to delete post'
+        message: error instanceof Error ? error.message : Messages.BLOG.FETCH_FAILED
       });
     }
   }
@@ -315,7 +320,7 @@ export class AdminBlogController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get categories'
+        message: error instanceof Error ? error.message : Messages.CATEGORY.FETCH_FAILED
       });
     }
   }

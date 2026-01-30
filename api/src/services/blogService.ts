@@ -1,5 +1,6 @@
 import BlogPost from '../models/BlogPost';
 import mongoose, { Types } from 'mongoose';
+import Messages from '../utils/messages';
 
 export interface BlogListFilters {
   search?: string;
@@ -115,7 +116,7 @@ export class BlogService {
         .lean();
 
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error(Messages.BLOG.POST_NOT_FOUND);
       }
 
       // Increment view count

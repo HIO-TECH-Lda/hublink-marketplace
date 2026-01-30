@@ -3,6 +3,7 @@ import Payment from '../models/Payment';
 import User from '../models/User';
 import { OrderService } from './orderService';
 import mongoose, { Types } from 'mongoose';
+import Messages from '../utils/messages';
 
 export interface OrderListFilters {
   search?: string;
@@ -52,9 +53,7 @@ export class AdminOrderService {
         cancelled: 0
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get order statistics: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_ORDER.STATS_FAILED);
     }
   }
 
@@ -166,7 +165,7 @@ export class AdminOrderService {
         .lean();
 
       if (!order) {
-        throw new Error('Order not found');
+        throw new Error(Messages.ORDER.NOT_FOUND);
       }
 
       // Get payment details
@@ -261,9 +260,7 @@ export class AdminOrderService {
         }
       };
     } catch (error) {
-      throw new Error(
-        `Failed to get order: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_ORDER.FETCH_FAILED);
     }
   }
 
@@ -298,7 +295,7 @@ export class AdminOrderService {
       const order = await Order.findById(orderId);
 
       if (!order) {
-        throw new Error('Order not found');
+        throw new Error(Messages.ORDER.NOT_FOUND);
       }
 
       // Update order status if provided
@@ -349,9 +346,7 @@ export class AdminOrderService {
       // Return updated order with populated data
       return await this.getOrderById(orderId);
     } catch (error) {
-      throw new Error(
-        `Failed to update order: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
+      throw new Error(error instanceof Error ? error.message : Messages.ADMIN_ORDER.UPDATE_FAILED);
     }
   }
 

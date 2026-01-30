@@ -3,6 +3,7 @@ import Cart, { ICart } from '../models/Cart';
 import Product from '../models/Product';
 import User from '../models/User';
 import { CartService } from './cartService';
+import Messages from '../utils/messages';
 
 export class OrderService {
   // Create order from cart
@@ -19,7 +20,7 @@ export class OrderService {
       // Get user's cart
       const cart = await CartService.getUserCart(userId);
       if (!cart || cart.items.length === 0) {
-        throw new Error('Cart is empty');
+        throw new Error(Messages.ORDER.CART_EMPTY);
       }
 
       // Check cart item availability
@@ -81,7 +82,7 @@ export class OrderService {
 
       return order;
     } catch (error) {
-      throw new Error(`Failed to create order: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(error instanceof Error ? error.message : Messages.ORDER.CREATE_FAILED);
     }
   }
 
@@ -123,7 +124,7 @@ export class OrderService {
         if (itemData.variantId) {
           const variant = product.variants?.find((v: any) => v._id.toString() === itemData.variantId);
           if (!variant) {
-            throw new Error(`Product variant not found: ${itemData.variantId}`);
+            throw new Error(Messages.PRODUCT.VARIANT_NOT_FOUND);
           }
           availableStock = variant.stock;
           unitPrice = variant.price;
@@ -196,7 +197,7 @@ export class OrderService {
 
       return order;
     } catch (error) {
-      throw new Error(`Failed to create order: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(error instanceof Error ? error.message : Messages.ORDER.CREATE_FAILED);
     }
   }
 
@@ -250,7 +251,7 @@ export class OrderService {
 
       return order;
     } catch (error) {
-      throw new Error(`Failed to get order: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(error instanceof Error ? error.message : Messages.ORDER.FETCH_FAILED);
     }
   }
 
@@ -356,7 +357,7 @@ export class OrderService {
         }
       };
     } catch (error) {
-      throw new Error(`Failed to get all orders: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(error instanceof Error ? error.message : Messages.ORDER.GET_ALL_FAILED);
     }
   }
 
@@ -374,7 +375,7 @@ export class OrderService {
     try {
       const order = await Order.findById(orderId);
       if (!order) {
-        throw new Error('Order not found');
+        throw new Error(Messages.ORDER.NOT_FOUND);
       }
 
       switch (status) {
@@ -400,7 +401,7 @@ export class OrderService {
           break;
         case 'cancelled':
           if (!options.cancelledBy || !options.cancelReason) {
-            throw new Error('Cancelled by and reason are required for cancelled status');
+            throw new Error(Messages.ORDER.CANCEL_REQUIRED);
           }
           await order.cancelOrder(options.cancelledBy, options.cancelReason);
           break;
@@ -411,12 +412,12 @@ export class OrderService {
           await order.refundOrder(options.refundAmount);
           break;
         default:
-          throw new Error('Invalid order status');
+          throw new Error(Messages.ORDER.INVALID_STATUS);
       }
 
       return order;
     } catch (error) {
-      throw new Error(`Failed to update order status: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(error instanceof Error ? error.message : Messages.ORDER.STATUS_UPDATE_FAILED);
     }
   }
 
@@ -497,11 +498,11 @@ export class OrderService {
     try {
       const order = await Order.findById(orderId);
       if (!order) {
-        throw new Error('Order not found');
+        throw new Error(Messages.ORDER.NOT_FOUND);
       }
 
       if (!order.canCancel) {
-        throw new Error('Order cannot be cancelled in current status');
+        throw new Error(Messages.ORDER.CANNOT_CANCEL);
       }
 
       await order.cancelOrder(cancelledBy, reason);
@@ -577,7 +578,7 @@ export class OrderService {
         totalRevenue: 0
       };
     } catch (error) {
-      throw new Error(`Failed to get order statistics: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(error instanceof Error ? error.message : Messages.ORDER.STATS_FAILED);
     }
   }
 

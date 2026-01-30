@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ProductService } from '../services/productService';
+import Messages from '../utils/messages';
 
 export class ProductController {
   // Create new product
@@ -13,14 +14,14 @@ export class ProductController {
 
       return res.status(201).json({
         success: true,
-        message: 'Product created successfully',
+        message: Messages.PRODUCT.CREATED,
         data: { product }
       });
     } catch (error) {
       console.error('Create product error:', error);
       return res.status(400).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to create product'
+        message: error instanceof Error ? error.message : Messages.PRODUCT.CREATE_FAILED
       });
     }
   }
@@ -34,13 +35,13 @@ export class ProductController {
       if (!product) {
         return res.status(404).json({
           success: false,
-          message: 'Product not found'
+          message: Messages.PRODUCT.NOT_FOUND
         });
       }
 
       return res.json({
         success: true,
-        message: 'Product retrieved successfully',
+        message: Messages.PRODUCT.RETRIEVED,
         data: { product }
       });
     } catch (error) {
@@ -102,7 +103,7 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Products retrieved successfully',
+        message: Messages.PRODUCT.LIST_RETRIEVED,
         data: {
           products: result.products,
           pagination: {
@@ -130,14 +131,14 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Featured products retrieved successfully',
+        message: Messages.PRODUCT.FEATURED_RETRIEVED,
         data: { products }
       });
     } catch (error) {
       console.error('Get featured products error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve featured products'
+        message: Messages.PRODUCT.FEATURED_FAILED
       });
     }
   }
@@ -150,14 +151,14 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Best sellers retrieved successfully',
+        message: Messages.PRODUCT.BESTSELLERS_RETRIEVED,
         data: { products }
       });
     } catch (error) {
       console.error('Get best sellers error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve best sellers'
+        message: Messages.PRODUCT.BESTSELLERS_FAILED
       });
     }
   }
@@ -177,7 +178,7 @@ export class ProductController {
       console.error('Get new arrivals error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve new arrivals'
+        message: Messages.PRODUCT.NEW_ARRIVALS_FAILED
       });
     }
   }
@@ -200,7 +201,7 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Product updated successfully',
+        message: Messages.PRODUCT.UPDATED,
         data: { product }
       });
     } catch (error) {
@@ -223,13 +224,13 @@ export class ProductController {
       if (!deleted) {
         return res.status(404).json({
           success: false,
-          message: 'Product not found or access denied'
+          message: Messages.PRODUCT.NOT_FOUND_OR_DENIED
         });
       }
 
       return res.json({
         success: true,
-        message: 'Product deleted successfully'
+        message: Messages.PRODUCT.DELETED
       });
     } catch (error) {
       console.error('Delete product error:', error);
@@ -258,7 +259,7 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Product status updated successfully',
+        message: Messages.PRODUCT.STATUS_UPDATED,
         data: { product }
       });
     } catch (error) {
@@ -288,7 +289,7 @@ export class ProductController {
 
       return res.json({
         success: true,
-        message: 'Product stock updated successfully',
+        message: Messages.PRODUCT.STOCK_UPDATED,
         data: { product }
       });
     } catch (error) {
@@ -314,7 +315,7 @@ export class ProductController {
       if (!searchTerm || typeof searchTerm !== 'string') {
         return res.status(400).json({
           success: false,
-          message: 'Search term is required'
+          message: Messages.PRODUCT.SEARCH_TERM_REQUIRED
         });
       }
 
@@ -329,7 +330,7 @@ export class ProductController {
       console.error('Search products error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to search products'
+        message: Messages.PRODUCT.SEARCH_FAILED
       });
     }
   }
@@ -355,7 +356,7 @@ export class ProductController {
       console.error('Get products by category error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve category products'
+        message: Messages.PRODUCT.CATEGORY_FAILED
       });
     }
   }
@@ -380,7 +381,7 @@ export class ProductController {
       console.error('Get seller products error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to retrieve seller products'
+        message: Messages.PRODUCT.SELLER_PRODUCTS_FAILED
       });
     }
   }

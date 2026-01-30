@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AdminSellerService } from '../services/adminSellerService';
+import Messages from '../utils/messages';
 
 export class AdminSellerController {
   // Get seller statistics
@@ -13,7 +14,7 @@ export class AdminSellerController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get seller statistics'
+        message: error instanceof Error ? error.message : Messages.ADMIN_SELLER.STATS_FAILED
       });
     }
   }
@@ -56,7 +57,7 @@ export class AdminSellerController {
       const statusCode = error instanceof Error && error.message === 'Seller not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get seller'
+        message: error instanceof Error ? error.message : Messages.ADMIN_SELLER.FETCH_FAILED
       });
     }
   }
@@ -69,14 +70,14 @@ export class AdminSellerController {
 
       res.status(201).json({
         success: true,
-        message: 'Seller created successfully',
+        message: Messages.ADMIN_SELLER.CREATED,
         data: seller
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message.includes('already exists') ? 400 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to create seller'
+        message: error instanceof Error ? error.message : Messages.ADMIN_SELLER.CREATE_FAILED
       });
     }
   }
@@ -90,14 +91,14 @@ export class AdminSellerController {
 
       res.json({
         success: true,
-        message: 'Seller updated successfully',
+        message: Messages.ADMIN_SELLER.UPDATED,
         data: seller
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Seller not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update seller'
+        message: error instanceof Error ? error.message : Messages.ADMIN_SELLER.UPDATE_FAILED
       });
     }
   }
@@ -111,7 +112,7 @@ export class AdminSellerController {
       if (!status || !['active', 'inactive', 'suspended'].includes(status)) {
         res.status(400).json({
           success: false,
-          message: 'Invalid status. Must be one of: active, inactive, suspended'
+          message: Messages.VALIDATION.INVALID_VALUE
         });
         return;
       }
@@ -123,14 +124,14 @@ export class AdminSellerController {
 
       res.json({
         success: true,
-        message: 'Seller status updated successfully',
+        message: Messages.ADMIN_SELLER.STATUS_UPDATED,
         data: seller
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message === 'Seller not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update seller status'
+        message: error instanceof Error ? error.message : Messages.ADMIN_SELLER.UPDATE_FAILED
       });
     }
   }

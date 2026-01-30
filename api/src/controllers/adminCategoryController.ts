@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AdminCategoryService } from '../services/adminCategoryService';
+import Messages from '../utils/messages';
 
 export class AdminCategoryController {
   // Get category statistics
@@ -38,7 +39,7 @@ export class AdminCategoryController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get categories'
+        message: error instanceof Error ? error.message : Messages.ADMIN_CATEGORY.LIST_FAILED
       });
     }
   }
@@ -56,7 +57,7 @@ export class AdminCategoryController {
       const statusCode = error instanceof Error && error.message === 'Category not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to get category'
+        message: error instanceof Error ? error.message : Messages.ADMIN_CATEGORY.FETCH_FAILED
       });
     }
   }
@@ -75,7 +76,7 @@ export class AdminCategoryController {
       const statusCode = error instanceof Error && error.message.includes('already exists') ? 400 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to create category'
+        message: error instanceof Error ? error.message : Messages.ADMIN_CATEGORY.CREATE_FAILED
       });
     }
   }
@@ -95,7 +96,7 @@ export class AdminCategoryController {
       const statusCode = error instanceof Error && error.message === 'Category not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update category'
+        message: error instanceof Error ? error.message : Messages.ADMIN_CATEGORY.UPDATE_FAILED
       });
     }
   }
@@ -109,7 +110,7 @@ export class AdminCategoryController {
       if (typeof isActive !== 'boolean') {
         res.status(400).json({
           success: false,
-          message: 'isActive must be a boolean value'
+          message: Messages.VALIDATION.INVALID_VALUE
         });
         return;
       }
@@ -124,7 +125,7 @@ export class AdminCategoryController {
       const statusCode = error instanceof Error && error.message === 'Category not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to update category status'
+        message: error instanceof Error ? error.message : Messages.ADMIN_CATEGORY.STATUS_UPDATE_FAILED
       });
     }
   }
@@ -142,7 +143,7 @@ export class AdminCategoryController {
       const statusCode = error instanceof Error && error.message === 'Category not found' ? 404 : 500;
       res.status(statusCode).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to delete category'
+        message: error instanceof Error ? error.message : Messages.ADMIN_CATEGORY.DELETE_FAILED
       });
     }
   }

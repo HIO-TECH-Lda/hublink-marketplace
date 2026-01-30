@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { connectDB } from './config/database';
 import { validateEnvironmentVariables } from './utils/envValidation';
+import Messages from './utils/messages';
 import testRoutes from './routes/test';
 import authRoutes from './routes/auth';
 import productRoutes from './routes/products';
@@ -313,7 +314,7 @@ app.use('/api/v1/admin/audit-logs', adminAuditLogRoutes);
 app.use('*', (req: Request, res: Response) => {
   res.status(404).json({
     success: false,
-    message: 'Route not found'
+    message: Messages.ERROR.ROUTE_NOT_FOUND
   });
 });
 
@@ -322,8 +323,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,
-    message: 'Internal server error',
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+    message: Messages.ERROR.INTERNAL_SERVER_ERROR,
+    error: process.env.NODE_ENV === 'development' ? err.message : Messages.ERROR.SOMETHING_WENT_WRONG
   });
 });
 

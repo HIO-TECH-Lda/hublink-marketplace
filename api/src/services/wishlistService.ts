@@ -3,6 +3,7 @@ import Product from '../models/Product';
 import Cart from '../models/Cart';
 import { IWishlist, IWishlistItem, IProduct, ICartItem } from '../types';
 import mongoose from 'mongoose';
+import Messages from '../utils/messages';
 
 export class WishlistService {
   /**
@@ -34,11 +35,11 @@ export class WishlistService {
       // Validate product exists
       const product = await Product.findById(productId);
       if (!product) {
-        throw new Error('Product not found');
+        throw new Error(Messages.PRODUCT.NOT_FOUND);
       }
 
       if (product.status !== 'active') {
-        throw new Error('Product is not available');
+        throw new Error(Messages.PRODUCT.NOT_AVAILABLE);
       }
 
       const wishlist = await (Wishlist as any).getOrCreateWishlist(userId);
@@ -115,15 +116,15 @@ export class WishlistService {
       // Get product details
       const product = await Product.findById(productId).session(session);
       if (!product) {
-        throw new Error('Product not found');
+        throw new Error(Messages.PRODUCT.NOT_FOUND);
       }
 
       if (product.status !== 'active') {
-        throw new Error('Product is not available');
+        throw new Error(Messages.PRODUCT.NOT_AVAILABLE);
       }
 
       if (product.stock < quantity) {
-        throw new Error('Insufficient stock');
+        throw new Error(Messages.PRODUCT.INSUFFICIENT_STOCK.replace('{available}', String(product.stock)));
       }
 
       // Move item from wishlist to cart
@@ -306,7 +307,7 @@ export class WishlistService {
       );
 
       if (!item) {
-        throw new Error('Item not found in wishlist');
+        throw new Error(Messages.WISHLIST.ITEM_NOT_FOUND);
       }
 
       item.notes = notes;

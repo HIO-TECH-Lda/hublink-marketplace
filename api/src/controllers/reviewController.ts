@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ReviewService } from '../services/reviewService';
+import Messages from '../utils/messages';
 
 export class ReviewController {
   /**
@@ -58,14 +59,14 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Product reviews retrieved successfully',
+        message: Messages.REVIEW.FETCH_SUCCESS,
         data: result
       });
     } catch (error: any) {
       console.error('Get product reviews error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve product reviews'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }
@@ -112,13 +113,13 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Review deleted successfully'
+        message: Messages.REVIEW.DELETED
       });
     } catch (error: any) {
       console.error('Delete review error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to delete review'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }
@@ -174,14 +175,14 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: `Review marked as ${isHelpful ? 'helpful' : 'not helpful'} successfully`,
+        message: Messages.REVIEW.HELPFUL_MARKED,
         data: review
       });
     } catch (error: any) {
       console.error('Mark review helpful error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to mark review helpful'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }
@@ -197,14 +198,14 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Review statistics retrieved successfully',
+        message: Messages.REVIEW.FETCH_SUCCESS,
         data: statistics
       });
     } catch (error: any) {
       console.error('Get review statistics error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve review statistics'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }
@@ -238,14 +239,14 @@ export class ReviewController {
 
       return res.json({
         success: true,
-        message: 'Pending reviews retrieved successfully',
+        message: Messages.REVIEW.FETCH_SUCCESS,
         data: result
       });
     } catch (error: any) {
       console.error('Get pending reviews error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve pending reviews'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }
@@ -277,7 +278,7 @@ export class ReviewController {
       console.error('Get user reviews error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve user reviews'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }
@@ -300,7 +301,7 @@ export class ReviewController {
       console.error('Get recent reviews error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve recent reviews'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }
@@ -329,7 +330,7 @@ export class ReviewController {
       console.error('Get review analytics error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve review analytics'
+        message: error.message || Messages.ANALYTICS.FETCH_FAILED
       });
     }
   }
@@ -351,7 +352,7 @@ export class ReviewController {
       console.error('Send review request error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to send review request'
+        message: error.message || Messages.NEWSLETTER.EMAIL_FAILED
       });
     }
   }
@@ -383,7 +384,7 @@ export class ReviewController {
       console.error('Get seller reviews error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve seller reviews'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }
@@ -405,20 +406,20 @@ export class ReviewController {
       if (!review) {
         return res.status(404).json({
           success: false,
-          message: 'Review not found'
+          message: Messages.REVIEW.NOT_FOUND
         });
       }
 
       return res.json({
         success: true,
-        message: 'Review retrieved successfully',
+        message: Messages.REVIEW.FETCH_SUCCESS,
         data: review
       });
     } catch (error: any) {
       console.error('Get review by ID error:', error);
       return res.status(500).json({
         success: false,
-        message: error.message || 'Failed to retrieve review'
+        message: error.message || Messages.REVIEW.FETCH_FAILED
       });
     }
   }

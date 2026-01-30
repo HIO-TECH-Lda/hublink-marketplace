@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Stripe from 'stripe';
 import { PaymentService } from '../services/paymentService';
 import { createPaymentIntentSchema, confirmPaymentSchema, refundPaymentSchema, createManualPaymentSchema, processPaymentSchema } from '../utils/validation';
+import Messages from '../utils/messages';
 
 export class PaymentController {
   /**
@@ -20,14 +21,14 @@ export class PaymentController {
 
       return res.status(201).json({
         success: true,
-        message: 'Payment processed successfully',
+        message: Messages.PAYMENT.PROCESSED,
         data: result
       });
     } catch (error: any) {
       console.error('Process payment error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to process payment'
+        message: error.message || Messages.PAYMENT.PROCESS_FAILED
       });
     }
   }
@@ -50,7 +51,7 @@ export class PaymentController {
 
       return res.status(201).json({
         success: true,
-        message: 'Payment intent created successfully',
+        message: Messages.PAYMENT.INTENT_CREATED,
         data: paymentIntent
       });
     } catch (error: any) {
@@ -73,7 +74,7 @@ export class PaymentController {
 
       return res.json({
         success: true,
-        message: 'Payment confirmed successfully',
+        message: Messages.PAYMENT.CONFIRMED,
         data: payment
       });
     } catch (error: any) {
@@ -107,7 +108,7 @@ export class PaymentController {
       console.error('Process refund error:', error);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to process refund'
+        message: error.message || Messages.PAYMENT.REFUND_FAILED
       });
     }
   }
