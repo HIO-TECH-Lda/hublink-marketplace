@@ -6,6 +6,13 @@ import { Users, Award, Heart, Leaf, Star, Quote } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 export default function AboutPage() {
   // Mock team data
@@ -38,6 +45,34 @@ export default function AboutPage() {
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
       bio: 'Desenvolvedor da plataforma que conecta produtores e consumidores.'
     }
+  ];
+
+  // Mock partners
+  const partners = [
+    {
+      id: '1',
+      name: 'Agricultura Verde',
+      logo: 'https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg',
+      description: 'Parceiro em certificação orgânica',
+    },
+    {
+      id: '2',
+      name: 'Cooperativa Sul',
+      logo: 'https://images.pexels.com/photos/1268871/pexels-photo-1268871.jpeg',
+      description: 'Rede de produtores locais',
+    },
+    {
+      id: '3',
+      name: 'Bio Cert',
+      logo: 'https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg',
+      description: 'Auditoria e qualidade',
+    },
+    {
+      id: '4',
+      name: 'Logística Verde',
+      logo: 'https://images.pexels.com/photos/1268871/pexels-photo-1268871.jpeg',
+      description: 'Entrega sustentável',
+    },
   ];
 
   // Mock testimonials
@@ -210,7 +245,42 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Partners Section - Carousel */}
+      <section className="py-16 lg:py-24 bg-gray-1">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossos Parceiros</h2>
+            <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
+              Organizações que apoiam e fortalecem o ecossistema Txova.
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto px-4 sm:px-8">
+            <Carousel opts={{ loop: true, align: 'start' }} autoplay={{ delay: 5000 }} className="w-full">
+              <CarouselContent className="-ml-4">
+                {partners.map((partner) => (
+                  <CarouselItem key={partner.id} className="pl-4 basis-full md:basis-1/2">
+                    <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm h-full flex flex-col items-center text-center">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden mb-4 flex-shrink-0">
+                        <img
+                          src={partner.logo}
+                          alt={partner.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h3 className="font-semibold text-gray-9 mb-1 text-sm sm:text-base">{partner.name}</h3>
+                      <p className="text-gray-6 text-xs sm:text-sm">{partner.description}</p>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-2 sm:-left-12" />
+              <CarouselNext className="-right-2 sm:-right-12" />
+            </Carousel>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section - Carousel */}
       <section className="py-16 lg:py-24">
         <div className="container">
           <div className="text-center mb-12">
@@ -219,27 +289,34 @@ export default function AboutPage() {
               Conheça as pessoas apaixonadas que fazem o Txova acontecer todos os dias.
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {teamMembers.map((member) => (
-              <div key={member.id} className="text-center">
-                <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h3 className="font-semibold text-gray-9 mb-1 text-sm sm:text-base">{member.name}</h3>
-                <p className="text-primary font-medium mb-3 text-xs sm:text-sm">{member.position}</p>
-                <p className="text-gray-7 text-xs sm:text-sm px-2">{member.bio}</p>
-              </div>
-            ))}
+          <div className="max-w-4xl mx-auto px-4 sm:px-8">
+            <Carousel opts={{ loop: true, align: 'start' }} className="w-full">
+              <CarouselContent className="-ml-4">
+                {teamMembers.map((member) => (
+                  <CarouselItem key={member.id} className="pl-4 basis-full md:basis-1/2">
+                    <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm h-full text-center md:border md:border-gray-2">
+                      <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full overflow-hidden">
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h3 className="font-semibold text-gray-9 mb-1 text-sm sm:text-base">{member.name}</h3>
+                      <p className="text-primary font-medium mb-3 text-xs sm:text-sm">{member.position}</p>
+                      <p className="text-gray-7 text-xs sm:text-sm px-2">{member.bio}</p>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-2 sm:-left-12" />
+              <CarouselNext className="-right-2 sm:-right-12" />
+            </Carousel>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Testimonials Section - Carousel */}
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
@@ -248,36 +325,42 @@ export default function AboutPage() {
               Veja o que nossos clientes e parceiros dizem sobre o Txova.
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-                <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden mr-3 sm:mr-4 flex-shrink-0">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 className="font-semibold text-gray-9 text-sm sm:text-base">{testimonial.name}</h4>
-                    <p className="text-xs sm:text-sm text-gray-6">{testimonial.role}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={14} className="sm:w-4 sm:h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                
-                <blockquote className="text-gray-7 italic text-sm sm:text-base">
-                  <Quote size={16} className="sm:w-5 sm:h-5 text-primary mb-2" />
-                  &quot;{testimonial.content}&quot;
-                </blockquote>
-              </div>
-            ))}
+
+          <div className="max-w-4xl mx-auto px-4 sm:px-8">
+            <Carousel opts={{ loop: true, align: 'start' }} autoplay={{ delay: 5000 }} className="w-full">
+              <CarouselContent className="-ml-4">
+                {testimonials.map((testimonial) => (
+                  <CarouselItem key={testimonial.id} className="pl-4 basis-full md:basis-1/2">
+                    <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm h-full">
+                      <div className="flex items-center mb-4">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden mr-3 sm:mr-4 flex-shrink-0">
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-semibold text-gray-9 text-sm sm:text-base">{testimonial.name}</h4>
+                          <p className="text-xs sm:text-sm text-gray-6">{testimonial.role}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center mb-4">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} size={14} className="sm:w-4 sm:h-4 text-yellow-400 fill-current" />
+                        ))}
+                      </div>
+                      <blockquote className="text-gray-7 italic text-sm sm:text-base">
+                        <Quote size={16} className="sm:w-5 sm:h-5 text-primary mb-2" />
+                        &quot;{testimonial.content}&quot;
+                      </blockquote>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-2 sm:-left-12" />
+              <CarouselNext className="-right-2 sm:-right-12" />
+            </Carousel>
           </div>
         </div>
       </section>
