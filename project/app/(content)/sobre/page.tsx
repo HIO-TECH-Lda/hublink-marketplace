@@ -377,12 +377,12 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/loja">
-              <Button size="lg" className="bg-white text-primary hover:bg-gray-1 hover:shadow-lg transition-all duration-200 px-6 sm:px-8 py-3">
+              <Button size="lg" className="bg-white text-primary hover:bg-primary hover:text-white hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-200 px-6 sm:px-8 py-3">
                 Começar a Comprar
               </Button>
             </Link>
             <Link href="/contato">
-              <Button variant="outline" size="lg" className="border-white bg-transparent text-white hover:bg-white hover:text-primary hover:shadow-lg transition-all duration-200 px-6 sm:px-8 py-3">
+              <Button variant="outline" size="lg" className="border-white bg-transparent text-white hover:bg-white hover:text-primary hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-200 px-6 sm:px-8 py-3">
                 Fale Conosco
               </Button>
             </Link>
