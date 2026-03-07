@@ -66,83 +66,76 @@ export default function SellerDashboardPage() {
     <div className="min-h-screen bg-gray-1">
       <Header />
 
-      <div className="container py-8 px-4 sm:px-6 lg:px-8">
+      <div className="container py-8 px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-6 mb-6">
+        <nav className="text-sm text-gray-6 mb-6 truncate">
           <Link href="/" className="hover:text-primary">Início</Link> / 
           <Link href="/painel" className="hover:text-primary"> Painel</Link> / 
           <span className="text-primary">Painel do Vendedor</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Navigation Sidebar */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 min-w-0">
             <SellerSidebar />
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-8">
-            {/* Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="flex items-center justify-between">
-                  <div>
+          <div className="lg:col-span-3 space-y-6 sm:space-y-8 min-w-0">
+            {/* Overview Cards - responsive: 1 col mobile, 2 sm, 4 xl */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-6">Vendas Totais</p>
-                    <p className="text-2xl font-bold text-gray-9">{formatCurrency(totalSales)}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-9 truncate" title={formatCurrency(totalSales)}>{formatCurrency(totalSales)}</p>
                   </div>
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <DollarSign size={24} className="text-primary" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <DollarSign size={20} className="sm:w-6 sm:h-6 text-primary" />
                   </div>
                 </div>
-                <div className="mt-4 flex items-center text-sm">
-                  <TrendingUp size={16} className="text-primary mr-1" />
-                  {/* <span className="text-primary">+12% este mês</span> */}
+                <div className="mt-3 sm:mt-4 flex items-center text-xs sm:text-sm">
+                  <TrendingUp size={14} className="sm:w-4 sm:h-4 text-primary mr-1 flex-shrink-0" />
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="flex items-center justify-between">
-                  <div>
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-6">Pedidos Pendentes</p>
-                    <p className="text-2xl font-bold text-gray-9">{pendingOrders}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-9">{pendingOrders}</p>
                   </div>
-                  <div className="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center">
-                    <ShoppingBag size={24} className="text-warning" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-warning/10 rounded-lg flex items-center justify-center">
+                    <ShoppingBag size={20} className="sm:w-6 sm:h-6 text-warning" />
                   </div>
                 </div>
-                <div className="mt-4 flex items-center text-sm">
-                  <span className="text-gray-6">Aguardando processamento</span>
-                </div>
+                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Aguardando processamento</div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="flex items-center justify-between">
-                  <div>
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-6">Saldo Disponível</p>
-                    <p className="text-2xl font-bold text-gray-9">{formatCurrency(totalBalance)}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-9 truncate" title={formatCurrency(totalBalance)}>{formatCurrency(totalBalance)}</p>
                   </div>
-                  <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
-                    <DollarSign size={24} className="text-success" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-success/10 rounded-lg flex items-center justify-center">
+                    <DollarSign size={20} className="sm:w-6 sm:h-6 text-success" />
                   </div>
                 </div>
-                <div className="mt-4 flex items-center text-sm">
-                  <span className="text-gray-6">Pronto para saque</span>
-                </div>
+                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Pronto para saque</div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="flex items-center justify-between">
-                  <div>
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-6">Produtos Ativos</p>
-                    <p className="text-2xl font-bold text-gray-9">{sellerProducts.length}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-9">{sellerProducts.length}</p>
                   </div>
-                  <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center">
-                    <Package size={24} className="text-info" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-info/10 rounded-lg flex items-center justify-center">
+                    <Package size={20} className="sm:w-6 sm:h-6 text-info" />
                   </div>
                 </div>
-                <div className="mt-4 flex items-center text-sm">
-                  <span className="text-gray-6">Em estoque</span>
-                </div>
+                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Em estoque</div>
               </div>
             </div>
 
