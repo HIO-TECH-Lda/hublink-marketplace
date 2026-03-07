@@ -9,12 +9,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+
+function safeReturnUrl(raw: string | null): string {
+  if (!raw || typeof raw !== 'string') return '/';
+  const path = raw.startsWith('/') ? raw : `/${raw}`;
+  return path.startsWith('/') && !path.startsWith('//') ? path : '/';
+}
 
 export default function SignInPage() {
   const { login, loading: authLoading, isAuthenticated } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = safeReturnUrl(searchParams.get('returnUrl'));
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: 'helton@test.com',
@@ -42,9 +50,9 @@ export default function SignInPage() {
     }
     
     if (!authLoading && isAuthenticated) {
-      router.push('/');
+      router.push(returnUrl);
     }
-  }, [isAuthenticated, authLoading, router]);
+  }, [isAuthenticated, authLoading, router, returnUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,10 +61,7 @@ export default function SignInPage() {
 
     try {
       await login(formData.email, formData.password);
-      
-      // Redirect based on user role will be handled by the auth context
-      // or you can add logic here to redirect based on user role
-      router.push('/');
+      router.push(returnUrl);
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login. Tente novamente.');
     } finally {
@@ -85,7 +90,7 @@ export default function SignInPage() {
 
     try {
       await login(email, 'H2Furau2711@');
-      router.push('/');
+      router.push(returnUrl);
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login com conta de demonstração.');
     } finally {

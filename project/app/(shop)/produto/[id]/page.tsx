@@ -101,7 +101,15 @@ export default function ProductPage() {
     }
 
     addToCart.mutate(
-      { productId: product._id, quantity },
+      {
+        productId: product._id,
+        quantity,
+        productSnapshot: {
+          name: product.name,
+          price: product.price,
+          primaryImage: product.primaryImage ?? (product.images?.[0] as any)?.url,
+        },
+      },
       {
         onSuccess: () => {
           toast({

@@ -65,10 +65,20 @@ export default function CheckoutPage() {
 
   // Use API data instead of context state
   const cartItems = cartData?.items || [];
-  const subtotal = (cartData as any)?.summary?.subtotal || cartData?.totalPrice || 0;
+  const totalItems =
+    cartData?.totalItems ?? (cartData as any)?.summary?.itemCount ?? cartItems.reduce((s: number, i: any) => s + (Number(i.quantity) || 0), 0);
+  const subtotal =
+    cartData?.totalPrice ?? (cartData as any)?.summary?.subtotal ?? cartItems.reduce((s: number, i: any) => s + (Number(i.quantity) || 0) * (i.product?.price ?? i.unitPrice ?? i.price ?? 0), 0);
   const shipping = subtotal >= 500 ? 0 : 100; // Free shipping above 500 MZN
   const total = subtotal + shipping;
-  const totalItems = (cartData as any)?.summary?.itemCount || cartData?.totalItems || 0;
+
+  // Require login for checkout
+  useEffect(() => {
+    if (authLoading || isLoading) return;
+    if (!isAuthenticated && cartItems.length > 0) {
+      router.replace(`/entrar?returnUrl=${encodeURIComponent('/checkout')}`);
+    }
+  }, [isAuthenticated, authLoading, isLoading, cartItems.length, router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -400,10 +410,10 @@ export default function CheckoutPage() {
                     </div>
                   ) : (
                     cartItems.map((item: any) => (
-                      <div key={item.productId?._id || item._id} className="flex items-center space-x-3">
+                      <div key={item.productId?._id || item.product?._id || item._id} className="flex items-center space-x-3">
                         <div className="w-12 h-12 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                           <img
-                            src={item.productImage || item.productId?.primaryImage || '/placeholder.jpg'}
+                            src={item.productImage || item.productId?.primaryImage || item.product?.primaryImage || '/placeholder.jpg'}
                             alt={item.productName || item.product?.name}
                             className="w-full h-full object-cover"
                           />

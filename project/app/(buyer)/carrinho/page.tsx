@@ -27,13 +27,15 @@ export default function ShoppingCartPage() {
   const removeFromCart = useRemoveFromCart();
 
 
-  // Use API data for calculations
+  // Use API data for calculations (fallback from items when totalPrice/totalItems missing)
   const cartItems = cartData?.items || [];
-  const subtotal = (cartData as any)?.summary?.subtotal || cartData?.totalPrice || 0;
+  const totalItems =
+    cartData?.totalItems ?? (cartData as any)?.summary?.itemCount ?? cartItems.reduce((s: number, i: any) => s + (Number(i.quantity) || 0), 0);
+  const subtotal =
+    cartData?.totalPrice ?? (cartData as any)?.summary?.subtotal ?? cartItems.reduce((s: number, i: any) => s + (Number(i.quantity) || 0) * (i.product?.price ?? i.unitPrice ?? i.price ?? 0), 0);
   const shipping = subtotal >= 500 ? 0 : 100; // Free shipping over 500 MZN
   const discount = appliedCoupon ? subtotal * 0.1 : 0; // 10% discount for demo
   const total = subtotal + shipping - discount;
-  const totalItems = (cartData as any)?.summary?.itemCount || cartData?.totalItems || 0;
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity <= 0) {

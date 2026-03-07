@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { User, LoginData, RegisterData, AuthResponse } from '@/types/api';
 import apiClient from '@/lib/api-client';
+import { getGuestCart, clearGuestCart } from '@/lib/guest-cart';
 
 interface AuthContextType {
   user: User | null;
@@ -104,6 +105,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setToken(newToken);
       setRefreshToken(newRefreshToken);
       setUser(userData);
+
+      // Sync guest cart to server then clear
+      const guestItems = getGuestCart();
+      if (guestItems.length > 0) {
+        try {
+          for (const item of guestItems) {
+            await apiClient.post('/cart/add', { productId: item.productId, quantity: item.quantity });
+          }
+        } catch (_) {
+          // ignore per-item errors
+        }
+        clearGuestCart();
+        queryClient.invalidateQueries({ queryKey: ['cart'] });
+      }
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'Login failed';
       throw new Error(errorMessage);

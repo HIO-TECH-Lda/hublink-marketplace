@@ -92,10 +92,12 @@ export default function CartPopup() {
     router.push('/carrinho');
   };
 
-  // Use API data for calculations
+  // Use API data for calculations (normalized cart has totalItems/totalPrice; fallback from items)
   const cartItems = cartData?.items || [];
-  const subtotal = (cartData as any)?.summary?.subtotal || cartData?.totalPrice || 0;
-  const totalItems = (cartData as any)?.summary?.itemCount || cartData?.totalItems || 0;
+  const totalItems =
+    cartData?.totalItems ?? (cartData as any)?.summary?.itemCount ?? cartItems.reduce((s: number, i: any) => s + (Number(i.quantity) || 0), 0);
+  const subtotal =
+    cartData?.totalPrice ?? (cartData as any)?.summary?.subtotal ?? cartItems.reduce((s: number, i: any) => s + (Number(i.quantity) || 0) * (i.product?.price ?? i.unitPrice ?? i.price ?? 0), 0);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end z-50 animate-fade-in">

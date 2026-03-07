@@ -32,7 +32,15 @@ export default function ProductCard({ product, showQuickView = true }: ProductCa
     e.stopPropagation();
     
     addToCart.mutate(
-      { productId: product._id, quantity: 1 },
+      {
+        productId: product._id,
+        quantity: 1,
+        productSnapshot: {
+          name: product.name,
+          price: product.price,
+          primaryImage: typeof product.primaryImage === 'string' ? product.primaryImage : (product.images?.[0] as any)?.url,
+        },
+      },
       {
         onSuccess: () => {
           toast({

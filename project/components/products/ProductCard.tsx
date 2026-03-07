@@ -21,7 +21,15 @@ export default function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   const handleAddToCart = () => {
-    addToCart.mutate({ productId: product._id, quantity: 1 });
+    addToCart.mutate({
+      productId: product._id,
+      quantity: 1,
+      productSnapshot: {
+        name: product.name,
+        price: product.price,
+        primaryImage: product.primaryImage ?? (product.images?.[0] as any)?.url,
+      },
+    });
   };
 
   const handleAddToWishlist = () => {
