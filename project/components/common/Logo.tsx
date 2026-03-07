@@ -41,7 +41,7 @@ export default function Logo({
   const FallbackLogo = () => (
     <div className={containerClassName}>
       <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-        <span className="text-white font-bold text-sm">T</span>
+        <span className="text-white font-bold text-sm">{logoConfig.brandName.charAt(0)}</span>
       </div>
       <span className={brandNameClassName}>{logoConfig.brandName}</span>
     </div>
