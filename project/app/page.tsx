@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Truck, CreditCard, Headphones, Trophy, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Truck, CreditCard, Headphones, Trophy, Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
@@ -17,6 +17,7 @@ import { useFeaturedProducts, useBestSellers, useNewArrivals } from '@/hooks/use
 import { useTopSellers } from '@/hooks/useSellers';
 import { useFeaturedPosts } from '@/hooks/useBlog';
 import { Loader2 } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 export default function HomePage() {
   const { state } = useMarketplace();
@@ -240,15 +241,19 @@ export default function HomePage() {
       </section>
 
       {/* Top Sellers */}
-      <section className="py-16">
+      <section className="py-16 bg-gradient-to-r from-primary to-primary-hard">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">Melhores Vendedores</h2>
-            <p className="text-gray-6">Conheça os produtores mais confiáveis e bem avaliados</p>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium mb-4">
+              <Trophy size={18} />
+              Destaque
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-4">Melhores Vendedores</h2>
+            <p className="text-white max-w-xl mx-auto">Conheça os produtores mais confiáveis e bem avaliados</p>
           </div>
           {sellersLoading ? (
             <div className="flex justify-center py-8">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              <Loader2 className="w-8 h-8 animate-spin text-white" />
             </div>
           ) : topSellers && topSellers.length > 0 ? (
             <>
@@ -283,7 +288,7 @@ export default function HomePage() {
               </div>
             </>
           ) : (
-            <p className="text-center text-gray-6">Nenhum vendedor disponível no momento</p>
+            <p className="text-center text-white-6">Nenhum vendedor disponível no momento</p>
           )}
         </div>
       </section>
@@ -355,54 +360,75 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Customer Testimonials */}
-      <section className="py-16">
+      {/* Customer Testimonials - Carousel (same as About page) */}
+      <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">O Que Nossos Clientes Dizem</h2>
-            <p className="text-gray-6">Avaliações reais de clientes satisfeitos</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">O Que Nossos Clientes Dizem</h2>
+            <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
+              Avaliações reais de clientes satisfeitos
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Maria Silva",
-                location: "Beira, Sofala",
-                rating: 5,
-                comment: "Produtos sempre frescos e de excelente qualidade. A entrega é rápida e o atendimento é impecável!"
-              },
-              {
-                name: "João Santos",
-                location: "Beira, Sofala",
-                rating: 5,
-                comment: "Finalmente encontrei um marketplace que conecta diretamente com produtores locais. Recomendo!"
-              },
-              {
-                name: "Ana Costa",
-                location: "Beira, Sofala",
-                rating: 5,
-                comment: "A variedade de produtos orgânicos é incrível. Minha família está mais saudável desde que começamos a comprar aqui."
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                <div className="flex items-center space-x-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={16} className="text-warning fill-warning" />
-                  ))}
-                </div>
-                <p className="text-gray-7 mb-4 italic">&quot;{testimonial.comment}&quot;</p>
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-primary font-semibold">
-                      {testimonial.name.split(' ').map(n => n[0]).join('')}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-9">{testimonial.name}</div>
-                    <div className="text-sm text-gray-6">{testimonial.location}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="max-w-4xl mx-auto px-4 sm:px-8">
+            <Carousel opts={{ loop: true, align: 'start' }} autoplay={{ delay: 5000 }} className="w-full">
+              <CarouselContent className="-ml-4">
+                {[
+                  {
+                    id: '1',
+                    name: 'Maria Silva',
+                    role: 'Beira, Sofala',
+                    content: 'Produtos sempre frescos e de excelente qualidade. A entrega é rápida e o atendimento é impecável!',
+                    rating: 5,
+                    image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+                  },
+                  {
+                    id: '2',
+                    name: 'João Santos',
+                    role: 'Beira, Sofala',
+                    content: 'Finalmente encontrei um marketplace que conecta diretamente com produtores locais. Recomendo!',
+                    rating: 5,
+                    image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+                  },
+                  {
+                    id: '3',
+                    name: 'Ana Costa',
+                    role: 'Beira, Sofala',
+                    content: 'A variedade de produtos orgânicos é incrível. Minha família está mais saudável desde que começamos a comprar aqui.',
+                    rating: 5,
+                    image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+                  },
+                ].map((testimonial) => (
+                  <CarouselItem key={testimonial.id} className="pl-4 basis-full md:basis-1/2">
+                    <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm h-full">
+                      <div className="flex items-center mb-4">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden mr-3 sm:mr-4 flex-shrink-0">
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-semibold text-gray-9 text-sm sm:text-base">{testimonial.name}</h4>
+                          <p className="text-xs sm:text-sm text-gray-6">{testimonial.role}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center mb-4">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} size={14} className="sm:w-4 sm:h-4 text-yellow-400 fill-current" />
+                        ))}
+                      </div>
+                      <blockquote className="text-gray-7 italic text-sm sm:text-base">
+                        <Quote size={16} className="sm:w-5 sm:h-5 text-primary mb-2" />
+                        &quot;{testimonial.content}&quot;
+                      </blockquote>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-2 sm:-left-12" />
+              <CarouselNext className="-right-2 sm:-right-12" />
+            </Carousel>
           </div>
         </div>
       </section>
