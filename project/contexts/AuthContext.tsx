@@ -13,6 +13,7 @@ interface AuthContextType {
   register: (userData: RegisterData) => Promise<void>;
   logout: () => void;
   refreshAuthToken: () => Promise<boolean>;
+  refreshUser: () => Promise<void>;
   isAuthenticated: boolean;
   hasRole: (role: string | string[]) => boolean;
   loading: boolean;
@@ -166,6 +167,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       register, 
       logout, 
       refreshAuthToken,
+      refreshUser: fetchUserProfile,
       isAuthenticated,
       hasRole,
       loading 

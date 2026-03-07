@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { refreshUser } = useAuth();
 
   return useMutation({
     mutationFn: async (profileData: FormData | {
@@ -21,8 +23,9 @@ export const useUpdateProfile = () => {
       const response = await apiClient.put('/auth/me', profileData, config);
       return response.data.data;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['auth', 'me'] });
+      await refreshUser();
       toast({
         title: 'Perfil atualizado',
         description: 'Suas informações foram atualizadas com sucesso.',
