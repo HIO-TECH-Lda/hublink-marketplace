@@ -6,6 +6,7 @@ import { Shield, Eye, Lock, Users, FileText, Calendar } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { siteConfig } from '@/lib/site-config';
 
 export default function PrivacidadePage() {
   const lastUpdated = '15 de Janeiro de 2024';
@@ -307,7 +308,7 @@ export default function PrivacidadePage() {
                   </p>
                   
                   <div className="space-y-2 text-gray-7">
-                    <p><strong>E-mail:</strong> privacidade@txova.co.mz</p>
+                    <p><strong>E-mail:</strong> {siteConfig.privacyEmail}</p>
                     <p><strong>Telefone:</strong> (84) 99999-9999</p>
                     <p><strong>Endereço:</strong> Rua das Flores, 123 - Baixa, Beira - 2100</p>
                   </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import Script from 'next/script';
+import { siteConfig } from '@/lib/site-config';
 
 interface OrganizationData {
   name: string;
@@ -53,7 +54,7 @@ interface StructuredDataProps {
 
 export default function StructuredData({ type, data }: StructuredDataProps) {
   const generateStructuredData = () => {
-    const baseUrl = 'https://txova.co.mz';
+    const baseUrl = siteConfig.appUrl;
 
     switch (type) {
       case 'organization':
@@ -169,11 +170,11 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
   );
 }
 
-// Helper functions for common structured data
+// Helper functions for common structured data (use siteConfig at call site for env-based values)
 export const getOrganizationData = (): OrganizationData => ({
   name: 'Txova - Marketplace Orgânico',
-  url: 'https://txova.co.mz',
-  logo: 'https://txova.co.mz/icons/icon-512x512.png',
+  url: siteConfig.appUrl,
+  logo: `${siteConfig.appUrl}/icons/icon-512x512.png`,
   description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
   address: {
     streetAddress: 'Rua Principal, 123',
@@ -185,7 +186,7 @@ export const getOrganizationData = (): OrganizationData => ({
   contactPoint: {
     telephone: '+258 84 123 4567',
     contactType: 'customer service',
-    email: 'contato@txova.co.mz',
+    email: siteConfig.contactEmail,
   },
   sameAs: [
     'https://facebook.com/txova',
@@ -204,7 +205,7 @@ export const getProductData = (product: any): ProductData => ({
   brand: product.brand || 'Txova',
   category: product.category,
   sku: product.sku || product.id,
-  url: `https://txova.co.mz/produto/${product.id}`,
+  url: `${siteConfig.appUrl}/produto/${product.id}`,
   aggregateRating: product.rating ? {
     ratingValue: product.rating,
     reviewCount: product.reviews || 0,

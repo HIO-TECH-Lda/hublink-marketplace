@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useSubmitContactForm } from '@/hooks/useContact';
+import { siteConfig } from '@/lib/site-config';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -49,7 +50,7 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'E-mail',
-      content: 'contato@txova.co.mz\nsuporte@txova.co.mz',
+      content: `${siteConfig.contactEmail}\n${siteConfig.supportEmail}`,
       color: 'text-primary'
     },
     {

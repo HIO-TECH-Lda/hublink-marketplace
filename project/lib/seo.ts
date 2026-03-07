@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { siteConfig } from '@/lib/site-config';
 
 interface SEOConfig {
   title: string;
@@ -15,7 +16,7 @@ interface SEOConfig {
 }
 
 export function generateMetadata(config: SEOConfig): Metadata {
-  const baseUrl = 'https://txova.co.mz';
+  const baseUrl = siteConfig.appUrl;
   const defaultImage = '/images/og-image.jpg';
   
   return {

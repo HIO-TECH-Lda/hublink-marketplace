@@ -10,6 +10,7 @@ import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/common/Logo';
+import { siteConfig } from '@/lib/site-config';
 
 export default function Header() {
   const { state, dispatch } = useMarketplace();
@@ -86,8 +87,8 @@ export default function Header() {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={14} />
-                <span className="hidden lg:inline">contato@txova.co.mz</span>
-                <span className="lg:hidden">contato@txova.co.mz</span>
+                <span className="hidden lg:inline">{siteConfig.contactEmail}</span>
+                <span className="lg:hidden">{siteConfig.contactEmail}</span>
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">

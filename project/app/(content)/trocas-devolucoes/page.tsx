@@ -6,6 +6,7 @@ import { RefreshCw, Clock, CheckCircle, AlertCircle, Truck, CreditCard, Phone, M
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { siteConfig } from '@/lib/site-config';
 
 export default function TrocasDevolucoesPage() {
   const lastUpdated = '15 de Janeiro de 2024';
@@ -140,7 +141,7 @@ export default function TrocasDevolucoesPage() {
                     <div>
                       <h3 className="font-medium text-gray-9 mb-2">Entre em Contato</h3>
                       <p className="text-gray-7 text-sm">
-                        Ligue para (84) 99999-9999 ou envie um e-mail para suporte@txova.co.mz 
+                        Ligue para (84) 99999-9999 ou envie um e-mail para {siteConfig.supportEmail}{' '}
                         em até 24 horas após a entrega. Informe o número do pedido e o motivo da devolução.
                       </p>
                     </div>
@@ -294,7 +295,7 @@ export default function TrocasDevolucoesPage() {
                       <Mail size={24} className="text-primary" />
                     </div>
                     <h3 className="font-medium text-gray-9 mb-2">E-mail</h3>
-                    <p className="text-gray-7 text-sm">suporte@txova.co.mz</p>
+                    <p className="text-gray-7 text-sm">{siteConfig.supportEmail}</p>
                     <p className="text-gray-6 text-xs">Resposta em até 2 horas</p>
                   </div>
                   

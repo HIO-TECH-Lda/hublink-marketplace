@@ -22,6 +22,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { siteConfig } from '@/lib/site-config';
 
 interface SystemSettings {
   general: {
@@ -71,9 +72,9 @@ export default function SystemSettingsPage() {
   const { state } = useMarketplace();
   const [settings, setSettings] = useState<SystemSettings>({
     general: {
-      siteName: 'Txova',
-      siteDescription: 'Marketplace moçambicano de produtos e serviços',
-      contactEmail: 'contato@txova.com',
+      siteName: siteConfig.siteName,
+      siteDescription: siteConfig.siteDescription,
+      contactEmail: siteConfig.contactEmail,
       supportPhone: '+258 84 9999-9999',
       timezone: 'Africa/Maputo',
       currency: 'MZN',
@@ -98,10 +99,10 @@ export default function SystemSettingsPage() {
     email: {
       smtpHost: 'smtp.gmail.com',
       smtpPort: 587,
-      smtpUser: 'noreply@txova.co.mz',
+      smtpUser: siteConfig.noReplyEmail,
       smtpPassword: '********',
-      fromEmail: 'noreply@txova.co.mz',
-      fromName: 'Txova'
+      fromEmail: siteConfig.noReplyEmail,
+      fromName: siteConfig.siteName
     },
     notifications: {
       orderNotifications: true,

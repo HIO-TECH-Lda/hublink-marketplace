@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNewsletterSubscribe } from '@/hooks/useNewsletter';
 import Logo from '@/components/common/Logo';
+import { siteConfig } from '@/lib/site-config';
 
 export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -92,7 +93,7 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={16} className="flex-shrink-0" />
-                  <span className="break-all">contato@txova.co.mz</span>
+                  <span className="break-all">{siteConfig.contactEmail}</span>
                 </div>
               </div>
             </div>

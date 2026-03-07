@@ -5,6 +5,7 @@ import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { siteConfig } from '@/lib/site-config';
 
 export default function FAQPage() {
   const [openItems, setOpenItems] = useState<number[]>([]);
@@ -190,7 +191,7 @@ export default function FAQPage() {
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">E-mail</p>
-                    <p className="text-gray-7">contato@txova.co.mz</p>
+                    <p className="text-gray-7">{siteConfig.contactEmail}</p>
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">Horário</p>

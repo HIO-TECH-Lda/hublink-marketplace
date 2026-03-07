@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { siteConfig } from '@/lib/site-config';
 
 export default function AjudaPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -128,9 +129,9 @@ export default function AjudaPage() {
       icon: Mail,
       title: 'E-mail',
       description: 'Envie sua dúvida por e-mail',
-      contact: 'suporte@txova.co.mz',
+      contact: siteConfig.supportEmail,
       action: 'Enviar E-mail',
-      href: 'mailto:suporte@txova.co.mz'
+      href: `mailto:${siteConfig.supportEmail}`
     },
     {
       icon: MessageCircle,

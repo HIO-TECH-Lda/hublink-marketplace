@@ -9,6 +9,7 @@ import StructuredData from '@/components/seo/StructuredData';
 import { getOrganizationData } from '@/components/seo/StructuredData';
 import { Toaster } from '@/components/ui/toaster';
 import { logoConfig } from '@/lib/logo-config';
+import { siteConfig } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: {
@@ -30,22 +31,22 @@ export const metadata: Metadata = {
     'ecommerce',
     'compras online'
   ],
-  authors: [{ name: 'Txova Team' }],
-  creator: 'Txova',
-  publisher: 'Txova',
+  authors: [{ name: 'Helton Furau - HIO TECH, Lda' }],
+  creator: 'HIO TECH, Lda',
+  publisher: 'HIO TECH, Lda',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://txova.co.mz'),
+  metadataBase: new URL(siteConfig.appUrl),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'pt_MZ',
-    url: 'https://txova.co.mz',
+    url: siteConfig.appUrl,
     siteName: 'Txova',
     title: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
     description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes.',
@@ -156,8 +157,8 @@ export default function RootLayout({
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "Txova - Marketplace Orgânico",
-          "url": "https://txova.co.mz",
-          "logo": "https://txova.co.mz/icons/icon-512x512.png",
+          "url": siteConfig.appUrl,
+          "logo": `${siteConfig.appUrl}/icons/icon-512x512.png`,
           "description": "Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala",
           "address": {
             "@type": "PostalAddress",
@@ -171,7 +172,7 @@ export default function RootLayout({
             "@type": "ContactPoint",
             "telephone": "+258 84 123 4567",
             "contactType": "customer service",
-            "email": "contato@txova.co.mz"
+            "email": siteConfig.contactEmail
           },
           "sameAs": [
             "https://facebook.com/txova",
