@@ -304,7 +304,7 @@ export const useCreateProduct = () => {
         ? { headers: { 'Content-Type': 'multipart/form-data' } }
         : {};
       const response = await apiClient.post('/admin/products', data, config);
-      return response.data.data;
+      return response.data.data.product;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });

@@ -31,8 +31,8 @@ export default function AdminCreateProductPage() {
   const { data: sellersData, isLoading: sellersLoading } = useAdminSellers({ limit: 100 });
   const createProduct = useCreateProduct();
 
-  // API returns array directly: {success: true, data: [...]}
-  const sellers: any[] = Array.isArray(sellersData) ? sellersData : (sellersData ? [sellersData] : []);
+  // API returns { data: { sellers: [...], total, page, limit, totalPages } }
+  const sellers: any[] = sellersData?.sellers ?? (Array.isArray(sellersData) ? sellersData : []);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -102,61 +102,61 @@ export default function AdminCreateProductPage() {
     });
   };
 
+  const fileToDataUrl = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error('Failed to read file'));
+    });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     try {
-      // Create FormData for file uploads
-      const formDataToSend = new FormData();
-      
-      // Add text fields
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('sellerId', formData.sellerId);
-      formDataToSend.append('categoryId', formData.categoryId);
-      formDataToSend.append('price', formData.price);
-      formDataToSend.append('stock', formData.stock);
-      formDataToSend.append('status', formData.status);
-      formDataToSend.append('isFeatured', formData.isFeatured.toString());
-      formDataToSend.append('isBestSeller', formData.isBestSeller.toString());
-      
-      if (formData.shortDescription) formDataToSend.append('shortDescription', formData.shortDescription);
-      if (formData.subcategoryId) formDataToSend.append('subcategoryId', formData.subcategoryId);
-      if (formData.originalPrice) formDataToSend.append('originalPrice', formData.originalPrice);
-      if (formData.sku) formDataToSend.append('sku', formData.sku);
-      
-      // Add tags as JSON array
-      if (formData.tags.length > 0) {
-        formDataToSend.append('tags', JSON.stringify(formData.tags));
-      }
-
-      // Add primary image file
-      if (formData.primaryImage) {
-        formDataToSend.append('primaryImage', formData.primaryImage);
-      } else if (formData.images.length > 0 && formData.images[0].file.size > 0) {
-        // Use first image as primary if no primary image set
-        formDataToSend.append('primaryImage', formData.images[0].file);
-      }
-
-      // Add additional image files
-      formData.images.forEach((img, index) => {
-        // Only upload if it's a new file (has size > 0), skip existing URLs
-        if (img.file.size > 0) {
-          formDataToSend.append(`images`, img.file);
-        }
+      const imageFiles: File[] = [];
+      if (formData.primaryImage) imageFiles.push(formData.primaryImage);
+      formData.images.forEach((img) => {
+        if (img.file.size > 0) imageFiles.push(img.file);
       });
 
-      const newProduct = await createProduct.mutateAsync(formDataToSend);
-      
+      const imageUrls = await Promise.all(imageFiles.map((f) => fileToDataUrl(f)));
+      const images = imageUrls.map((url, idx) => ({
+        url,
+        alt: formData.name,
+        isPrimary: idx === 0,
+        order: idx,
+      }));
+
+      const payload: Record<string, unknown> = {
+        name: formData.name,
+        description: formData.description,
+        sellerId: formData.sellerId,
+        categoryId: formData.categoryId,
+        price: parseFloat(formData.price),
+        stock: parseInt(formData.stock, 10),
+        status: formData.status,
+        isFeatured: formData.isFeatured,
+        isBestSeller: formData.isBestSeller,
+        images,
+      };
+      if (formData.shortDescription) payload.shortDescription = formData.shortDescription;
+      if (formData.subcategoryId) payload.subcategoryId = formData.subcategoryId;
+      if (formData.originalPrice) payload.originalPrice = formData.originalPrice;
+      if (formData.sku) payload.sku = formData.sku;
+      if (formData.tags.length > 0) payload.tags = formData.tags;
+
+      const newProduct = await createProduct.mutateAsync(payload);
+
       toast({
         title: 'Produto criado',
         description: 'O produto foi criado com sucesso.',
       });
-      
+
       router.push(`/admin/produtos/${newProduct.id || newProduct._id}`);
     } catch (error: any) {
       toast({
@@ -332,11 +332,16 @@ export default function AdminCreateProductPage() {
                       </SelectTrigger>
                       {!sellersLoading && sellers.length > 0 && (
                         <SelectContent>
-                          {sellers.map((seller: any) => (
-                            <SelectItem key={seller._id || seller.id} value={seller._id || seller.id}>
-                              {seller.storeName || seller.businessName || seller.name || seller.fullName || seller.email || 'Vendedor sem nome'}
-                            </SelectItem>
-                          ))}
+                          {sellers.map((seller: any) => {
+                            const companyName = seller.company?.name || seller.sellerProfile?.storeName || '';
+                            const ownerName = seller.contact?.name || seller.contact?.email || '';
+                            const label = [companyName, ownerName].filter(Boolean).join(' – ') || 'Vendedor sem nome';
+                            return (
+                              <SelectItem key={seller.id || seller._id} value={String(seller.id || seller._id)}>
+                                {label}
+                              </SelectItem>
+                            );
+                          })}
                         </SelectContent>
                       )}
                     </Select>
@@ -508,7 +513,13 @@ export default function AdminCreateProductPage() {
                   <div className="flex justify-between">
                     <span className="text-gray-6">Vendedor:</span>
                     <span className="font-medium">
-                      {sellers.find((s: any) => (s._id || s.id) === formData.sellerId)?.businessName || 'Não definido'}
+                      {(() => {
+                      const s = sellers.find((s: any) => String(s.id || s._id) === formData.sellerId);
+                      if (!s) return 'Não definido';
+                      const companyName = s.company?.name || s.sellerProfile?.storeName || '';
+                      const ownerName = s.contact?.name || s.contact?.email || '';
+                      return [companyName, ownerName].filter(Boolean).join(' – ') || 'Não definido';
+                    })()}
                     </span>
                   </div>
                   <div className="flex justify-between">
