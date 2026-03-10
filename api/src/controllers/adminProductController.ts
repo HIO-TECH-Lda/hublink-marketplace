@@ -45,15 +45,14 @@ export class AdminProductController {
     }
   }
 
-  // Create product
+  // Create product (multipart/form-data)
   static async createProduct(req: Request, res: Response): Promise<void> {
     try {
-      const productData = req.body;
-      const product = await AdminProductService.createProduct(productData);
+      const product = await AdminProductService.createProduct(req.body);
       res.status(201).json({
         success: true,
         message: Messages.ADMIN_PRODUCT.CREATED,
-        data: product
+        data: { product }
       });
     } catch (error) {
       const statusCode = error instanceof Error && error.message.includes('not found') ? 404 : 500;
@@ -82,12 +81,12 @@ export class AdminProductController {
     }
   }
 
-  // Update product
+  // Update product (multipart/form-data)
   static async updateProduct(req: Request, res: Response): Promise<void> {
     try {
       const { productId } = req.params;
-      const updateData = req.body;
-      const product = await AdminProductService.updateProduct(productId, updateData);
+
+      const product = await AdminProductService.updateProduct(productId, req.body);
       res.json({
         success: true,
         message: Messages.ADMIN_PRODUCT.UPDATED,

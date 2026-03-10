@@ -204,15 +204,15 @@ export class AdminProductService {
                         `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || 
                         seller.email;
 
-      // Use ProductService to create product
+      // Use ProductService to create product (same as seller flow)
       const product = await ProductService.createProduct(
         productData,
         productData.sellerId,
         sellerName
       );
 
-      // Return created product with populated data
-      return await this.getProductById(product._id.toString());
+      // Return created product directly (same as seller) – avoid getProductById so create never throws after save
+      return product;
     } catch (error) {
       throw new Error(error instanceof Error ? error.message : Messages.ADMIN_PRODUCT.CREATE_FAILED);
     }
@@ -231,43 +231,40 @@ export class AdminProductService {
         throw new Error(Messages.PRODUCT.NOT_FOUND);
       }
 
-      // Get additional statistics
-      const [reviewStats, orderStats] = await Promise.all([
-        Review.aggregate([
-          { $match: { productId: new Types.ObjectId(productId) } },
-          {
-            $group: {
-              _id: null,
-              totalReviews: { $sum: 1 },
-              averageRating: { $avg: '$rating' },
-              ratingDistribution: {
-                $push: '$rating'
+      // Get additional statistics (non-throwing so create product always returns 201)
+      let reviewData = { totalReviews: 0, averageRating: 0, ratingDistribution: [] as number[] };
+      let orderData = { totalOrders: 0, totalQuantitySold: 0, totalRevenue: 0 };
+      try {
+        const [reviewStats, orderStats] = await Promise.all([
+          Review.aggregate([
+            { $match: { productId: new Types.ObjectId(productId) } },
+            {
+              $group: {
+                _id: null,
+                totalReviews: { $sum: 1 },
+                averageRating: { $avg: '$rating' },
+                ratingDistribution: { $push: '$rating' }
               }
             }
-          }
-        ]),
-        Order.aggregate([
-          {
-            $unwind: '$items'
-          },
-          {
-            $match: {
-              'items.productId': new Types.ObjectId(productId)
+          ]),
+          Order.aggregate([
+            { $unwind: '$items' },
+            { $match: { 'items.productId': new Types.ObjectId(productId) } },
+            {
+              $group: {
+                _id: null,
+                totalOrders: { $sum: 1 },
+                totalQuantitySold: { $sum: '$items.quantity' },
+                totalRevenue: { $sum: { $multiply: ['$items.unitPrice', '$items.quantity'] } }
+              }
             }
-          },
-          {
-            $group: {
-              _id: null,
-              totalOrders: { $sum: 1 },
-              totalQuantitySold: { $sum: '$items.quantity' },
-              totalRevenue: { $sum: { $multiply: ['$items.price', '$items.quantity'] } }
-            }
-          }
-        ])
-      ]);
-
-      const reviewData = reviewStats[0] || { totalReviews: 0, averageRating: 0, ratingDistribution: [] };
-      const orderData = orderStats[0] || { totalOrders: 0, totalQuantitySold: 0, totalRevenue: 0 };
+          ])
+        ]);
+        reviewData = reviewStats[0] || reviewData;
+        orderData = orderStats[0] || orderData;
+      } catch {
+        // Keep default stats so response still succeeds
+      }
 
       // Calculate rating distribution
       const ratingDistribution = [5, 4, 3, 2, 1].map(rating => {
@@ -324,22 +321,21 @@ export class AdminProductService {
   // Update product
   static async updateProduct(productId: string, updateData: any): Promise<any> {
     try {
-      const product = await Product.findById(productId);
+      const existing = await Product.findById(productId);
 
-      if (!product) {
+      if (!existing) {
         throw new Error(Messages.PRODUCT.NOT_FOUND);
       }
 
-      // Update fields
-      Object.keys(updateData).forEach(key => {
-        if (key !== '_id' && key !== 'createdAt' && key !== 'updatedAt') {
-          (product as any)[key] = updateData[key];
-        }
-      });
+      // Use shared ProductService logic so images are always uploaded
+      // to Cloudinary and only URLs are stored in the database.
+      await ProductService.updateProduct(
+        productId,
+        updateData,
+        existing.sellerId?.toString()
+      );
 
-      await product.save();
-
-      // Return updated product with populated data
+      // Return updated product with the same enriched shape used elsewhere
       return await this.getProductById(productId);
     } catch (error) {
       throw new Error(
