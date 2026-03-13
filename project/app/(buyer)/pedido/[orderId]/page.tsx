@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { useOrder, useOrderTracking } from '@/hooks/useOrders';
+import { useCancelOrder, useOrder, useOrderTracking } from '@/hooks/useOrders';
 import { useCreateRefundRequest } from '@/hooks/useRefunds';
 import { formatCurrency, formatDate } from '@/lib/payment';
 import { generateInvoiceHTML, InvoiceData } from '@/lib/invoice-generator';
@@ -28,6 +28,7 @@ export default function OrderTrackingPage() {
   const { data: tracking, isLoading: trackingLoading } = useOrderTracking(orderId);
   const createRefundRequest = useCreateRefundRequest();
   const [invoice, setInvoice] = useState<any>(null);
+  const cancelOrderMutation = useCancelOrder();
 
   // Refund request state
   const [showRefundModal, setShowRefundModal] = useState(false);
@@ -36,6 +37,8 @@ export default function OrderTrackingPage() {
   const [refundDescription, setRefundDescription] = useState('');
   const [refundImages, setRefundImages] = useState<File[]>([]);
   const [refundImagePreviews, setRefundImagePreviews] = useState<string[]>([]);
+  const [cancelReason, setCancelReason] = useState('');
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
 
   const generateInvoice = (): InvoiceData | null => {
@@ -107,6 +110,7 @@ export default function OrderTrackingPage() {
       case 'delivered':
         return 'Entregue';
       case 'canceled':
+      case 'cancelled':
         return 'Cancelado';
       case 'refunded':
         return 'Reembolsado';
@@ -292,6 +296,24 @@ export default function OrderTrackingPage() {
     }
   };
 
+  const canCancelOrder =
+    order &&
+    ['pending', 'confirmed', 'processing'].includes(order.status) &&
+    !cancelOrderMutation.isPending;
+
+  const handleCancelOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!order || cancelReason.trim().length < 10) return;
+
+    await cancelOrderMutation.mutateAsync({
+      orderId: order._id || (order as any).id || orderId,
+      reason: cancelReason.trim(),
+    });
+
+    setShowCancelModal(false);
+    setCancelReason('');
+  };
+
 
   if (isLoading) {
     return (
@@ -348,15 +370,28 @@ export default function OrderTrackingPage() {
                     Realizado em {formatDate(order?.createdAt || order?.date || '')}
                   </CardDescription>
                 </div>
-                <div className="flex items-center gap-2">
-                  {getStatusIcon(order?.status || '')}
-                  <Badge className={getStatusColor(order?.status || '')}>
-                    {getStatusText(order?.status || '')}
-                  </Badge>
-                  {getReturnStatus() && (
-                    <Badge className={getReturnStatus()?.color}>
-                      {getReturnStatus()?.text}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    {getStatusIcon(order?.status || '')}
+                    <Badge className={getStatusColor(order?.status || '')}>
+                      {getStatusText(order?.status || '')}
                     </Badge>
+                    {getReturnStatus() && (
+                      <Badge className={getReturnStatus()?.color}>
+                        {getReturnStatus()?.text}
+                      </Badge>
+                    )}
+                  </div>
+                  {canCancelOrder && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="ml-0 sm:ml-4 mt-2 sm:mt-0"
+                      onClick={() => setShowCancelModal(true)}
+                    >
+                      <X className="w-4 h-4 mr-2" />
+                      Cancelar Pedido
+                    </Button>
                   )}
                 </div>
               </div>
@@ -851,6 +886,69 @@ export default function OrderTrackingPage() {
                 className="bg-primary hover:bg-primary-hard text-white"
               >
                 {createRefundRequest.isPending ? 'Enviando...' : 'Solicitar Reembolso'}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Cancel Order Modal */}
+      <Dialog open={showCancelModal} onOpenChange={setShowCancelModal}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Cancelar Pedido</DialogTitle>
+            <DialogDescription>
+              Informe o motivo do cancelamento. Seu pedido só poderá ser cancelado enquanto estiver
+              em status de <strong>pendente</strong>, <strong>confirmado</strong> ou{' '}
+              <strong>em processamento</strong>.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleCancelOrder} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-7 mb-2">
+                Motivo do cancelamento *
+              </label>
+              <Textarea
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                placeholder="Explique por que deseja cancelar o pedido (mínimo 10 caracteres)..."
+                rows={4}
+                minLength={10}
+                maxLength={500}
+                required
+              />
+              <p className="text-xs text-gray-5 mt-1">
+                {cancelReason.length}/500 caracteres (mínimo 10)
+              </p>
+            </div>
+            {order && (
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md text-xs text-yellow-900 flex gap-2">
+                <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p>
+                    Após o cancelamento, o status do pedido será atualizado e, se aplicável, o
+                    reembolso será processado de acordo com a política da plataforma e do vendedor.
+                  </p>
+                </div>
+              </div>
+            )}
+            <div className="flex justify-end gap-2 pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setShowCancelModal(false);
+                  setCancelReason('');
+                }}
+              >
+                Voltar
+              </Button>
+              <Button
+                type="submit"
+                variant="destructive"
+                disabled={cancelReason.trim().length < 10 || cancelReason.trim().length > 500 || cancelOrderMutation.isPending}
+              >
+                {cancelOrderMutation.isPending ? 'Cancelando...' : 'Confirmar Cancelamento'}
               </Button>
             </div>
           </form>

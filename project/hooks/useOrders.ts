@@ -56,12 +56,13 @@ export const useCancelOrder = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (orderId: string) => {
-      const response = await apiClient.post(`/orders/${orderId}/cancel`);
-      return response.data.data;
+    mutationFn: async ({ orderId, reason }: { orderId: string; reason: string }) => {
+      const response = await apiClient.post(`/orders/${orderId}/cancel`, { reason });
+      return response.data.data.order as Order;
     },
-    onSuccess: () => {
+    onSuccess: (_order, variables) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
+      queryClient.invalidateQueries({ queryKey: ['order', variables.orderId] });
     },
   });
 };
