@@ -4,17 +4,22 @@ import React, { useState } from 'react';
 import { X, Heart, ShoppingCart, Plus, Minus, Star, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAddToCart } from '@/hooks/useCart';
 import { formatCurrency } from '@/lib/payment';
 import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
 
 export default function QuickViewPopup() {
   const { state, dispatch } = useMarketplace();
+  const addToCart = useAddToCart();
+  const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
 
   const product = state.quickViewProduct;
   if (!product) return null;
 
+  const productId = (product as any)._id ?? (product as any).id;
   const isInWishlist = state.wishlist.some(item => item.id === product.id);
   const discountPercentage = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -25,18 +30,42 @@ export default function QuickViewPopup() {
     ...(product.primaryImage ? [product.primaryImage] : []),
     ...(product.images?.map(img => typeof img === 'string' ? img : (img as any).url) || [])
   ].filter(Boolean);
+  const primaryImageUrl = productImages[0];
 
   const handleClose = () => {
     dispatch({ type: 'SET_QUICK_VIEW', payload: null });
   };
 
   const handleAddToCart = () => {
-    dispatch({ 
-      type: 'ADD_TO_CART', 
-      payload: { product, quantity } 
-    });
-    dispatch({ type: 'SHOW_CART_POPUP' });
-    handleClose();
+    if (!productId) return;
+    addToCart.mutate(
+      {
+        productId,
+        quantity,
+        productSnapshot: {
+          name: product.name,
+          price: product.price,
+          primaryImage: typeof primaryImageUrl === 'string' ? primaryImageUrl : undefined,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Adicionado ao carrinho',
+            description: `${product.name} foi adicionado ao seu carrinho.`,
+          });
+          dispatch({ type: 'SHOW_CART_POPUP' });
+          handleClose();
+        },
+        onError: (error: any) => {
+          toast({
+            title: 'Erro',
+            description: error?.response?.data?.error || error?.response?.data?.message || 'Erro ao adicionar ao carrinho.',
+            variant: 'destructive',
+          });
+        },
+      }
+    );
   };
 
   const handleToggleWishlist = () => {
@@ -213,11 +242,11 @@ export default function QuickViewPopup() {
               <div className="flex space-x-3">
                 <Button
                   onClick={handleAddToCart}
-                  disabled={!product.inStock}
+                  disabled={!product.inStock || addToCart.isPending}
                   className="flex-1 bg-primary hover:bg-primary-hard text-white py-3 flex items-center justify-center space-x-2"
                 >
                   <ShoppingCart size={18} />
-                  <span>Adicionar ao Carrinho</span>
+                  <span>{addToCart.isPending ? 'Adicionando...' : 'Adicionar ao Carrinho'}</span>
                 </Button>
                 <button
                   onClick={handleToggleWishlist}

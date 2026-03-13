@@ -53,8 +53,10 @@ export default function ProductPage() {
   // Check wishlist status via hook - must be called before any early returns
   const { data: isInWishlist = false } = useCheckWishlistStatus(productId);
 
-  // Check if product is in cart and get current quantity
-  const cartItem = cart?.items?.find((item: any) => item.productId?._id === product?._id);
+  // Check if product is in cart and get current quantity (works for both API cart and guest cart)
+  const cartItem = cart?.items?.find(
+    (item: any) => (item.product?._id ?? item.productId?._id ?? item.productId) === product?._id
+  );
   const isInCart = !!cartItem;
   const currentCartQuantity = cartItem?.quantity || 0;
 
@@ -91,15 +93,6 @@ export default function ProductPage() {
   }
 
   const handleAddToCart = () => {
-    if (!isAuthenticated) {
-      toast({
-        title: 'Login necessário',
-        description: 'Você precisa estar logado para adicionar itens ao carrinho.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     addToCart.mutate(
       {
         productId: product._id,
@@ -183,15 +176,6 @@ export default function ProductPage() {
   };
 
   const handleUpdateCartQuantity = (newQuantity: number) => {
-    if (!isAuthenticated) {
-      toast({
-        title: 'Login necessário',
-        description: 'Você precisa estar logado para atualizar o carrinho.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     if (newQuantity <= 0) {
       handleRemoveFromCart();
       return;
@@ -219,15 +203,6 @@ export default function ProductPage() {
   };
 
   const handleRemoveFromCart = () => {
-    if (!isAuthenticated) {
-      toast({
-        title: 'Login necessário',
-        description: 'Você precisa estar logado para remover itens do carrinho.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     removeFromCart.mutate(product._id, {
       onSuccess: () => {
         toast({
