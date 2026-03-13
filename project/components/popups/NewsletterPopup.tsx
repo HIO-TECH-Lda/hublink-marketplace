@@ -47,9 +47,9 @@ export default function NewsletterPopup() {
         <div className="p-8">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            {/* <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white text-2xl font-bold">T</span>
-            </div>
+            </div> */}
             <h2 className="text-2xl font-bold text-gray-9 mb-2">
               Assine Nossa Newsletter
             </h2>

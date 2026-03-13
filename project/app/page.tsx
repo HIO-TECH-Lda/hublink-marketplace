@@ -9,6 +9,7 @@ import ProductCard from '@/components/common/ProductCard';
 import ProductCardSkeleton from '@/components/common/ProductCardSkeleton';
 import SellerCard from '@/components/common/SellerCard';
 import NewsletterPopup from '@/components/popups/NewsletterPopup';
+import SellerPopup from '@/components/popups/SellerPopup';
 import CartPopup from '@/components/popups/CartPopup';
 import QuickViewPopup from '@/components/popups/QuickViewPopup';
 import { Button } from '@/components/ui/button';
@@ -434,7 +435,12 @@ export default function HomePage() {
       </section>
 
       <Footer />
-      <NewsletterPopup />
+      {/* Popup selection controlled via NEXT_PUBLIC_ACTIVE_POPUP */}
+      {process.env.NEXT_PUBLIC_ACTIVE_POPUP === 'SELLER' ? (
+        <SellerPopup />
+      ) : (
+        <NewsletterPopup />
+      )}
       <CartPopup />
       <QuickViewPopup />
     </div>
