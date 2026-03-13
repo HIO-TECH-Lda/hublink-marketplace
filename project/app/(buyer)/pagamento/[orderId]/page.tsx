@@ -52,13 +52,18 @@ export default function PaymentPage() {
     try {
       const result = await processPaymentMutation.mutateAsync({
         orderId: orderId,
-        paymentDetails: paymentDetails
+        paymentDetails: paymentDetails,
       });
-      
+
       return result;
     } catch (error: any) {
       console.error('Payment processing failed:', error);
-      throw new Error(error.message || 'Payment processing failed');
+      const apiMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error?.message ||
+        'Erro ao processar pagamento. Tente novamente.';
+      throw new Error(apiMessage);
     }
   };
 
