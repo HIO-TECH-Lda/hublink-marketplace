@@ -474,6 +474,86 @@ export const useAdminRefundStats = () => {
   });
 };
 
+// ============================================
+// Admin Payments Management
+// ============================================
+
+export interface AdminPaymentOrderItem {
+  productId: string;
+  productName: string;
+  sellerId: string;
+  sellerName: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+export interface AdminPaymentOrder {
+  _id: string;
+  orderNumber: string;
+  status: string;
+  total: number;
+  currency: string;
+  userId: string;
+  items: AdminPaymentOrderItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminPaymentUser {
+  _id: string;
+  name: string;
+  email: string;
+}
+
+export interface AdminPayment {
+  _id: string;
+  orderId: AdminPaymentOrder;
+  userId: AdminPaymentUser;
+  amount: number;
+  currency: string;
+  method: string;
+  gateway: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
+  gatewayTransactionId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminPaymentStats {
+  total: number;
+  pending: number;
+  processing: number;
+  completed: number;
+  failed: number;
+  refunded: number;
+  totalRevenue: number;
+}
+
+export interface AdminPaymentsResponse {
+  items: AdminPayment[];
+  total: number;
+  page: number;
+  limit: number;
+  stats: AdminPaymentStats;
+}
+
+export const useAdminPayments = (params?: {
+  page?: number;
+  limit?: number;
+  status?: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
+  method?: string;
+  gateway?: string;
+}) => {
+  return useQuery({
+    queryKey: ['admin', 'payments', params],
+    queryFn: async () => {
+      const response = await apiClient.get('/payments/admin', { params });
+      return response.data.data as AdminPaymentsResponse;
+    },
+  });
+};
+
 export const useAdminRefunds = (params?: {
   page?: number;
   limit?: number;
