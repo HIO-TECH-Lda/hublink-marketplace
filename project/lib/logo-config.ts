@@ -27,7 +27,7 @@ export const logoConfig = {
   favicon: process.env.NEXT_PUBLIC_FAVICON,
   
   // Brand name
-  brandName: process.env.NEXT_PUBLIC_BRAND_NAME || 'Txova',
+  brandName: process.env.NEXT_PUBLIC_BRAND_NAME,
 } as const;
 
 export type LogoVariant = 'main' | 'icon' | 'iconOverText' | 'white' | 'black' | 'gray' | 'green';

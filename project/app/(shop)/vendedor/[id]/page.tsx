@@ -128,7 +128,7 @@ export default function SellerProfilePage() {
 
                 {/* Basic Info */}
                 <div className="flex-1 min-w-0">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2 break-words">
+                  <h1 className="inline-block px-3 py-1 rounded-lg bg-white/90 shadow-sm text-2xl sm:text-3xl font-bold text-gray-9 mb-2 break-words">
                     {seller.businessName}
                   </h1>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-sm text-gray-6 flex-wrap">
