@@ -37,18 +37,18 @@ export default function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-green-gray-1 to-green-gray-2 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg')] bg-cover bg-center opacity-10"></div>
+      <section className="relative bg-gradient-to-r from-blue-gray-1 to-blue-gray-2 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg')] bg-cover bg-center opacity-10"></div>
         <div className="relative container py-12 sm:py-16 lg:py-20">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
               <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-9 leading-tight">
-                Alimentos Orgânicos
-                <span className="text-primary block">Frescos e Saudáveis</span>
+                VITRINE
+                <span className="text-primary block">Tudo que Você Precisa</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Conectamos você diretamente com produtores locais de alimentos orgânicos em Beira. 
-                Qualidade garantida, sabor autêntico e nutrição máxima para sua família.
+                Marketplace completo com produtos de qualidade em todas as categorias. 
+                Eletrônicos, moda, esportes, casa, beleza e muito mais.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link href="/loja">
@@ -67,8 +67,8 @@ export default function HomePage() {
             <div className="relative order-first lg:order-last">
               <div className="aspect-square rounded-full bg-gradient-to-br from-primary/20 to-primary-soft/20 flex items-center justify-center">
                 <img
-                  src="https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg"
-                  alt="Alimentos Orgânicos"
+                  src="https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg"
+                  alt="VITRINE Marketplace"
                   className="w-4/5 h-4/5 object-cover rounded-full"
                 />
               </div>
@@ -118,7 +118,7 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos em Destaque</h2>
-            <p className="text-gray-6">Descubra nossa seleção especial de produtos orgânicos</p>
+            <p className="text-gray-6">Descubra nossa seleção especial de produtos de qualidade</p>
           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {featuredLoading ? (
@@ -154,32 +154,32 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
-                Marketplace de Alimentos Orgânicos
+                Marketplace Completo
                 <span className="block">100% Confiável</span>
               </h2>
-              <p className="text-lg text-green-gray-1">
-                Nossos produtores são certificados e seguem os mais rigorosos padrões 
-                de qualidade para garantir que você receba apenas o melhor em Beira.
+              <p className="text-lg text-blue-gray-1">
+                Oferecemos produtos de qualidade em todas as categorias, 
+                com os melhores preços e entrega rápida em Beira.
               </p>
               <div className="flex items-center space-x-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold">1000+</div>
-                  <div className="text-sm text-green-gray-2">Produtos</div>
+                  <div className="text-sm text-blue-gray-2">Produtos</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold">50+</div>
-                  <div className="text-sm text-green-gray-2">Vendedores</div>
+                  <div className="text-sm text-blue-gray-2">Vendedores</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold">10k+</div>
-                  <div className="text-sm text-green-gray-2">Clientes</div>
+                  <div className="text-sm text-blue-gray-2">Clientes</div>
                 </div>
               </div>
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
-                alt="Alimentos Orgânicos Confiáveis"
+                src="https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg"
+                alt="VITRINE Marketplace"
                 className="rounded-2xl shadow-2xl"
               />
             </div>
@@ -394,7 +394,7 @@ export default function HomePage() {
                     id: '3',
                     name: 'Ana Costa',
                     role: 'Beira, Sofala',
-                    content: 'A variedade de produtos orgânicos é incrível. Minha família está mais saudável desde que começamos a comprar aqui.',
+                    content: 'A variedade de produtos é incrível. Encontro tudo que preciso em um só lugar, com preços excelentes e entrega rápida.',
                     rating: 5,
                     image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
                   },

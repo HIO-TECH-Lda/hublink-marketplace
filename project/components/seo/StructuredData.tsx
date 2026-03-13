@@ -105,7 +105,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
             availability: productData.availability,
             seller: {
               '@type': 'Organization',
-              name: 'Txova',
+              name: 'VITRINE',
             },
           },
         };
@@ -137,9 +137,9 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
         return {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: 'Txova - Marketplace Orgânico',
+          name: 'VITRINE - Marketplace Completo',
           url: baseUrl,
-          description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
+          description: 'Marketplace completo com produtos de qualidade em todas as categorias',
           potentialAction: {
             '@type': 'SearchAction',
             target: {
@@ -172,10 +172,10 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
 
 // Helper functions for common structured data (use siteConfig at call site for env-based values)
 export const getOrganizationData = (): OrganizationData => ({
-  name: 'Txova - Marketplace Orgânico',
+  name: 'VITRINE - Marketplace Completo',
   url: siteConfig.appUrl,
   logo: `${siteConfig.appUrl}/icons/icon-512x512.png`,
-  description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
+  description: 'Marketplace completo com produtos de qualidade em todas as categorias',
   address: {
     streetAddress: 'Rua Principal, 123',
     addressLocality: 'Beira',
@@ -184,14 +184,14 @@ export const getOrganizationData = (): OrganizationData => ({
     addressCountry: 'MZ',
   },
   contactPoint: {
-    telephone: '+258 84 123 4567',
+    telephone: '+258 84 9999-9999',
     contactType: 'customer service',
     email: siteConfig.contactEmail,
   },
   sameAs: [
-    'https://facebook.com/txova',
-    'https://instagram.com/txova',
-    'https://twitter.com/txova',
+    'https://facebook.com/vitrine',
+    'https://instagram.com/vitrine',
+    'https://twitter.com/vitrine',
   ],
 });
 
@@ -202,7 +202,7 @@ export const getProductData = (product: any): ProductData => ({
   price: product.price,
   priceCurrency: 'MZN',
   availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-  brand: product.brand || 'Txova',
+  brand: product.brand || 'VITRINE',
   category: product.category,
   sku: product.sku || product.id,
   url: `${siteConfig.appUrl}/produto/${product.id}`,

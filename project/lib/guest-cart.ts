@@ -1,4 +1,4 @@
-const KEY = 'txova_guest_cart';
+const KEY = 'vitrine_guest_cart';
 const MAX_ITEMS = 50;
 
 export interface GuestCartItem {

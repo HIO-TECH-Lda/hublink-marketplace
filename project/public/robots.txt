@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://txova.co.mz/sitemap.xml
+Sitemap: https://vitrine.co.mz/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1

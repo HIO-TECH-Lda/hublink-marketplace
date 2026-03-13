@@ -1,6 +1,6 @@
 # API Integration Implementation
 
-This document outlines the complete API integration implementation for the Txova Marketplace frontend.
+This document outlines the complete API integration implementation for the Vitrine Marketplace frontend.
 
 ## 🚀 What's Been Implemented
 
@@ -59,7 +59,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3002
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
 
 # App Configuration
-NEXT_PUBLIC_APP_NAME=Txova Marketplace
+NEXT_PUBLIC_APP_NAME=Vitrine Marketplace
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 

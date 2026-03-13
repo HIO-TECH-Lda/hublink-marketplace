@@ -1,7 +1,7 @@
-# Txova - Mozambique Context Update Summary
+# Vitrine - Mozambique Context Update Summary
 
 ## Overview
-This document summarizes all changes made to adapt the Txova marketplace application for the Mozambique market, specifically for Beira, Sofala.
+This document summarizes all changes made to adapt the Vitrine marketplace application for the Mozambique market, specifically for Beira, Sofala.
 
 ## 🎯 Key Changes Made
 
@@ -31,7 +31,7 @@ This document summarizes all changes made to adapt the Txova marketplace applica
 ### 2. Application Metadata (`app/layout.tsx`)
 
 **Updated:**
-- **Title:** "Txova - Marketplace de Alimentos Orgânicos em Beira"
+- **Title:** "Vitrine - Marketplace de Alimentos Orgânicos em Beira"
 - **Description:** "Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala"
 - **Language:** `pt-MZ` (Portuguese Mozambique)
 

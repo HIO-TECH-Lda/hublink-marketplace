@@ -36,7 +36,7 @@ export default function Logo({
   priority = false,
 }: LogoProps) {
   const logoPath = logoConfig[variant];
-  const brandName = logoConfig.brandName ?? 'Txova';
+  const brandName = logoConfig.brandName ?? 'VITRINE';
   
   // Fallback: Text-based logo with circular "T"
   const FallbackLogo = () => (

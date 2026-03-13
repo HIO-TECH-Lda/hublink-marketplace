@@ -1,10 +1,10 @@
-# Relatório Sprint 01 - Txova Marketplace
+# Relatório Sprint 01 - Vitrine Marketplace
 
 ## 📋 Resumo Executivo
 
 **Data:** Janeiro 2024  
 **Sprint:** 01  
-**Projeto:** Txova - Marketplace de Alimentos Orgânicos  
+**Projeto:** Vitrine - Marketplace de Alimentos Orgânicos  
 **Status:** ✅ Concluído  
 
 ### Objetivos da Sprint

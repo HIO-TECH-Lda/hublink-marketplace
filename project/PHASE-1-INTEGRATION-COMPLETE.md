@@ -292,7 +292,7 @@ GET  /newsletter/status/:email
 Ensure `.env.local` has:
 ```env
 NEXT_PUBLIC_API_BASE_URL_DEV=http://localhost:3002/api/v1
-NEXT_PUBLIC_API_BASE_URL_PROD=https://api.txova.com/api/v1
+NEXT_PUBLIC_API_BASE_URL_PROD=https://api.vitrine.com/api/v1
 ```
 
 ### Backend Requirements:

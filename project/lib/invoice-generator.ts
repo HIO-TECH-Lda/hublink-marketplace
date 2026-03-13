@@ -47,7 +47,7 @@ export const generateInvoiceHTML = (invoice: InvoiceData): string => {
     </head>
     <body>
       <div class="header">
-        <h1>TXOVA</h1>
+        <h1>VITRINE</h1>
         <h2>Fatura #${invoice.orderNumber}</h2>
         <p>Data: ${formatDate(invoice.date)}</p>
       </div>

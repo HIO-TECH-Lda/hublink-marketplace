@@ -86,7 +86,7 @@ export default function FAQPage() {
             {/* Page Header */}
             <div className="mb-8">
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-9 mb-4">
-                Bem-vindo, Vamos Falar Sobre Nosso Txova
+                Bem-vindo, Vamos Falar Sobre Nosso Vitrine
               </h1>
               <p className="text-lg text-gray-7">
                 Encontre respostas para as perguntas mais frequentes sobre nossos produtos, 
@@ -240,7 +240,7 @@ export default function FAQPage() {
               <div className="bg-primary/10 rounded-lg p-4">
                 <h3 className="text-lg font-bold text-gray-9 mb-2">Fique por Dentro</h3>
                 <p className="text-sm text-gray-7 mb-4">
-                  Receba dicas sobre alimentação orgânica e novidades do Txova.
+                  Receba dicas sobre alimentação orgânica e novidades do Vitrine.
                 </p>
                 <div className="space-y-2">
                   <input

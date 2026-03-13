@@ -1,8 +1,8 @@
-# Color Palette Update - Txova Branding Colors
+# Color Palette Update - Vitrine Branding Colors
 
 ## New Branding Colors
 
-Based on the official Txova branding, the following colors have been implemented across the application:
+Based on the official Vitrine branding, the following colors have been implemented across the application:
 
 ### Primary Colors
 - **Primary (DEFAULT)**: `#097019` - Dark green, main brand color

@@ -121,7 +121,7 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
       {/* Store Info */}
       {user?.sellerProfile && (
         <div className="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-2">
-          <h4 className="font-medium text-gray-9 text-sm sm:text-base mb-2">Minha Banca</h4>
+          <h4 className="font-medium text-gray-9 text-sm sm:text-base mb-2">Minha Loja</h4>
           <div className="space-y-1 text-xs sm:text-sm text-gray-6">
             <p className="font-medium text-gray-9">{user.sellerProfile.storeName || 'Minha Loja'}</p>
             <p className="text-gray-6">{user.email}</p>

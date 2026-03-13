@@ -1,4 +1,4 @@
-# 🚀 SEO Improvements Guide - Txova Marketplace
+# 🚀 SEO Improvements Guide - Vitrine Marketplace
 
 ## ✅ **SEO Features Implemented**
 
@@ -51,7 +51,7 @@
 ```txt
 User-agent: *
 Allow: /
-Sitemap: https://txova.co.mz/sitemap.xml
+Sitemap: https://vitrine.co.mz/sitemap.xml
 Crawl-delay: 1
 
 # Disallow admin and private areas
@@ -106,9 +106,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Txova - Marketplace Orgânico",
-  "url": "https://txova.co.mz",
-  "logo": "https://txova.co.mz/icons/icon-512x512.png",
+  "name": "Vitrine - Marketplace Orgânico",
+  "url": "https://vitrine.co.mz",
+  "logo": "https://vitrine.co.mz/icons/icon-512x512.png",
   "address": { /* complete address */ },
   "contactPoint": { /* contact info */ }
 }
@@ -124,7 +124,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 ```typescript
 // Comprehensive metadata
 export const metadata: Metadata = {
-  title: { default: '...', template: '%s | Txova' },
+  title: { default: '...', template: '%s | Vitrine' },
   description: '...',
   keywords: ['alimentos orgânicos', 'marketplace', 'Beira', ...],
   openGraph: { /* social sharing */ },
@@ -171,7 +171,7 @@ export const metadata: Metadata = {
     "@type": "ContactPoint",
     "telephone": "+258 84 123 4567",
     "contactType": "customer service",
-    "email": "contato@txova.co.mz"
+    "email": "contato@vitrine.co.mz"
   }
 }
 ```
@@ -307,7 +307,7 @@ export const metadata: Metadata = {
 
 ## 🎉 **Conclusion**
 
-The Txova marketplace now has a **comprehensive SEO foundation** that positions it for success in the Mozambican organic food market. With proper implementation and ongoing optimization, the platform is ready to dominate local search results and drive sustainable organic growth.
+The Vitrine marketplace now has a **comprehensive SEO foundation** that positions it for success in the Mozambican organic food market. With proper implementation and ongoing optimization, the platform is ready to dominate local search results and drive sustainable organic growth.
 
 **Key Achievements:**
 - ✅ **Technical SEO Excellence** - 95/100 score

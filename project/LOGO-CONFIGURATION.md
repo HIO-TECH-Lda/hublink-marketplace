@@ -1,7 +1,7 @@
 # Logo Configuration System
 
 ## Overview
-This document describes the centralized logo management system implemented across the Txova marketplace application.
+This document describes the centralized logo management system implemented across the Vitrine marketplace application.
 
 ## Implementation Date
 January 26, 2026
@@ -40,15 +40,15 @@ Add these variables to your `.env.local` file:
 
 ```env
 # Logo Configuration
-NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-txova-fundo-transparente.png
-NEXT_PUBLIC_LOGO_ICON=/logo/Favicon-logo-txova.png
-NEXT_PUBLIC_LOGO_ICON_OVER_TEXT=/logo/Logo-txova-fundo-transparente-icon-por-cima-da-fonte.png
-NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-txova-fundo-transparente-monocromatico-branco.png
-NEXT_PUBLIC_LOGO_BLACK=/logo/Logo-txova-fundo-transparente-monocromatico-preto.png
-NEXT_PUBLIC_LOGO_GRAY=/logo/Logo-txova-fundo-transparente-monocromatico--cinza.png
-NEXT_PUBLIC_LOGO_GREEN=/logo/Logo-txova-fundo-transparente-monocromatico--verde-sem-gradiente.png
-NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-txova.png
-NEXT_PUBLIC_BRAND_NAME=Txova
+NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-vitrine-fundo-transparente.png
+NEXT_PUBLIC_LOGO_ICON=/logo/Favicon-logo-vitrine.png
+NEXT_PUBLIC_LOGO_ICON_OVER_TEXT=/logo/Logo-vitrine-fundo-transparente-icon-por-cima-da-fonte.png
+NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-vitrine-fundo-transparente-monocromatico-branco.png
+NEXT_PUBLIC_LOGO_BLACK=/logo/Logo-vitrine-fundo-transparente-monocromatico-preto.png
+NEXT_PUBLIC_LOGO_GRAY=/logo/Logo-vitrine-fundo-transparente-monocromatico--cinza.png
+NEXT_PUBLIC_LOGO_GREEN=/logo/Logo-vitrine-fundo-transparente-monocromatico--verde-sem-gradiente.png
+NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-vitrine.png
+NEXT_PUBLIC_BRAND_NAME=Vitrine
 ```
 
 ### Variable Descriptions
@@ -63,7 +63,7 @@ NEXT_PUBLIC_BRAND_NAME=Txova
 | `NEXT_PUBLIC_LOGO_GRAY` | Gray monochromatic variant | No* |
 | `NEXT_PUBLIC_LOGO_GREEN` | Green monochromatic variant | No* |
 | `NEXT_PUBLIC_FAVICON` | Favicon for browser tab | No* |
-| `NEXT_PUBLIC_BRAND_NAME` | Brand name (defaults to "Txova") | No |
+| `NEXT_PUBLIC_BRAND_NAME` | Brand name (defaults to "Vitrine") | No |
 
 *Not technically required because the system falls back to text-based logo, but recommended for production.
 
@@ -75,13 +75,13 @@ All logo files are stored in `/public/logo/`:
 
 ```
 /public/logo/
-├── Logo-txova-fundo-transparente.png
-├── Favicon-logo-txova.png
-├── Logo-txova-fundo-transparente-icon-por-cima-da-fonte.png
-├── Logo-txova-fundo-transparente-monocromatico-branco.png
-├── Logo-txova-fundo-transparente-monocromatico-preto.png
-├── Logo-txova-fundo-transparente-monocromatico--cinza.png
-└── Logo-txova-fundo-transparente-monocromatico--verde-sem-gradiente.png
+├── Logo-vitrine-fundo-transparente.png
+├── Favicon-logo-vitrine.png
+├── Logo-vitrine-fundo-transparente-icon-por-cima-da-fonte.png
+├── Logo-vitrine-fundo-transparente-monocromatico-branco.png
+├── Logo-vitrine-fundo-transparente-monocromatico-preto.png
+├── Logo-vitrine-fundo-transparente-monocromatico--cinza.png
+└── Logo-vitrine-fundo-transparente-monocromatico--verde-sem-gradiente.png
 ```
 
 ---
@@ -147,7 +147,7 @@ When environment variables are **not set** (undefined), the Logo component autom
 
 ```
 ┌─────────┬──────────┐
-│    T    │  Txova   │  ← Circular "T" + Brand Name
+│    T    │  Vitrine   │  ← Circular "T" + Brand Name
 └─────────┴──────────┘
 ```
 
@@ -226,10 +226,10 @@ Uses Next.js `<Image>` component with automatic optimization.
 
 3. **Configure environment variables** in `.env.local`:
    ```env
-   NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-txova-fundo-transparente.png
-   NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-txova-fundo-transparente-monocromatico-branco.png
-   NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-txova.png
-   NEXT_PUBLIC_BRAND_NAME=Txova
+   NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-vitrine-fundo-transparente.png
+   NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-vitrine-fundo-transparente-monocromatico-branco.png
+   NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-vitrine.png
+   NEXT_PUBLIC_BRAND_NAME=Vitrine
    ```
 
 4. **Restart Next.js development server**:

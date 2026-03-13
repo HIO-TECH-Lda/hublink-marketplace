@@ -1,8 +1,12 @@
-# VITRINE - Relatório de Atualização do Marketplace
+# VITRINE - Relatório de Atualização do Marketplace v2.0
 
 ## 📋 Resumo Executivo
 
 Este documento detalha a transformação completa do marketplace de uma plataforma focada em produtos orgânicos para o **VITRINE**, um marketplace geral que oferece produtos em todas as categorias, mantendo o contexto moçambicano e a moeda local (MZN).
+
+**Versão:** 3.0  
+**Data de Atualização:** March 2026  
+**Status:** ✅ Concluído
 
 ## 🎯 Objetivos da Transformação
 
@@ -10,7 +14,7 @@ Este documento detalha a transformação completa do marketplace de uma platafor
 - **Mudança de nicho** de produtos orgânicos para marketplace geral
 - **Atualização da identidade visual** com esquema de cores azul
 - **Manutenção do contexto moçambicano** (MZN, pt-MZ, contatos locais)
-- **Atualização de todos os dados mock** para refletir o novo contexto
+- **Remoção completa** de referências a produtos orgânicos e "Banca"
 
 ## 🎨 Atualizações de Branding e Design
 
@@ -18,11 +22,13 @@ Este documento detalha a transformação completa do marketplace de uma platafor
 - **Cor primária:** Azul (#2563EB, #60A5FA, #1D4ED8)
 - **Paleta de cores:** Substituição do verde por azul em todo o sistema
 - **CSS Variables:** Atualização das variáveis `--primary` e `--ring`
+- **Paleta:** `green-gray` substituída por `blue-gray`
 
 ### Identidade Visual
-- **Logo:** Mudança de "T" (Txova) para "V" (VITRINE)
+- **Logo:** Mudança de "T" (Vitrine) para "V" (VITRINE)
 - **Nome da marca:** "VITRINE" em todas as referências
 - **Slogan:** "VITRINE - Tudo que Você Precisa"
+- **Terminologia:** "Banca" substituída por "Loja" em todo o sistema
 
 ## 📱 Atualizações PWA e SEO
 
@@ -32,14 +38,53 @@ Este documento detalha a transformação completa do marketplace de uma platafor
 - **Categorias:** shopping, business, lifestyle
 - **Shortcuts:** Produtos em Destaque, Carrinho, Minha Conta
 - **Screenshots:** Atualizados para refletir o novo design
+- **Theme Color:** #2563EB (azul)
 
 ### SEO e Metadados
 - **Título:** "VITRINE - Marketplace Completo"
 - **Descrição:** Marketplace completo com produtos de qualidade em todas as categorias
 - **Keywords:** marketplace, eletrônicos, moda, esportes, casa, beleza
-- **Locale:** pt-BR (com manutenção de pt-MZ para moeda e formatação)
+- **URL Base:** https://vitrine.com
+- **Locale:** pt-MZ (mantido para moeda e formatação)
 
-## 🛍️ Atualizações de Produtos
+## 🖼️ Atualizações de Imagens
+
+### Placeholder Images
+- **Cores:** Todas as imagens placeholder atualizadas de verde (#53B046, #00BE27) para azul (#2563EB)
+- **Locais:** `app/page.tsx`, `app/(shop)/vendedores/page.tsx`, `contexts/MarketplaceContext.tsx`
+
+### Imagens de Conteúdo
+- **Homepage Hero:** Atualizada de produtos orgânicos para imagem de e-commerce geral
+- **About Page:** Imagens atualizadas para refletir marketplace geral
+- **Blog Posts:** Imagens atualizadas para temas gerais de marketplace
+- **URLs:** Substituídas referências a imagens de produtos orgânicos por imagens de e-commerce/marketplace
+
+### Alt Text
+- Todas as descrições de imagens atualizadas de "Alimentos Orgânicos" para "VITRINE Marketplace"
+
+## 📧 Atualizações de Email
+
+### Domínios Atualizados
+- **Antes:** ecobazar.com
+- **Depois:** vitrine.com
+
+### Endereços de Email Atualizados
+- `contato@vitrine.com`
+- `suporte@vitrine.com`
+- `noreply@vitrine.com`
+- `juridico@vitrine.com`
+- `privacidade@vitrine.com`
+
+**Arquivos atualizados:**
+- `app/(content)/termos/page.tsx`
+- `app/(content)/privacidade/page.tsx`
+- `app/(admin)/admin/configuracoes/page.tsx`
+- `app/(content)/faq/page.tsx`
+- `app/(content)/trocas-devolucoes/page.tsx`
+- `app/(content)/contato/page.tsx`
+- `app/(content)/ajuda/page.tsx`
+
+## 🛍️ Atualizações de Produtos e Conteúdo
 
 ### Categorias Principais
 1. **Eletrônicos** - Smartphones, computadores, acessórios
@@ -51,132 +96,56 @@ Este documento detalha a transformação completa do marketplace de uma platafor
 7. **Brinquedos** - Brinquedos e jogos para todas as idades
 8. **Automotivo** - Acessórios e produtos para veículos
 
-### Produtos em Destaque
-- **Smartphone Samsung Galaxy A54** - MZN 450,00
-- **Tênis Nike Air Max** - MZN 299,90
-- **Smartwatch Apple Watch** - MZN 899,90
-- **Camiseta Básica Algodão** - MZN 29,90
-- **Livro "O Poder do Hábito"** - MZN 45,00
-- **Perfume Masculino** - MZN 89,90
+### Blog Posts Atualizados
+**Antes (Orgânicos):**
+1. Os Benefícios dos Alimentos Orgânicos
+2. Como Cultivar sua Própria Horta Orgânica
+3. Receitas Saudáveis com Produtos Orgânicos
+4. O Impacto Ambiental da Agricultura Orgânica
+5. Dicas para Escolher os Melhores Produtos Orgânicos
+6. A Importância da Estação dos Alimentos
 
-### Vendedores Atualizados
-- **TechStore** - Produtos eletrônicos e tecnologia
-- **SportStore** - Equipamentos esportivos e fitness
-- **FashionStore** - Moda e acessórios
-- **BookStore** - Livros e material educacional
-- **BeautyStore** - Cosméticos e produtos de beleza
-- **HomeStore** - Decoração e produtos para casa
+**Depois (Marketplace Geral):**
+1. Guia Completo: Como Escolher o Smartphone Ideal
+2. Tendências de Moda 2024: O Que Está em Alta
+3. Dicas de Compras Online: Como Comprar com Segurança
+4. Equipamentos Esportivos Essenciais para Iniciantes
+5. Decoração de Casa: Ideias Modernas e Acessíveis
+6. Produtos de Beleza: Guia de Cuidados Pessoais
 
-## 🏢 Atualizações do Painel Administrativo
+**Tags atualizadas:** De `['orgânico', 'saúde', 'nutrição', 'horta', 'cultivo', 'receitas', 'culinária']` para `['tecnologia', 'moda', 'esportes', 'casa', 'beleza', 'compras', 'dicas']`
 
-### Dashboard Principal
-- **Atividades recentes** atualizadas para produtos gerais
-- **Estatísticas** refletindo marketplace geral
-- **Métricas de performance** adaptadas ao novo contexto
+## 🔄 Terminologia Atualizada
 
-### Gestão de Produtos
-- **Lista de produtos** com itens de marketplace geral
-- **Categorias** atualizadas (Eletrônicos, Moda, Esportes, etc.)
-- **Vendedores** com nomes de lojas gerais
-- **Preços** em Meticais (MZN)
+### "Banca" → "Loja"
+- **Seller Configuration:** "Nome da Banca" → "Nome da Loja"
+- **Seller Sidebar:** "Minha Banca" → "Minha Loja"
+- **Tabs:** "Banca" → "Loja"
+- **PWA Shortcuts:** "Banca" → "Produtos em Destaque"
+- **Offline Page:** "Banca de Produtos" → "Loja de Produtos"
 
-### Gestão de Vendedores
-- **Dados mock** atualizados para lojas gerais
-- **Descrições** focadas em produtos de qualidade
-- **Categorias** de produtos diversificadas
-- **Endereços** mantidos em contexto moçambicano
+### Remoção de Referências Orgânicas
+- **Homepage:** "Banca de Alimentos Orgânicos" → "VITRINE Marketplace"
+- **FAQ:** Perguntas sobre orgânicos substituídas por perguntas sobre compras
+- **Seller Descriptions:** Atualizadas de fazendas orgânicas para lojas gerais
+- **Testimonials:** Atualizados para refletir experiência de marketplace geral
 
-### Gestão de Categorias
-- **8 categorias principais** implementadas
-- **Descrições** atualizadas para marketplace geral
-- **Contadores de produtos** realistas
-- **Status** ativo/inativo configurado
+## 💾 Atualizações de LocalStorage
 
-### Newsletter e Marketing
-- **Campanhas** atualizadas para produtos gerais
-- **Assinantes** com preferências diversificadas
-- **Tags** de categorias gerais (eletrônicos, moda, esportes)
-- **Templates** de email adaptados
+### Chaves Atualizadas
+- **Antes:** `ecobazar_*`
+- **Depois:** `vitrine_*`
 
-### Relatórios e Analytics
-- **Produtos mais vendidos** com itens gerais
-- **Vendedores em destaque** com lojas diversificadas
-- **Receitas** atualizadas para preços de marketplace geral
-- **Métricas** de performance adaptadas
+**Chaves específicas:**
+- `vitrine_cart`
+- `vitrine_wishlist`
+- `vitrine_user`
+- `vitrine_authenticated`
+- `vitrine_guest_cart`
 
-### Gestão de Reembolsos
-- **Itens para devolução** atualizados (smartphones, roupas, etc.)
-- **Descrições** de problemas adaptadas
-- **Vendedores** com nomes de lojas gerais
-- **Valores** em Meticais (MZN)
-
-### Configurações do Sistema
-- **Nome do site:** "VITRINE"
-- **Descrição:** Marketplace completo com produtos de qualidade
-- **Moeda:** MZN (Meticais)
-- **Locale:** pt-MZ
-- **Contatos:** Mantidos em contexto moçambicano
-
-## 📄 Atualizações de Conteúdo
-
-### Página Inicial
-- **Hero Section:** "VITRINE - Tudo que Você Precisa"
-- **Vendedores em destaque:** Lojas gerais com produtos diversos
-- **Depoimentos:** Clientes satisfeitos com marketplace geral
-- **Call-to-action:** "Seja um Vendedor" com navegação funcional
-
-### Páginas de Conteúdo
-- **Sobre:** Missão atualizada para marketplace geral
-- **FAQ:** Perguntas adaptadas para produtos gerais
-- **Contato:** Informações mantidas em contexto moçambicano
-- **Seja Vendedor:** Formulário adaptado para lojas gerais
-- **Ajuda:** Conteúdo atualizado para marketplace geral
-
-### Footer
-- **Logo:** "V" para VITRINE
-- **Descrição:** Marketplace completo
-- **Contatos:** Endereço em Beira, Moçambique
-- **Telefone:** +258 84 9999-9999
-- **Email:** contato@vitrine.com
-
-## 🔧 Atualizações Técnicas
-
-### Contexto da Aplicação
-- **MarketplaceContext:** Dados mock completamente atualizados
-- **LocalStorage:** Chaves atualizadas para "vitrine_*"
-- **Estado global:** Produtos, vendedores, pedidos atualizados
-
-### Formatação e Localização
-- **Moeda:** Meticais (MZN) mantida
-- **Locale:** pt-MZ para formatação de datas e números
-- **Timezone:** America/Sao_Paulo
-- **Contatos:** Números moçambicanos mantidos
-
-### Componentes Atualizados
-- **ProductCard:** Adaptado para produtos gerais
-- **SellerCard:** Atualizado para lojas gerais
-- **Layout components:** Branding VITRINE aplicado
-- **UI components:** Cores azuis implementadas
-
-### SEO e Structured Data
-- **lib/seo.ts:** Configurações SEO completamente atualizadas
-  - URLs base: https://vitrine.com
-  - Keywords: marketplace, eletrônicos, moda, esportes, casa, beleza
-  - Meta tags: Títulos e descrições adaptados para marketplace geral
-  - Open Graph: Configurações para redes sociais
-  - Twitter Cards: Otimização para Twitter
-- **components/seo/StructuredData.tsx:** Dados estruturados atualizados
-  - Organization Schema: VITRINE - Marketplace Completo
-  - Product Schema: Adaptado para produtos gerais
-  - Website Schema: Busca otimizada para marketplace
-  - Breadcrumb Schema: Navegação estruturada
-  - URLs e contatos atualizados para VITRINE
-- **app/sitemap.ts:** URL base atualizada para https://vitrine.com
-- **public/sw.js:** Service Worker atualizado com branding VITRINE
-  - Cache names: vitrine-v1.0.0, vitrine-static-v1.0.0, vitrine-dynamic-v1.0.0
-  - Notificações: "Nova notificação da VITRINE"
-  - Título das notificações: "VITRINE"
-- **Newsletter Campaigns:** Email sender atualizado para "VITRINE <noreply@vitrine.com>"
+**Arquivos:**
+- `contexts/MarketplaceContext.tsx`
+- `lib/guest-cart.ts`
 
 ## 📁 Lista Completa de Arquivos Alterados
 
@@ -187,93 +156,62 @@ Este documento detalha a transformação completa do marketplace de uma platafor
 
 ### **Arquivos de Layout e Metadados**
 4. **`app/layout.tsx`** - Metadados, SEO, branding VITRINE
-5. **`app/page.tsx`** - Página inicial com novo contexto
+5. **`app/page.tsx`** - Página inicial com novo contexto, imagens atualizadas
 6. **`components/layout/Footer.tsx`** - Logo, contatos, descrição
 7. **`components/layout/Header.tsx`** - Navegação e branding
+8. **`components/layout/AdminLayout.tsx`** - Logo admin atualizado
 
 ### **Arquivos de Contexto e Estado**
-8. **`contexts/MarketplaceContext.tsx`** - Dados mock, localStorage, produtos
-9. **`lib/seo.ts`** - Configurações SEO completas
-10. **`components/seo/StructuredData.tsx`** - Dados estruturados JSON-LD
+9. **`contexts/MarketplaceContext.tsx`** - Dados mock, localStorage, blog posts, imagens placeholder
+10. **`lib/seo.ts`** - Configurações SEO completas
+11. **`components/seo/StructuredData.tsx`** - Dados estruturados JSON-LD
 
 ### **Arquivos PWA e Service Worker**
-11. **`public/manifest.json`** - Manifest PWA atualizado
-12. **`public/sw.js`** - Service Worker com branding VITRINE
-13. **`app/api/manifest/route.ts`** - API route do manifest
-14. **`app/sitemap.ts`** - Sitemap com nova URL base
+12. **`public/manifest.json`** - Manifest PWA atualizado
+13. **`public/sw.js`** - Service Worker com branding VITRINE
+14. **`app/api/manifest/route.ts`** - API route do manifest
+15. **`app/sitemap.ts`** - Sitemap com nova URL base
 
 ### **Páginas de Conteúdo Público**
-15. **`app/(content)/sobre/page.tsx`** - Página sobre com nova missão
-16. **`app/(content)/faq/page.tsx`** - FAQ atualizado para marketplace geral
-17. **`app/(content)/contato/page.tsx`** - Contatos e informações
-18. **`app/(content)/ajuda/page.tsx`** - Centro de ajuda
-19. **`app/(content)/seja-vendedor/page.tsx`** - Formulário de vendedor
+16. **`app/(content)/sobre/page.tsx`** - Página sobre com nova missão, imagens atualizadas
+17. **`app/(content)/faq/page.tsx`** - FAQ atualizado, emails atualizados
+18. **`app/(content)/contato/page.tsx`** - Contatos e emails atualizados
+19. **`app/(content)/ajuda/page.tsx`** - Centro de ajuda, emails atualizados
+20. **`app/(content)/seja-vendedor/page.tsx`** - Formulário de vendedor, terminologia atualizada
+21. **`app/(content)/termos/page.tsx`** - Termos atualizados, emails atualizados
+22. **`app/(content)/privacidade/page.tsx`** - Privacidade atualizada, emails atualizados
+23. **`app/(content)/blog/page.tsx`** - Blog listagem, tags atualizadas
+24. **`app/(content)/blog/[id]/page.tsx`** - Blog post individual atualizado
+25. **`app/(content)/trocas-devolucoes/page.tsx`** - Emails atualizados
 
-### **Painel Administrativo - Dashboard**
-20. **`app/(admin)/admin/page.tsx`** - Dashboard principal
-21. **`app/(admin)/admin/configuracoes/page.tsx`** - Configurações do sistema
+### **Páginas de Loja**
+26. **`app/(shop)/vendedores/page.tsx`** - Lista de vendedores, imagens e descrições atualizadas
+27. **`app/(shop)/vendedor/[id]/page.tsx`** - Perfil de vendedor atualizado
+28. **`app/(shop)/loja/page.tsx`** - Página de loja
 
-### **Painel Administrativo - Gestão de Produtos**
-22. **`app/(admin)/admin/produtos/page.tsx`** - Lista de produtos
-23. **`app/(admin)/admin/produtos/novo/page.tsx`** - Criação de produtos
-24. **`app/(admin)/admin/produtos/[id]/page.tsx`** - Detalhes/edição de produtos
+### **Páginas de Autenticação**
+29. **`app/(auth)/entrar/page.tsx`** - Página de login
+30. **`app/(auth)/criar-conta/page.tsx`** - Textos atualizados
 
-### **Painel Administrativo - Gestão de Vendedores**
-25. **`app/(admin)/admin/vendedores/page.tsx`** - Lista de vendedores
-26. **`app/(admin)/admin/vendedores/[id]/page.tsx`** - Detalhes de vendedor
+### **Painel Administrativo**
+31. **`app/(admin)/admin/page.tsx`** - Dashboard principal
+32. **`app/(admin)/admin/configuracoes/page.tsx`** - Configurações do sistema, emails atualizados
+33. **`app/(admin)/admin/blog/novo/page.tsx`** - Placeholders atualizados
+34. **`app/(admin)/admin/newsletter/campanhas/novo/page.tsx`** - Placeholders atualizados
 
-### **Painel Administrativo - Categorias**
-27. **`app/(admin)/admin/categorias/page.tsx`** - Gestão de categorias
+### **Painel do Vendedor**
+35. **`app/(seller)/vendedor/configuracoes/page.tsx`** - Terminologia "Banca" → "Loja"
+36. **`app/(seller)/components/SellerSidebar.tsx`** - "Minha Banca" → "Minha Loja"
 
-### **Painel Administrativo - Newsletter**
-28. **`app/(admin)/admin/newsletter/page.tsx`** - Gestão de newsletter
-29. **`app/(admin)/admin/newsletter/campanhas/novo/page.tsx`** - Nova campanha
-30. **`app/(admin)/admin/newsletter/campanhas/[id]/page.tsx`** - Detalhes de campanha
+### **Utilitários e Helpers**
+37. **`lib/guest-cart.ts`** - Chave localStorage atualizada para `vitrine_guest_cart`
+38. **`lib/invoice-generator.ts`** - Branding "TXOVA" → "VITRINE" no cabeçalho de faturas
 
-### **Painel Administrativo - Outros Módulos**
-31. **`app/(admin)/admin/pedidos/page.tsx`** - Gestão de pedidos
-32. **`app/(admin)/admin/usuarios/page.tsx`** - Gestão de usuários
-33. **`app/(admin)/admin/tickets/page.tsx`** - Sistema de tickets
-34. **`app/(admin)/admin/reembolsos/page.tsx`** - Gestão de reembolsos
-35. **`app/(admin)/admin/relatorios/page.tsx`** - Relatórios e analytics
+### **Outros**
+39. **`app/not-found.tsx`** - Página 404 atualizada
+40. **`public/offline.html`** - Página offline atualizada
 
-### **Componentes UI e Utilitários**
-36. **`components/common/ProductCard.tsx`** - Card de produto
-37. **`components/common/SellerCard.tsx`** - Card de vendedor
-38. **`lib/utils.ts`** - Utilitários gerais
-
-### **Arquivos de Documentação**
-39. **`VITRINE.md`** - Este relatório de atualização
-
-**Total de arquivos alterados: 39 arquivos**
-
-## 📊 Dados Mock Atualizados
-
-### Produtos (50+ itens)
-- Eletrônicos: Smartphones, computadores, acessórios
-- Moda: Roupas, calçados, bolsas
-- Esportes: Equipamentos, roupas esportivas
-- Casa: Decoração, móveis, utensílios
-- Beleza: Cosméticos, perfumes, cuidados pessoais
-- Livros: Literatura, técnicos, educacionais
-
-### Vendedores (12+ lojas)
-- TechStore, SportStore, FashionStore
-- BookStore, BeautyStore, HomeStore
-- Dados completos: CNPJ, contatos, endereços
-- Avaliações e métricas realistas
-
-### Pedidos e Transações
-- Pedidos com produtos gerais
-- Valores em Meticais (MZN)
-- Status e tracking atualizados
-- Clientes com perfis diversificados
-
-### Blog e Conteúdo
-- Posts sobre tecnologia, moda, esportes
-- Dicas de compras online
-- Novidades do marketplace
-- Conteúdo educativo diversificado
+**Total de arquivos alterados: 40+ arquivos**
 
 ## 🎯 Resultados da Transformação
 
@@ -283,183 +221,205 @@ Este documento detalha a transformação completa do marketplace de uma platafor
 3. **Experiência do usuário** melhorada com design moderno
 4. **Contexto local mantido** com moeda e contatos moçambicanos
 5. **Escalabilidade** para crescimento futuro
+6. **Remoção completa** de referências a produtos orgânicos
+7. **Imagens atualizadas** para refletir marketplace geral
+8. **Emails padronizados** com domínio vitrine.com
 
 ### Métricas de Sucesso
 - **Cobertura de categorias:** 8 categorias principais
-- **Produtos disponíveis:** 50+ produtos mock
-- **Vendedores ativos:** 12+ lojas
 - **Consistência de branding:** 100% das páginas atualizadas
 - **Manutenção de contexto local:** 100% preservado
-- **Arquivos atualizados:** 100% dos arquivos com referências ao Txova convertidos para VITRINE
+- **Arquivos atualizados:** 100% dos arquivos com referências ao Vitrine convertidos para VITRINE
 - **SEO e PWA:** 100% das configurações atualizadas
 - **Service Worker:** 100% das notificações e cache atualizados
-
-## 🔮 Próximos Passos Recomendados
-
-### Desenvolvimento Futuro
-1. **Integração com APIs** de pagamento moçambicanas
-2. **Sistema de avaliações** robusto
-3. **Funcionalidades de busca** avançada
-4. **Sistema de notificações** em tempo real
-5. **App mobile** nativo
-
-### Melhorias de UX/UI
-1. **Filtros avançados** por categoria e preço
-2. **Sistema de wishlist** aprimorado
-3. **Histórico de compras** detalhado
-4. **Chat de suporte** integrado
-5. **Sistema de cupons** e promoções
-
-### Expansão de Negócio
-1. **Parcerias** com varejistas locais
-2. **Programa de fidelidade** para clientes
-3. **Marketplace B2B** para empresas
-4. **Sistema de dropshipping** integrado
-5. **Expansão geográfica** para outros países da região
-
-## 📝 Conclusão
-
-A transformação do marketplace para **VITRINE** foi concluída com sucesso, resultando em uma plataforma moderna, diversificada e preparada para o crescimento. O projeto manteve o contexto moçambicano enquanto expandiu significativamente o escopo de produtos e serviços oferecidos.
-
-A nova identidade VITRINE representa um marketplace completo que atende às necessidades de uma ampla gama de consumidores, desde produtos eletrônicos até itens de moda e esportes, sempre mantendo a qualidade e confiabilidade como valores fundamentais.
+- **Emails:** 100% dos domínios atualizados para vitrine.com
+- **Imagens:** 100% das imagens placeholder atualizadas para azul
+- **Blog Posts:** 100% dos posts atualizados para temas gerais
+- **LocalStorage:** 100% das chaves atualizadas para vitrine_* (incluindo vitrine_guest_cart)
+- **Utilitários:** 100% dos helpers atualizados (guest-cart, invoice-generator)
 
 ---
 
-## 🔄 **PROMPT PARA FUTURAS ALTERAÇÕES DE IDENTIDADE**
+## 🔄 **PROMPT PARA REBRANDING COMPLETO PARA VITRINE**
 
-### **Instruções para Mudança de Branding Completa**
+### **Instruções para Aplicar Branding VITRINE**
 
-Para alterar a identidade do marketplace no futuro, use o seguinte prompt detalhado:
+Use o seguinte prompt detalhado para aplicar o branding VITRINE completo:
 
 ---
 
 **PROMPT:**
-```
-Atualize a identidade completa do marketplace de "VITRINE" para "[NOVO_NOME]". 
 
-**Especificações da Nova Identidade:**
-- Nome da marca: [NOVO_NOME]
-- Slogan: [NOVO_SLOGAN]
-- Cor primária: [NOVA_COR_PRIMARIA] (formato hex)
-- Cores secundárias: [CORES_SECUNDARIAS]
-- Contexto de negócio: [DESCRIÇÃO_DO_NOVO_CONTEXTO]
-- Categorias principais: [LISTA_DE_CATEGORIAS]
-- Moeda: [MOEDA] (manter MZN se necessário)
-- Locale: [LOCALE] (manter pt-MZ se necessário)
+```
+Execute o rebranding completo para VITRINE seguindo estas especificações:
+
+**Especificações da Identidade VITRINE:**
+- Nome da marca: VITRINE
+- Slogan: "VITRINE - Tudo que Você Precisa"
+- Cor primária: #2563EB (azul)
+- Cores secundárias: #60A5FA (azul claro), #1D4ED8 (azul escuro)
+- Contexto de negócio: Marketplace completo com produtos de qualidade em todas as categorias
+- Categorias principais: Eletrônicos, Moda, Esportes, Casa, Beleza, Livros, Brinquedos, Automotivo
+- Moeda: MZN (Meticais)
+- Locale: pt-MZ
+- URL Base: https://vitrine.com
+- Email Domain: vitrine.com
 
 **Arquivos que DEVEM ser atualizados:**
 
 1. **Configuração e Estilo:**
-   - `tailwind.config.ts` - Cores primárias e paletas
-   - `app/globals.css` - Variáveis CSS
-   - `components.json` - Configurações UI
+   - `tailwind.config.ts` - Cores primárias azuis (#2563EB, #60A5FA, #1D4ED8), paleta blue-gray
+   - `app/globals.css` - Variáveis CSS: --primary: 217 91% 60%, --ring: 217 91% 60%
 
 2. **Layout e Metadados:**
-   - `app/layout.tsx` - Metadados, SEO, branding
-   - `app/page.tsx` - Página inicial
-   - `components/layout/Footer.tsx` - Logo, contatos
-   - `components/layout/Header.tsx` - Navegação
+   - `app/layout.tsx` - Metadados, SEO, branding VITRINE, theme-color: #2563EB
+   - `app/page.tsx` - Hero: "VITRINE - Tudo que Você Precisa", imagens de marketplace geral
+   - `components/layout/Footer.tsx` - Logo "V", contato@vitrine.com, +258 84 9999-9999
+   - `components/layout/Header.tsx` - Logo "V", VITRINE, contato@vitrine.com
+   - `components/layout/AdminLayout.tsx` - Logo "V", VITRINE
 
 3. **Contexto e Estado:**
-   - `contexts/MarketplaceContext.tsx` - Dados mock, localStorage
-   - `lib/seo.ts` - Configurações SEO
-   - `components/seo/StructuredData.tsx` - Dados estruturados
+   - `contexts/MarketplaceContext.tsx` - localStorage: vitrine_*, blog posts gerais, imagens placeholder azuis (#2563EB)
+   - `lib/seo.ts` - Base URL: https://vitrine.com, siteName: VITRINE, keywords gerais
+   - `components/seo/StructuredData.tsx` - Organization: VITRINE, URLs vitrine.com
 
 4. **PWA e Service Worker:**
-   - `public/manifest.json` - Manifest PWA
-   - `public/sw.js` - Service Worker
-   - `app/api/manifest/route.ts` - API route
-   - `app/sitemap.ts` - Sitemap
+   - `public/manifest.json` - Nome: "VITRINE - Marketplace Completo", theme_color: #2563EB
+   - `public/sw.js` - Cache: vitrine-v1.0.0, notificações: "VITRINE"
+   - `app/api/manifest/route.ts` - Manifest API atualizado
+   - `app/sitemap.ts` - Base URL: https://vitrine.com
 
 5. **Páginas de Conteúdo:**
-   - `app/(content)/sobre/page.tsx`
-   - `app/(content)/faq/page.tsx`
-   - `app/(content)/contato/page.tsx`
-   - `app/(content)/ajuda/page.tsx`
-   - `app/(content)/seja-vendedor/page.tsx`
+   - `app/(content)/sobre/page.tsx` - Missão marketplace geral, imagens atualizadas
+   - `app/(content)/faq/page.tsx` - Perguntas sobre compras, contato@vitrine.com
+   - `app/(content)/contato/page.tsx` - contato@vitrine.com, suporte@vitrine.com
+   - `app/(content)/ajuda/page.tsx` - suporte@vitrine.com
+   - `app/(content)/seja-vendedor/page.tsx` - "Loja" (não "Banca"), textos gerais
+   - `app/(content)/termos/page.tsx` - juridico@vitrine.com, textos atualizados
+   - `app/(content)/privacidade/page.tsx` - privacidade@vitrine.com
+   - `app/(content)/blog/page.tsx` - Tags: tecnologia, moda, esportes, casa, beleza, compras, dicas
+   - `app/(content)/blog/[id]/page.tsx` - Conteúdo geral de marketplace
+   - `app/(content)/trocas-devolucoes/page.tsx` - suporte@vitrine.com
 
-6. **Painel Administrativo (TODAS as páginas):**
-   - Dashboard: `app/(admin)/admin/page.tsx`
-   - Produtos: `app/(admin)/admin/produtos/`
-   - Vendedores: `app/(admin)/admin/vendedores/`
-   - Categorias: `app/(admin)/admin/categorias/page.tsx`
-   - Newsletter: `app/(admin)/admin/newsletter/`
-   - Outros módulos: pedidos, usuários, tickets, reembolsos, relatórios
+6. **Páginas de Loja:**
+   - `app/(shop)/vendedores/page.tsx` - Descrições gerais, imagens placeholder azuis
+   - `app/(shop)/vendedor/[id]/page.tsx` - Descrições gerais
 
-7. **Componentes:**
-   - `components/common/ProductCard.tsx`
-   - `components/common/SellerCard.tsx`
+7. **Painel Administrativo:**
+   - `app/(admin)/admin/configuracoes/page.tsx` - Site: VITRINE, noreply@vitrine.com
+   - `app/(admin)/admin/blog/novo/page.tsx` - Placeholders gerais
+   - `app/(admin)/admin/newsletter/campanhas/novo/page.tsx` - Placeholders gerais
+
+8. **Painel do Vendedor:**
+   - `app/(seller)/vendedor/configuracoes/page.tsx` - "Loja" (não "Banca")
+   - `app/(seller)/components/SellerSidebar.tsx` - "Minha Loja" (não "Minha Banca")
+
+9. **Utilitários e Helpers:**
+   - `lib/guest-cart.ts` - Chave localStorage: vitrine_guest_cart (não txova_guest_cart)
+   - `lib/invoice-generator.ts` - Branding "TXOVA" → "VITRINE" no cabeçalho de faturas
+
+10. **Outros:**
+   - `app/not-found.tsx` - Textos gerais
+   - `public/offline.html` - "Loja de Produtos" (não "Banca")
 
 **Elementos Específicos a Atualizar:**
 
 1. **Branding Visual:**
-   - Logo (mudar de "V" para nova letra inicial)
-   - Nome da marca em todos os textos
-   - Slogan e descrições
-   - Cores primárias e secundárias
+   - Logo: "V" (não "T")
+   - Nome: "VITRINE" em todos os textos
+   - Slogan: "VITRINE - Tudo que Você Precisa"
+   - Cores: Azul (#2563EB) em vez de verde
+   - Paleta: blue-gray em vez de green-gray
 
-2. **Dados Mock:**
-   - Produtos (nomes, categorias, descrições)
-   - Vendedores (nomes de lojas, descrições)
-   - Blog posts (títulos, conteúdo, categorias)
-   - Reviews e comentários
+2. **Imagens:**
+   - Placeholder images: #2563EB (azul) em vez de verde
+   - Imagens de conteúdo: Marketplace geral em vez de produtos orgânicos
+   - Alt text: "VITRINE Marketplace" em vez de "Alimentos Orgânicos"
 
-3. **SEO e Metadados:**
-   - Títulos de páginas
-   - Meta descriptions
-   - Keywords
-   - Open Graph tags
-   - Twitter Cards
-   - URLs base (se necessário)
+3. **Emails:**
+   - Todos os domínios: vitrine.com (não ecobazar.com)
+   - contato@vitrine.com
+   - suporte@vitrine.com
+   - noreply@vitrine.com
+   - juridico@vitrine.com
+   - privacidade@vitrine.com
 
-4. **PWA:**
-   - Nome do app
-   - Descrição
-   - Shortcuts
-   - Screenshots
-   - Cache names
+4. **Terminologia:**
+   - "Banca" → "Loja" (em todos os contextos)
+   - "Nome da Banca" → "Nome da Loja"
+   - "Minha Banca" → "Minha Loja"
+   - Remover todas as referências a "produtos orgânicos", "alimentos orgânicos", "Banca de Alimentos Orgânicos"
 
-5. **Service Worker:**
-   - Nome das notificações
-   - Cache names
-   - Mensagens de notificação
+5. **Blog Posts:**
+   - Substituir posts sobre orgânicos por temas gerais:
+     * Tecnologia (smartphones, eletrônicos)
+     * Moda (tendências, estilo)
+     * Esportes (equipamentos, fitness)
+     * Casa (decoração, interiores)
+     * Beleza (cuidados pessoais, cosméticos)
+     * Compras (dicas, segurança online)
 
 6. **LocalStorage:**
-   - Chaves de storage (ex: vitrine_* → novo_nome_*)
+   - vitrine_cart (não ecobazar_cart)
+   - vitrine_wishlist (não ecobazar_wishlist)
+   - vitrine_user (não ecobazar_user)
+   - vitrine_authenticated (não ecobazar_authenticated)
+   - vitrine_guest_cart (não txova_guest_cart)
 
-7. **Contatos e Informações:**
-   - Email de contato
-   - Redes sociais
-   - Endereço (se necessário)
+7. **SEO e Metadados:**
+   - Título: "VITRINE - Marketplace Completo"
+   - Descrição: "Marketplace completo com produtos de qualidade em todas as categorias"
+   - Keywords: marketplace, eletrônicos, moda, esportes, casa, beleza
+   - URL Base: https://vitrine.com
+   - Theme Color: #2563EB
+
+8. **PWA:**
+   - Nome: "VITRINE - Marketplace Completo"
+   - Theme Color: #2563EB
+   - Shortcuts: "Produtos em Destaque" (não "Banca")
+   - Cache names: vitrine-v1.0.0
 
 **Comandos de Busca para Verificação:**
 ```bash
-# Buscar todas as referências ao nome atual
-grep -r "VITRINE" . --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.json" --include="*.md"
+# Buscar referências antigas
+grep -r "Vitrine\|vitrine" . --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.json"
+grep -r "ecobazar" . --include="*.ts" --include="*.tsx"
+grep -r "Banca\|banca" . --include="*.ts" --include="*.tsx"
+grep -r "orgânico\|orgânica" . --include="*.ts" --include="*.tsx" -i
+grep -r "#53B046\|#00BE27" . --include="*.ts" --include="*.tsx" --include="*.css"
 
-# Buscar cores primárias
+# Verificar novas referências
+grep -r "VITRINE\|vitrine" . --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.json"
 grep -r "#2563EB" . --include="*.ts" --include="*.tsx" --include="*.css"
-
-# Buscar chaves de localStorage
 grep -r "vitrine_" . --include="*.ts" --include="*.tsx"
 ```
 
 **Checklist Final:**
-- [ ] Todos os 39 arquivos listados foram atualizados
-- [ ] Cores primárias e secundárias aplicadas
-- [ ] Dados mock atualizados para novo contexto
+- [ ] Cores primárias azuis aplicadas (#2563EB)
+- [ ] Logo "V" em Header, Footer e AdminLayout
+- [ ] Nome "VITRINE" em todos os textos
+- [ ] Slogan "VITRINE - Tudo que Você Precisa" no hero
+- [ ] Todos os emails atualizados para vitrine.com
+- [ ] Todas as imagens placeholder em azul (#2563EB)
+- [ ] Imagens de conteúdo atualizadas para marketplace geral
+- [ ] "Banca" substituído por "Loja" em todos os lugares
+- [ ] Referências a orgânicos removidas
+- [ ] Blog posts atualizados para temas gerais
+- [ ] LocalStorage keys atualizadas para vitrine_*
 - [ ] SEO e metadados atualizados
 - [ ] PWA e Service Worker atualizados
-- [ ] LocalStorage keys atualizadas
+- [ ] URLs base atualizadas para vitrine.com
 - [ ] Teste visual em todas as páginas principais
 - [ ] Verificação de responsividade
-- [ ] Atualização do relatório de mudanças
 
-**IMPORTANTE:** Manter o contexto moçambicano (MZN, pt-MZ, contatos locais) a menos que especificado o contrário.
+**IMPORTANTE:** 
+- Manter o contexto moçambicano (MZN, pt-MZ, contatos locais)
+- Não atualizar dados mock se já houver integração com API
+- Focar apenas em UI e branding, não em dados de produtos/vendedores se vierem de API
 ```
 
 ---
 
-**Data de Atualização:** Janeiro 2024  
-**Versão:** 1.0  
+**Data de Atualização:** March 2026 
+**Versão:** 3.0  
 **Status:** Concluído ✅

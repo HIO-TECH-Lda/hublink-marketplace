@@ -30,7 +30,7 @@ export class ContactService {
     }
 
     // Send email to admin
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.SMTP_FROM_EMAIL || 'support@txova.com';
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.SMTP_FROM_EMAIL || 'support@vitrine.com';
     
     const emailHtml = `
       <h2>Nova Mensagem de Contato</h2>
@@ -65,12 +65,12 @@ export class ContactService {
         <p style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
           ${message.replace(/\n/g, '<br>')}
         </p>
-        <p>Atenciosamente,<br><strong>Equipe Txova</strong></p>
+        <p>Atenciosamente,<br><strong>Equipe Vitrine</strong></p>
       `;
 
       await EmailService.sendRawEmail({
         to: email,
-        subject: 'Recebemos sua mensagem - Txova',
+        subject: 'Recebemos sua mensagem - Vitrine',
         html: confirmationHtml
       });
 

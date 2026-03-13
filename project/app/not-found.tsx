@@ -34,7 +34,7 @@ export default function NotFoundPage() {
             <p className="text-lg text-gray-7 leading-relaxed">
               A página que você está procurando não existe ou foi movida. 
               Não se preocupe, você pode voltar para a página inicial ou 
-              explorar nossos produtos orgânicos.
+              explorar nossos produtos.
             </p>
           </div>
 
@@ -65,7 +65,7 @@ export default function NotFoundPage() {
                 className="p-4 border border-gray-2 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-left"
               >
                 <h3 className="font-semibold text-gray-9 mb-1">Nossos Produtos</h3>
-                <p className="text-sm text-gray-6">Descubra nossa seleção de alimentos orgânicos</p>
+                <p className="text-sm text-gray-6">Descubra nossa seleção de produtos</p>
               </Link>
               
               <Link
@@ -81,7 +81,7 @@ export default function NotFoundPage() {
                 className="p-4 border border-gray-2 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-left"
               >
                 <h3 className="font-semibold text-gray-9 mb-1">Blog</h3>
-                <p className="text-sm text-gray-6">Dicas e receitas com alimentos orgânicos</p>
+                <p className="text-sm text-gray-6">Dicas e novidades do marketplace</p>
               </Link>
               
               <Link

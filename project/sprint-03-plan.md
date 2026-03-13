@@ -1,4 +1,4 @@
-# Sprint 03 Plan - Txova Marketplace
+# Sprint 03 Plan - Vitrine Marketplace
 
 **Data:** Janeiro 2024  
 **Versão:** 3.0.0  

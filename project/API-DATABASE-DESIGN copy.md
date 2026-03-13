@@ -1,4 +1,4 @@
-# API & Database Design - Txova Marketplace
+# API & Database Design - Vitrine Marketplace
 
 **Version:** 1.0.0  
 **Date:** January 2024  
@@ -667,7 +667,7 @@ const roles = {
 
 ## 🌐 API Endpoints
 
-### **Base URL:** `https://api.txova.com/v1`
+### **Base URL:** `https://api.vitrine.com/v1`
 
 ### **Authentication Endpoints**
 ```
@@ -959,7 +959,7 @@ POST   /newsletter/campaigns   # Create campaign (admin)
 module.exports = {
   development: {
     port: 3000,
-    mongoUri: 'mongodb://localhost:27017/txova_dev',
+    mongoUri: 'mongodb://localhost:27017/vitrine_dev',
     jwtSecret: 'dev-secret-key',
     corsOrigin: 'http://localhost:3000'
   },
@@ -989,7 +989,7 @@ CMD ["npm", "start"]
 # .env
 NODE_ENV=production
 PORT=3000
-MONGO_URI=mongodb://localhost:27017/txova
+MONGO_URI=mongodb://localhost:27017/vitrine
 JWT_SECRET=your-super-secret-jwt-key
 REDIS_URL=redis://localhost:6379
 CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name

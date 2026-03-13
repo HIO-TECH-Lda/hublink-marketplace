@@ -81,7 +81,7 @@ export default function AboutPage() {
       id: '1',
       name: 'Fernanda Lima',
       role: 'Cliente Fiel',
-      content: 'O Txova transformou minha alimentação! Os produtos são frescos, saborosos e eu sei exatamente de onde vêm.',
+      content: 'O Vitrine transformou minha alimentação! Os produtos são frescos, saborosos e eu sei exatamente de onde vêm.',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     },
@@ -89,7 +89,7 @@ export default function AboutPage() {
       id: '2',
       name: 'Roberto Almeida',
       role: 'Produtor Orgânico',
-      content: 'Como produtor, o Txova me deu a oportunidade de vender diretamente para os consumidores. É uma parceria incrível!',
+      content: 'Como produtor, o Vitrine me deu a oportunidade de vender diretamente para os consumidores. É uma parceria incrível!',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     },
@@ -97,7 +97,7 @@ export default function AboutPage() {
       id: '3',
       name: 'Patrícia Mendes',
       role: 'Nutricionista',
-      content: 'Recomendo o Txova para todos os meus pacientes. A qualidade dos produtos orgânicos é excepcional.',
+      content: 'Recomendo o Vitrine para todos os meus pacientes. A qualidade dos produtos orgânicos é excepcional.',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     }
@@ -251,7 +251,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossos Parceiros</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Organizações que apoiam e fortalecem o ecossistema Txova.
+              Organizações que apoiam e fortalecem o ecossistema Vitrine.
             </p>
           </div>
           <div className="max-w-4xl mx-auto px-4 sm:px-8">
@@ -286,7 +286,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossa Equipe Incrível</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Conheça as pessoas apaixonadas que fazem o Txova acontecer todos os dias.
+              Conheça as pessoas apaixonadas que fazem o Vitrine acontecer todos os dias.
             </p>
           </div>
           <div className="max-w-4xl mx-auto px-4 sm:px-8">
@@ -322,7 +322,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Depoimentos de Clientes</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Veja o que nossos clientes e parceiros dizem sobre o Txova.
+              Veja o que nossos clientes e parceiros dizem sobre o Vitrine.
             </p>
           </div>
 
@@ -373,7 +373,7 @@ export default function AboutPage() {
           </h2>
           <p className="text-base sm:text-lg text-green-gray-1 mb-8 max-w-2xl mx-auto px-4">
             Junte-se a milhares de pessoas que já descobriram os benefícios dos alimentos orgânicos 
-            através do Txova.
+            através do Vitrine.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/loja">

@@ -1,7 +1,7 @@
 # Frontend Integration Guide
-## Next.js App ↔ Txova Marketplace API
+## Next.js App ↔ Vitrine Marketplace API
 
-This guide provides step-by-step instructions to integrate your Next.js frontend with the Txova Marketplace API. The integration is organized into phases for easy progress tracking.
+This guide provides step-by-step instructions to integrate your Next.js frontend with the Vitrine Marketplace API. The integration is organized into phases for easy progress tracking.
 
 ---
 
@@ -52,7 +52,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3002
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
 
 # App Configuration
-NEXT_PUBLIC_APP_NAME=Txova Marketplace
+NEXT_PUBLIC_APP_NAME=Vitrine Marketplace
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 

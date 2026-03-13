@@ -1,4 +1,4 @@
-# Sprint 02 Report - Txova Marketplace
+# Sprint 02 Report - Vitrine Marketplace
 
 **Data:** Janeiro 2024  
 **Status:** COMPLETO E FUNCIONAL  
@@ -8,7 +8,7 @@
 
 ## 📋 Resumo Executivo
 
-O Sprint 02 foi focado na implementação de funcionalidades críticas para transformar o Txova em uma plataforma de e-commerce completa e profissional. Foram implementadas funcionalidades de autenticação avançada, processamento de pagamentos, sistema de avaliações, busca avançada e um painel administrativo completo.
+O Sprint 02 foi focado na implementação de funcionalidades críticas para transformar o Vitrine em uma plataforma de e-commerce completa e profissional. Foram implementadas funcionalidades de autenticação avançada, processamento de pagamentos, sistema de avaliações, busca avançada e um painel administrativo completo.
 
 ### 🎯 Objetivos Alcançados
 - ✅ Sistema de autenticação com reset de senha e verificação de email
@@ -265,7 +265,7 @@ O Sprint 02 foi focado na implementação de funcionalidades críticas para tran
 
 ## 📝 Conclusão
 
-O Sprint 02 foi um sucesso completo, implementando todas as funcionalidades planejadas com alta qualidade e atenção aos detalhes. A plataforma Txova agora possui:
+O Sprint 02 foi um sucesso completo, implementando todas as funcionalidades planejadas com alta qualidade e atenção aos detalhes. A plataforma Vitrine agora possui:
 
 - **Sistema de autenticação robusto** com reset de senha e verificação
 - **Sistema de avaliações completo** para engajamento de usuários

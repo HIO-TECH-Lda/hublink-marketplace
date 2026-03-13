@@ -1,4 +1,4 @@
-# 🚀 PWA Setup Guide - Txova Marketplace
+# 🚀 PWA Setup Guide - Vitrine Marketplace
 
 ## ✅ **PWA Features Implemented**
 
@@ -99,7 +99,7 @@ Create app screenshots in `/public/screenshots/`:
 ### **1. Install Prompt**
 1. Open app in Chrome/Edge
 2. Look for install button in address bar
-3. Or check browser menu for "Install Txova"
+3. Or check browser menu for "Install Vitrine"
 
 ### **2. Offline Testing**
 1. Open DevTools → Network tab
@@ -145,4 +145,4 @@ Create app screenshots in `/public/screenshots/`:
 - **Offline Capability**: Users can browse without connection
 - **Mobile-First**: Optimized for mobile devices
 
-The Txova marketplace is now a fully functional Progressive Web App! 🎉 
+The Vitrine marketplace is now a fully functional Progressive Web App! 🎉 

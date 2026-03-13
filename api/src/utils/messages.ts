@@ -331,7 +331,7 @@ export const Messages = {
     EMAIL_SENT: 'Email enviado com sucesso',
     EMAIL_FAILED: 'Falha ao enviar email',
     EMAIL_REQUIRED: 'Email é obrigatório',
-    SUBSCRIBED: 'Inscrição realizada com sucesso! Bem-vindo à newsletter da Txova.',
+    SUBSCRIBED: 'Inscrição realizada com sucesso! Bem-vindo à newsletter da Vitrine.',
     ALREADY_SUBSCRIBED: 'Este email já está inscrito na nossa newsletter!',
     REACTIVATED: 'Bem-vindo de volta! Sua inscrição foi reativada.',
     ALREADY_CANCELLED: 'Este email já estava cancelado',
@@ -702,7 +702,7 @@ export const Messages = {
   // General API Messages
   API: {
     TOO_MANY_REQUESTS: 'Muitas solicitações deste IP. Por favor, tente novamente mais tarde.',
-    RUNNING: 'API Txova Marketplace está em execução',
+    RUNNING: 'API Vitrine Marketplace está em execução',
     WELCOME: 'Bem-vindo à API Marketplace',
   },
 

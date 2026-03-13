@@ -1,6 +1,6 @@
 Especificação de Funcionamento - Módulo de Contabilidade Simplificado
 1. Visão Geral
-Este documento detalha o funcionamento do módulo de contabilidade simplificado a ser integrado no painel do vendedor do marketplace Mulungo/Txova. O objetivo é fornecer uma ferramenta de gestão financeira básica para vendedores que não utilizam sistemas de ERP externos, permitindo que eles registem e visualizem tanto as transações da plataforma quanto as vendas externas, despesas e relatórios financeiros simplificados.
+Este documento detalha o funcionamento do módulo de contabilidade simplificado a ser integrado no painel do vendedor do marketplace Mulungo/Vitrine. O objetivo é fornecer uma ferramenta de gestão financeira básica para vendedores que não utilizam sistemas de ERP externos, permitindo que eles registem e visualizem tanto as transações da plataforma quanto as vendas externas, despesas e relatórios financeiros simplificados.
 
 2. Funcionalidades Principais
 O módulo será dividido em quatro seções principais: Dashboard, Vendas, Despesas e Relatórios.
@@ -23,7 +23,7 @@ Alerta: Um componente de destaque para avisos importantes, como "Pagamentos pend
 2.2. Gestão de Vendas
 Esta seção permitirá ao vendedor visualizar e gerir as suas vendas.
 
-Sincronização Automática: As vendas realizadas diretamente no marketplace Mulungo/Txova serão automaticamente importadas para este módulo.
+Sincronização Automática: As vendas realizadas diretamente no marketplace Mulungo/Vitrine serão automaticamente importadas para este módulo.
 
 Registo de Vendas Externas:
 

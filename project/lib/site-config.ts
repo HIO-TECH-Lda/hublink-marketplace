@@ -14,15 +14,15 @@
  */
 
 const defaults = {
-  siteName: 'Marketplace',
+  siteName: 'VITRINE',
   siteDescription:
-    'Marketplace moçambicano em Beira.',
-  appUrl: 'https://marketplace.co.mz',
-  contactEmail: 'contato@marketplace.co.mz',
-  supportEmail: 'suporte@marketplace.co.mz',
-  privacyEmail: 'privacidade@marketplace.co.mz',
-  legalEmail: 'juridico@marketplace.co.mz',
-  noReplyEmail: 'noreply@marketplace.co.mz',
+    'Marketplace completo com produtos de qualidade em todas as categorias.',
+  appUrl: 'https://vitrine.com',
+  contactEmail: 'contato@vitrine.com',
+  supportEmail: 'suporte@vitrine.com',
+  privacyEmail: 'privacidade@vitrine.com',
+  legalEmail: 'juridico@vitrine.com',
+  noReplyEmail: 'noreply@vitrine.com',
 } as const;
 
 export const siteConfig = {

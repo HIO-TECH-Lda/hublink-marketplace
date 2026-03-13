@@ -148,7 +148,7 @@ export class EmailService {
 
       // Prepare email options
       const mailOptions = {
-        from: content.from || process.env.EMAIL_FROM || 'noreply@txova.com',
+        from: content.from || process.env.EMAIL_FROM || 'noreply@vitrine.com',
         to: content.to,
         subject: content.subject,
         html: html
@@ -184,7 +184,7 @@ export class EmailService {
 
     try {
       const mailOptions = {
-        from: options.from || process.env.SMTP_FROM_EMAIL || 'noreply@txova.com',
+        from: options.from || process.env.SMTP_FROM_EMAIL || 'noreply@vitrine.com',
         to: options.to,
         subject: options.subject,
         html: options.html,
@@ -384,7 +384,7 @@ export class EmailService {
     try {
       await this.sendEmail({
         to: user.email,
-        subject: 'Welcome to Txova Marketplace!',
+        subject: 'Welcome to Vitrine Marketplace!',
         template: 'welcome',
         data: {
           userName: user.firstName || user.email,

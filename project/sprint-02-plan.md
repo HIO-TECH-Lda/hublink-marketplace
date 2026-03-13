@@ -1,4 +1,4 @@
-# Plano Sprint 02 - Txova Marketplace
+# Plano Sprint 02 - Vitrine Marketplace
 
 ## 📋 **Visão Geral do Sprint**
 
@@ -430,7 +430,7 @@
 
 ## 🎉 **Metas Pós-Sprint 02**
 
-Após a conclusão do Sprint 02, o marketplace Txova terá:
+Após a conclusão do Sprint 02, o marketplace Vitrine terá:
 - ✅ **Sistema de autenticação completo**
 - ✅ **Processamento real de pagamentos**
 - ✅ **Avaliações e classificações de produtos**

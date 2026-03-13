@@ -34,7 +34,7 @@
 - Store a **minimal** shape in localStorage so we can sync later and display in UI:
   - `GuestCartItem`: `{ productId: string, quantity: number }`
   - Optional: `{ productId, quantity, name?, price?, primaryImage? }` for display without refetch (can be filled when adding from product card).
-- **LocalStorage key**: e.g. `txova_guest_cart` (array of `GuestCartItem`). Avoid reusing `ecobazar_cart` if we want a clear separation from the legacy context cart.
+- **LocalStorage key**: e.g. `vitrine_guest_cart` (array of `GuestCartItem`). Avoid reusing `ecobazar_cart` if we want a clear separation from the legacy context cart.
 
 ---
 
@@ -49,13 +49,13 @@
   - If **guest**: update localStorage (add/merge by productId), then update whatever feeds the cart UI (e.g. invalidate a guest-cart query or set state so Header/CartPopup re-render).
 - **useUpdateCartItem()** / **useRemoveFromCart()**:
   - If **guest**: update/remove in localStorage and refresh guest cart.
-- **Sync on login**: In `AuthContext` after successful login (or in a small effect when `user` becomes set and we have guest items), call the API for each guest item (e.g. `POST /cart/add` per item, or a future `POST /cart/sync` if backend supports it), then clear `txova_guest_cart` and invalidate `['cart']`.
+- **Sync on login**: In `AuthContext` after successful login (or in a small effect when `user` becomes set and we have guest items), call the API for each guest item (e.g. `POST /cart/add` per item, or a future `POST /cart/sync` if backend supports it), then clear `vitrine_guest_cart` and invalidate `['cart']`.
 
 **Pros**: One place for “current cart” (hooks); all existing consumers (Header, CartPopup, ProductCard, carrinho, checkout) can stay the same if we normalize the cart shape for guest.  
 **Cons**: Slight complexity in `useCart()` to branch and optionally normalize guest data into something that looks like `Cart`.
 
 ### Option B – Reuse MarketplaceContext for guests
-- When **not authenticated**: ProductCard dispatches `ADD_TO_CART` to context (and persist to a key like `txova_guest_cart`).
+- When **not authenticated**: ProductCard dispatches `ADD_TO_CART` to context (and persist to a key like `vitrine_guest_cart`).
 - Header: if guest, show `state.cart.length` from context; if logged in, show `useCart().data`.
 - CartPopup / carrinho / checkout: when guest, read from context (and localStorage); when logged in, read from API.
 - On login: same as above – sync guest context cart to server (e.g. loop and POST /cart/add), then clear context guest cart and optionally clear localStorage.
@@ -70,7 +70,7 @@
 ## 5. Implementation plan (high level)
 
 1. **Guest cart storage**
-   - Define `GuestCartItem` and a small helper: `getGuestCart()`, `setGuestCart(items)` using `txova_guest_cart`.
+   - Define `GuestCartItem` and a small helper: `getGuestCart()`, `setGuestCart(items)` using `vitrine_guest_cart`.
    - Optional: when adding from product, store `productId`, `quantity`, and minimal product snapshot (name, price, image) for display without API.
 
 2. **useCart()**
@@ -89,8 +89,8 @@
 
 5. **Sync on login**
    - In `AuthContext`, after `setUser` (and tokens) on login:
-     - Read `txova_guest_cart`.
-     - If not empty: for each item, call `POST /cart/add` (or future sync endpoint), then clear `txova_guest_cart` and call `queryClient.removeQueries({ queryKey: ['cart'] })` and refetch so the next `useCart()` returns server data.
+     - Read `vitrine_guest_cart`.
+     - If not empty: for each item, call `POST /cart/add` (or future sync endpoint), then clear `vitrine_guest_cart` and call `queryClient.removeQueries({ queryKey: ['cart'] })` and refetch so the next `useCart()` returns server data.
    - Ensure this runs only once per login (e.g. effect with `user` and a ref so we don’t sync on every render).
 
 6. **UI**
@@ -104,7 +104,7 @@
    - Recommendation: keep “must be logged in to checkout” and redirect guest to login when they click checkout; after login, sync then send them to checkout.
 
 7. **Logout**
-   - Today we clear server-related cache (e.g. `['cart']`). We do **not** clear `txova_guest_cart`. So after logout they see an empty cart until they add again, which is acceptable. Optionally we could clear guest cart on logout; document the choice.
+   - Today we clear server-related cache (e.g. `['cart']`). We do **not** clear `vitrine_guest_cart`. So after logout they see an empty cart until they add again, which is acceptable. Optionally we could clear guest cart on logout; document the choice.
 
 8. **Edge cases**
    - **Same product in guest cart and server cart**: On sync, backend may add quantities (POST /cart/add often upserts). Confirm backend behavior; if it replaces, we may need to send “set quantity” or “add (current_guest_quantity)” depending on API.
@@ -124,7 +124,7 @@
 
 | Area              | Action |
 |-------------------|--------|
-| Storage           | New key `txova_guest_cart`, shape `{ productId, quantity }[]` (+ optional product snapshot). |
+| Storage           | New key `vitrine_guest_cart`, shape `{ productId, quantity }[]` (+ optional product snapshot). |
 | useCart           | When guest, return cart built from localStorage (same shape as API cart as possible). |
 | useAddToCart      | When guest, write to localStorage and refresh guest cart; when auth, keep API. |
 | useUpdate/Remove  | When guest, update localStorage and refresh; when auth, keep API. |

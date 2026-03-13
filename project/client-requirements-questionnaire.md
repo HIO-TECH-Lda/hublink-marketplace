@@ -1,4 +1,4 @@
-# Questionário de Requisitos - Txova Marketplace
+# Questionário de Requisitos - Vitrine Marketplace
 
 **Data:** Janeiro 2024  
 **Versão:** 1.0.0  
@@ -9,7 +9,7 @@
 ## 📋 Informações Gerais do Projeto
 
 ### **1. Visão Geral do Negócio**
-- [ ] Qual é a missão e visão da plataforma Txova?
+- [ ] Qual é a missão e visão da plataforma Vitrine?
 - [ ] Quais são os principais objetivos de negócio?
 - [ ] Qual é o público-alvo principal (compradores e vendedores)?
 - [ ] Qual é a proposta de valor única da plataforma?

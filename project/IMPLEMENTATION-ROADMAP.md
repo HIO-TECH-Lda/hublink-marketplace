@@ -1,7 +1,7 @@
-# Implementation Roadmap - Txova Marketplace Backend
+# Implementation Roadmap - Vitrine Marketplace Backend
 
 **Date:** January 2024  
-**Project:** Txova Marketplace API & Database Implementation  
+**Project:** Vitrine Marketplace API & Database Implementation  
 **Duration:** 12 weeks  
 **Technology:** Node.js + Express + MongoDB + Redis
 
@@ -9,7 +9,7 @@
 
 ## 🎯 **Project Overview**
 
-This roadmap outlines the step-by-step implementation of the backend infrastructure for the Txova Marketplace, based on the comprehensive API and database design completed.
+This roadmap outlines the step-by-step implementation of the backend infrastructure for the Vitrine Marketplace, based on the comprehensive API and database design completed.
 
 ---
 
@@ -31,8 +31,8 @@ This roadmap outlines the step-by-step implementation of the backend infrastruct
 #### **1.1 Development Environment**
 ```bash
 # Create project structure
-mkdir txova-api
-cd txova-api
+mkdir vitrine-api
+cd vitrine-api
 npm init -y
 
 # Install core dependencies
@@ -406,4 +406,4 @@ src/
 
 ---
 
-This roadmap provides a comprehensive guide for implementing the Txova Marketplace backend infrastructure. Each phase builds upon the previous one, ensuring a solid foundation for the marketplace platform while maintaining quality, security, and scalability throughout the development process.
+This roadmap provides a comprehensive guide for implementing the Vitrine Marketplace backend infrastructure. Each phase builds upon the previous one, ensuring a solid foundation for the marketplace platform while maintaining quality, security, and scalability throughout the development process.

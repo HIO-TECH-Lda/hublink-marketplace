@@ -6,7 +6,7 @@
 
 ## What Was Done
 
-Implemented a centralized logo management system across the Txova marketplace application, allowing logos to be configured via environment variables with graceful fallbacks.
+Implemented a centralized logo management system across the Vitrine marketplace application, allowing logos to be configured via environment variables with graceful fallbacks.
 
 ---
 
@@ -30,19 +30,19 @@ Implemented a centralized logo management system across the Txova marketplace ap
 ### 2. **Components Updated**
 
 #### `components/layout/Header.tsx`
-- **Before:** Text-based "T" logo + "Txova" text
+- **Before:** Text-based "T" logo + "Vitrine" text
 - **After:** Uses `<Logo variant="main" />` component
 - Maintains fallback to text-based logo if env vars not set
 - Size: 120x40px, responsive (h-8 sm:h-10)
 
 #### `components/layout/AdminLayout.tsx`
-- **Before:** Text-based "T" logo + "Txova" text in sidebar
+- **Before:** Text-based "T" logo + "Vitrine" text in sidebar
 - **After:** Uses `<Logo variant="main" />` component
 - Maintains fallback for undefined env vars
 - Size: 100x32px
 
 #### `components/layout/Footer.tsx`
-- **Before:** Text-based "T" logo + "Txova" text
+- **Before:** Text-based "T" logo + "Vitrine" text
 - **After:** Uses `<Logo variant="white" />` component (for dark background)
 - Maintains fallback to text-based logo
 - Size: 120x40px
@@ -77,13 +77,13 @@ Implemented a centralized logo management system across the Txova marketplace ap
 
 All logos are located in `/public/logo/`:
 
-1. **Main Logo:** `Logo-txova-fundo-transparente.png`
-2. **Favicon:** `Favicon-logo-txova.png`
-3. **Icon Over Text:** `Logo-txova-fundo-transparente-icon-por-cima-da-fonte.png`
-4. **White Monochromatic:** `Logo-txova-fundo-transparente-monocromatico-branco.png`
-5. **Black Monochromatic:** `Logo-txova-fundo-transparente-monocromatico-preto.png`
-6. **Gray Monochromatic:** `Logo-txova-fundo-transparente-monocromatico--cinza.png`
-7. **Green Monochromatic:** `Logo-txova-fundo-transparente-monocromatico--verde-sem-gradiente.png`
+1. **Main Logo:** `Logo-vitrine-fundo-transparente.png`
+2. **Favicon:** `Favicon-logo-vitrine.png`
+3. **Icon Over Text:** `Logo-vitrine-fundo-transparente-icon-por-cima-da-fonte.png`
+4. **White Monochromatic:** `Logo-vitrine-fundo-transparente-monocromatico-branco.png`
+5. **Black Monochromatic:** `Logo-vitrine-fundo-transparente-monocromatico-preto.png`
+6. **Gray Monochromatic:** `Logo-vitrine-fundo-transparente-monocromatico--cinza.png`
+7. **Green Monochromatic:** `Logo-vitrine-fundo-transparente-monocromatico--verde-sem-gradiente.png`
 
 ---
 
@@ -95,19 +95,19 @@ To use the new logo system, add these variables to your `.env.local` file:
 
 ```env
 # Logo Configuration - Main logos
-NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-txova-fundo-transparente.png
-NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-txova-fundo-transparente-monocromatico-branco.png
-NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-txova.png
+NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-vitrine-fundo-transparente.png
+NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-vitrine-fundo-transparente-monocromatico-branco.png
+NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-vitrine.png
 
 # Logo Configuration - Additional variants (optional)
-NEXT_PUBLIC_LOGO_ICON=/logo/Favicon-logo-txova.png
-NEXT_PUBLIC_LOGO_ICON_OVER_TEXT=/logo/Logo-txova-fundo-transparente-icon-por-cima-da-fonte.png
-NEXT_PUBLIC_LOGO_BLACK=/logo/Logo-txova-fundo-transparente-monocromatico-preto.png
-NEXT_PUBLIC_LOGO_GRAY=/logo/Logo-txova-fundo-transparente-monocromatico--cinza.png
-NEXT_PUBLIC_LOGO_GREEN=/logo/Logo-txova-fundo-transparente-monocromatico--verde-sem-gradiente.png
+NEXT_PUBLIC_LOGO_ICON=/logo/Favicon-logo-vitrine.png
+NEXT_PUBLIC_LOGO_ICON_OVER_TEXT=/logo/Logo-vitrine-fundo-transparente-icon-por-cima-da-fonte.png
+NEXT_PUBLIC_LOGO_BLACK=/logo/Logo-vitrine-fundo-transparente-monocromatico-preto.png
+NEXT_PUBLIC_LOGO_GRAY=/logo/Logo-vitrine-fundo-transparente-monocromatico--cinza.png
+NEXT_PUBLIC_LOGO_GREEN=/logo/Logo-vitrine-fundo-transparente-monocromatico--verde-sem-gradiente.png
 
-# Brand Configuration (optional - defaults to "Txova")
-NEXT_PUBLIC_BRAND_NAME=Txova
+# Brand Configuration (optional - defaults to "Vitrine")
+NEXT_PUBLIC_BRAND_NAME=Vitrine
 ```
 
 ### Minimum Configuration
@@ -115,9 +115,9 @@ NEXT_PUBLIC_BRAND_NAME=Txova
 At minimum, configure these three for full functionality:
 
 ```env
-NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-txova-fundo-transparente.png
-NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-txova-fundo-transparente-monocromatico-branco.png
-NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-txova.png
+NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-vitrine-fundo-transparente.png
+NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-vitrine-fundo-transparente-monocromatico-branco.png
+NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-vitrine.png
 ```
 
 ---
@@ -135,7 +135,7 @@ NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-txova.png
 1. Logo component detects undefined env vars
 2. Automatically renders text-based fallback:
    - Circular "T" badge (primary color background)
-   - "Txova" brand name text
+   - "Vitrine" brand name text
 3. Application continues to work normally
 
 ### Logo Variants by Location
@@ -160,9 +160,9 @@ ls public/logo/
 ```
 
 Expected files:
-- ✅ Logo-txova-fundo-transparente.png
-- ✅ Favicon-logo-txova.png
-- ✅ Logo-txova-fundo-transparente-monocromatico-branco.png
+- ✅ Logo-vitrine-fundo-transparente.png
+- ✅ Favicon-logo-vitrine.png
+- ✅ Logo-vitrine-fundo-transparente-monocromatico-branco.png
 - ✅ (Optional) Other monochromatic variants
 
 ### Step 2: Configure Environment Variables
@@ -172,10 +172,10 @@ Expected files:
 2. Add logo configuration:
 
 ```env
-NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-txova-fundo-transparente.png
-NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-txova-fundo-transparente-monocromatico-branco.png
-NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-txova.png
-NEXT_PUBLIC_BRAND_NAME=Txova
+NEXT_PUBLIC_LOGO_MAIN=/logo/Logo-vitrine-fundo-transparente.png
+NEXT_PUBLIC_LOGO_WHITE=/logo/Logo-vitrine-fundo-transparente-monocromatico-branco.png
+NEXT_PUBLIC_FAVICON=/logo/Favicon-logo-vitrine.png
+NEXT_PUBLIC_BRAND_NAME=Vitrine
 ```
 
 3. Save the file
@@ -197,20 +197,20 @@ Check these locations:
 1. **Header Logo:**
    - Navigate to http://localhost:3000
    - Look at top-left corner
-   - Should see Txova main logo
+   - Should see Vitrine main logo
 
 2. **Footer Logo:**
    - Scroll to page bottom
-   - Should see white Txova logo
+   - Should see white Vitrine logo
 
 3. **Admin Logo:**
    - Navigate to http://localhost:3000/admin
    - Look at sidebar header
-   - Should see Txova logo
+   - Should see Vitrine logo
 
 4. **Favicon:**
    - Check browser tab
-   - Should see Txova favicon (may need hard refresh)
+   - Should see Vitrine favicon (may need hard refresh)
 
 ---
 
@@ -233,9 +233,9 @@ To test fallback behavior:
 1. Comment out all `NEXT_PUBLIC_LOGO_*` variables in `.env.local`
 2. Restart development server
 3. Verify:
-   - [ ] Header shows text-based "T" + "Txova"
-   - [ ] Admin sidebar shows text-based "T" + "Txova"
-   - [ ] Footer shows text-based "T" + "Txova"
+   - [ ] Header shows text-based "T" + "Vitrine"
+   - [ ] Admin sidebar shows text-based "T" + "Vitrine"
+   - [ ] Footer shows text-based "T" + "Vitrine"
    - [ ] No broken images or errors
    - [ ] Application works normally
 

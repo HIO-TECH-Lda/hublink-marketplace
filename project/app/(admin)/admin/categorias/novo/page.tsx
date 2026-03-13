@@ -301,7 +301,7 @@ export default function AdminCreateCategoryPage() {
                       id="metaTitle"
                       value={formData.metaTitle}
                       onChange={(e) => setFormData({...formData, metaTitle: e.target.value})}
-                      placeholder="Frutas - Txova"
+                      placeholder="Frutas - Vitrine"
                     />
                   </div>
                   <div>

@@ -79,8 +79,8 @@ export default function Footer() {
                 />
               </div>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
-                Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. 
-                Conectamos produtores locais com consumidores conscientes em Beira.
+                Marketplace completo com produtos de qualidade em todas as categorias. 
+                Eletrônicos, moda, esportes, casa, beleza e muito mais.
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
@@ -89,7 +89,7 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone size={16} className="flex-shrink-0" />
-                  <span>+258 84 123 4567</span>
+                  <span>+258 84 9999-9999</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={16} className="flex-shrink-0" />
@@ -145,7 +145,7 @@ export default function Footer() {
         <div className="container">
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <p className="text-gray-4 text-sm text-center lg:text-left">
-              © 2024 Txova. Todos os direitos reservados.
+              © 2024 VITRINE. Todos os direitos reservados.
             </p>
             
             {/* Social Media */}

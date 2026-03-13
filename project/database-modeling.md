@@ -1,4 +1,4 @@
-# Database Modeling Document - Txova Marketplace
+# Database Modeling Document - Vitrine Marketplace
 
 **Database:** MongoDB  
 **Version:** 1.0.0  
@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-Este documento define o modelo de dados MongoDB para a plataforma Txova, um marketplace brasileiro de alimentos orgânicos. O modelo foi projetado para suportar todas as funcionalidades implementadas no Sprint 01 e Sprint 02.
+Este documento define o modelo de dados MongoDB para a plataforma Vitrine, um marketplace brasileiro de alimentos orgânicos. O modelo foi projetado para suportar todas as funcionalidades implementadas no Sprint 01 e Sprint 02.
 
 ---
 
@@ -796,7 +796,7 @@ db.orders.aggregate([
 
 ## 📝 Conclusão
 
-Este modelo de dados MongoDB foi projetado para suportar todas as funcionalidades da plataforma Txova, com foco em:
+Este modelo de dados MongoDB foi projetado para suportar todas as funcionalidades da plataforma Vitrine, com foco em:
 
 - **Performance:** Índices otimizados para queries comuns
 - **Escalabilidade:** Preparado para crescimento

@@ -158,7 +158,7 @@ export class PublicNewsletterService {
       <body>
         <div class="container">
           <div class="header">
-            <h1>🎉 Bem-vindo à Newsletter da Txova!</h1>
+            <h1>🎉 Bem-vindo à Newsletter da Vitrine!</h1>
           </div>
           <div class="content">
             <h2>Olá ${name}!</h2>
@@ -171,14 +171,14 @@ export class PublicNewsletterService {
               <li>💡 Dicas e tutoriais</li>
             </ul>
             <p>Fique atento à sua caixa de entrada!</p>
-            <a href="${process.env.FRONTEND_URL || 'https://txova.com'}" class="button">Explorar Txova</a>
+            <a href="${process.env.FRONTEND_URL || 'https://vitrine.com'}" class="button">Explorar Vitrine</a>
             <p style="margin-top: 30px; font-size: 14px; color: #666;">
               Não quer mais receber nossos emails? 
               <a href="${process.env.FRONTEND_URL}/newsletter/unsubscribe?email=${encodeURIComponent(email)}">Cancelar inscrição</a>
             </p>
           </div>
           <div class="footer">
-            <p>© ${new Date().getFullYear()} Txova Marketplace. Todos os direitos reservados.</p>
+            <p>© ${new Date().getFullYear()} Vitrine Marketplace. Todos os direitos reservados.</p>
           </div>
         </div>
       </body>
@@ -188,7 +188,7 @@ export class PublicNewsletterService {
     try {
       await EmailService.sendRawEmail({
         to: email,
-        subject: '🎉 Bem-vindo à Newsletter da Txova!',
+        subject: '🎉 Bem-vindo à Newsletter da Vitrine!',
         html
       });
     } catch (error) {
@@ -218,7 +218,7 @@ export class PublicNewsletterService {
             <p>Sua inscrição na newsletter foi cancelada com sucesso.</p>
             <p>Se mudou de ideia, você pode se inscrever novamente a qualquer momento.</p>
             <p style="margin-top: 30px;">
-              <a href="${process.env.FRONTEND_URL || 'https://txova.com'}" style="color: #667eea;">Voltar ao Txova</a>
+              <a href="${process.env.FRONTEND_URL || 'https://vitrine.com'}" style="color: #667eea;">Voltar ao Vitrine</a>
             </p>
           </div>
         </div>
@@ -229,7 +229,7 @@ export class PublicNewsletterService {
     try {
       await EmailService.sendRawEmail({
         to: email,
-        subject: 'Sua inscrição foi cancelada - Txova',
+        subject: 'Sua inscrição foi cancelada - Vitrine',
         html
       });
     } catch (error) {

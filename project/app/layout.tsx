@@ -13,23 +13,22 @@ import { siteConfig } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
-    template: '%s | Txova'
+    default: 'VITRINE - Marketplace Completo',
+    template: '%s | VITRINE'
   },
-  description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes.',
+  description: 'Marketplace completo com produtos de qualidade em todas as categorias. Eletrônicos, moda, esportes, casa, beleza e muito mais.',
   keywords: [
-    'alimentos orgânicos',
     'marketplace',
-    'Beira',
-    'Moçambique',
-    'produtos frescos',
-    'produtores locais',
-    'comida saudável',
-    'vegetais orgânicos',
-    'frutas orgânicas',
-    'txova',
+    'eletrônicos',
+    'moda',
+    'esportes',
+    'casa',
+    'beleza',
+    'compras online',
     'ecommerce',
-    'compras online'
+    'vitrine',
+    'Beira',
+    'Moçambique'
   ],
   authors: [{ name: 'Helton Furau - HIO TECH, Lda' }],
   creator: 'HIO TECH, Lda',
@@ -47,24 +46,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pt_MZ',
     url: siteConfig.appUrl,
-    siteName: 'Txova',
-    title: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes.',
+    siteName: 'VITRINE',
+    title: 'VITRINE - Marketplace Completo',
+    description: 'Marketplace completo com produtos de qualidade em todas as categorias. Eletrônicos, moda, esportes, casa, beleza e muito mais.',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Txova - Marketplace de Alimentos Orgânicos',
+        alt: 'VITRINE - Marketplace Completo',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@txova',
-    creator: '@txova',
-    title: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala.',
+    site: '@vitrine',
+    creator: '@vitrine',
+    title: 'VITRINE - Marketplace Completo',
+    description: 'Marketplace completo com produtos de qualidade em todas as categorias.',
     images: ['/images/twitter-image.jpg'],
   },
   robots: {
@@ -84,12 +83,12 @@ export const metadata: Metadata = {
     yahoo: 'your-yahoo-verification-code',
   },
   manifest: '/manifest.json',
-  themeColor: '#097019',
+  themeColor: '#2563EB',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Txova',
+    title: 'VITRINE',
   },
   icons: {
     icon: logoConfig.favicon ? [
@@ -108,7 +107,7 @@ export const metadata: Metadata = {
     'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'default',
-    'apple-mobile-web-app-title': 'Txova',
+    'apple-mobile-web-app-title': 'VITRINE',
   },
 };
 
@@ -121,20 +120,20 @@ export default function RootLayout({
     <html lang="pt-MZ">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="application-name" content="Txova" />
+        <meta name="application-name" content="VITRINE" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Txova" />
-        <meta name="description" content="Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes." />
+        <meta name="apple-mobile-web-app-title" content="VITRINE" />
+        <meta name="description" content="Marketplace completo com produtos de qualidade em todas as categorias. Eletrônicos, moda, esportes, casa, beleza e muito mais." />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-        <meta name="msapplication-TileColor" content="#097019" />
+        <meta name="msapplication-TileColor" content="#2563EB" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="theme-color" content="#097019" />
+        <meta name="theme-color" content="#2563EB" />
         
         {/* Additional SEO meta tags */}
-        <meta name="author" content="Txova Team" />
+        <meta name="author" content="VITRINE Team" />
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
         <meta name="geo.region" content="MZ" />
@@ -145,21 +144,21 @@ export default function RootLayout({
         {/* Open Graph additional tags */}
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="pt_MZ" />
-        <meta property="og:site_name" content="Txova" />
+        <meta property="og:site_name" content="VITRINE" />
         
         {/* Twitter Card additional tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@txova" />
-        <meta name="twitter:creator" content="@txova" />
+        <meta name="twitter:site" content="@vitrine" />
+        <meta name="twitter:creator" content="@vitrine" />
         
         {/* Structured Data */}
         <meta name="application/ld+json" content={JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "Txova - Marketplace Orgânico",
+          "name": "VITRINE - Marketplace Completo",
           "url": siteConfig.appUrl,
           "logo": `${siteConfig.appUrl}/icons/icon-512x512.png`,
-          "description": "Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala",
+          "description": "Marketplace completo com produtos de qualidade em todas as categorias",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "Rua Principal, 123",
@@ -170,21 +169,21 @@ export default function RootLayout({
           },
           "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+258 84 123 4567",
+            "telephone": "+258 84 9999-9999",
             "contactType": "customer service",
             "email": siteConfig.contactEmail
           },
           "sameAs": [
-            "https://facebook.com/txova",
-            "https://instagram.com/txova",
-            "https://twitter.com/txova"
+            "https://facebook.com/vitrine",
+            "https://instagram.com/vitrine",
+            "https://twitter.com/vitrine"
           ]
         })} />
 
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png" />
-        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#097019" />
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2563EB" />
         <link rel="shortcut icon" href="/favicon.ico" />
         
         {/* Preconnect to external domains for performance */}
