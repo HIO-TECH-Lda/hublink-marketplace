@@ -64,6 +64,19 @@ export class AdminRefundService {
     page: number;
     limit: number;
     totalPages: number;
+    stats: {
+      counts: {
+        pending: number;
+        approved: number;
+        rejected: number;
+      };
+      amounts: {
+        pending: number;
+        approved: number;
+        rejected: number;
+        total: number;
+      };
+    };
   }> {
     try {
       const {
@@ -183,12 +196,46 @@ export class AdminRefundService {
         };
       });
 
+      // Aggregate stats from formatted refunds
+      const statsCounts = {
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+      };
+
+      const statsAmounts = {
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+        total: 0,
+      };
+
+      formattedRefunds.forEach((r) => {
+        const amount = Number(r.amount) || 0;
+        statsAmounts.total += amount;
+
+        if (r.status === 'pending') {
+          statsCounts.pending += 1;
+          statsAmounts.pending += amount;
+        } else if (r.status === 'approved') {
+          statsCounts.approved += 1;
+          statsAmounts.approved += amount;
+        } else if (r.status === 'rejected') {
+          statsCounts.rejected += 1;
+          statsAmounts.rejected += amount;
+        }
+      });
+
       return {
         refunds: formattedRefunds,
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit),
+        stats: {
+          counts: statsCounts,
+          amounts: statsAmounts,
+        },
       };
     } catch (error) {
       throw new Error(
