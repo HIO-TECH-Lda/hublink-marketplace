@@ -4,6 +4,7 @@ import Product from '../models/Product';
 import User from '../models/User';
 import { CartService } from './cartService';
 import Messages from '../utils/messages';
+import mongoose from 'mongoose';
 
 export class OrderService {
   // Create order from cart
@@ -531,7 +532,7 @@ export class OrderService {
     try {
       const query: any = {};
       if (userId) {
-        query.userId = userId;
+        query.userId = new mongoose.Types.ObjectId(userId);
       }
 
       const stats = await Order.aggregate([

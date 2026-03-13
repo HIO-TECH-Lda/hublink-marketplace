@@ -164,14 +164,18 @@ export class OrderController {
         sortOrder: sortOrder as 'asc' | 'desc'
       };
 
-      const result = await OrderService.getUserOrders(userId, options);
+      const [result, stats] = await Promise.all([
+        OrderService.getUserOrders(userId, options),
+        OrderService.getOrderStatistics(userId)
+      ]);
 
       return res.status(200).json({
         success: true,
         message: Messages.ORDER.LIST_RETRIEVED,
         data: {
           orders: result.orders,
-          pagination: result.pagination
+          pagination: result.pagination,
+          stats: {...stats, totalSpent: stats.totalRevenue }
         }
       });
     } catch (error) {
