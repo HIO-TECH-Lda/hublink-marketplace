@@ -80,14 +80,26 @@ export default function UserDashboardPage() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 space-y-3 sm:space-y-0">
                 <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-9">Endereço de Faturamento</h2>
                 <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
-                  <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs sm:text-sm">
-                    <Edit size={14} className="mr-1 sm:mr-2" />
-                    Editar Perfil
-                  </Button>
-                  <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs sm:text-sm">
-                    <Edit size={14} className="mr-1 sm:mr-2" />
-                    Editar Endereço
-                  </Button>
+                  <Link href="/configuracoes" className="w-full sm:w-auto">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full sm:w-auto text-xs sm:text-sm"
+                    >
+                      <Edit size={14} className="mr-1 sm:mr-2" />
+                      Editar Perfil
+                    </Button>
+                  </Link>
+                  <Link href="/configuracoes" className="w-full sm:w-auto">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full sm:w-auto text-xs sm:text-sm"
+                    >
+                      <Edit size={14} className="mr-1 sm:mr-2" />
+                      Editar Endereço
+                    </Button>
+                  </Link>
                 </div>
               </div>
               
