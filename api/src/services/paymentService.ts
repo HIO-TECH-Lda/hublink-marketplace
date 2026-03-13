@@ -219,14 +219,38 @@ export class PaymentService {
       //   throw new Error(Messages.PAYMENT.IMALI_MISSING_LINK);
       // }
 
-      // Update order with payment link information
+      // For now we are using test IDs; once the real
+      // Imali integration is enabled, replace these
+      // with values from linkData.
+      const imaliTransactionId = 'id-test'; // linkData.link_id;
+      const imaliCustomerLinkId = 'link-test'; // linkData.customer_link_id || linkData.link_id;
+
+      // Create payment record
+      const payment = new Payment({
+        orderId: order._id,
+        userId: order.userId,
+        amount: order.total,
+        currency: order.currency,
+        method: 'imali',
+        gateway: 'imali',
+        status: 'completed',
+        gatewayTransactionId: imaliTransactionId,
+        gatewayResponse: {
+          linkId: imaliTransactionId,
+          customerLinkId: imaliCustomerLinkId,
+        },
+      });
+
+      await payment.save();
+
+      // Update order with payment link / status information
       const updatedOrder = await Order.findByIdAndUpdate(
         order._id,
         {
-          'payment.transactionId': 'id-test',//linkData.link_id,
+          'payment.transactionId': imaliTransactionId,
           'payment.method': 'imali',
-          'payment.linkId': 'id-test',//linkData.link_id,
-          'payment.customerLinkId': 'link-test',//linkData.customer_link_id || linkData.link_id,
+          'payment.linkId': imaliTransactionId,
+          'payment.customerLinkId': imaliCustomerLinkId,
           'payment.status': 'completed'
         },
         { new: true, runValidators: true }
@@ -236,11 +260,12 @@ export class PaymentService {
         type: 'imali_pay_by_link',
         status: 'success',
         data: {
-          paymentLink: 'link-test',//linkData,
+          paymentLink: imaliCustomerLinkId,
           order: updatedOrder
         },
-        paymentLink: 'link-test',//linkData,
-        order: updatedOrder
+        paymentLink: imaliCustomerLinkId,
+        order: updatedOrder,
+        payment,
       }; 
     } catch (error: any) {
       console.error('Imali payment error:', error);
