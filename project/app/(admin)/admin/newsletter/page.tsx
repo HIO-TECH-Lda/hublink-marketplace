@@ -230,81 +230,109 @@ export default function NewsletterManagementPage() {
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-7 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-7 gap-4 sm:gap-6 mb-6">
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Total</p>
-                  <p className="text-xl font-bold text-gray-9">{stats.totalSubscribers.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Total</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
+                    {stats.totalSubscribers.toLocaleString()}
+                  </p>
                 </div>
-                <Users className="w-5 h-5 text-gray-4" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gray-4" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Ativos</p>
-                  <p className="text-xl font-bold text-green-600">{stats.activeSubscribers.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Ativos</p>
+                  <p className="text-xl sm:text-2xl font-bold text-green-600 break-words">
+                    {stats.activeSubscribers.toLocaleString()}
+                  </p>
                 </div>
-                <UserCheck className="w-5 h-5 text-green-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <UserCheck className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Desinscritos</p>
-                  <p className="text-xl font-bold text-red-600">{stats.unsubscribed.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Desinscritos</p>
+                  <p className="text-xl sm:text-2xl font-bold text-red-600 break-words">
+                    {stats.unsubscribed.toLocaleString()}
+                  </p>
                 </div>
-                <UserX className="w-5 h-5 text-red-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <UserX className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Rejeitados</p>
-                  <p className="text-xl font-bold text-orange-600">{stats.bounced.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Rejeitados</p>
+                  <p className="text-xl sm:text-2xl font-bold text-orange-600 break-words">
+                    {stats.bounced.toLocaleString()}
+                  </p>
                 </div>
-                <Mail className="w-5 h-5 text-orange-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Enviadas</p>
-                  <p className="text-xl font-bold text-blue-600">{stats.campaignsSent.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Enviadas</p>
+                  <p className="text-xl sm:text-2xl font-bold text-blue-600 break-words">
+                    {stats.campaignsSent.toLocaleString()}
+                  </p>
                 </div>
-                <Send className="w-5 h-5 text-blue-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Send className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Agendadas</p>
-                  <p className="text-xl font-bold text-purple-600">{stats.campaignsScheduled.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Agendadas</p>
+                  <p className="text-xl sm:text-2xl font-bold text-purple-600 break-words">
+                    {stats.campaignsScheduled.toLocaleString()}
+                  </p>
                 </div>
-                <Calendar className="w-5 h-5 text-purple-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Rascunhos</p>
-                  <p className="text-xl font-bold text-gray-600">{stats.campaignsDraft.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Rascunhos</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-600 break-words">
+                    {stats.campaignsDraft.toLocaleString()}
+                  </p>
                 </div>
-                <FileText className="w-5 h-5 text-gray-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -228,7 +228,7 @@ export default function AuditLogsPage() {
 
       {/* Statistics */}
       {stats && stats.byAction && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-6">
           <Card className="border-l-4 border-l-primary">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">

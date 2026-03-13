@@ -88,7 +88,7 @@ export default function SellerProductsPage() {
           <div className="lg:col-span-3 space-y-8">
             {/* Stats */}
             {sellerProducts.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
                 <div className="bg-white rounded-lg shadow-sm p-6">
                   <div className="flex items-center justify-between">
                     <div>

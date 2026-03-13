@@ -179,59 +179,79 @@ export default function AdminTicketsPage() {
 
       {/* Statistics */}
       {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6 mb-6">
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Total</p>
-                  <p className="text-xl font-bold text-gray-9">{stats.total.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Total</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
+                    {stats.total.toLocaleString()}
+                  </p>
                 </div>
-                <MessageSquare className="w-5 h-5 text-gray-4" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-gray-4" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Abertos</p>
-                  <p className="text-xl font-bold text-orange-600">{stats.open.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Abertos</p>
+                  <p className="text-xl sm:text-2xl font-bold text-orange-600 break-words">
+                    {stats.open.toLocaleString()}
+                  </p>
                 </div>
-                <AlertCircle className="w-5 h-5 text-orange-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Em Progresso</p>
-                  <p className="text-xl font-bold text-blue-600">{stats.inProgress.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Em Progresso</p>
+                  <p className="text-xl sm:text-2xl font-bold text-blue-600 break-words">
+                    {stats.inProgress.toLocaleString()}
+                  </p>
                 </div>
-                <Clock className="w-5 h-5 text-blue-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Urgentes</p>
-                  <p className="text-xl font-bold text-red-600">{stats.urgent.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Urgentes</p>
+                  <p className="text-xl sm:text-2xl font-bold text-red-600 break-words">
+                    {stats.urgent.toLocaleString()}
+                  </p>
                 </div>
-                <AlertCircle className="w-5 h-5 text-red-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Alta</p>
-                  <p className="text-xl font-bold text-orange-600">{stats.high.toLocaleString()}</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Alta</p>
+                  <p className="text-xl sm:text-2xl font-bold text-orange-600 break-words">
+                    {stats.high.toLocaleString()}
+                  </p>
                 </div>
-                <AlertCircle className="w-5 h-5 text-orange-600" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
+                </div>
               </div>
             </CardContent>
           </Card>

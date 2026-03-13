@@ -145,7 +145,7 @@ export default function SellerRefundsPage() {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6">
               <div className="bg-white rounded-lg p-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>

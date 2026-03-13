@@ -155,43 +155,43 @@ export default function PayoutsPage() {
 
           <div className="lg:col-span-3 space-y-8">
             {/* Balance Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                   <div className="p-2 bg-green-100 rounded-lg">
-                    <DollarSign className="w-6 h-6 text-green-600" />
+                    <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Saldo Disponível</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Saldo Disponível</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {balanceLoading ? '...' : `MTn ${(balance?.available || 0).toFixed(2)}`}
                     </p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center">
+              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                   <div className="p-2 bg-yellow-100 rounded-lg">
-                    <Clock className="w-6 h-6 text-yellow-600" />
+                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Pendente</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pendente</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {balanceLoading ? '...' : `MTn ${(balance?.pending || 0).toFixed(2)}`}
                     </p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center">
+              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                   <div className="p-2 bg-blue-100 rounded-lg">
-                    <TrendingUp className="w-6 h-6 text-blue-600" />
+                    <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Total Ganho</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total Ganho</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {balanceLoading ? '...' : `MTn ${(balance?.totalEarned || 0).toFixed(2)}`}
                     </p>
                   </div>

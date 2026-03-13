@@ -127,52 +127,70 @@ export default function OrderManagementPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Total de Pedidos</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-9">{stats?.total.toLocaleString() || 0}</div>
-            <p className="text-xs text-gray-6">
-              {stats?.pending || 0} pendentes
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Receita Total</CardTitle>
-            <DollarSign className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-9">
-              {stats?.totalRevenue ? formatCurrency(stats.totalRevenue) : formatCurrency(0)}
+          <CardContent className="p-4 sm:p-5 lg:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-gray-6 mb-1">Total de Pedidos</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-9 break-words">
+                  {stats?.total.toLocaleString() || 0}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-6">
+                  {stats?.pending || 0} pendentes
+                </p>
+              </div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Pedidos Entregues</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-9">
-              {stats?.delivered.toLocaleString() || 0}
+          <CardContent className="p-4 sm:p-5 lg:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-gray-6 mb-1">Receita Total</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-9 break-words">
+                  {stats?.totalRevenue ? formatCurrency(stats.totalRevenue) : formatCurrency(0)}
+                </p>
+              </div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+              </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Pedidos Cancelados</CardTitle>
-            <XCircle className="h-4 w-4 text-red-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-9">
-              {stats?.cancelled.toLocaleString() || 0}
+          <CardContent className="p-4 sm:p-5 lg:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-gray-6 mb-1">Pedidos Entregues</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-9 break-words">
+                  {stats?.delivered.toLocaleString() || 0}
+                </p>
+              </div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4 sm:p-5 lg:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-gray-6 mb-1">Pedidos Cancelados</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-9 break-words">
+                  {stats?.cancelled.toLocaleString() || 0}
+                </p>
+              </div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
+              </div>
             </div>
           </CardContent>
         </Card>

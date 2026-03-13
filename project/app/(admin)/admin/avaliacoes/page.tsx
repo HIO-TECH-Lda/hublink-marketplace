@@ -101,98 +101,115 @@ export default function AdminReviewsPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Gerenciar Avaliações</h1>
-        <p className="text-gray-600 mt-1">Modere e analise avaliações de produtos</p>
+    <>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-9 mb-1">Gerenciar Avaliações</h1>
+        <p className="text-gray-6">Modere e analise avaliações de produtos</p>
       </div>
 
-      {/* Analytics Cards */}
-      {analyticsLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardContent className="p-6">
-                <div className="h-16 bg-gray-200 rounded"></div>
+      <div className="space-y-6">
+        {/* Analytics Cards */}
+        {analyticsLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+            {[...Array(4)].map((_, i) => (
+              <Card key={i} className="animate-pulse">
+                <CardContent className="p-4 sm:p-5">
+                  <div className="h-16 bg-gray-200 rounded" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : analytics && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+            <Card>
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                  <div>
+                    <p className="text-xs sm:text-sm text-gray-6 mb-1">Total</p>
+                    <p className="text-xl sm:text-2xl font-bold break-words">
+                      {analytics.totalReviews.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0">
+                    <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+                  </div>
+                </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      ) : analytics && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Total</p>
-                  <p className="text-2xl font-bold">{analytics.totalReviews.toLocaleString()}</p>
+
+            <Card className="border-yellow-200 bg-yellow-50">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                  <div>
+                    <p className="text-xs sm:text-sm text-gray-6 mb-1">Pendentes</p>
+                    <p className="text-xl sm:text-2xl font-bold text-yellow-700 break-words">
+                      {analytics.pendingReviews}
+                    </p>
+                  </div>
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
+                  </div>
                 </div>
-                <MessageSquare className="w-8 h-8 text-blue-500" />
+              </CardContent>
+            </Card>
+
+            <Card className="border-green-200 bg-green-50">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                  <div>
+                    <p className="text-xs sm:text-sm text-gray-6 mb-1">Aprovadas</p>
+                    <p className="text-xl sm:text-2xl font-bold text-green-700 break-words">
+                      {analytics.approvedReviews.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-red-200 bg-red-50">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                  <div>
+                    <p className="text-xs sm:text-sm text-gray-6 mb-1">Rejeitadas</p>
+                    <p className="text-xl sm:text-2xl font-bold text-red-700 break-words">
+                      {analytics.rejectedReviews.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Quick Stats */}
+        {analytics && (
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold">Avaliação Média:</span>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-lg font-bold">{analytics.averageRating.toFixed(1)}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold">Últimos 30 dias:</span>
+                  <span className="text-lg font-bold">{analytics.recentReviews}</span>
+                </div>
               </div>
             </CardContent>
           </Card>
+        )}
 
-          <Card className="border-yellow-200 bg-yellow-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Pendentes</p>
-                  <p className="text-2xl font-bold text-yellow-700">{analytics.pendingReviews}</p>
-                </div>
-                <Clock className="w-8 h-8 text-yellow-500" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-green-200 bg-green-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Aprovadas</p>
-                  <p className="text-2xl font-bold text-green-700">{analytics.approvedReviews.toLocaleString()}</p>
-                </div>
-                <CheckCircle className="w-8 h-8 text-green-500" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-red-200 bg-red-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Rejeitadas</p>
-                  <p className="text-2xl font-bold text-red-700">{analytics.rejectedReviews.toLocaleString()}</p>
-                </div>
-                <XCircle className="w-8 h-8 text-red-500" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Quick Stats */}
-      {analytics && (
-        <Card className="bg-blue-50 border-blue-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="font-semibold">Avaliação Média:</span>
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-lg font-bold">{analytics.averageRating.toFixed(1)}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-semibold">Últimos 30 dias:</span>
-                <span className="text-lg font-bold">{analytics.recentReviews}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Tabs */}
-      <div className="flex gap-2 border-b">
+        {/* Tabs */}
+        <div className="flex gap-2 border-b">
         {[
           { key: 'pending' as const, label: 'Pendentes', count: analytics?.pendingReviews },
           { key: 'approved' as const, label: 'Aprovadas', count: null },
@@ -219,205 +236,208 @@ export default function AdminReviewsPage() {
             )}
           </button>
         ))}
-      </div>
-
-      {/* Reviews List */}
-      {reviewsLoading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </div>
-      ) : !reviewsData?.reviews.length ? (
-        <Card>
-          <CardContent className="p-12 text-center">
-            <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600">Nenhuma avaliação {activeTab === 'pending' ? 'pendente' : activeTab} encontrada</p>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-4">
-          {reviewsData.reviews.map((review) => {
-            const isExpanded = expandedReviews.has(review._id);
-            const contentLength = review.content.length;
-            const shouldTruncate = contentLength > 200;
 
-            return (
-              <Card key={review._id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-start gap-3">
-                      <img
-                        src={review.userId.avatar || `https://ui-avatars.com/api/?name=${review.userId.firstName}+${review.userId.lastName}`}
-                        alt={review.userId.firstName}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold">
-                            {review.userId.firstName} {review.userId.lastName}
-                          </span>
-                          {review.isVerified && (
-                            <Badge className="bg-green-100 text-green-700 text-xs">
-                              ✓ Compra Verificada
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-500">
-                          {new Date(review.createdAt).toLocaleDateString('pt-BR', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                          })}
-                        </p>
-                      </div>
-                    </div>
-                    {getStatusBadge(review.status)}
-                  </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="flex">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          className={`w-5 h-5 ${
-                            star <= review.rating
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="font-semibold text-lg">{review.rating}.0</span>
-                  </div>
-
-                  {/* Product */}
-                  <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
-                    <Package className="w-4 h-4" />
-                    <span>Produto: {review.productId.name}</span>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="font-semibold text-lg mb-2">{review.title}</h3>
-
-                  {/* Content */}
-                  <p className="text-gray-700 mb-3 whitespace-pre-wrap">
-                    {shouldTruncate && !isExpanded
-                      ? `${review.content.substring(0, 200)}...`
-                      : review.content}
-                  </p>
-
-                  {shouldTruncate && (
-                    <button
-                      onClick={() => toggleExpanded(review._id)}
-                      className="text-blue-600 text-sm mb-3 hover:underline"
-                    >
-                      {isExpanded ? 'Mostrar menos' : 'Ler mais'}
-                    </button>
-                  )}
-
-                  {/* Images */}
-                  {review.images && review.images.length > 0 && (
-                    <div className="flex gap-2 mb-3">
-                      {review.images.map((img, idx) => (
-                        <img
-                          key={idx}
-                          src={img}
-                          alt={`Review ${idx + 1}`}
-                          className="w-20 h-20 object-cover rounded cursor-pointer hover:opacity-75"
-                        />
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Helpful Votes */}
-                  <div className="flex items-center gap-4 mb-3 text-sm text-gray-600">
-                    <div className="flex items-center gap-1">
-                      <ThumbsUp className="w-4 h-4" />
-                      <span>{review.isHelpful}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <ThumbsDown className="w-4 h-4" />
-                      <span>{review.isNotHelpful}</span>
-                    </div>
-                    <span>Pedido: {review.orderId.orderNumber}</span>
-                  </div>
-
-                  {/* Moderator Notes */}
-                  {review.moderatorNotes && (
-                    <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-3">
-                      <p className="font-semibold text-sm mb-1">Notas do Admin:</p>
-                      <p className="text-sm">{review.moderatorNotes}</p>
-                    </div>
-                  )}
-
-                  {/* Moderation Info */}
-                  {review.moderatedBy && (
-                    <p className="text-sm text-gray-500 mb-3">
-                      Moderado por {review.moderatedBy.firstName} {review.moderatedBy.lastName} em{' '}
-                      {new Date(review.moderatedAt!).toLocaleDateString('pt-BR')}
-                    </p>
-                  )}
-
-                  {/* Actions */}
-                  {review.status === 'pending' && (
-                    <div className="flex gap-2 pt-4 border-t">
-                      <Button
-                        onClick={() => handleApprove(review)}
-                        className="flex-1 bg-primary text-primary-foreground hover:bg-primary-hard"
-                        disabled={moderateMutation.isPending}
-                      >
-                        <CheckCircle className="w-4 h-4 mr-2" />
-                        Aprovar
-                      </Button>
-                      <Button
-                        onClick={() => handleReject(review)}
-                        variant="destructive"
-                        className="flex-1"
-                        disabled={moderateMutation.isPending}
-                      >
-                        <XCircle className="w-4 h-4 mr-2" />
-                        Rejeitar
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Pagination */}
-      {reviewsData && reviewsData.totalPages > 1 && (
-        <div className="flex justify-center gap-2">
-          <Button
-            variant="outline"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-          >
-            Anterior
-          </Button>
-          <div className="flex items-center gap-1">
-            {Array.from({ length: Math.min(5, reviewsData.totalPages) }, (_, i) => i + 1).map((p) => (
-              <Button
-                key={p}
-                variant={page === p ? 'default' : 'outline'}
-                onClick={() => setPage(p)}
-              >
-                {p}
-              </Button>
-            ))}
+        {/* Reviews List */}
+        {reviewsLoading ? (
+          <div className="flex justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
           </div>
-          <Button
-            variant="outline"
-            onClick={() => setPage((p) => Math.min(reviewsData.totalPages, p + 1))}
-            disabled={page === reviewsData.totalPages}
-          >
-            Próxima
-          </Button>
-        </div>
-      )}
+        ) : !reviewsData?.reviews.length ? (
+          <Card>
+            <CardContent className="p-12 text-center">
+              <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-6">
+                Nenhuma avaliação {activeTab === 'pending' ? 'pendente' : activeTab} encontrada
+              </p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {reviewsData.reviews.map((review) => {
+              const isExpanded = expandedReviews.has(review._id);
+              const contentLength = review.content.length;
+              const shouldTruncate = contentLength > 200;
+
+              return (
+                <Card key={review._id} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-start gap-3">
+                        <img
+                          src={review.userId.avatar || `https://ui-avatars.com/api/?name=${review.userId.firstName}+${review.userId.lastName}`}
+                          alt={review.userId.firstName}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold">
+                              {review.userId.firstName} {review.userId.lastName}
+                            </span>
+                            {review.isVerified && (
+                              <Badge className="bg-green-100 text-green-700 text-xs">
+                                ✓ Compra Verificada
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-500">
+                            {new Date(review.createdAt).toLocaleDateString('pt-BR', {
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                      {getStatusBadge(review.status)}
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="flex">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            className={`w-5 h-5 ${
+                              star <= review.rating
+                                ? 'fill-yellow-400 text-yellow-400'
+                                : 'text-gray-300'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="font-semibold text-lg">{review.rating}.0</span>
+                    </div>
+
+                    {/* Product */}
+                    <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
+                      <Package className="w-4 h-4" />
+                      <span>Produto: {review.productId.name}</span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="font-semibold text-lg mb-2">{review.title}</h3>
+
+                    {/* Content */}
+                    <p className="text-gray-700 mb-3 whitespace-pre-wrap">
+                      {shouldTruncate && !isExpanded
+                        ? `${review.content.substring(0, 200)}...`
+                        : review.content}
+                    </p>
+
+                    {shouldTruncate && (
+                      <button
+                        onClick={() => toggleExpanded(review._id)}
+                        className="text-blue-600 text-sm mb-3 hover:underline"
+                      >
+                        {isExpanded ? 'Mostrar menos' : 'Ler mais'}
+                      </button>
+                    )}
+
+                    {/* Images */}
+                    {review.images && review.images.length > 0 && (
+                      <div className="flex gap-2 mb-3">
+                        {review.images.map((img, idx) => (
+                          <img
+                            key={idx}
+                            src={img}
+                            alt={`Review ${idx + 1}`}
+                            className="w-20 h-20 object-cover rounded cursor-pointer hover:opacity-75"
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Helpful Votes */}
+                    <div className="flex items-center gap-4 mb-3 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <ThumbsUp className="w-4 h-4" />
+                        <span>{review.isHelpful}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <ThumbsDown className="w-4 h-4" />
+                        <span>{review.isNotHelpful}</span>
+                      </div>
+                      <span>Pedido: {review.orderId.orderNumber}</span>
+                    </div>
+
+                    {/* Moderator Notes */}
+                    {review.moderatorNotes && (
+                      <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-3">
+                        <p className="font-semibold text-sm mb-1">Notas do Admin:</p>
+                        <p className="text-sm">{review.moderatorNotes}</p>
+                      </div>
+                    )}
+
+                    {/* Moderation Info */}
+                    {review.moderatedBy && (
+                      <p className="text-sm text-gray-500 mb-3">
+                        Moderado por {review.moderatedBy.firstName} {review.moderatedBy.lastName} em{' '}
+                        {new Date(review.moderatedAt!).toLocaleDateString('pt-BR')}
+                      </p>
+                    )}
+
+                    {/* Actions */}
+                    {review.status === 'pending' && (
+                      <div className="flex gap-2 pt-4 border-t">
+                        <Button
+                          onClick={() => handleApprove(review)}
+                          className="flex-1 bg-primary text-primary-foreground hover:bg-primary-hard"
+                          disabled={moderateMutation.isPending}
+                        >
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          Aprovar
+                        </Button>
+                        <Button
+                          onClick={() => handleReject(review)}
+                          variant="destructive"
+                          className="flex-1"
+                          disabled={moderateMutation.isPending}
+                        >
+                          <XCircle className="w-4 h-4 mr-2" />
+                          Rejeitar
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {reviewsData && reviewsData.totalPages > 1 && (
+          <div className="flex justify-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+            >
+              Anterior
+            </Button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.min(5, reviewsData.totalPages) }, (_, i) => i + 1).map((p) => (
+                <Button
+                  key={p}
+                  variant={page === p ? 'default' : 'outline'}
+                  onClick={() => setPage(p)}
+                >
+                  {p}
+                </Button>
+              ))}
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => setPage((p) => Math.min(reviewsData.totalPages, p + 1))}
+              disabled={page === reviewsData.totalPages}
+            >
+              Próxima
+            </Button>
+          </div>
+        )}
+      </div>
 
       {/* Approve Modal */}
       {showApproveModal && selectedReview && (
@@ -539,6 +559,6 @@ export default function AdminReviewsPage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

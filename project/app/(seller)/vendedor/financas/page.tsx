@@ -100,70 +100,70 @@ export default function FinanceDashboardPage() {
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
               <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
+                <CardContent className="p-4 sm:p-5 lg:p-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                     <div>
-                      <p className="text-sm text-gray-6 mb-1">Total de Receitas</p>
-                      <p className="text-2xl font-bold text-gray-9">
+                      <p className="text-xs sm:text-sm text-gray-6 mb-1">Total de Receitas</p>
+                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-9 break-words">
                         {isLoading ? '...' : formatCurrency(summary.totalIncome)}
                       </p>
                     </div>
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                      <ArrowUpRight className="w-6 h-6 text-green-600" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
+                <CardContent className="p-4 sm:p-5 lg:p-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                     <div>
-                      <p className="text-sm text-gray-6 mb-1">Total de Despesas</p>
-                      <p className="text-2xl font-bold text-gray-9">
+                      <p className="text-xs sm:text-sm text-gray-6 mb-1">Total de Despesas</p>
+                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-9 break-words">
                         {isLoading ? '...' : formatCurrency(summary.totalExpenses)}
                       </p>
                     </div>
-                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                      <ArrowDownRight className="w-6 h-6 text-red-600" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <ArrowDownRight className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
+                <CardContent className="p-4 sm:p-5 lg:p-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                     <div>
-                      <p className="text-sm text-gray-6 mb-1">Lucro Líquido</p>
+                      <p className="text-xs sm:text-sm text-gray-6 mb-1">Lucro Líquido</p>
                       <p
-                        className={`text-2xl font-bold ${
+                        className={`text-xl sm:text-2xl lg:text-3xl font-bold break-words ${
                           summary.netProfit >= 0 ? 'text-green-600' : 'text-red-600'
                         }`}
                       >
                         {isLoading ? '...' : formatCurrency(summary.netProfit)}
                       </p>
                     </div>
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                      <DollarSign className="w-6 h-6 text-primary" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
+                <CardContent className="p-4 sm:p-5 lg:p-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                     <div>
-                      <p className="text-sm text-gray-6 mb-1">Margem de Lucro</p>
-                      <p className="text-2xl font-bold text-gray-9">
+                      <p className="text-xs sm:text-sm text-gray-6 mb-1">Margem de Lucro</p>
+                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-9 break-words">
                         {isLoading ? '...' : `${summary.profitMargin}%`}
                       </p>
                     </div>
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-blue-600" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                     </div>
                   </div>
                 </CardContent>

@@ -79,7 +79,7 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="py-16 bg-gray-1">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8">
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <Truck className="text-primary" size={32} />
@@ -305,7 +305,7 @@ export default function HomePage() {
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
             </div>
           ) : featuredBlogPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
               {featuredBlogPosts.slice(0, 3).map((post) => (
                 <Link key={post.id} href={`/blog/${post.slug}`}>
                   <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">

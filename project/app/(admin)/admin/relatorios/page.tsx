@@ -198,7 +198,7 @@ export default function ReportsPage() {
       </Card>
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-6">Vendas Totais</CardTitle>
@@ -378,31 +378,41 @@ export default function ReportsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            <div className="text-center p-4 border rounded-lg">
-              <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-9">{reports.performanceMetrics.conversionRate}%</p>
-              <p className="text-xs text-gray-6 mt-1">Taxa de Conversão</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6">
+            <div className="text-center p-4 sm:p-5 border rounded-lg">
+              <Target className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600 mx-auto mb-2" />
+              <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
+                {reports.performanceMetrics.conversionRate}%
+              </p>
+              <p className="text-xs sm:text-sm text-gray-6 mt-1">Taxa de Conversão</p>
             </div>
-            <div className="text-center p-4 border rounded-lg">
-              <Clock className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-9">{reports.performanceMetrics.avgSessionTime}</p>
-              <p className="text-xs text-gray-6 mt-1">Tempo Médio de Sessão</p>
+            <div className="text-center p-4 sm:p-5 border rounded-lg">
+              <Clock className="w-7 h-7 sm:w-8 sm:h-8 text-green-600 mx-auto mb-2" />
+              <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
+                {reports.performanceMetrics.avgSessionTime}
+              </p>
+              <p className="text-xs sm:text-sm text-gray-6 mt-1">Tempo Médio de Sessão</p>
             </div>
-            <div className="text-center p-4 border rounded-lg">
-              <ShoppingCart className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-9">{reports.performanceMetrics.abandonmentRate}%</p>
-              <p className="text-xs text-gray-6 mt-1">Taxa de Abandono</p>
+            <div className="text-center p-4 sm:p-5 border rounded-lg">
+              <ShoppingCart className="w-7 h-7 sm:w-8 sm:h-8 text-orange-600 mx-auto mb-2" />
+              <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
+                {reports.performanceMetrics.abandonmentRate}%
+              </p>
+              <p className="text-xs sm:text-sm text-gray-6 mt-1">Taxa de Abandono</p>
             </div>
-            <div className="text-center p-4 border rounded-lg">
-              <Star className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-9">{reports.performanceMetrics.averageRating}</p>
-              <p className="text-xs text-gray-6 mt-1">Avaliação Média</p>
+            <div className="text-center p-4 sm:p-5 border rounded-lg">
+              <Star className="w-7 h-7 sm:w-8 sm:h-8 text-yellow-600 mx-auto mb-2" />
+              <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
+                {reports.performanceMetrics.averageRating}
+              </p>
+              <p className="text-xs sm:text-sm text-gray-6 mt-1">Avaliação Média</p>
             </div>
-            <div className="text-center p-4 border rounded-lg">
-              <Package className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-9">{reports.performanceMetrics.avgDeliveryTime} dias</p>
-              <p className="text-xs text-gray-6 mt-1">Tempo Médio de Entrega</p>
+            <div className="text-center p-4 sm:p-5 border rounded-lg">
+              <Package className="w-7 h-7 sm:w-8 sm:h-8 text-purple-600 mx-auto mb-2" />
+              <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
+                {reports.performanceMetrics.avgDeliveryTime} dias
+              </p>
+              <p className="text-xs sm:text-sm text-gray-6 mt-1">Tempo Médio de Entrega</p>
             </div>
           </div>
         </CardContent>

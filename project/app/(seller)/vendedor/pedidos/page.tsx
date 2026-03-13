@@ -77,56 +77,61 @@ export default function SellerOrdersPage() {
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
+              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                   <div className="p-2 bg-blue-100 rounded-lg">
-                    <Package className="w-6 h-6 text-blue-600" />
+                    <Package className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Total de Pedidos</p>
-                    <p className="text-2xl font-bold text-gray-900">{sellerOrders.length}</p>
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total de Pedidos</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
+                      {sellerOrders.length}
+                    </p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center">
+              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                   <div className="p-2 bg-green-100 rounded-lg">
-                    <Package className="w-6 h-6 text-green-600" />
+                    <Package className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Entregues</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Entregues</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {sellerOrders.filter((order: any) => order.status === 'delivered').length}
                     </p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center">
+              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                   <div className="p-2 bg-yellow-100 rounded-lg">
-                    <Clock className="w-6 h-6 text-yellow-600" />
+                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Em Processamento</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Em Processamento</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {sellerOrders.filter((order: any) => order.status === 'processing').length}
                     </p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center">
+              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                   <div className="p-2 bg-purple-100 rounded-lg">
-                    <DollarSign className="w-6 h-6 text-purple-600" />
+                    <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Valor Total</p>
-                    <p className="text-2xl font-bold text-gray-900">
-                      MTn {sellerOrders.reduce((total: number, order: any) => total + getSellerTotalFromOrder(order), 0).toFixed(2)}
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Valor Total</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
+                      MTn {sellerOrders.reduce(
+                        (total: number, order: any) => total + getSellerTotalFromOrder(order),
+                        0
+                      ).toFixed(2)}
                     </p>
                   </div>
                 </div>

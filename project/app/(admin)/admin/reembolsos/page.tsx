@@ -202,61 +202,79 @@ export default function AdminRefundsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6 mb-6">
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div>
-                <p className="text-xs text-gray-6 mb-1">Total</p>
-                <p className="text-xl font-bold text-gray-9">{stats?.total || 0}</p>
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Total</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
+                  {stats?.total || 0}
+                </p>
               </div>
-              <DollarSign className="w-5 h-5 text-gray-4" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-gray-4" />
+              </div>
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div>
-                <p className="text-xs text-gray-6 mb-1">Pendentes</p>
-                <p className="text-xl font-bold text-yellow-600">{stats?.pending || 0}</p>
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Pendentes</p>
+                <p className="text-xl sm:text-2xl font-bold text-yellow-600 break-words">
+                  {stats?.pending || 0}
+                </p>
               </div>
-              <Clock className="w-5 h-5 text-yellow-600" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600" />
+              </div>
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div>
-                <p className="text-xs text-gray-6 mb-1">Aprovados</p>
-                <p className="text-xl font-bold text-green-600">{stats?.approved || 0}</p>
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Aprovados</p>
+                <p className="text-xl sm:text-2xl font-bold text-green-600 break-words">
+                  {stats?.approved || 0}
+                </p>
               </div>
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+              </div>
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div>
-                <p className="text-xs text-gray-6 mb-1">Rejeitados</p>
-                <p className="text-xl font-bold text-red-600">{stats?.rejected || 0}</p>
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Rejeitados</p>
+                <p className="text-xl sm:text-2xl font-bold text-red-600 break-words">
+                  {stats?.rejected || 0}
+                </p>
               </div>
-              <XCircle className="w-5 h-5 text-red-600" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
+              </div>
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div>
-                <p className="text-xs text-gray-6 mb-1">Valor Total</p>
-                <p className="text-lg font-bold text-gray-9">
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Valor Total</p>
+                <p className="text-lg sm:text-xl font-bold text-gray-9 break-words">
                   {stats?.totalValue ? formatCurrency(stats.totalValue) : formatCurrency(0)}
                 </p>
               </div>
-              <DollarSign className="w-5 h-5 text-primary" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+              </div>
             </div>
           </CardContent>
         </Card>
