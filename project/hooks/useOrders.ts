@@ -2,17 +2,38 @@ import { useQuery, useMutation, useQueryClient, UseQueryOptions } from '@tanstac
 import apiClient from '@/lib/api-client';
 import { Order } from '@/types/api';
 
+export interface UserOrdersResponse {
+  orders: Order[];
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+  stats?: {
+    total: number;
+    pending: number;
+    confirmed: number;
+    processing: number;
+    shipped: number;
+    delivered: number;
+    cancelled: number;
+    refunded: number;
+    totalSpent: number;
+  };
+}
+
 export const useUserOrders = (
   params?: { limit?: number; page?: number },
-  options?: Pick<UseQueryOptions<Order[]>, 'enabled'>,
+  options?: Pick<UseQueryOptions<UserOrdersResponse>, 'enabled'>,
 ) => {
-  return useQuery({
+  return useQuery<UserOrdersResponse>({
     queryKey: ['orders', 'user', params],
     queryFn: async () => {
       const response = await apiClient.get('/orders/my-orders', {
         params,
       });
-      return response.data.data.orders as Order[];
+      return response.data.data as UserOrdersResponse;
     },
     enabled: options?.enabled ?? true,
   });
