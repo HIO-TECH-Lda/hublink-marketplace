@@ -16,11 +16,11 @@ import { OrdersTable } from '@/components/orders/OrdersTable';
 
 export default function UserDashboardPage() {
   const { user } = useAuth();
-  const { data: orders, isLoading: ordersLoading } = useUserOrders({ limit: 5 });
+  const { data: ordersData, isLoading: ordersLoading } = useUserOrders({ limit: 5 });
   const { data: cart } = useCart();
   const { data: wishlist } = useWishlist();
 
-  const dashboardOrders = orders ?? [];
+  const dashboardOrders = ordersData?.orders ?? [];
 
   return (
     <div className="min-h-screen bg-gray-1">
@@ -56,7 +56,9 @@ export default function UserDashboardPage() {
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
                   <Package className="text-primary" size={20} />
                 </div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9">{orders?.length || 0}</h3>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9">
+                  {ordersData?.stats?.total ?? dashboardOrders.length}
+                </h3>
                 <p className="text-gray-6 text-xs sm:text-sm lg:text-base">Total de Pedidos</p>
               </div>
               <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center">

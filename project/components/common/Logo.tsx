@@ -36,14 +36,15 @@ export default function Logo({
   priority = false,
 }: LogoProps) {
   const logoPath = logoConfig[variant];
+  const brandName = logoConfig.brandName ?? 'Txova';
   
   // Fallback: Text-based logo with circular "T"
   const FallbackLogo = () => (
     <div className={containerClassName}>
       <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-        <span className="text-white font-bold text-sm">{logoConfig.brandName.charAt(0)}</span>
+        <span className="text-white font-bold text-sm">{brandName.charAt(0)}</span>
       </div>
-      <span className={brandNameClassName}>{logoConfig.brandName}</span>
+      <span className={brandNameClassName}>{brandName}</span>
     </div>
   );
 
@@ -64,14 +65,14 @@ export default function Logo({
     <div className={containerClassName}>
       <Image
         src={logoPath}
-        alt={logoConfig.brandName}
+        alt={brandName}
         width={width}
         height={height}
         className={className}
         priority={priority}
       />
       {showBrandName && (
-        <span className={brandNameClassName}>{logoConfig.brandName}</span>
+        <span className={brandNameClassName}>{brandName}</span>
       )}
     </div>
   );

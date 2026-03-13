@@ -25,7 +25,7 @@ export default function ProductReviewPage() {
   const { loading: authLoading, isAuthenticated } = useAuth();
   const { data: product, isLoading: productLoading, error: productError } = useProduct(productId);
   const {
-    data: orders,
+    data: ordersData,
     isLoading: ordersLoading,
   } = useUserOrders({ limit: 50 }, { enabled: isAuthenticated });
   const createReview = useCreateReview();
@@ -33,10 +33,10 @@ export default function ProductReviewPage() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const eligibleOrders = useMemo(() => {
-    if (!orders || !product) return [];
+    if (!ordersData?.orders || !product) return [];
 
     const normalizedProductId = product._id || productId;
-    return orders.filter((order) => {
+    return ordersData.orders.filter((order) => {
       const status = (order.status || '').toLowerCase();
       const isDeliveredOrCompleted = status === 'delivered' || status === 'completed';
       if (!isDeliveredOrCompleted) return false;
@@ -52,7 +52,7 @@ export default function ProductReviewPage() {
 
       return containsProduct;
     });
-  }, [orders, product, productId]);
+  }, [ordersData, product, productId]);
 
   const orderOptions = useMemo(() => {
     return eligibleOrders.map((order) => {
