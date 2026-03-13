@@ -472,4 +472,33 @@ export class PaymentController {
       });
     }
   }
+
+  /**
+   * Admin list of payments with order and buyer info
+   */
+  static async getAdminPayments(req: Request, res: Response) {
+    try {
+      const { page, limit, status, method, gateway } = req.query;
+
+      const result = await PaymentService.getAdminPayments({
+        page: page ? Number(page) : undefined,
+        limit: limit ? Number(limit) : undefined,
+        status: typeof status === 'string' ? status : undefined,
+        method: typeof method === 'string' ? method : undefined,
+        gateway: typeof gateway === 'string' ? gateway : undefined,
+      });
+
+      return res.json({
+        success: true,
+        message: Messages.PAYMENT.LIST_RETRIEVED,
+        data: result,
+      });
+    } catch (error: any) {
+      console.error('Get admin payments error:', error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || 'Failed to retrieve payments',
+      });
+    }
+  }
 }

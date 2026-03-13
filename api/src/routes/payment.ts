@@ -12,6 +12,13 @@ import {
 
 const router = express.Router();
 
+// Admin payments list (requires admin)
+router.get('/admin',
+  authenticateToken,
+  authorizeRoles('admin'),
+  PaymentController.getAdminPayments
+);
+
 // Unified payment processing (requires authentication)
 router.post('/process', 
   authenticateToken, 
