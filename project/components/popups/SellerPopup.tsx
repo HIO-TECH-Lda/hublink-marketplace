@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
@@ -8,6 +8,14 @@ import Link from 'next/link';
 
 export default function SellerPopup() {
   const { state, dispatch } = useMarketplace();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   const shouldShow =
     state.showNewsletterPopup &&

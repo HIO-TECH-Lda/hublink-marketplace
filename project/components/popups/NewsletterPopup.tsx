@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,10 +9,16 @@ import { useNewsletterSubscribe } from '@/hooks/useNewsletter';
 
 export default function NewsletterPopup() {
   const { state, dispatch } = useMarketplace();
+  const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState('');
   const [dontShowAgain, setDontShowAgain] = useState(false);
   const subscribe = useNewsletterSubscribe();
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
   if (!state.showNewsletterPopup) return null;
 
   const handleClose = () => {
