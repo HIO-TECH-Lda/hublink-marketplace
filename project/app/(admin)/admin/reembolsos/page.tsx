@@ -62,11 +62,31 @@ export default function AdminRefundsPage() {
   const rejectRefund = useRejectRefund();
 
   const refunds = refundsData?.refunds || [];
+  const listStats = refundsData?.stats;
   const pagination = {
     page: refundsData?.page || 1,
     totalPages: refundsData?.totalPages || 1,
     total: refundsData?.total || 0,
-    limit: refundsData?.limit || limit
+    limit: refundsData?.limit || limit,
+  };
+
+  const combinedStats = {
+    pending: stats?.pending ?? listStats?.counts?.pending ?? 0,
+    approved: stats?.approved ?? listStats?.counts?.approved ?? 0,
+    rejected: stats?.rejected ?? listStats?.counts?.rejected ?? 0,
+    total:
+      stats?.total ??
+      (listStats
+        ? (listStats.counts?.pending || 0) +
+          (listStats.counts?.approved || 0) +
+          (listStats.counts?.rejected || 0)
+        : 0),
+    totalValue:
+      stats?.totalValue ??
+      (listStats ? listStats.amounts?.total || 0 : 0),
+    amountPending: listStats?.amounts?.pending ?? 0,
+    amountApproved: listStats?.amounts?.approved ?? 0,
+    amountRejected: listStats?.amounts?.rejected ?? 0,
   };
 
   const formatCurrency = (amount: number) => {
@@ -209,7 +229,7 @@ export default function AdminRefundsPage() {
               <div>
                 <p className="text-xs sm:text-sm text-gray-6 mb-1">Total</p>
                 <p className="text-xl sm:text-2xl font-bold text-gray-9 break-words">
-                  {stats?.total || 0}
+                  {combinedStats.total}
                 </p>
               </div>
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -224,7 +244,7 @@ export default function AdminRefundsPage() {
               <div>
                 <p className="text-xs sm:text-sm text-gray-6 mb-1">Pendentes</p>
                 <p className="text-xl sm:text-2xl font-bold text-yellow-600 break-words">
-                  {stats?.pending || 0}
+                  {combinedStats.pending}
                 </p>
               </div>
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -239,7 +259,7 @@ export default function AdminRefundsPage() {
               <div>
                 <p className="text-xs sm:text-sm text-gray-6 mb-1">Aprovados</p>
                 <p className="text-xl sm:text-2xl font-bold text-green-600 break-words">
-                  {stats?.approved || 0}
+                  {combinedStats.approved}
                 </p>
               </div>
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -254,7 +274,7 @@ export default function AdminRefundsPage() {
               <div>
                 <p className="text-xs sm:text-sm text-gray-6 mb-1">Rejeitados</p>
                 <p className="text-xl sm:text-2xl font-bold text-red-600 break-words">
-                  {stats?.rejected || 0}
+                  {combinedStats.rejected}
                 </p>
               </div>
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -269,11 +289,51 @@ export default function AdminRefundsPage() {
               <div>
                 <p className="text-xs sm:text-sm text-gray-6 mb-1">Valor Total</p>
                 <p className="text-lg sm:text-xl font-bold text-gray-9 break-words">
-                  {stats?.totalValue ? formatCurrency(stats.totalValue) : formatCurrency(0)}
+                  {formatCurrency(combinedStats.totalValue)}
                 </p>
               </div>
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                 <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Amount by status */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+        <Card>
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Valor Pendente</p>
+                <p className="text-lg sm:text-xl font-bold text-yellow-600 break-words">
+                  {formatCurrency(combinedStats.amountPending)}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Valor Aprovado</p>
+                <p className="text-lg sm:text-xl font-bold text-green-600 break-words">
+                  {formatCurrency(combinedStats.amountApproved)}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Valor Rejeitado</p>
+                <p className="text-lg sm:text-xl font-bold text-red-600 break-words">
+                  {formatCurrency(combinedStats.amountRejected)}
+                </p>
               </div>
             </div>
           </CardContent>
