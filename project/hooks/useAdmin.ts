@@ -572,6 +572,19 @@ export const useAdminRefunds = (params?: {
         page: number;
         limit: number;
         totalPages: number;
+        stats?: {
+          counts: {
+            pending: number;
+            approved: number;
+            rejected: number;
+          };
+          amounts: {
+            pending: number;
+            approved: number;
+            rejected: number;
+            total: number;
+          };
+        };
       };
     },
   });
