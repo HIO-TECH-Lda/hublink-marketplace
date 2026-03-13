@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/layout/Header';
@@ -12,7 +13,9 @@ export default function BuyerLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const isCartPage = pathname === '/carrinho';
 
   // Show loading while checking authentication
   if (authLoading) {
@@ -28,8 +31,8 @@ export default function BuyerLayout({
     );
   }
 
-  // Show access denied if not authenticated
-  if (!isAuthenticated || !user) {
+  // Allow guests on cart page only; require auth for all other buyer routes
+  if (!isCartPage && (!isAuthenticated || !user)) {
     return (
       <div className="min-h-screen bg-gray-1">
         <Header />
