@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Package, Heart, ShoppingCart, Settings, LogOut, User, TrendingUp, MessageSquare } from 'lucide-react';
+import { Package, Settings, LogOut, User, TrendingUp, MessageSquare, BadgeDollarSign } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface BuyerSidebarProps {
@@ -32,6 +32,12 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
       label: 'Meus Tickets',
       icon: MessageSquare,
       active: pathname?.startsWith('/suporte')
+    },
+    {
+      href: '/affiliate/dashboard',
+      label: 'Afiliados',
+      icon: BadgeDollarSign,
+      active: pathname?.startsWith('/affiliate')
     },
     {
       href: '/configuracoes',

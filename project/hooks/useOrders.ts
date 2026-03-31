@@ -59,7 +59,10 @@ export const useCreateOrderFromCart = () => {
       billingAddress: any;
       payment: {
         method: string;
-        paymentDetails?: any;
+        paymentDetails?: {
+          affiliateCode?: string;
+          [key: string]: unknown;
+        };
       };
       notes?: string;
     }) => {

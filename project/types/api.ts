@@ -5,7 +5,7 @@ export interface User {
   lastName: string;
   email: string;
   phone: string;
-  role: 'buyer' | 'seller' | 'admin' | 'support';
+  role: 'buyer' | 'seller' | 'admin' | 'support' | 'affiliate';
   status: 'active' | 'inactive' | 'suspended';
   emailVerified: boolean;
   phoneVerified: boolean;
