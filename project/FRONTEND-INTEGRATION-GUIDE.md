@@ -16,6 +16,7 @@ This guide provides step-by-step instructions to integrate your Next.js frontend
 - [Phase 6: Payment Integration](#phase-6-payment-integration)
 - [Phase 7: Reviews & Ratings](#phase-7-reviews--ratings)
 - [Phase 8: Advanced Features](#phase-8-advanced-features)
+- [Affiliate Feature Guide](#affiliate-feature-guide)
 - [Troubleshooting](#troubleshooting)
 
 ---
@@ -1451,6 +1452,21 @@ export const useCheckTransactionStatus = (transactionId: string) => {
   });
 };
 ```
+
+---
+
+## Affiliate Feature Guide
+
+Affiliate integration has a dedicated document:
+
+- `project/AFFILIATE-FRONTEND-INTEGRATION.md`
+- `project/AFFILIATE-CREATION-FRONTEND-INTEGRATION.md` (apply + admin create flows)
+
+Use it together with this main guide:
+
+- This file (`FRONTEND-INTEGRATION-GUIDE.md`) for app-wide patterns and shared setup
+- `AFFILIATE-FRONTEND-INTEGRATION.md` for affiliate-specific routes, APIs, hooks, and rollout
+- `AFFILIATE-CREATION-FRONTEND-INTEGRATION.md` for affiliate creation forms and payload contracts
 
 ---
 
