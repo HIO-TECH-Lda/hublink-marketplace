@@ -3,6 +3,7 @@ import Payment, { IPayment } from '../models/Payment';
 import Order from '../models/Order';
 import { IOrder } from '../models/Order';
 import Messages from '../utils/messages';
+import { AffiliateService } from './affiliateService';
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
@@ -256,6 +257,10 @@ export class PaymentService {
         { new: true, runValidators: true }
       );
 
+      if (updatedOrder) {
+        await AffiliateService.createConversionFromOrder(updatedOrder, payment._id.toString());
+      }
+
       return {
         type: 'imali_pay_by_link',
         status: 'success',
@@ -396,6 +401,7 @@ export class PaymentService {
       const order = await Order.findById(payment.orderId);
       if (order) {
         await order.confirmOrder();
+        await AffiliateService.createConversionFromOrder(order, payment._id.toString());
       }
 
       return payment;
@@ -485,6 +491,7 @@ export class PaymentService {
         const order = await Order.findById(payment.orderId);
         if (order) {
           await order.confirmOrder();
+          await AffiliateService.createConversionFromOrder(order, payment._id.toString());
         }
       }
     } catch (error) {
@@ -646,6 +653,7 @@ export class PaymentService {
       const order = await Order.findById(payment.orderId);
       if (order) {
         await order.confirmOrder();
+        await AffiliateService.createConversionFromOrder(order, payment._id.toString());
       }
 
       return payment;

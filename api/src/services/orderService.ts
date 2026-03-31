@@ -5,6 +5,7 @@ import User from '../models/User';
 import { CartService } from './cartService';
 import Messages from '../utils/messages';
 import mongoose from 'mongoose';
+import { AffiliateService } from './affiliateService';
 
 export class OrderService {
   // Create order from cart
@@ -405,6 +406,7 @@ export class OrderService {
             throw new Error(Messages.ORDER.CANCEL_REQUIRED);
           }
           await order.cancelOrder(options.cancelledBy, options.cancelReason);
+          await AffiliateService.rejectConversionsByOrder(order._id!.toString(), options.cancelReason);
           break;
         case 'refunded':
           if (!options.refundAmount) {
@@ -510,6 +512,7 @@ export class OrderService {
 
       // Restore product stock
       await this.restoreProductStock(order.items);
+      await AffiliateService.rejectConversionsByOrder(order._id!.toString(), 'Order cancelled by buyer');
 
       return order;
     } catch (error) {

@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import Affiliate, { IAffiliate } from '../models/Affiliate';
 import AffiliateClick from '../models/AffiliateClick';
 import AffiliateConversion from '../models/AffiliateConversion';
+import mongoose from 'mongoose';
 
 export class AffiliateService {
   static async trackCode(code: string, reqMeta: {
@@ -118,6 +119,81 @@ export class AffiliateService {
         pages: Math.ceil(total / limit),
       },
     };
+  }
+
+  static async createConversionFromOrder(order: any, paymentId?: string) {
+    const affiliateCode = order?.payment?.paymentDetails?.affiliateCode;
+    if (!affiliateCode) return null;
+
+    const affiliate = await Affiliate.findOne({
+      code: String(affiliateCode).trim().toUpperCase(),
+      status: 'active',
+    });
+
+    if (!affiliate) return null;
+
+    // Self-referral protection
+    if (String(order.userId) === String(affiliate.userId)) {
+      return null;
+    }
+
+    const sellerId = order?.items?.[0]?.sellerId;
+    const subtotal = Number(order?.subtotal || 0);
+    const total = Number(order?.total || 0);
+    const commissionBaseAmount = subtotal > 0 ? subtotal : total;
+
+    let commissionAmount = 0;
+    if (affiliate.commissionType === 'percentage') {
+      commissionAmount = (commissionBaseAmount * affiliate.commissionValue) / 100;
+    } else {
+      commissionAmount = affiliate.commissionValue;
+    }
+
+    commissionAmount = Math.round(commissionAmount * 100) / 100;
+
+    try {
+      const conversion = await AffiliateConversion.create({
+        affiliateId: affiliate._id,
+        orderId: new mongoose.Types.ObjectId(String(order._id)),
+        paymentId: paymentId ? new mongoose.Types.ObjectId(paymentId) : undefined,
+        buyerId: new mongoose.Types.ObjectId(String(order.userId)),
+        sellerId: sellerId ? new mongoose.Types.ObjectId(String(sellerId)) : undefined,
+        currency: order?.currency || 'MZM',
+        orderSubtotal: subtotal,
+        orderTotal: total,
+        commissionBaseAmount,
+        commissionType: affiliate.commissionType,
+        commissionValue: affiliate.commissionValue,
+        commissionAmount,
+        status: 'pending',
+        attributionModel: 'last_click',
+        attributedAt: new Date(),
+      });
+
+      return conversion;
+    } catch (error: any) {
+      // Ignore duplicates from retries/webhooks
+      if (error?.code === 11000) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  static async rejectConversionsByOrder(orderId: string, reason: string) {
+    await AffiliateConversion.updateMany(
+      {
+        orderId: new mongoose.Types.ObjectId(orderId),
+        status: { $in: ['pending', 'approved'] },
+      },
+      {
+        $set: {
+          status: 'rejected',
+          rejectedAt: new Date(),
+          rejectReason: reason,
+        },
+      }
+    );
   }
 }
 

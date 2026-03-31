@@ -753,7 +753,8 @@ export const createOrderSchema = Joi.object({
     paymentDetails: Joi.object({
       cardLast4: Joi.string().length(4).optional(),
       cardBrand: Joi.string().optional(),
-      paypalEmail: Joi.string().email().optional()
+      paypalEmail: Joi.string().email().optional(),
+      affiliateCode: Joi.string().max(50).optional()
     }).optional()
   }).required(),
   notes: Joi.string().max(500).optional()
@@ -793,6 +794,7 @@ export const createOrderFromCartSchema = Joi.object({
       imaliLinkId: Joi.string().optional(),
       mPesaPhoneNumber: Joi.string().optional(),
       eMolaPhoneNumber: Joi.string().optional(),
+      affiliateCode: Joi.string().max(50).optional(),
     }).optional()
   }).required(),
   notes: Joi.string().max(500).optional()
