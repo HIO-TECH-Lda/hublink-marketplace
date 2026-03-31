@@ -3,6 +3,30 @@ import { AffiliateService } from '../services/affiliateService';
 import Messages from '../utils/messages';
 
 export class AffiliateController {
+  static async apply(req: Request, res: Response) {
+    try {
+      const userId = req.user!.userId;
+      const { code, paymentMethod, paymentDetails } = req.body;
+
+      const affiliate = await AffiliateService.apply(userId, {
+        code,
+        paymentMethod,
+        paymentDetails,
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: Messages.SUCCESS,
+        data: { affiliate },
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error instanceof Error ? error.message : Messages.INTERNAL_ERROR,
+      });
+    }
+  }
+
   static async track(req: Request, res: Response) {
     try {
       const { code } = req.params;

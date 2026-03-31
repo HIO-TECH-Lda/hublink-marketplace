@@ -1220,6 +1220,58 @@ export const syncSalesSchema = Joi.object({
     .optional()
 });
 
+// Affiliate validation schemas
+export const applyAffiliateSchema = Joi.object({
+  code: Joi.string()
+    .max(50)
+    .optional(),
+  paymentMethod: Joi.string()
+    .valid('bank_transfer', 'mpesa', 'emola', 'other')
+    .optional(),
+  paymentDetails: Joi.object()
+    .optional()
+});
+
+export const createAffiliateByAdminSchema = Joi.object({
+  userId: Joi.string()
+    .optional(),
+  user: Joi.object({
+    firstName: Joi.string().min(2).max(50).required(),
+    lastName: Joi.string().min(2).max(50).required(),
+    email: Joi.string().email().required(),
+    phone: Joi.string().required(),
+    password: Joi.string().min(8).required(),
+    role: Joi.string().valid('buyer', 'seller', 'admin', 'support').optional(),
+    status: Joi.string().valid('active', 'inactive', 'suspended').optional(),
+    emailVerified: Joi.boolean().optional(),
+    phoneVerified: Joi.boolean().optional()
+  }).optional(),
+  code: Joi.string()
+    .max(50)
+    .optional(),
+  status: Joi.string()
+    .valid('pending', 'active', 'blocked')
+    .optional(),
+  commissionType: Joi.string()
+    .valid('percentage', 'fixed')
+    .optional(),
+  commissionValue: Joi.number()
+    .min(0)
+    .optional(),
+  cookieWindowDays: Joi.number()
+    .min(1)
+    .max(365)
+    .optional(),
+  minPayoutAmount: Joi.number()
+    .min(0)
+    .optional(),
+  paymentMethod: Joi.string()
+    .valid('bank_transfer', 'mpesa', 'emola', 'other')
+    .optional(),
+  paymentDetails: Joi.object()
+    .optional()
+}).or('userId', 'user');
+
 // Validation middleware factory
 export const validateRequest = (schema: Joi.ObjectSchema) => {
   return (req: any, res: any, next: any) => {

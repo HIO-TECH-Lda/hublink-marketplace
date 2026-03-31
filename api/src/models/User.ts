@@ -62,7 +62,7 @@ const userSchema = new Schema<IUserDocument>({
   },
   role: {
     type: String,
-    enum: ['buyer', 'seller', 'admin', 'support'],
+    enum: ['buyer', 'seller', 'admin', 'support', 'affiliate'],
     default: 'buyer'
   },
   status: {

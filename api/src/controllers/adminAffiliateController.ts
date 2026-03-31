@@ -3,6 +3,23 @@ import { AdminAffiliateService } from '../services/adminAffiliateService';
 import Messages from '../utils/messages';
 
 export class AdminAffiliateController {
+  static async createAffiliate(req: Request, res: Response) {
+    try {
+      const affiliate = await AdminAffiliateService.createAffiliate(req.body);
+
+      return res.status(201).json({
+        success: true,
+        message: Messages.SUCCESS,
+        data: { affiliate },
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error instanceof Error ? error.message : Messages.INTERNAL_ERROR,
+      });
+    }
+  }
+
   static async getAffiliates(req: Request, res: Response) {
     try {
       const { page = '1', limit = '10', status, search } = req.query;

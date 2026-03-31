@@ -5,6 +5,57 @@ import AffiliateConversion from '../models/AffiliateConversion';
 import mongoose from 'mongoose';
 
 export class AffiliateService {
+  private static async generateUniqueCode(seed?: string): Promise<string> {
+    const base = (seed || 'AFF')
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '')
+      .slice(0, 6) || 'AFF';
+
+    for (let i = 0; i < 10; i++) {
+      const suffix = crypto.randomBytes(3).toString('hex').toUpperCase();
+      const code = `${base}${suffix}`;
+      const exists = await Affiliate.findOne({ code });
+      if (!exists) return code;
+    }
+
+    throw new Error('Failed to generate unique affiliate code');
+  }
+
+  static async apply(userId: string, payload?: {
+    code?: string;
+    paymentMethod?: 'bank_transfer' | 'mpesa' | 'emola' | 'other';
+    paymentDetails?: Record<string, any>;
+  }) {
+    const existing = await Affiliate.findOne({ userId });
+    if (existing) {
+      return existing;
+    }
+
+    let code = payload?.code?.trim().toUpperCase();
+    if (code) {
+      const taken = await Affiliate.findOne({ code });
+      if (taken) {
+        throw new Error('Affiliate code already exists');
+      }
+    } else {
+      code = await this.generateUniqueCode(`AFF${String(userId).slice(-4)}`);
+    }
+
+    const affiliate = await Affiliate.create({
+      userId,
+      code,
+      status: 'pending',
+      commissionType: 'percentage',
+      commissionValue: Number(process.env.AFFILIATE_DEFAULT_COMMISSION || 5),
+      cookieWindowDays: Number(process.env.AFFILIATE_COOKIE_WINDOW_DAYS || 30),
+      minPayoutAmount: Number(process.env.AFFILIATE_MIN_PAYOUT || 1000),
+      paymentMethod: payload?.paymentMethod,
+      paymentDetails: payload?.paymentDetails || {},
+    });
+
+    return affiliate;
+  }
+
   static async trackCode(code: string, reqMeta: {
     userId?: string;
     sessionId?: string;
