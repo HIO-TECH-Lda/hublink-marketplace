@@ -49,6 +49,7 @@ export interface IOrderPayment {
     imaliLinkId?: string;
     mPesaPhoneNumber?: string;
     eMolaPhoneNumber?: string;
+    affiliateCode?: string;
   };
 }
 
@@ -267,6 +268,7 @@ const orderPaymentSchema = new Schema<IOrderPayment>({
     imaliLinkId: String,
     mPesaPhoneNumber: String,
     eMolaPhoneNumber: String,
+    affiliateCode: String,
   }
 });
 
