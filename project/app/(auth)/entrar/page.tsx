@@ -231,7 +231,7 @@ export default function SignInPage() {
           <div className="mt-8 p-4 bg-gray-1 rounded-lg">
             <p className="text-sm text-gray-6 mb-3 font-medium">Contas de demonstração:</p>
             <div className="space-y-2">
-              <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex flex-row flex-wrap gap-2">
                 <Button
                   type="button"
                   variant="outline"
@@ -261,6 +261,16 @@ export default function SignInPage() {
                   className="flex-1 text-xs disabled:opacity-50"
                 >
                   {isLoading ? 'Entrando...' : 'Login Admin'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={isLoading || authLoading}
+                  onClick={() => handleDemoLogin('afil@test.com')}
+                  className="flex-1 text-xs disabled:opacity-50"
+                >
+                  {isLoading ? 'Entrando...' : 'Login Afiliado'}
                 </Button>
               </div>
               {/* <div className="text-xs text-gray-7 space-y-1">
