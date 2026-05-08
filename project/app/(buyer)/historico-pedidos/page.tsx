@@ -1,9 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useUserOrders } from '@/hooks/useOrders';
-import { ArrowLeft, Package, Calendar, DollarSign, Clock, CheckCircle, Truck, RotateCcw } from 'lucide-react';
+import { Package, DollarSign, Clock, Truck, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -13,7 +12,6 @@ import { formatCurrency } from '@/lib/payment';
 import { OrdersTable } from '@/components/orders/OrdersTable';
 
 export default function OrderHistoryPage() {
-  const { user } = useAuth();
   const { data, isLoading } = useUserOrders();
 
   if (isLoading) {
@@ -52,85 +50,65 @@ export default function OrderHistoryPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
-            {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6 mb-8">
-              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <Package className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total de Pedidos</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      {stats?.total ?? userOrders.length}
-                    </p>
-                  </div>
+            {/* Stats — same responsive pattern as buyer painel: max 3 columns, wrap; centered stack avoids truncated currency */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mb-8">
+              <div className="min-w-0 bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Package className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                 </div>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9 break-words">
+                  {stats?.total ?? userOrders.length}
+                </h3>
+                <p className="text-gray-6 text-xs sm:text-sm lg:text-base mt-1">Total de Pedidos</p>
               </div>
-              
-              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total Gasto</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      {formatCurrency(
-                        stats?.totalSpent ??
-                          userOrders.reduce(
-                            (total: number, order: any) =>
-                              total + (order.totalAmount || order.total || 0),
-                            0,
-                          ),
-                      )}
-                    </p>
-                  </div>
+
+              <div className="min-w-0 bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                 </div>
+                <h3 className="text-base sm:text-lg lg:text-2xl font-bold text-gray-9 break-words leading-tight px-1">
+                  {formatCurrency(
+                    stats?.totalSpent ??
+                      userOrders.reduce(
+                        (total: number, order: any) =>
+                          total + (order.totalAmount || order.total || 0),
+                        0,
+                      ),
+                  )}
+                </h3>
+                <p className="text-gray-6 text-xs sm:text-sm lg:text-base mt-1">Total Gasto</p>
               </div>
-              
-              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-                  <div className="p-2 bg-yellow-100 rounded-lg">
-                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pendentes</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      {stats?.pending ?? userOrders.filter((order: any) => order.status === 'pending').length}
-                    </p>
-                  </div>
+
+              <div className="min-w-0 bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                 </div>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9 break-words">
+                  {stats?.pending ?? userOrders.filter((order: any) => order.status === 'pending').length}
+                </h3>
+                <p className="text-gray-6 text-xs sm:text-sm lg:text-base mt-1">Pendentes</p>
               </div>
-              
-              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Enviados / Entregues</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      {(stats?.shipped ?? userOrders.filter((o: any) => o.status === 'shipped').length) +
-                        (stats?.delivered ?? userOrders.filter((o: any) => o.status === 'delivered').length)}
-                    </p>
-                  </div>
+
+              <div className="min-w-0 bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                 </div>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9 break-words">
+                  {(stats?.shipped ?? userOrders.filter((o: any) => o.status === 'shipped').length) +
+                    (stats?.delivered ?? userOrders.filter((o: any) => o.status === 'delivered').length)}
+                </h3>
+                <p className="text-gray-6 text-xs sm:text-sm lg:text-base mt-1">Enviados / Entregues</p>
               </div>
-              
-              <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-                  <div className="p-2 bg-red-100 rounded-lg">
-                    <RotateCcw className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Cancelados / Reembolsados</p>
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      {(stats?.cancelled ?? userOrders.filter((o: any) => o.status === 'cancelled' || o.status === 'canceled').length) +
-                        (stats?.refunded ?? userOrders.filter((o: any) => o.status === 'refunded').length)}
-                    </p>
-                  </div>
+
+              <div className="min-w-0 bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center sm:col-span-2 lg:col-span-1">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <RotateCcw className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
                 </div>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-9 break-words">
+                  {(stats?.cancelled ?? userOrders.filter((o: any) => o.status === 'cancelled' || o.status === 'canceled').length) +
+                    (stats?.refunded ?? userOrders.filter((o: any) => o.status === 'refunded').length)}
+                </h3>
+                <p className="text-gray-6 text-xs sm:text-sm lg:text-base mt-1">Cancelados / Reembolsados</p>
               </div>
             </div>
 
