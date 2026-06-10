@@ -154,6 +154,11 @@ export default function PayoutsPage() {
           </div>
 
           <div className="lg:col-span-3 space-y-8">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h1 className="text-2xl font-bold text-gray-9 mb-2">Repasses</h1>
+              <p className="text-gray-6 text-sm">Acompanhe aqui os valores disponíveis da sua banca, os montantes pendentes, o total ganho e o histórico de repasses solicitados ou processados pelo Txova.</p>
+            </div>
+
             {/* Balance Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
               <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
@@ -176,7 +181,7 @@ export default function PayoutsPage() {
                     <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pendente</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Saldo Pendente</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {balanceLoading ? '...' : `MTn ${(balance?.pending || 0).toFixed(2)}`}
                     </p>
@@ -207,12 +212,12 @@ export default function PayoutsPage() {
                   <DialogTrigger asChild>
                     <Button className="bg-primary text-primary-foreground hover:bg-primary-hard">
                       <Plus className="w-4 h-4 mr-2" />
-                      Solicitar Repasse
+                      Solicitar Levantamento
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Solicitar Repasse</DialogTitle>
+                      <DialogTitle>Solicitar Levantamento</DialogTitle>
                       <DialogDescription>
                         Solicite um repasse do seu saldo disponível: MTn {(balance?.available || 0).toFixed(2)}
                       </DialogDescription>
@@ -306,10 +311,10 @@ export default function PayoutsPage() {
                           Valor
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
+                          Estado
                         </th>
                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Ações
+                          Acções
                         </th>
                       </tr>
                     </thead>
@@ -361,7 +366,7 @@ export default function PayoutsPage() {
                                 <div className="space-y-4">
                                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                                     <div>
-                                      <p className="text-gray-6">Status</p>
+                                      <p className="text-gray-6">Estado</p>
                                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${getStatusColor(payout.status)}`}>
                                         {getStatusIcon(payout.status)}
                                         <span className="ml-1">{getStatusText(payout.status)}</span>
@@ -436,7 +441,7 @@ export default function PayoutsPage() {
                                             <tr className="border-b border-gray-2">
                                               <th className="text-left py-2 px-2">Número do Pedido</th>
                                               <th className="text-left py-2 px-2">Valor</th>
-                                              <th className="text-left py-2 px-2">Status</th>
+                                              <th className="text-left py-2 px-2">Estado</th>
                                             </tr>
                                           </thead>
                                           <tbody>

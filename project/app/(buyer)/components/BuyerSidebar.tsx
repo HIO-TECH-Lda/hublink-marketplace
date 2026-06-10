@@ -29,7 +29,7 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
     },
     {
       href: '/suporte/meus-tickets',
-      label: 'Meus Tickets',
+      label: 'Os Meus Tickets',
       icon: MessageSquare,
       active: pathname?.startsWith('/suporte')
     },

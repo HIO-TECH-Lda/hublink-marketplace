@@ -88,7 +88,7 @@ export default function ExpensesPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Despesas</h1>
-                <p className="text-gray-6 text-sm sm:text-base">Gerencie suas despesas e custos</p>
+                <p className="text-gray-6 text-sm sm:text-base">Gira e acompanhe as despesas e custos associados à sua banca no Txova, incluindo entregas, embalagens, transporte, reposição de produtos, comunicação, marketing e outras despesas operacionais.</p>
               </div>
               <Link href="/vendedor/financas/despesas/nova">
                 <Button variant="outline" className="border-red-300 text-red-600 hover:bg-red-50">
@@ -105,7 +105,7 @@ export default function ExpensesPage() {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
-                      placeholder="Buscar despesas..."
+                      placeholder="Pesquisar despesas..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"
@@ -151,7 +151,7 @@ export default function ExpensesPage() {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-6 mb-1">Total de Transações</p>
+                    <p className="text-sm text-gray-6 mb-1">Total de Transacções</p>
                     <p className="text-2xl font-bold text-gray-9">{transactions.length}</p>
                   </div>
                 </div>

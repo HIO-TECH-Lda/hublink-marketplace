@@ -79,7 +79,7 @@ export default function TransactionsPage() {
           <Link href="/vendedor/financas" className="hover:text-primary">
             Finanças
           </Link>{' '}
-          / <span className="text-primary">Transações</span>
+          / <span className="text-primary">Transacções</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -89,8 +89,8 @@ export default function TransactionsPage() {
 
           <div className="lg:col-span-3 space-y-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Todas as Transações</h1>
-              <p className="text-gray-6 text-sm sm:text-base">Visualize todas as suas receitas e despesas</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Todas as Transacções</h1>
+              <p className="text-gray-6 text-sm sm:text-base">Visualize, pesquise e acompanhe todos os movimentos financeiros da sua banca no Txova, incluindo receitas, despesas, pagamentos, custos, vendas e outros registos.</p>
             </div>
 
             {/* Filters */}
@@ -100,7 +100,7 @@ export default function TransactionsPage() {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
-                      placeholder="Buscar transações..."
+                      placeholder="Pesquisar transacções..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"

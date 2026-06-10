@@ -86,7 +86,7 @@ export default function IncomePage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Receitas</h1>
-                <p className="text-gray-6 text-sm sm:text-base">Gerencie suas receitas e vendas</p>
+                <p className="text-gray-6 text-sm sm:text-base">Gira e acompanhe todas as receitas da sua banca no Txova, incluindo vendas realizadas através do marketplace e receitas adicionadas manualmente.</p>
               </div>
               <div className="flex gap-2">
                 <Button
@@ -96,7 +96,7 @@ export default function IncomePage() {
                   className="border-blue-300 text-blue-600 hover:bg-blue-50"
                 >
                   <RefreshCw className={`w-4 h-4 mr-2 ${syncSales.isPending ? 'animate-spin' : ''}`} />
-                  {syncSales.isPending ? 'Sincronizando...' : 'Sincronizar'}
+                  {syncSales.isPending ? 'A actualizar...' : 'Actualizar Receitas'}
                 </Button>
                 <Link href="/vendedor/financas/receitas/nova">
                   <Button className="bg-primary text-primary-foreground hover:bg-primary-hard">
@@ -114,7 +114,7 @@ export default function IncomePage() {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
-                      placeholder="Buscar receitas..."
+                      placeholder="Pesquisar receitas..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"
@@ -147,7 +147,7 @@ export default function IncomePage() {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-6 mb-1">Total de Transações</p>
+                    <p className="text-sm text-gray-6 mb-1">Total de Transacções</p>
                     <p className="text-2xl font-bold text-gray-9">{transactions.length}</p>
                   </div>
                 </div>

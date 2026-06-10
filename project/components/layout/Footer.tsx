@@ -32,15 +32,15 @@ export default function Footer() {
         <div className="container">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="text-center md:text-left">
-              <h3 className="text-xl sm:text-2xl font-semibold mb-2">Assine Nossa Newsletter</h3>
-              <p className="text-gray-3 text-sm sm:text-base">Receba ofertas especiais e novidades diretamente no seu e-mail</p>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-2">Fique por Dentro das Novidades do Txova</h3>
+              <p className="text-gray-3 text-sm sm:text-base">Subscreva a nossa newsletter e receba actualizações sobre promoções, novos vendedores, produtos em destaque, serviços locais e oportunidades para compradores e empreendedores.</p>
             </div>
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2">
               <Input
                 type="email"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="Digite seu e-mail"
+                placeholder="O seu e-mail"
                 className="flex-1 bg-white text-gray-9 min-w-0"
                 required
               />
@@ -55,7 +55,7 @@ export default function Footer() {
                     Enviando
                   </>
                 ) : (
-                  'Assinar'
+                  'Subscrever'
                 )}
               </Button>
             </form>
@@ -114,8 +114,8 @@ export default function Footer() {
             <div>
               <h4 className="font-semibold text-lg mb-6">Minha Conta</h4>
               <ul className="space-y-3">
-                <li><Link href="/painel" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Meu Painel</Link></li>
-                <li><Link href="/historico-pedidos" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Meus Pedidos</Link></li>
+                <li><Link href="/painel" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">O Meu Painel</Link></li>
+                <li><Link href="/historico-pedidos" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Os Meus Pedidos</Link></li>
                 <li><Link href="/lista-desejos" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Lista de Desejos</Link></li>
                 <li><Link href="/configuracoes" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Configurações</Link></li>
                 <li><Link href="/entrar" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Entrar</Link></li>
@@ -126,8 +126,8 @@ export default function Footer() {
             <div>
               <h4 className="font-semibold text-lg mb-6">Ajuda & Suporte</h4>
               <ul className="space-y-3">
-                <li><Link href="/suporte/novo-ticket" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Criar Ticket</Link></li>
-                <li><Link href="/suporte/meus-tickets" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Meus Tickets</Link></li>
+                <li><Link href="/suporte/novo-ticket" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Novo Pedido de Apoio</Link></li>
+                <li><Link href="/suporte/meus-tickets" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Os Meus Tickets</Link></li>
                 <li><Link href="/ajuda" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Central de Ajuda</Link></li>
                 <li><Link href="/faq" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">FAQ</Link></li>
                 <li><Link href="/privacidade" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Política de Privacidade</Link></li>

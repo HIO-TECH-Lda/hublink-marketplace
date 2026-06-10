@@ -140,8 +140,8 @@ export default function SellerRefundsPage() {
 
           <div className="lg:col-span-3 space-y-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-9">Meus Reembolsos</h1>
-              <p className="text-gray-6">Gerencie reembolsos dos seus produtos</p>
+              <h1 className="text-2xl font-bold text-gray-9">Os Meus Reembolsos</h1>
+              <p className="text-gray-6">Acompanhe aqui os pedidos de reembolso relacionados com produtos da sua banca. Consulte o motivo apresentado pelo cliente, o estado de cada solicitação e o valor associado ao pedido.</p>
             </div>
 
             {/* Stats Cards */}
@@ -149,7 +149,7 @@ export default function SellerRefundsPage() {
               <div className="bg-white rounded-lg p-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-6">Total</p>
+                    <p className="text-sm text-gray-6">Total de Reembolsos</p>
                     <p className="text-2xl font-bold text-gray-9">
                       {statsLoading ? '...' : statistics?.total || 0}
                     </p>
@@ -160,7 +160,7 @@ export default function SellerRefundsPage() {
               <div className="bg-white rounded-lg p-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-6">Pendentes</p>
+                    <p className="text-sm text-gray-6">Reembolso Pendente</p>
                     <p className="text-2xl font-bold text-yellow-600">
                       {statsLoading ? '...' : statistics?.pending || 0}
                     </p>
@@ -171,7 +171,7 @@ export default function SellerRefundsPage() {
               <div className="bg-white rounded-lg p-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-6">Aprovados</p>
+                    <p className="text-sm text-gray-6">Reembolso Aprovado</p>
                     <p className="text-2xl font-bold text-green-600">
                       {statsLoading ? '...' : statistics?.approved || 0}
                     </p>
@@ -182,7 +182,7 @@ export default function SellerRefundsPage() {
               <div className="bg-white rounded-lg p-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-6">Rejeitados</p>
+                    <p className="text-sm text-gray-6">Reembolsos Rejeitados</p>
                     <p className="text-2xl font-bold text-red-600">
                       {statsLoading ? '...' : statistics?.rejected || 0}
                     </p>
@@ -193,7 +193,7 @@ export default function SellerRefundsPage() {
               <div className="bg-white rounded-lg p-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-6">Valor Total</p>
+                    <p className="text-sm text-gray-6">Valor Total em Reembolsos</p>
                     <p className="text-2xl font-bold text-gray-9">
                       {statsLoading ? '...' : `MTn ${(statistics?.totalValue || 0).toFixed(2)}`}
                     </p>
@@ -209,7 +209,7 @@ export default function SellerRefundsPage() {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
                   <Input
-                    placeholder="Buscar por produto, motivo..."
+                    placeholder="Pesquisar por produto, cliente, pedido ou motivo..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
@@ -220,7 +220,7 @@ export default function SellerRefundsPage() {
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 >
-                  <option value="all">Todos os Status</option>
+                  <option value="all">Todos os Estados</option>
                   <option value="pending">Pendentes</option>
                   <option value="approved">Aprovados</option>
                   <option value="rejected">Rejeitados</option>
@@ -262,10 +262,10 @@ export default function SellerRefundsPage() {
                           Valor
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
+                          Estado
                         </th>
                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Ações
+                          Acções
                         </th>
                       </tr>
                     </thead>

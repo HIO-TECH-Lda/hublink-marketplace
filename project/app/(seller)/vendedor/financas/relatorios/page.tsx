@@ -100,7 +100,7 @@ export default function ReportsPage() {
           <div className="lg:col-span-3 space-y-6">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Relatórios Financeiros</h1>
-              <p className="text-gray-6 text-sm sm:text-base">Gere relatórios detalhados das suas finanças</p>
+              <p className="text-gray-6 text-sm sm:text-base">Gere relatórios detalhados sobre as receitas, despesas, transacções e desempenho financeiro da sua banca no Txova.</p>
             </div>
 
             {/* Report Type Selector */}
@@ -190,7 +190,7 @@ export default function ReportsPage() {
                       <CardTitle>Resumo</CardTitle>
                       <Button variant="outline" size="sm">
                         <Download className="w-4 h-4 mr-2" />
-                        Exportar PDF
+                        Exportar em PDF
                       </Button>
                     </div>
                   </CardHeader>
@@ -229,7 +229,7 @@ export default function ReportsPage() {
                         {new Date(report.period.endDate).toLocaleDateString('pt-BR')}
                       </p>
                       <p className="text-sm text-gray-6">
-                        Total de transações: {report.summary.transactionCount}
+                        Total de Transacções: {report.summary.transactionCount}
                       </p>
                     </div>
                   </CardContent>
@@ -238,7 +238,7 @@ export default function ReportsPage() {
                 {/* Income Breakdown */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Breakdown de Receitas</CardTitle>
+                    <CardTitle>Distribuição das Receitas</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">

@@ -72,7 +72,7 @@ export const EXPENSE_CATEGORIES = [
 ] as const;
 
 export const PAYMENT_METHODS = [
-  { value: 'cash', label: 'Dinheiro' },
+  { value: 'cash', label: 'Numerário' },
   { value: 'mpesa', label: 'M-Pesa' },
   { value: 'bank_transfer', label: 'Transferência Bancária' },
   { value: 'emola', label: 'E-Mola' },

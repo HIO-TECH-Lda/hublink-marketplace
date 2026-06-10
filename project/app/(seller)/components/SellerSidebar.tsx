@@ -28,13 +28,13 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
     },
     {
       href: '/vendedor/produtos',
-      label: 'Meus Produtos',
+      label: 'Os Meus Produtos',
       icon: Package,
       active: pathname === '/vendedor/produtos'
     },
     {
       href: '/vendedor/pedidos',
-      label: 'Meus Pedidos',
+      label: 'Os Meus Pedidos',
       icon: ShoppingBag,
       active: pathname === '/vendedor/pedidos'
     },
@@ -67,7 +67,7 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
   const financeSubItems = [
     {
       href: '/vendedor/financas',
-      label: 'Dashboard',
+      label: 'Painel Financeiro',
       active: pathname === '/vendedor/financas'
     },
     {
@@ -82,7 +82,7 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
     },
     {
       href: '/vendedor/financas/transacoes',
-      label: 'Transações',
+      label: 'Transacções',
       active: pathname === '/vendedor/financas/transacoes'
     },
     {
@@ -121,7 +121,7 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
       {/* Store Info */}
       {user?.sellerProfile && (
         <div className="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-2">
-          <h4 className="font-medium text-gray-9 text-sm sm:text-base mb-2">Minha Banca</h4>
+          <h4 className="font-medium text-gray-9 text-sm sm:text-base mb-2">A Minha Banca</h4>
           <div className="space-y-1 text-xs sm:text-sm text-gray-6">
             <p className="font-medium text-gray-9">{user.sellerProfile.storeName || 'Minha Loja'}</p>
             <p className="text-gray-6">{user.email}</p>

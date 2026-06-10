@@ -65,7 +65,7 @@ export default function SellerOrdersPage() {
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
           <Link href="/vendedor/painel" className="hover:text-primary"> Painel do Vendedor</Link> / 
-          <span className="text-primary">Meus Pedidos</span>
+          <span className="text-primary">Os Meus Pedidos</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -76,6 +76,11 @@ export default function SellerOrdersPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Os Meus Pedidos</h1>
+              <p className="text-gray-600 text-sm">Acompanhe aqui todos os pedidos que incluem produtos da sua banca. Consulte o estado de cada pedido, veja os dados do cliente, confirme os itens vendidos e acompanhe o valor correspondente à sua venda.</p>
+            </div>
+
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
               <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
@@ -98,7 +103,7 @@ export default function SellerOrdersPage() {
                     <Package className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Entregues</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pedidos Entregues</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {sellerOrders.filter((order: any) => order.status === 'delivered').length}
                     </p>
@@ -126,7 +131,7 @@ export default function SellerOrdersPage() {
                     <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Valor Total</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Valor Total das Vendas</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       MTn {sellerOrders.reduce(
                         (total: number, order: any) => total + getSellerTotalFromOrder(order),
@@ -141,7 +146,7 @@ export default function SellerOrdersPage() {
             {/* Orders Table */}
             <div className="bg-white rounded-lg shadow-sm">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">Pedidos com Meus Produtos</h2>
+                <h2 className="text-lg font-semibold text-gray-900">Pedidos com Produtos da Minha Banca</h2>
               </div>
               
               {ordersLoading ? (

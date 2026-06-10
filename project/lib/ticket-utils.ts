@@ -70,7 +70,7 @@ export const getStatusText = (status: string) => {
     case TICKET_STATUS.OPEN:
       return 'Aberto';
     case TICKET_STATUS.IN_PROGRESS:
-      return 'Em Progresso';
+      return 'Em Análise';
     case TICKET_STATUS.WAITING_FOR_USER:
       return 'Aguardando Resposta';
     case TICKET_STATUS.WAITING_FOR_THIRD_PARTY:
@@ -141,7 +141,7 @@ export const getCategoryText = (category: string) => {
     [TICKET_CATEGORY.SHIPPING_PROBLEM]: 'Problema com Envio',
     [TICKET_CATEGORY.GENERAL_INQUIRY]: 'Consulta Geral',
     [TICKET_CATEGORY.FEATURE_REQUEST]: 'Solicitação de Funcionalidade',
-    [TICKET_CATEGORY.BUG_REPORT]: 'Reportar Bug',
+    [TICKET_CATEGORY.BUG_REPORT]: 'Reportar Erro',
   };
   return labels[category] || category;
 };

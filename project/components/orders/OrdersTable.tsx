@@ -56,6 +56,7 @@ const getStatusText = (status: string) => {
     case 'delivered':
       return 'Entregue';
     case 'canceled':
+    case 'cancelled':
       return 'Cancelado';
     case 'refunded':
       return 'Reembolsado';
@@ -101,7 +102,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
               Data
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-              Status
+              Estado
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
               Total
@@ -110,7 +111,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
               Itens
             </th>
             <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-              Ações
+              Acções
             </th>
           </tr>
         </thead>
@@ -144,14 +145,14 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                   <Button asChild size="sm" variant="default" className="text-primary-foreground">
                     <Link href={`/pedido/${order._id || order.id}`} className="inline-flex items-center gap-1.5">
                       <Eye className="h-4 w-4" />
-                      Ver
+                      Ver Detalhes
                     </Link>
                   </Button>
                   {order.status === 'pending' && (
                     <Button asChild size="sm" variant="outline" className="border-blue-500 text-blue-600 hover:bg-blue-50 hover:text-blue-700">
                       <Link href={`/pagamento/${order._id || order.id}`} className="inline-flex items-center gap-1.5">
                         <DollarSign className="h-4 w-4" />
-                        Pagar
+                        Pagar Agora
                       </Link>
                     </Button>
                   )}
@@ -159,7 +160,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                     <Button asChild size="sm" variant="outline" className="border-amber-500 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
                       <Link href={`/reembolso/${order._id || order.id}`} className="inline-flex items-center gap-1.5">
                         <ArrowLeft className="h-4 w-4" />
-                        Reembolso
+                        Solicitar Reembolso
                       </Link>
                     </Button>
                   )}

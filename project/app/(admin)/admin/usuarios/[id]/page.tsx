@@ -409,7 +409,7 @@ export default function UserDetailsPage() {
             <TabsContent value="orders" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Histórico de Pedidos</CardTitle>
+                  <CardTitle>Os Meus Pedidos</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {orders.length === 0 ? (

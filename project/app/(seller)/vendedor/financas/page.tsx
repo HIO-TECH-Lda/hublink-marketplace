@@ -81,8 +81,8 @@ export default function FinanceDashboardPage() {
           <div className="lg:col-span-3 space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Dashboard Financeiro</h1>
-                <p className="text-gray-6 text-sm sm:text-base">Acompanhe suas receitas, despesas e lucros</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Painel Financeiro</h1>
+                <p className="text-gray-6 text-sm sm:text-base">Acompanhe aqui o desempenho financeiro da sua banca no Txova. Consulte receitas, despesas, transacções, repasses e relatórios para gerir melhor as suas vendas.</p>
               </div>
               <div className="flex gap-2">
                 <Select value={period} onValueChange={(value: any) => setPeriod(value)}>
@@ -194,7 +194,7 @@ export default function FinanceDashboardPage() {
                 {syncSales.isPending ? 'Sincronizando...' : 'Sincronizar Vendas'}
               </Button>
               <Link href="/vendedor/financas/transacoes">
-                <Button variant="outline">Ver Todas as Transações</Button>
+                <Button variant="outline">Ver Todas as Transacções</Button>
               </Link>
               <Link href="/vendedor/financas/relatorios">
                 <Button variant="outline">Relatórios</Button>
@@ -283,7 +283,7 @@ export default function FinanceDashboardPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-gray-9">Transações Recentes</h3>
+                  <h3 className="text-lg font-semibold text-gray-9">Transacções Recentes</h3>
                   <Link href="/vendedor/financas/transacoes">
                     <Button variant="ghost" size="sm">
                       Ver Todas

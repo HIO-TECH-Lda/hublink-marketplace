@@ -68,9 +68,9 @@ export default function SellerReviewsPage() {
       case 'pending':
         return 'Pendente';
       case 'approved':
-        return 'Aprovado';
+        return 'Aprovada';
       case 'rejected':
-        return 'Rejeitado';
+        return 'Rejeitada';
       default:
         return status;
     }
@@ -136,7 +136,7 @@ export default function SellerReviewsPage() {
             <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
               <div className="mb-6">
                 <h1 className="text-2xl font-bold text-gray-9 mb-2">Avaliações dos Meus Produtos</h1>
-                <p className="text-gray-6">Gerencie e visualize todas as avaliações dos seus produtos</p>
+                <p className="text-gray-6">Gira e acompanhe as avaliações feitas pelos clientes aos produtos da sua banca. Consulte comentários, classificações, estado da avaliação e feedback dos compradores.</p>
               </div>
 
               {/* Filters */}
@@ -144,7 +144,7 @@ export default function SellerReviewsPage() {
                 <div className="flex-1 relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 h-4 w-4" />
                   <Input
-                    placeholder="Buscar por produto, cliente ou conteúdo..."
+                    placeholder="Pesquisar por produto, cliente ou conteúdo da avaliação..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
@@ -153,13 +153,13 @@ export default function SellerReviewsPage() {
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger className="w-full sm:w-[180px]">
                     <Filter className="mr-2 h-4 w-4" />
-                    <SelectValue placeholder="Status" />
+                    <SelectValue placeholder="Estado" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todos</SelectItem>
-                    <SelectItem value="approved">Aprovados</SelectItem>
+                    <SelectItem value="all">Todas</SelectItem>
+                    <SelectItem value="approved">Aprovadas</SelectItem>
                     <SelectItem value="pending">Pendentes</SelectItem>
-                    <SelectItem value="rejected">Rejeitados</SelectItem>
+                    <SelectItem value="rejected">Rejeitadas</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

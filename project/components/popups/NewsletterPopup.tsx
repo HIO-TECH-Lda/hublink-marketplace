@@ -57,11 +57,10 @@ export default function NewsletterPopup() {
               <span className="text-white text-2xl font-bold">T</span>
             </div> */}
             <h2 className="text-2xl font-bold text-gray-9 mb-2">
-              Assine Nossa Newsletter
+              Fique por Dentro das Novidades do Txova
             </h2>
             <p className="text-gray-6">
-              Receba <span className="text-primary font-semibold">10% de desconto</span> na sua primeira compra 
-              e fique por dentro das nossas ofertas especiais!
+              Subscreva a nossa newsletter e receba actualizações sobre promoções, novos vendedores, produtos em destaque, serviços locais e oportunidades para compradores e empreendedores.
             </p>
           </div>
 
@@ -69,7 +68,7 @@ export default function NewsletterPopup() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               type="email"
-              placeholder="Digite seu e-mail"
+              placeholder="O seu e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -87,7 +86,7 @@ export default function NewsletterPopup() {
                   Inscrevendo...
                 </>
               ) : (
-                'Assinar Newsletter'
+                'Subscrever'
               )}
             </Button>
           </form>
@@ -102,7 +101,7 @@ export default function NewsletterPopup() {
               className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary"
             />
             <label htmlFor="dontShowAgain" className="text-sm text-gray-6 cursor-pointer">
-              Não mostrar esta janela novamente
+              Não voltar a mostrar esta janela
             </label>
           </div>
         </div>

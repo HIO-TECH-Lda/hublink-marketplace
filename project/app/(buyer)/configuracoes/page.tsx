@@ -37,7 +37,7 @@ export default function SettingsPage() {
       city: '',
       state: '',
       postalCode: '',
-      country: 'Mozambique',
+      country: 'Moçambique',
       isDefault: true,
     },
     shippingAddress: {
@@ -45,7 +45,7 @@ export default function SettingsPage() {
       city: '',
       state: '',
       postalCode: '',
-      country: 'Mozambique',
+      country: 'Moçambique',
       isDefault: true,
     },
     preferences: {
@@ -71,7 +71,7 @@ export default function SettingsPage() {
           city: user.billingAddress?.city || '',
           state: user.billingAddress?.state || '',
           postalCode: user.billingAddress?.postalCode || user.billingAddress?.zipCode || '',
-          country: user.billingAddress?.country || 'Mozambique',
+          country: user.billingAddress?.country || 'Moçambique',
           isDefault: user.billingAddress?.isDefault || true,
         },
         shippingAddress: {
@@ -79,7 +79,7 @@ export default function SettingsPage() {
           city: user.shippingAddress?.city || '',
           state: user.shippingAddress?.state || '',
           postalCode: user.shippingAddress?.postalCode || user.shippingAddress?.zipCode || '',
-          country: user.shippingAddress?.country || 'Mozambique',
+          country: user.shippingAddress?.country || 'Moçambique',
           isDefault: user.shippingAddress?.isDefault || true,
         },
         preferences: {
@@ -141,7 +141,7 @@ export default function SettingsPage() {
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (passwordForm.newPassword !== passwordForm.confirmNewPassword) {
-      alert('As senhas não coincidem!');
+      alert('As palavras-passe não coincidem!');
       return;
     }
     changePassword.mutate(passwordForm);
@@ -160,7 +160,7 @@ export default function SettingsPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/painel" className="hover:text-primary"> Meu Painel</Link> / 
+          <Link href="/painel" className="hover:text-primary"> O Meu Painel</Link> / 
           <span className="text-primary">Configurações</span>
         </nav>
 
@@ -172,6 +172,11 @@ export default function SettingsPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h1 className="text-xl font-bold text-gray-900 mb-2">Configurações da Conta</h1>
+              <p className="text-gray-600 text-sm">Actualize os seus dados pessoais, moradas, preferências de notificação e palavra-passe.</p>
+            </div>
+
             {/* Profile Settings */}
             <div className="bg-white rounded-lg shadow-sm">
               <div className="px-6 py-4 border-b border-gray-200">
@@ -205,9 +210,9 @@ export default function SettingsPage() {
                       </button>
                     </div>
                     <div>
-                      <h3 className="text-sm font-medium text-gray-900">Foto do Perfil</h3>
-                      <p className="text-sm text-gray-500">JPG, PNG ou GIF. Máximo 2MB.</p>
-                      {avatarFile && <p className="text-xs text-primary mt-1">{avatarFile.name} — clique em Salvar para enviar</p>}
+                      <h3 className="text-sm font-medium text-gray-900">Foto de Perfil</h3>
+                      <p className="text-sm text-gray-500">Carregue uma fotografia para personalizar a sua conta. Formatos permitidos: JPG, PNG ou GIF. Tamanho máximo: 2 MB.</p>
+                      {avatarFile && <p className="text-xs text-primary mt-1">{avatarFile.name} — clique em Guardar Alterações para enviar</p>}
                     </div>
                   </div>
 
@@ -228,7 +233,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Sobrenome
+                        Apelido
                       </label>
                       <input
                         type="text"
@@ -261,7 +266,7 @@ export default function SettingsPage() {
                       type="submit"
                       disabled={updateProfile.isPending}
                     >
-                      {updateProfile.isPending ? 'Salvando...' : 'Salvar Alterações'}
+                      {updateProfile.isPending ? 'A guardar...' : 'Guardar Alterações'}
                     </Button>
                   </div>
                 </form>
@@ -282,7 +287,7 @@ export default function SettingsPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Rua/Endereço
+                        Rua / Endereço
                       </label>
                       <input
                         type="text"
@@ -312,7 +317,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Estado/Província
+                        Província
                       </label>
                       <input
                         type="text"
@@ -367,7 +372,7 @@ export default function SettingsPage() {
                         className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                       />
                       <label htmlFor="shippingDefault" className="ml-2 text-sm font-medium text-gray-700">
-                        Endereço padrão de entrega
+                        Definir como endereço padrão de entrega
                       </label>
                     </div>
                   </div>
@@ -381,7 +386,7 @@ export default function SettingsPage() {
               <div className="px-6 py-4 border-b border-gray-200">
                 <div className="flex items-center">
                   <MapPin className="w-5 h-5 text-gray-400 mr-3" />
-                  <h2 className="text-lg font-semibold text-gray-900">Endereço de Faturamento</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">Endereço de Facturação</h2>
                 </div>
               </div>
               <div className="p-6">
@@ -389,7 +394,7 @@ export default function SettingsPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Rua/Endereço
+                        Rua / Endereço
                       </label>
                       <input
                         type="text"
@@ -419,7 +424,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Estado/Província
+                        Província
                       </label>
                       <input
                         type="text"
@@ -474,7 +479,7 @@ export default function SettingsPage() {
                         className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                       />
                       <label htmlFor="billingDefault" className="ml-2 text-sm font-medium text-gray-700">
-                        Endereço padrão de faturamento
+                        Definir como endereço padrão de facturação
                       </label>
                     </div>
                   </div>
@@ -493,6 +498,7 @@ export default function SettingsPage() {
               <div className="p-6">
                 <div className="space-y-6">  
                   <div>
+                    <p className="text-sm text-gray-600 mb-4">Escolha como pretende receber actualizações sobre pedidos, pagamentos, entregas, mensagens, suporte e novidades do Txova.</p>
                     <h3 className="text-sm font-medium text-gray-700 mb-4">Notificações</h3>
                     <div className="space-y-3">
                       <div className="flex items-center">
@@ -560,7 +566,7 @@ export default function SettingsPage() {
               <div className="px-6 py-4 border-b border-gray-200">
                 <div className="flex items-center">
                   <Lock className="w-5 h-5 text-gray-400 mr-3" />
-                  <h2 className="text-lg font-semibold text-gray-900">Alterar Senha</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">Alterar Palavra-passe</h2>
                 </div>
               </div>
               <div className="p-6">
@@ -568,7 +574,7 @@ export default function SettingsPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Senha Atual
+                        Palavra-passe Actual
                       </label>
                       <div className="relative">
                         <input
@@ -589,7 +595,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Nova Senha
+                        Nova Palavra-passe
                       </label>
                       <div className="relative">
                         <input
@@ -610,7 +616,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Confirmar Nova Senha
+                        Confirmar Nova Palavra-passe
                       </label>
                       <div className="relative">
                         <input
@@ -636,7 +642,7 @@ export default function SettingsPage() {
                       type="submit"
                       disabled={changePassword.isPending}
                     >
-                      {changePassword.isPending ? 'Alterando...' : 'Alterar Senha'}
+                      {changePassword.isPending ? 'A alterar...' : 'Alterar Palavra-passe'}
                     </Button>
                   </div>
                 </form>

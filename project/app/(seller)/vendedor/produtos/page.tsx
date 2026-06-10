@@ -75,7 +75,7 @@ export default function SellerProductsPage() {
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
           <Link href="/vendedor/painel" className="hover:text-primary"> Painel do Vendedor</Link> / 
-          <span className="text-primary">Meus Produtos</span>
+          <span className="text-primary">Os Meus Produtos</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -86,6 +86,11 @@ export default function SellerProductsPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h1 className="text-2xl font-bold text-gray-9 mb-2">Os Meus Produtos</h1>
+              <p className="text-gray-6 text-sm">Gira aqui todos os produtos publicados na sua banca. Pode adicionar novos produtos, actualizar preços, editar descrições, controlar o stock e acompanhar o estado de cada publicação.</p>
+            </div>
+
             {/* Stats */}
             {sellerProducts.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
@@ -104,7 +109,7 @@ export default function SellerProductsPage() {
                 <div className="bg-white rounded-lg shadow-sm p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-6">Em Estoque</p>
+                      <p className="text-sm text-gray-6">Em Stock</p>
                       <p className="text-2xl font-bold text-gray-9">
                         {sellerProducts.filter((p: any) => p.inStock || (p.stock ?? 0) > 0).length}
                       </p>
@@ -118,7 +123,7 @@ export default function SellerProductsPage() {
                 <div className="bg-white rounded-lg shadow-sm p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-6">Fora de Estoque</p>
+                      <p className="text-sm text-gray-6">Fora de Stock</p>
                       <p className="text-2xl font-bold text-gray-9">
                         {sellerProducts.filter((p: any) => !(p.inStock || (p.stock ?? 0) > 0)).length}
                       </p>
@@ -149,7 +154,7 @@ export default function SellerProductsPage() {
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="grid md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-9 mb-2">Buscar Produto</label>
+                  <label className="block text-sm font-medium text-gray-9 mb-2">Pesquisar Produto</label>
                   <div className="relative">
                     <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-6" />
                     <Input

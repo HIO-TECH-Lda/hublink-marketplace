@@ -82,6 +82,11 @@ export default function SellerDashboardPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6 sm:space-y-8 min-w-0">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-9 mb-2">Painel do Vendedor</h1>
+              <p className="text-gray-6 text-sm sm:text-base">Acompanhe o desempenho da sua banca, consulte as vendas, veja os pedidos recebidos, gira os seus produtos e acompanhe o saldo disponível no Txova.</p>
+            </div>
+
             {/* Overview Cards - responsive: 1 col mobile, 2 sm, 4 xl */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
               <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0">
@@ -109,7 +114,7 @@ export default function SellerDashboardPage() {
                     <ShoppingBag size={20} className="sm:w-6 sm:h-6 text-warning" />
                   </div>
                 </div>
-                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Aguardando processamento</div>
+                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Aguardam processamento</div>
               </div>
 
               <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0">
@@ -122,20 +127,20 @@ export default function SellerDashboardPage() {
                     <DollarSign size={20} className="sm:w-6 sm:h-6 text-success" />
                   </div>
                 </div>
-                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Pronto para saque</div>
+                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Pronto para levantamento</div>
               </div>
 
               <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm text-gray-6">Produtos Ativos</p>
+                    <p className="text-sm text-gray-6">Produtos Activos</p>
                     <p className="text-xl sm:text-2xl font-bold text-gray-9">{sellerProducts.length}</p>
                   </div>
                   <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-info/10 rounded-lg flex items-center justify-center">
                     <Package size={20} className="sm:w-6 sm:h-6 text-info" />
                   </div>
                 </div>
-                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Em estoque</div>
+                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-6">Em stock</div>
               </div>
             </div>
 

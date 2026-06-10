@@ -132,7 +132,7 @@ export default function NewTicketPage() {
           </Link>{' '}
           /{' '}
           <Link href="/suporte/meus-tickets" className="hover:text-primary">
-            Meus Tickets
+            Os Meus Tickets
           </Link>{' '}
           / <span className="text-primary">Novo Ticket</span>
         </nav>

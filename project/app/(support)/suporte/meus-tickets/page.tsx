@@ -69,7 +69,7 @@ export default function MyTicketsPage() {
           <Link href="/" className="hover:text-primary">
             Início
           </Link>{' '}
-          / <span className="text-primary">Meus Tickets</span>
+          / <span className="text-primary">Os Meus Tickets</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
@@ -80,15 +80,15 @@ export default function MyTicketsPage() {
           <div className="lg:col-span-3 space-y-4 sm:space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Meus Tickets</h1>
-                <p className="text-gray-6 text-sm sm:text-base">Acompanhe suas solicitações de suporte</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Pedidos de Apoio</h1>
+                <p className="text-gray-6 text-sm sm:text-base">Acompanhe aqui as suas solicitações de apoio, dúvidas, reclamações, pedidos de esclarecimento ou problemas reportados à equipa do Txova.</p>
               </div>
               <Button
                 onClick={() => router.push('/suporte/novo-ticket')}
                 className="bg-primary hover:bg-primary-hard text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Novo Ticket
+                Novo Pedido de Apoio
               </Button>
             </div>
 
@@ -96,7 +96,7 @@ export default function MyTicketsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 type="text"
-                placeholder="Buscar tickets..."
+                placeholder="Pesquisar pedidos de apoio..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 h-12"
@@ -114,15 +114,15 @@ export default function MyTicketsPage() {
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Estado</label>
                       <Select value={statusFilter} onValueChange={setStatusFilter}>
                         <SelectTrigger className="h-12">
-                          <SelectValue placeholder="Todos os Status" />
+                          <SelectValue placeholder="Todos os Estados" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="all">Todos os Status</SelectItem>
+                          <SelectItem value="all">Todos os Estados</SelectItem>
                           <SelectItem value={TICKET_STATUS.OPEN}>Aberto</SelectItem>
-                          <SelectItem value={TICKET_STATUS.IN_PROGRESS}>Em Progresso</SelectItem>
+                          <SelectItem value={TICKET_STATUS.IN_PROGRESS}>Em Análise</SelectItem>
                           <SelectItem value={TICKET_STATUS.WAITING_FOR_USER}>Aguardando Resposta</SelectItem>
                           <SelectItem value={TICKET_STATUS.WAITING_FOR_THIRD_PARTY}>Aguardando Terceiros</SelectItem>
                           <SelectItem value={TICKET_STATUS.RESOLVED}>Resolvido</SelectItem>
@@ -173,7 +173,7 @@ export default function MyTicketsPage() {
               <div className="flex flex-wrap gap-2">
                 {statusFilter !== 'all' && (
                   <Badge variant="secondary" className="text-sm">
-                    Status: {getStatusText(statusFilter)}
+                    Estado: {getStatusText(statusFilter)}
                     <button onClick={() => setStatusFilter('all')} className="ml-2 hover:text-red-500">
                       <X className="w-3 h-3" />
                     </button>
@@ -207,18 +207,18 @@ export default function MyTicketsPage() {
               <Card>
                 <CardContent className="py-12 text-center">
                   <MessageSquare className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                  <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum ticket encontrado</h3>
+                  <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum pedido de apoio encontrado</h3>
                   <p className="text-gray-6 mb-6 text-sm sm:text-base">
                     {searchTerm || statusFilter !== 'all' || categoryFilter !== 'all' || priorityFilter !== 'all'
-                      ? 'Tente ajustar os filtros ou criar um novo ticket.'
-                      : 'Você ainda não criou nenhum ticket de suporte.'}
+                      ? 'Tente ajustar os filtros ou criar um novo pedido de apoio.'
+                      : 'Ainda não criou nenhum pedido de apoio.'}
                   </p>
                   <Button
                     onClick={() => router.push('/suporte/novo-ticket')}
                     className="bg-primary hover:bg-primary-hard text-white"
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    Criar Primeiro Ticket
+                    Criar Primeiro Pedido de Apoio
                   </Button>
                 </CardContent>
               </Card>

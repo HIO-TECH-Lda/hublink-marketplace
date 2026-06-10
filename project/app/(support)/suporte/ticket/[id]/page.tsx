@@ -137,7 +137,7 @@ export default function TicketDetailPage() {
           </Link>{' '}
           /{' '}
           <Link href="/suporte/meus-tickets" className="hover:text-primary">
-            Meus Tickets
+            Os Meus Tickets
           </Link>{' '}
           / <span className="text-primary">Ticket #{ticket._id.slice(-8)}</span>
         </nav>

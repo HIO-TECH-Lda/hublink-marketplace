@@ -267,8 +267,9 @@ export default function NewProductPage() {
                 {/* Description */}
                 <div>
                   <label className="block text-sm font-medium text-gray-7 mb-2">
-                    Descrição *
+                    Descrição do Produto *
                   </label>
+                  <p className="text-xs text-gray-5 mb-2">Apresente o produto de forma clara, indicando as suas principais características, qualidade, quantidade, estado, origem, condições de venda ou qualquer informação útil para o comprador.</p>
                   <Textarea
                     name="description"
                     value={formData.description}

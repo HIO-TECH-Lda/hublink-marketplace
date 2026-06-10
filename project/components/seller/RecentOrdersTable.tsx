@@ -97,17 +97,17 @@ export default function RecentOrdersTable({
               Data
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Status
+              Estado
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Meus Itens
+              Itens da Minha Banca
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Meu Valor
+              Valor da Venda
             </th>
             {showDetails && (
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Ações
+                Acções
               </th>
             )}
           </tr>
@@ -177,7 +177,7 @@ export default function RecentOrdersTable({
                               <p className="font-medium text-gray-9">{new Date(order.createdAt || order.date).toLocaleString('pt-MZ')}</p>
                             </div>
                             <div>
-                              <p className="text-gray-6">Status</p>
+                              <p className="text-gray-6">Estado</p>
                               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
                                 {getStatusText(order.status)}
                               </span>

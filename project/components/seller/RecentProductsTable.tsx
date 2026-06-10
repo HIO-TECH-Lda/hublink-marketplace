@@ -56,14 +56,14 @@ export default function RecentProductsTable({
               Preço
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Estoque
+              Stock
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Status
+              Estado
             </th>
             {showActions && (
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Ações
+                Acções
               </th>
             )}
           </tr>
@@ -114,7 +114,7 @@ export default function RecentProductsTable({
                 <div className="flex items-center">
                   <div className={`w-2 h-2 rounded-full mr-2 ${(product.stock ?? 0) > 0 ? 'bg-green-400' : 'bg-red-400'}`}></div>
                   <span className="text-sm text-gray-900">
-                    {(product.stock ?? 0) > 0 ? 'Em Estoque' : 'Fora de Estoque'}
+                    {(product.stock ?? 0) > 0 ? 'Em stock' : 'Fora de Stock'}
                   </span>
                 </div>
               </td>
@@ -122,7 +122,7 @@ export default function RecentProductsTable({
                 <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
                   (product.stock ?? 0) > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                 }`}>
-                  {(product.stock ?? 0) > 0 ? 'Ativo' : 'Inativo'}
+                  {(product.stock ?? 0) > 0 ? 'Activo' : 'Inactivo'}
                 </span>
               </td>
               {showActions && (

@@ -40,8 +40,8 @@ export default function OrderHistoryPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/painel" className="hover:text-primary"> Meu Painel</Link> / 
-          <span className="text-primary">Histórico de Pedidos</span>
+          <Link href="/painel" className="hover:text-primary"> O Meu Painel</Link> / 
+          <span className="text-primary">Os Meus Pedidos</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -52,6 +52,11 @@ export default function OrderHistoryPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Os Meus Pedidos</h1>
+              <p className="text-gray-600 text-sm">Acompanhe aqui os pedidos realizados por si no Txova, consulte o estado de cada compra, veja os detalhes dos produtos adquiridos e efectue pagamentos pendentes quando necessário.</p>
+            </div>
+
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6 mb-8">
               <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
@@ -95,7 +100,7 @@ export default function OrderHistoryPage() {
                     <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pendentes</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pedido Pendente</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {stats?.pending ?? userOrders.filter((order: any) => order.status === 'pending').length}
                     </p>
@@ -109,7 +114,7 @@ export default function OrderHistoryPage() {
                     <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Enviados / Entregues</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pedido Entregue</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {(stats?.shipped ?? userOrders.filter((o: any) => o.status === 'shipped').length) +
                         (stats?.delivered ?? userOrders.filter((o: any) => o.status === 'delivered').length)}

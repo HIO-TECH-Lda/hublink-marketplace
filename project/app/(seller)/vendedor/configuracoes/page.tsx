@@ -30,7 +30,7 @@ export default function SellerSettingsPage() {
       city: '',
       state: '',
       postalCode: '',
-      country: 'Mozambique',
+      country: 'Moçambique',
       isDefault: true,
     },
     shippingAddress: {
@@ -38,7 +38,7 @@ export default function SellerSettingsPage() {
       city: '',
       state: '',
       postalCode: '',
-      country: 'Mozambique',
+      country: 'Moçambique',
       isDefault: true,
     },
     preferences: {
@@ -79,7 +79,7 @@ export default function SellerSettingsPage() {
           city: user.billingAddress?.city || '',
           state: user.billingAddress?.state || '',
           postalCode: user.billingAddress?.postalCode || user.billingAddress?.zipCode || '',
-          country: user.billingAddress?.country || 'Mozambique',
+          country: user.billingAddress?.country || 'Moçambique',
           isDefault: user.billingAddress?.isDefault ?? true,
         },
         shippingAddress: {
@@ -87,7 +87,7 @@ export default function SellerSettingsPage() {
           city: user.shippingAddress?.city || '',
           state: user.shippingAddress?.state || '',
           postalCode: user.shippingAddress?.postalCode || user.shippingAddress?.zipCode || '',
-          country: user.shippingAddress?.country || 'Mozambique',
+          country: user.shippingAddress?.country || 'Moçambique',
           isDefault: user.shippingAddress?.isDefault ?? true,
         },
         preferences: {
@@ -123,7 +123,7 @@ export default function SellerSettingsPage() {
     if (passwordForm.newPassword !== passwordForm.confirmNewPassword) {
       toast({
         title: 'Erro',
-        description: 'As senhas não coincidem.',
+        description: 'As palavras-passe não coincidem.',
         variant: 'destructive',
       });
       return;
@@ -166,7 +166,7 @@ export default function SellerSettingsPage() {
     { id: 'account', label: 'Conta', icon: User },
     { id: 'addresses', label: 'Endereços', icon: MapPin },
     { id: 'preferences', label: 'Preferências', icon: Bell },
-    { id: 'password', label: 'Senha', icon: Lock },
+    { id: 'password', label: 'Palavra-passe', icon: Lock },
   ];
 
   return (
@@ -186,6 +186,10 @@ export default function SellerSettingsPage() {
           </div>
 
           <div className="lg:col-span-3">
+            <div className="bg-white rounded-lg shadow-sm mb-6 p-6">
+              <h1 className="text-2xl font-bold text-gray-9 mb-2">Configurações do Vendedor</h1>
+              <p className="text-gray-6 text-sm">Actualize aqui as informações da sua banca, dados da conta, endereços, preferências e palavra-passe.</p>
+            </div>
             <div className="bg-white rounded-lg shadow-sm">
               <div className="border-b border-gray-2">
                 <nav className="flex overflow-x-auto px-4 sm:px-6">
@@ -319,7 +323,7 @@ export default function SellerSettingsPage() {
                     <div className="flex justify-end pt-4 border-t border-gray-2">
                       <Button type="submit" disabled={updateProfile.isPending}>
                         <Save size={16} className="mr-2" />
-                        {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
+                        {updateProfile.isPending ? 'A guardar...' : 'Guardar Alterações'}
                       </Button>
                     </div>
                   </form>
@@ -328,7 +332,8 @@ export default function SellerSettingsPage() {
                 {/* Account */}
                 {activeTab === 'account' && (
                   <form onSubmit={handleProfileSubmit} className="space-y-6">
-                    <h3 className="text-lg font-semibold text-gray-9 mb-4">Informações da Conta</h3>
+                    <h3 className="text-lg font-semibold text-gray-9 mb-2">Informações da Conta</h3>
+                    <p className="text-sm text-gray-6 mb-4">Actualize os seus dados pessoais e contactos associados à sua conta de vendedor no Txova.</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-7 mb-2">Nome *</label>
@@ -341,7 +346,7 @@ export default function SellerSettingsPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-7 mb-2">Sobrenome *</label>
+                        <label className="block text-sm font-medium text-gray-7 mb-2">Apelido *</label>
                         <Input
                           value={profileForm.lastName}
                           onChange={(e) => setProfileForm({ ...profileForm, lastName: e.target.value })}
@@ -365,7 +370,7 @@ export default function SellerSettingsPage() {
                     <div className="flex justify-end pt-4 border-t border-gray-2">
                       <Button type="submit" disabled={updateProfile.isPending}>
                         <Save size={16} className="mr-2" />
-                        {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
+                        {updateProfile.isPending ? 'A guardar...' : 'Guardar Alterações'}
                       </Button>
                     </div>
                   </form>
@@ -374,13 +379,14 @@ export default function SellerSettingsPage() {
                 {/* Addresses */}
                 {activeTab === 'addresses' && (
                   <form onSubmit={handleProfileSubmit} className="space-y-6">
-                    <h3 className="text-lg font-semibold text-gray-9 mb-4">Endereços</h3>
+                    <h3 className="text-lg font-semibold text-gray-9 mb-2">Endereços</h3>
+                    <p className="text-sm text-gray-6 mb-4">Actualize os endereços associados à sua conta. Estes dados ajudam a facilitar a facturação, a entrega de pedidos e a localização da sua banca quando necessário.</p>
                     
                     <div>
-                      <h4 className="text-md font-medium text-gray-9 mb-3">Endereço de Faturamento</h4>
+                      <h4 className="text-md font-medium text-gray-9 mb-3">Endereço de Facturação</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="md:col-span-2">
-                          <label className="block text-sm font-medium text-gray-7 mb-2">Rua *</label>
+                          <label className="block text-sm font-medium text-gray-7 mb-2">Rua / Endereço *</label>
                           <Input
                             value={profileForm.billingAddress.street}
                             onChange={(e) => setProfileForm({
@@ -402,7 +408,7 @@ export default function SellerSettingsPage() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-7 mb-2">Estado *</label>
+                          <label className="block text-sm font-medium text-gray-7 mb-2">Província *</label>
                           <Input
                             value={profileForm.billingAddress.state}
                             onChange={(e) => setProfileForm({
@@ -441,7 +447,7 @@ export default function SellerSettingsPage() {
                       <h4 className="text-md font-medium text-gray-9 mb-3">Endereço de Entrega</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="md:col-span-2">
-                          <label className="block text-sm font-medium text-gray-7 mb-2">Rua *</label>
+                          <label className="block text-sm font-medium text-gray-7 mb-2">Rua / Endereço *</label>
                           <Input
                             value={profileForm.shippingAddress.street}
                             onChange={(e) => setProfileForm({
@@ -463,7 +469,7 @@ export default function SellerSettingsPage() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-7 mb-2">Estado *</label>
+                          <label className="block text-sm font-medium text-gray-7 mb-2">Província *</label>
                           <Input
                             value={profileForm.shippingAddress.state}
                             onChange={(e) => setProfileForm({
@@ -501,7 +507,7 @@ export default function SellerSettingsPage() {
                     <div className="flex justify-end pt-4 border-t border-gray-2">
                       <Button type="submit" disabled={updateProfile.isPending}>
                         <Save size={16} className="mr-2" />
-                        {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
+                        {updateProfile.isPending ? 'A guardar...' : 'Guardar Alterações'}
                       </Button>
                     </div>
                   </form>
@@ -591,7 +597,7 @@ export default function SellerSettingsPage() {
                     <div className="flex justify-end pt-4 border-t border-gray-2">
                       <Button type="submit" disabled={updateProfile.isPending}>
                         <Save size={16} className="mr-2" />
-                        {updateProfile.isPending ? 'Salvando...' : 'Salvar'}
+                        {updateProfile.isPending ? 'A guardar...' : 'Guardar Alterações'}
                       </Button>
                     </div>
                   </form>
@@ -600,9 +606,10 @@ export default function SellerSettingsPage() {
                 {/* Password */}
                 {activeTab === 'password' && (
                   <form onSubmit={handlePasswordSubmit} className="space-y-6">
-                    <h3 className="text-lg font-semibold text-gray-9 mb-4">Alterar Senha</h3>
+                    <h3 className="text-lg font-semibold text-gray-9 mb-4">Alterar Palavra-passe</h3>
+                    <p className="text-sm text-gray-6 mb-4">Actualize a sua palavra-passe para manter a conta segura.</p>
                     <div>
-                      <label className="block text-sm font-medium text-gray-7 mb-2">Senha Atual *</label>
+                      <label className="block text-sm font-medium text-gray-7 mb-2">Palavra-passe Actual *</label>
                       <Input
                         type="password"
                         value={passwordForm.currentPassword}
@@ -611,7 +618,7 @@ export default function SellerSettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-7 mb-2">Nova Senha *</label>
+                      <label className="block text-sm font-medium text-gray-7 mb-2">Nova Palavra-passe *</label>
                       <Input
                         type="password"
                         value={passwordForm.newPassword}
@@ -621,11 +628,11 @@ export default function SellerSettingsPage() {
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]"
                       />
                       <p className="text-xs text-gray-5 mt-1">
-                        Mínimo 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial
+                        A nova palavra-passe deve ter, no mínimo, 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um carácter especial.
                       </p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-7 mb-2">Confirmar Nova Senha *</label>
+                      <label className="block text-sm font-medium text-gray-7 mb-2">Confirmar Nova Palavra-passe *</label>
                       <Input
                         type="password"
                         value={passwordForm.confirmNewPassword}
@@ -636,7 +643,7 @@ export default function SellerSettingsPage() {
                     <div className="flex justify-end pt-4 border-t border-gray-2">
                       <Button type="submit" disabled={changePassword.isPending}>
                         <Lock size={16} className="mr-2" />
-                        {changePassword.isPending ? 'Alterando...' : 'Alterar Senha'}
+                        {changePassword.isPending ? 'A alterar...' : 'Alterar Palavra-passe'}
                       </Button>
                     </div>
                   </form>
