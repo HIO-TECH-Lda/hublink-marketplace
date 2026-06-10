@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -98,7 +98,7 @@ export default function NewsletterManagementPage() {
 
   const getSubscriberStatusText = (status: string) => {
     switch (status) {
-      case 'active': return 'Ativo';
+      case 'active': return 'Activo';
       case 'unsubscribed': return 'Desinscrito';
       case 'bounced': return 'Rejeitado';
       case 'pending': return 'Pendente';
@@ -111,7 +111,7 @@ export default function NewsletterManagementPage() {
       case 'popup': return 'Popup';
       case 'footer': return 'Rodapé';
       case 'signup': return 'Cadastro';
-      case 'admin': return 'Admin';
+      case 'admin': return 'Administrador';
       case 'import': return 'Importado';
       default: return origin;
     }
@@ -168,7 +168,7 @@ export default function NewsletterManagementPage() {
   };
 
   const handleDeleteSubscriber = (subscriberId: string, email: string) => {
-    if (confirm(`Tem certeza que deseja excluir o assinante "${email}"?`)) {
+    if (confirm(`Tem certeza que deseja eliminar o subscritor "${email}"?`)) {
       deleteSubscriber.mutate(subscriberId);
     }
   };
@@ -178,7 +178,7 @@ export default function NewsletterManagementPage() {
   };
 
   const handleDeleteCampaign = (campaignId: string, name: string) => {
-    if (confirm(`Tem certeza que deseja excluir a campanha "${name}"?`)) {
+    if (confirm(`Tem certeza que deseja eliminar a campanha "${name}"?`)) {
       deleteCampaign.mutate(campaignId);
     }
   };
@@ -204,14 +204,14 @@ export default function NewsletterManagementPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Newsletter</h1>
-            <p className="text-gray-6">Gerencie assinantes e campanhas de email</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Newsletter</h1>
+            <p className="text-gray-6">Gira os subscritores da newsletter, acompanhe campanhas de e-mail, consulte taxas de abertura, origens de inscrição e estados de subscrição.</p>
           </div>
           <div className="flex gap-2">
             {activeTab === 'subscribers' && (
               <Button onClick={() => router.push('/admin/newsletter/subscribers/novo')}>
                 <Plus className="w-4 h-4 mr-2" />
-                Novo Assinante
+                Novo Subscritor
               </Button>
             )}
             {activeTab === 'campaigns' && (
@@ -250,7 +250,7 @@ export default function NewsletterManagementPage() {
             <CardContent className="p-4 sm:p-5">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Ativos</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Activos</p>
                   <p className="text-xl sm:text-2xl font-bold text-green-600 break-words">
                     {stats.activeSubscribers.toLocaleString()}
                   </p>
@@ -342,7 +342,7 @@ export default function NewsletterManagementPage() {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList>
-          <TabsTrigger value="subscribers">Assinantes</TabsTrigger>
+          <TabsTrigger value="subscribers">Subscritores</TabsTrigger>
           <TabsTrigger value="campaigns">Campanhas</TabsTrigger>
         </TabsList>
 
@@ -366,8 +366,8 @@ export default function NewsletterManagementPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todos os status</SelectItem>
-                    <SelectItem value="active">Ativo</SelectItem>
+                    <SelectItem value="all">Todos os Estados</SelectItem>
+                    <SelectItem value="active">Activo</SelectItem>
                     <SelectItem value="unsubscribed">Desinscrito</SelectItem>
                     <SelectItem value="bounced">Rejeitado</SelectItem>
                     <SelectItem value="pending">Pendente</SelectItem>
@@ -382,7 +382,7 @@ export default function NewsletterManagementPage() {
                     <SelectItem value="popup">Popup</SelectItem>
                     <SelectItem value="footer">Rodapé</SelectItem>
                     <SelectItem value="signup">Cadastro</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="admin">Administrador</SelectItem>
                     <SelectItem value="import">Importado</SelectItem>
                   </SelectContent>
                 </Select>
@@ -408,7 +408,7 @@ export default function NewsletterManagementPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg font-semibold text-gray-9">
-                Assinantes ({subscribersData?.pagination.total || 0})
+                Subscritores ({subscribersData?.pagination.total || 0})
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -418,11 +418,11 @@ export default function NewsletterManagementPage() {
                     <tr className="border-b border-gray-200">
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Email</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Nome</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Estado</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Origem</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Engajamento</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Cadastrado em</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Acções</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -507,7 +507,7 @@ export default function NewsletterManagementPage() {
                                   disabled={deleteSubscriber.isPending}
                                 >
                                   <Trash2 className="w-4 h-4 mr-2" />
-                                  Excluir
+                                  Eliminar
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -525,7 +525,7 @@ export default function NewsletterManagementPage() {
             <Card>
               <CardContent className="text-center py-12">
                 <Users className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-                <p className="text-gray-6">Nenhum assinante encontrado</p>
+                <p className="text-gray-6">Nenhum subscritor encontrado</p>
               </CardContent>
             </Card>
           )}
@@ -578,7 +578,7 @@ export default function NewsletterManagementPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todos os status</SelectItem>
+                    <SelectItem value="all">Todos os Estados</SelectItem>
                     <SelectItem value="draft">Rascunho</SelectItem>
                     <SelectItem value="scheduled">Agendada</SelectItem>
                     <SelectItem value="sending">Enviando</SelectItem>
@@ -631,10 +631,10 @@ export default function NewsletterManagementPage() {
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Nome</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Assunto</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Tipo</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Performance</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Estado</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Desempenho</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-7">Enviada em</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-7">Acções</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -724,7 +724,7 @@ export default function NewsletterManagementPage() {
                                     disabled={deleteCampaign.isPending}
                                   >
                                     <Trash2 className="w-4 h-4 mr-2" />
-                                    Excluir
+                                    Eliminar
                                   </DropdownMenuItem>
                                 )}
                               </DropdownMenuContent>

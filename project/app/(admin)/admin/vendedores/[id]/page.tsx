@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -138,7 +138,7 @@ export default function VendorDetailPage() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Shield className="w-5 h-5 mr-2" />
-                Status do Vendedor
+                Estado do Vendedor
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -148,7 +148,7 @@ export default function VendorDetailPage() {
                     {getStatusText(seller.status)}
                   </Badge>
                   <p className="text-sm text-gray-6 mt-2">
-                    Última atualização: {formatDate(seller.updatedAt)}
+                    Última actualização: {formatDate(seller.updatedAt)}
                   </p>
                 </div>
                 <Select 
@@ -221,13 +221,13 @@ export default function VendorDetailPage() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <User className="w-5 h-5 mr-2" />
-                Informações de Contato
+                Informações de Contacto
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-7">Pessoa de Contato</label>
+                  <label className="text-sm font-medium text-gray-7">Pessoa de Contacto</label>
                   <p className="text-gray-9 font-medium">{seller.firstName} {seller.lastName}</p>
                   <p className="text-sm text-gray-6">{seller.contact.name}</p>
                 </div>
@@ -285,7 +285,7 @@ export default function VendorDetailPage() {
                           <div className="flex items-center gap-4 mt-1 text-sm text-gray-6">
                             <span>{product.category.name}</span>
                             <span>•</span>
-                            <span>Estoque: {product.stock}</span>
+                            <span>Stock: {product.stock}</span>
                             {product.averageRating > 0 && (
                               <>
                                 <span>•</span>
@@ -305,7 +305,7 @@ export default function VendorDetailPage() {
                           product.status === 'pending' ? 'text-yellow-600 bg-yellow-100' :
                           'text-gray-600 bg-gray-100'
                         }>
-                          {product.status === 'active' ? 'Ativo' :
+                          {product.status === 'active' ? 'Activo' :
                            product.status === 'pending' ? 'Pendente' :
                            product.status === 'draft' ? 'Rascunho' : product.status}
                         </Badge>

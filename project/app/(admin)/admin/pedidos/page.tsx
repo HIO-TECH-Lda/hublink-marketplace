@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -60,7 +60,7 @@ export default function OrderManagementPage() {
     const statusMap: Record<string, string> = {
       pending: 'Pendente',
       confirmed: 'Confirmado',
-      processing: 'Processando',
+      processing: 'Em Processamento',
       shipped: 'Enviado',
       delivered: 'Entregue',
       cancelled: 'Cancelado',
@@ -72,7 +72,7 @@ export default function OrderManagementPage() {
   const getPaymentStatusText = (status: string) => {
     const statusMap: Record<string, string> = {
       pending: 'Pendente',
-      processing: 'Processando',
+      processing: 'Em Processamento',
       completed: 'Completo',
       failed: 'Falhou',
       refunded: 'Reembolsado'
@@ -120,8 +120,8 @@ export default function OrderManagementPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Pedidos</h1>
-            <p className="text-gray-6">Gerencie todos os pedidos da plataforma</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Pedidos</h1>
+            <p className="text-gray-6">Gira todos os pedidos realizados na plataforma Txova.</p>
           </div>
         </div>
       </div>
@@ -213,7 +213,7 @@ export default function OrderManagementPage() {
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
+              <label className="text-sm font-medium text-gray-7 mb-2 block">Estado</label>
               <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
                 <SelectTrigger>
                   <SelectValue placeholder="Todos" />
@@ -222,7 +222,7 @@ export default function OrderManagementPage() {
                   <SelectItem value="all">Todos</SelectItem>
                   <SelectItem value="pending">Pendente</SelectItem>
                   <SelectItem value="confirmed">Confirmado</SelectItem>
-                  <SelectItem value="processing">Processando</SelectItem>
+                  <SelectItem value="processing">Em Processamento</SelectItem>
                   <SelectItem value="shipped">Enviado</SelectItem>
                   <SelectItem value="delivered">Entregue</SelectItem>
                   <SelectItem value="cancelled">Cancelado</SelectItem>
@@ -268,10 +268,10 @@ export default function OrderManagementPage() {
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Pedido</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Cliente</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Total</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Estado</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Pagamento</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Data</th>
-                  <th className="text-right py-3 px-4 font-medium text-gray-7">Ações</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-7">Acções</th>
                 </tr>
               </thead>
               <tbody>

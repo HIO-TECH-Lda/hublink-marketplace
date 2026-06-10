@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -224,7 +224,7 @@ export default function CreateBlogPostPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Criar Novo Post</h1>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Criar Nova Publicação</h1>
             <p className="text-gray-6">Adicione um novo post ao blog da plataforma</p>
           </div>
           <Button onClick={() => router.back()} variant="outline">
@@ -242,7 +242,7 @@ export default function CreateBlogPostPage() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <FileText className="w-5 h-5 mr-2" />
-                  Informações do Post
+                  Informações da Publicação
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -310,7 +310,7 @@ export default function CreateBlogPostPage() {
             {/* Image */}
             <Card>
               <CardHeader>
-                <CardTitle>Imagem do Post</CardTitle>
+                <CardTitle>Imagem da Publicação</CardTitle>
               </CardHeader>
               <CardContent>
                 <SingleImageUpload
@@ -467,7 +467,7 @@ export default function CreateBlogPostPage() {
                     )}
                   </div>
                   <div>
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status">Estado</Label>
                     <Select 
                       value={formData.status} 
                       onValueChange={(value: any) => setFormData({...formData, status: value})}
@@ -546,7 +546,7 @@ export default function CreateBlogPostPage() {
                     <span className="font-medium">{formData.title || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
                       {formData.status === 'published' ? 'Publicado' : 
                        formData.status === 'draft' ? 'Rascunho' : 'Arquivado'}
@@ -590,7 +590,7 @@ export default function CreateBlogPostPage() {
                   ) : (
                     <>
                       <Save className="w-4 h-4 mr-2" />
-                      Criar Post
+                      Criar Publicação
                     </>
                   )}
                 </Button>

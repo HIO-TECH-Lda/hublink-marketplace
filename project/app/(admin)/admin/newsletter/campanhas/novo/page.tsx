@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -268,7 +268,7 @@ export default function CreateCampaignPage() {
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="status">Status</Label>
+                      <Label htmlFor="status">Estado</Label>
                       <Select 
                         value={formData.status} 
                         onValueChange={(value: any) => setFormData({...formData, status: value})}
@@ -336,7 +336,7 @@ export default function CreateCampaignPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="subscriberStatus">Status dos Assinantes</Label>
+                    <Label htmlFor="subscriberStatus">Estado dos Subscritores</Label>
                     <Select 
                       value={formData.subscriberStatus} 
                       onValueChange={(value: any) => setFormData({...formData, subscriberStatus: value})}
@@ -346,7 +346,7 @@ export default function CreateCampaignPage() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">Todos</SelectItem>
-                        <SelectItem value="active">Apenas Ativos</SelectItem>
+                        <SelectItem value="active">Apenas Activos</SelectItem>
                         <SelectItem value="new">Novos (últimos 30 dias)</SelectItem>
                       </SelectContent>
                     </Select>
@@ -492,7 +492,7 @@ export default function CreateCampaignPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
                       {formData.status === 'draft' ? 'Rascunho' : 'Agendada'}
                     </span>

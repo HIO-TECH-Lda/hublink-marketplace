@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -90,8 +90,8 @@ export default function VendorManagementPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Vendedores</h1>
-            <p className="text-gray-6">Aprove e gerencie vendedores da plataforma</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Vendedores</h1>
+            <p className="text-gray-6">Aprove, acompanhe e gira os vendedores registados na plataforma Txova.</p>
           </div>
           <div className="flex gap-2">
             <Button onClick={() => router.push('/admin/vendedores/novo')}>
@@ -180,13 +180,13 @@ export default function VendorManagementPage() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
+              <label className="text-sm font-medium text-gray-7 mb-2 block">Estado</label>
               <Select value={statusFilter} onValueChange={(value) => { setStatusFilter(value); setPage(1); }}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Todos os status" />
+                  <SelectValue placeholder="Todos os Estados" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todos os status</SelectItem>
+                  <SelectItem value="all">Todos os Estados</SelectItem>
                   <SelectItem value="active">Aprovado</SelectItem>
                   <SelectItem value="inactive">Pendente</SelectItem>
                   <SelectItem value="suspended">Rejeitado</SelectItem>
@@ -227,11 +227,11 @@ export default function VendorManagementPage() {
               <thead>
                 <tr className="border-b border-gray-200">
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Empresa</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Contato</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Contacto</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Vendas</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Avaliação</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Estado</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Acções</th>
                 </tr>
               </thead>
               <tbody>

@@ -33,7 +33,7 @@ interface AdminLayoutProps {
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: Home },
-  { name: 'Usuários', href: '/admin/usuarios', icon: Users },
+  { name: 'Utilizadores', href: '/admin/usuarios', icon: Users },
   { name: 'Pedidos', href: '/admin/pedidos', icon: ShoppingCart },
   { name: 'Pagamentos', href: '/admin/pagamentos', icon: DollarSign },
   { name: 'Reembolsos', href: '/admin/reembolsos', icon: RotateCcw },
@@ -41,7 +41,7 @@ const navigation = [
   { name: 'Categorias', href: '/admin/categorias', icon: Tag },
   { name: 'Vendedores', href: '/admin/vendedores', icon: Shield },
   { name: 'Avaliações', href: '/admin/avaliacoes', icon: Star },
-  { name: 'Blog', href: '/admin/blog', icon: FileText },
+  { name: 'Novidades', href: '/admin/blog', icon: FileText },
   { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },
   { name: 'Tickets', href: '/admin/tickets', icon: MessageSquare },
   { name: 'Relatórios', href: '/admin/relatorios', icon: BarChart3 },

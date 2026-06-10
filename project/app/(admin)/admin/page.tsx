@@ -53,15 +53,15 @@ export default function AdminDashboard() {
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-9 mb-2">Dashboard</h1>
-        <p className="text-gray-6">Visão geral da plataforma</p>
+        <h1 className="text-3xl font-bold text-gray-9 mb-2">Painel Administrativo</h1>
+        <p className="text-gray-6">Visão geral da plataforma Txova, incluindo utilizadores, pedidos, pagamentos, produtos, vendedores, avaliações, reembolsos, tickets e principais alertas de gestão.</p>
       </div>
 
       {/* Main Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Total de Usuários</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-6">Total de Utilizadores</CardTitle>
             <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -112,11 +112,11 @@ export default function AdminDashboard() {
           <CardContent>
             <div className="text-2xl font-bold text-gray-9">{dashboard.products.total.toLocaleString()}</div>
             <p className="text-xs text-gray-6">
-              {dashboard.products.activeSellers} vendedores ativos
+              {dashboard.products.activeSellers} vendedores activos
             </p>
             {(dashboard.products.lowStock > 0 || dashboard.products.outOfStock > 0) && (
               <p className="text-xs text-warning mt-1">
-                {dashboard.products.lowStock} baixo estoque • {dashboard.products.outOfStock} sem estoque
+                {dashboard.products.lowStock} com stock baixo • {dashboard.products.outOfStock} sem stock
               </p>
             )}
           </CardContent>
@@ -193,7 +193,7 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs font-medium text-gray-6">Blog Posts</CardTitle>
+            <CardTitle className="text-xs font-medium text-gray-6">Publicações em Novidades</CardTitle>
             <FileText className="h-3 w-3 text-primary" />
           </CardHeader>
           <CardContent>
@@ -208,7 +208,7 @@ export default function AdminDashboard() {
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-9">Ações Rápidas</CardTitle>
+              <CardTitle className="text-lg font-semibold text-gray-9">Acções Rápidas</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button 
@@ -217,7 +217,7 @@ export default function AdminDashboard() {
                 className="w-full justify-start"
               >
                 <Users className="w-4 h-4 mr-2" />
-                Gerenciar Usuários
+                Gerir Utilizadores
               </Button>
               <Button 
                 onClick={() => router.push('/admin/pedidos')}
@@ -225,7 +225,7 @@ export default function AdminDashboard() {
                 className="w-full justify-start"
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
-                Gerenciar Pedidos
+                Gerir Pedidos
               </Button>
               <Button 
                 onClick={() => router.push('/admin/produtos')}
@@ -233,7 +233,7 @@ export default function AdminDashboard() {
                 className="w-full justify-start"
               >
                 <Package className="w-4 h-4 mr-2" />
-                Gerenciar Produtos
+                Gerir Produtos
               </Button>
               <Button 
                 onClick={() => router.push('/admin/vendedores')}
@@ -241,7 +241,7 @@ export default function AdminDashboard() {
                 className="w-full justify-start"
               >
                 <Shield className="w-4 h-4 mr-2" />
-                Gerenciar Vendedores
+                Gerir Vendedores
               </Button>
               <Button 
                 onClick={() => router.push('/admin/blog')}
@@ -249,7 +249,7 @@ export default function AdminDashboard() {
                 className="w-full justify-start"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                Gerenciar Blog
+                Gerir Novidades
               </Button>
               <Button 
                 onClick={() => router.push('/admin/relatorios')}
@@ -276,8 +276,8 @@ export default function AdminDashboard() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-9">Status dos Pedidos</CardTitle>
-              <CardDescription>Distribuição de pedidos por status</CardDescription>
+              <CardTitle className="text-lg font-semibold text-gray-9">Estado dos Pedidos</CardTitle>
+              <CardDescription>Distribuição dos pedidos por estado</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -365,7 +365,7 @@ export default function AdminDashboard() {
                     <div className="flex items-center space-x-2">
                       <Package className="w-4 h-4 text-yellow-600" />
                       <span className="text-sm text-yellow-800">
-                        {dashboard.products.lowStock + dashboard.products.outOfStock} produtos com estoque baixo
+                        {dashboard.products.lowStock + dashboard.products.outOfStock} produtos com stock baixo
                       </span>
                     </div>
                     <Button size="sm" variant="outline" onClick={() => router.push('/admin/produtos')}>

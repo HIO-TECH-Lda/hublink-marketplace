@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -46,8 +46,8 @@ export default function UserDetailsPage() {
 
   const getStatusText = (status: string) => {
     const statusMap: Record<string, string> = {
-      active: 'Ativo',
-      inactive: 'Inativo',
+      active: 'Activo',
+      inactive: 'Inactivo',
       suspended: 'Suspenso'
     };
     return statusMap[status] || status;
@@ -79,7 +79,7 @@ export default function UserDetailsPage() {
     const statusMap: Record<string, string> = {
       pending: 'Pendente',
       confirmed: 'Confirmado',
-      processing: 'Processando',
+      processing: 'Em Processamento',
       shipped: 'Enviado',
       delivered: 'Entregue',
       cancelled: 'Cancelado'
@@ -109,13 +109,13 @@ export default function UserDetailsPage() {
     try {
       await updateStatus.mutateAsync({ userId, status: newStatus });
       toast({
-        title: 'Status atualizado',
-        description: 'O status do usuário foi atualizado com sucesso.',
+        title: 'Estado actualizado',
+        description: 'O estado do utilizador foi actualizado com sucesso.',
       });
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao atualizar status',
+        description: error.response?.data?.message || 'Falha ao actualizar estado',
         variant: 'destructive',
       });
     }
@@ -127,7 +127,7 @@ export default function UserDetailsPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-gray-6">Carregando detalhes do usuário...</p>
+            <p className="text-gray-6">Carregando detalhes do utilizador...</p>
           </div>
         </div>
       </>
@@ -140,7 +140,7 @@ export default function UserDetailsPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <User className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-            <p className="text-gray-6">Usuário não encontrado</p>
+            <p className="text-gray-6">Utilizador não encontrado</p>
             <Button onClick={() => router.push('/admin/usuarios')} className="mt-4">
               Voltar para Lista
             </Button>
@@ -227,7 +227,7 @@ export default function UserDetailsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Status</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-6">Estado</CardTitle>
             <Activity className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -416,7 +416,7 @@ export default function UserDetailsPage() {
                     <div className="text-center py-8">
                       <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum pedido encontrado</h3>
-                      <p className="text-gray-6">Este usuário ainda não realizou pedidos.</p>
+                      <p className="text-gray-6">Este utilizador ainda não realizou pedidos.</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -459,7 +459,7 @@ export default function UserDetailsPage() {
                     <div className="text-center py-8">
                       <Star className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhuma avaliação encontrada</h3>
-                      <p className="text-gray-6">Este usuário ainda não deixou avaliações.</p>
+                      <p className="text-gray-6">Este utilizador ainda não deixou avaliações.</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -517,7 +517,7 @@ export default function UserDetailsPage() {
                       <div className="flex items-center space-x-3">
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         <div>
-                          <p className="text-sm text-gray-9">Último login</p>
+                          <p className="text-sm text-gray-9">Último Acesso</p>
                           <p className="text-xs text-gray-6">{formatDate((user as any).lastLogin)}</p>
                         </div>
                       </div>
@@ -531,7 +531,7 @@ export default function UserDetailsPage() {
                       <div className="flex items-center space-x-3">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                         <div>
-                          <p className="text-sm text-gray-9">Última atualização</p>
+                          <p className="text-sm text-gray-9">Última actualização</p>
                           <p className="text-xs text-gray-6">{formatDate(user.updatedAt)}</p>
                         </div>
                       </div>
@@ -570,7 +570,7 @@ export default function UserDetailsPage() {
           {/* User Summary */}
           <Card>
             <CardHeader>
-              <CardTitle>Resumo do Usuário</CardTitle>
+              <CardTitle>Resumo do Utilizador</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -579,7 +579,7 @@ export default function UserDetailsPage() {
                   <span className="font-medium text-xs">{user._id || user.id}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-6">Status:</span>
+                  <span className="text-gray-6">Estado:</span>
                   <Badge className={getStatusColor(user.status)}>
                     {getStatusText(user.status)}
                   </Badge>
@@ -593,7 +593,7 @@ export default function UserDetailsPage() {
                   <span className="font-medium text-sm">{formatDate(user.createdAt)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-6">Último login:</span>
+                  <span className="text-gray-6">Último Acesso:</span>
                   <span className="font-medium text-sm">{formatDate((user as any).lastLogin)}</span>
                 </div>
               </div>
@@ -603,7 +603,7 @@ export default function UserDetailsPage() {
           {/* Quick Actions */}
           <Card>
             <CardHeader>
-              <CardTitle>Ações Rápidas</CardTitle>
+              <CardTitle>Acções Rápidas</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button 
@@ -611,7 +611,7 @@ export default function UserDetailsPage() {
                 className="w-full"
               >
                 <Edit className="w-4 h-4 mr-2" />
-                Editar Usuário
+                Editar Utilizador
               </Button>
             </CardContent>
           </Card>

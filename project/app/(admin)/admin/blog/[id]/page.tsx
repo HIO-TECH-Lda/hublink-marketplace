@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -82,7 +82,7 @@ export default function BlogPostDetailsPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <FileText className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-            <p className="text-gray-6">Post não encontrado</p>
+            <p className="text-gray-6">Publicação não encontrada</p>
             <Button onClick={() => router.back()} className="mt-4">
               Voltar
             </Button>
@@ -119,7 +119,7 @@ export default function BlogPostDetailsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Status</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-6">Estado</CardTitle>
             <FileText className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -168,7 +168,7 @@ export default function BlogPostDetailsPage() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <FileText className="w-5 h-5 mr-2" />
-                Status do Post
+                Estado da Publicação
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -326,7 +326,7 @@ export default function BlogPostDetailsPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-7">Atualizado em</label>
+                  <label className="text-sm font-medium text-gray-7">Actualizado em</label>
                   <div className="flex items-center mt-1">
                     <Calendar className="w-4 h-4 text-gray-4 mr-2" />
                     <p className="text-gray-9">{formatDate(post.updatedAt)}</p>

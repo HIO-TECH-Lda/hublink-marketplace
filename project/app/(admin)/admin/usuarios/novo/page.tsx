@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -95,15 +95,15 @@ export default function CreateUserPage() {
       });
       
       toast({
-        title: 'Usuário criado',
-        description: 'O novo usuário foi criado com sucesso.',
+        title: 'Utilizador criado',
+        description: 'O novo utilizador foi criado com sucesso.',
       });
       
       router.push(`/admin/usuarios/${newUser.id}`);
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao criar usuário',
+        description: error.response?.data?.message || 'Falha ao criar utilizador',
         variant: 'destructive',
       });
     }
@@ -114,8 +114,8 @@ export default function CreateUserPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Criar Novo Usuário</h1>
-            <p className="text-gray-6">Adicione um novo usuário ao sistema</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Criar Novo Utilizador</h1>
+            <p className="text-gray-6">Adicione um novo utilizador ao sistema</p>
           </div>
           <Button onClick={() => router.push('/admin/usuarios')} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -140,7 +140,7 @@ export default function CreateUserPage() {
                       id="firstName"
                       value={formData.firstName}
                       onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                      placeholder="Nome do usuário"
+                      placeholder="Nome do utilizador"
                       className={errors.firstName ? 'border-red-500' : ''}
                     />
                     {errors.firstName && (
@@ -153,7 +153,7 @@ export default function CreateUserPage() {
                       id="lastName"
                       value={formData.lastName}
                       onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                      placeholder="Sobrenome do usuário"
+                      placeholder="Sobrenome do utilizador"
                       className={errors.lastName ? 'border-red-500' : ''}
                     />
                     {errors.lastName && (
@@ -203,7 +203,7 @@ export default function CreateUserPage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status">Estado</Label>
                     <Select 
                       value={formData.status} 
                       onValueChange={(value) => setFormData({...formData, status: value as any})}
@@ -212,8 +212,8 @@ export default function CreateUserPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="active">Ativo</SelectItem>
-                        <SelectItem value="inactive">Inativo</SelectItem>
+                        <SelectItem value="active">Activo</SelectItem>
+                        <SelectItem value="inactive">Inactivo</SelectItem>
                         <SelectItem value="suspended">Suspenso</SelectItem>
                       </SelectContent>
                     </Select>
@@ -307,10 +307,10 @@ export default function CreateUserPage() {
                     <span className="font-medium text-sm">{formData.phone || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
-                      {formData.status === 'active' ? 'Ativo' : 
-                       formData.status === 'inactive' ? 'Inativo' : 'Suspenso'}
+                      {formData.status === 'active' ? 'Activo' : 
+                       formData.status === 'inactive' ? 'Inactivo' : 'Suspenso'}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -333,7 +333,7 @@ export default function CreateUserPage() {
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-blue-9">Informação</p>
                     <p className="text-xs text-blue-7">
-                      O usuário receberá um email de boas-vindas com as credenciais de acesso.
+                      O utilizador receberá um email de boas-vindas com as credenciais de acesso.
                     </p>
                   </div>
                 </div>
@@ -356,7 +356,7 @@ export default function CreateUserPage() {
                   ) : (
                     <>
                       <Save className="w-4 h-4 mr-2" />
-                      Criar Usuário
+                      Criar Utilizador
                     </>
                   )}
                 </Button>

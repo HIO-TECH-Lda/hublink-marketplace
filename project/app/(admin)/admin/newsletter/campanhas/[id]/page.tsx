@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -145,7 +145,7 @@ export default function CampaignDetailsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Status</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-6">Estado</CardTitle>
             <Mail className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -187,7 +187,7 @@ export default function CampaignDetailsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Assinantes</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-6">Subscritores</CardTitle>
             <Users className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
@@ -228,7 +228,7 @@ export default function CampaignDetailsPage() {
                     <Badge variant="outline">{getTypeText(campaign.type)}</Badge>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7">Status</label>
+                    <label className="text-sm font-medium text-gray-7">Estado</label>
                     <div className="mt-1">
                       <Badge className={getStatusColor(campaign.status)}>
                         {getStatusText(campaign.status)}
@@ -283,10 +283,10 @@ export default function CampaignDetailsPage() {
                 <div className="space-y-4">
                   {campaign.segmentation.subscriberStatus && (
                     <div>
-                      <label className="text-sm font-medium text-gray-7">Status dos Assinantes</label>
+                      <label className="text-sm font-medium text-gray-7">Estado dos Subscritores</label>
                       <p className="text-gray-9">
                         {campaign.segmentation.subscriberStatus === 'all' ? 'Todos' :
-                         campaign.segmentation.subscriberStatus === 'active' ? 'Apenas Ativos' :
+                         campaign.segmentation.subscriberStatus === 'active' ? 'Apenas Activos' :
                          campaign.segmentation.subscriberStatus === 'new' ? 'Novos (últimos 30 dias)' :
                          campaign.segmentation.subscriberStatus}
                       </p>
@@ -349,7 +349,7 @@ export default function CampaignDetailsPage() {
             <CardContent>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-gray-6">Total de Assinantes:</span>
+                  <span className="text-gray-6">Total de Subscritores:</span>
                   <span className="font-medium">{stats.totalSubscribers.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
@@ -405,7 +405,7 @@ export default function CampaignDetailsPage() {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-6">Atualizada em:</span>
+                  <span className="text-gray-6">Actualizada em:</span>
                   <span className="font-medium text-xs">
                     {formatDate(campaign.updatedAt)}
                   </span>
@@ -426,7 +426,7 @@ export default function CampaignDetailsPage() {
           {(campaign.status === 'draft' || campaign.status === 'scheduled') && (
             <Card>
               <CardHeader>
-                <CardTitle>Ações</CardTitle>
+                <CardTitle>Acções</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {campaign.status === 'draft' && (

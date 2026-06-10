@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -105,7 +105,7 @@ export default function UserEditPage() {
       });
       
       toast({
-        title: 'Usuário atualizado',
+        title: 'Utilizador actualizado',
         description: 'As alterações foram salvas com sucesso.',
       });
       
@@ -113,7 +113,7 @@ export default function UserEditPage() {
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao atualizar usuário',
+        description: error.response?.data?.message || 'Falha ao actualizar utilizador',
         variant: 'destructive',
       });
     }
@@ -125,7 +125,7 @@ export default function UserEditPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-gray-6">Carregando dados do usuário...</p>
+            <p className="text-gray-6">Carregando dados do utilizador...</p>
           </div>
         </div>
       </>
@@ -137,7 +137,7 @@ export default function UserEditPage() {
       <>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <p className="text-gray-6">Usuário não encontrado</p>
+            <p className="text-gray-6">Utilizador não encontrado</p>
             <Button onClick={() => router.push('/admin/usuarios')} className="mt-4">
               Voltar para Lista
             </Button>
@@ -152,8 +152,8 @@ export default function UserEditPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Usuário</h1>
-            <p className="text-gray-6">Modifique as informações do usuário</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Utilizador</h1>
+            <p className="text-gray-6">Modifique as informações do utilizador</p>
           </div>
           <Button onClick={() => router.push(`/admin/usuarios/${userId}`)} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -178,7 +178,7 @@ export default function UserEditPage() {
                       id="firstName"
                       value={formData.firstName}
                       onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                      placeholder="Nome do usuário"
+                      placeholder="Nome do utilizador"
                       className={errors.firstName ? 'border-red-500' : ''}
                     />
                     {errors.firstName && (
@@ -191,7 +191,7 @@ export default function UserEditPage() {
                       id="lastName"
                       value={formData.lastName}
                       onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                      placeholder="Sobrenome do usuário"
+                      placeholder="Sobrenome do utilizador"
                       className={errors.lastName ? 'border-red-500' : ''}
                     />
                     {errors.lastName && (
@@ -241,7 +241,7 @@ export default function UserEditPage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status">Estado</Label>
                     <Select 
                       value={formData.status} 
                       onValueChange={(value) => setFormData({...formData, status: value as any})}
@@ -250,8 +250,8 @@ export default function UserEditPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="active">Ativo</SelectItem>
-                        <SelectItem value="inactive">Inativo</SelectItem>
+                        <SelectItem value="active">Activo</SelectItem>
+                        <SelectItem value="inactive">Inactivo</SelectItem>
                         <SelectItem value="suspended">Suspenso</SelectItem>
                       </SelectContent>
                     </Select>
@@ -282,7 +282,7 @@ export default function UserEditPage() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <AlertCircle className="w-5 h-5 mr-2" />
-                  Status de Verificação
+                  Estado de Verificação
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -339,10 +339,10 @@ export default function UserEditPage() {
                     <span className="font-medium text-sm">{formData.email || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
-                      {formData.status === 'active' ? 'Ativo' : 
-                       formData.status === 'inactive' ? 'Inativo' : 'Suspenso'}
+                      {formData.status === 'active' ? 'Activo' : 
+                       formData.status === 'inactive' ? 'Inactivo' : 'Suspenso'}
                     </span>
                   </div>
                   <div className="flex justify-between">

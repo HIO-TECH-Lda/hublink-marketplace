@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -43,7 +43,7 @@ export default function SubscriberDetailsPage() {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'active': return 'Ativo';
+      case 'active': return 'Activo';
       case 'unsubscribed': return 'Desinscrito';
       case 'bounced': return 'Rejeitado';
       case 'pending': return 'Pendente';
@@ -56,7 +56,7 @@ export default function SubscriberDetailsPage() {
       case 'popup': return 'Popup';
       case 'footer': return 'Rodapé';
       case 'signup': return 'Cadastro';
-      case 'admin': return 'Admin';
+      case 'admin': return 'Administrador';
       case 'import': return 'Importado';
       default: return origin;
     }
@@ -82,7 +82,7 @@ export default function SubscriberDetailsPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-gray-6">Carregando assinante...</p>
+            <p className="text-gray-6">Carregando subscritor...</p>
           </div>
         </div>
       </>
@@ -95,7 +95,7 @@ export default function SubscriberDetailsPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <Mail className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-            <p className="text-gray-6">Assinante não encontrado</p>
+            <p className="text-gray-6">Subscritor não encontrado</p>
             <Button onClick={() => router.back()} className="mt-4">
               Voltar
             </Button>
@@ -132,7 +132,7 @@ export default function SubscriberDetailsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Status</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-6">Estado</CardTitle>
             <Mail className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -187,7 +187,7 @@ export default function SubscriberDetailsPage() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Mail className="w-5 h-5 mr-2" />
-                Status do Assinante
+                Estado do Subscritor
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -237,7 +237,7 @@ export default function SubscriberDetailsPage() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <User className="w-5 h-5 mr-2" />
-                Informações de Contato
+                Informações de Contacto
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -306,11 +306,11 @@ export default function SubscriberDetailsPage() {
                       <p className="text-gray-9">{subscriber.preferences.promotions ? 'Sim' : 'Não'}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-7">Atualizações de Produtos</label>
+                      <label className="text-sm font-medium text-gray-7">Actualizações de Produtos</label>
                       <p className="text-gray-9">{subscriber.preferences.productUpdates ? 'Sim' : 'Não'}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-7">Posts do Blog</label>
+                      <label className="text-sm font-medium text-gray-7">Publicações de Novidades</label>
                       <p className="text-gray-9">{subscriber.preferences.blogPosts ? 'Sim' : 'Não'}</p>
                     </div>
                   </div>
@@ -419,7 +419,7 @@ export default function SubscriberDetailsPage() {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-6">Atualizado em:</span>
+                  <span className="text-gray-6">Actualizado em:</span>
                   <span className="font-medium text-xs">
                     {formatDate(subscriber.updatedAt)}
                   </span>

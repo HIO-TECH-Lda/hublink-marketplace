@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -59,7 +59,7 @@ export default function CategoryManagementPage() {
   };
 
   const getStatusText = (isActive: boolean) => {
-    return isActive ? 'Ativo' : 'Inativo';
+    return isActive ? 'Activo' : 'Inactivo';
   };
 
   const formatDate = (dateString: string) => {
@@ -71,7 +71,7 @@ export default function CategoryManagementPage() {
   };
 
   const handleDeleteCategory = (categoryId: string, categoryName: string) => {
-    if (confirm(`Tem certeza que deseja excluir a categoria "${categoryName}"?`)) {
+    if (confirm(`Tem certeza que deseja eliminar a categoria "${categoryName}"?`)) {
       deleteCategory.mutate(categoryId);
     }
   };
@@ -101,8 +101,8 @@ export default function CategoryManagementPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Categorias</h1>
-            <p className="text-gray-6">Gerencie as categorias de produtos da plataforma</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Categorias</h1>
+            <p className="text-gray-6">Gira as categorias de produtos e serviços da plataforma Txova.</p>
           </div>
           <div className="flex gap-2">
             <Button onClick={() => router.push('/admin/categorias/novo')}>
@@ -146,7 +146,7 @@ export default function CategoryManagementPage() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-6 mb-1">Inativas</p>
+                  <p className="text-xs text-gray-6 mb-1">Inactivas</p>
                   <p className="text-xl font-bold text-gray-600">{stats.inactive.toLocaleString()}</p>
                 </div>
                 <XCircle className="w-5 h-5 text-gray-600" />
@@ -185,9 +185,9 @@ export default function CategoryManagementPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos os status</SelectItem>
-                <SelectItem value="active">Ativo</SelectItem>
-                <SelectItem value="inactive">Inativo</SelectItem>
+                <SelectItem value="all">Todos os Estados</SelectItem>
+                <SelectItem value="active">Activo</SelectItem>
+                <SelectItem value="inactive">Inactivo</SelectItem>
               </SelectContent>
             </Select>
             {(searchTerm || statusFilter !== 'all') && (
@@ -223,9 +223,9 @@ export default function CategoryManagementPage() {
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Slug</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Categoria Pai</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Produtos</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Estado</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Criada em</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Acções</th>
                 </tr>
               </thead>
               <tbody>
@@ -325,7 +325,7 @@ export default function CategoryManagementPage() {
                               disabled={deleteCategory.isPending}
                             >
                               <Trash2 className="w-4 h-4 mr-2" />
-                              Excluir
+                              Eliminar
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

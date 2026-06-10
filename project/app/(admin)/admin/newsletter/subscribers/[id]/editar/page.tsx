@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -154,7 +154,7 @@ export default function EditSubscriberPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-gray-6">Carregando assinante...</p>
+            <p className="text-gray-6">Carregando subscritor...</p>
           </div>
         </div>
       </>
@@ -167,7 +167,7 @@ export default function EditSubscriberPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <Mail className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-            <p className="text-gray-6">Assinante não encontrado</p>
+            <p className="text-gray-6">Subscritor não encontrado</p>
             <Button onClick={() => router.back()} className="mt-4">
               Voltar
             </Button>
@@ -182,7 +182,7 @@ export default function EditSubscriberPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Assinante</h1>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Subscritor</h1>
             <p className="text-gray-6">{subscriber.email}</p>
           </div>
           <Button onClick={() => router.back()} variant="outline">
@@ -238,7 +238,7 @@ export default function EditSubscriberPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="status">Status</Label>
+                      <Label htmlFor="status">Estado</Label>
                       <Select 
                         value={formData.status} 
                         onValueChange={(value: any) => setFormData({...formData, status: value})}
@@ -247,7 +247,7 @@ export default function EditSubscriberPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="active">Ativo</SelectItem>
+                          <SelectItem value="active">Activo</SelectItem>
                           <SelectItem value="pending">Pendente</SelectItem>
                           <SelectItem value="unsubscribed">Desinscrito</SelectItem>
                           <SelectItem value="bounced">Rejeitado</SelectItem>
@@ -264,7 +264,7 @@ export default function EditSubscriberPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="admin">Admin</SelectItem>
+                          <SelectItem value="admin">Administrador</SelectItem>
                           <SelectItem value="popup">Popup</SelectItem>
                           <SelectItem value="footer">Rodapé</SelectItem>
                           <SelectItem value="signup">Cadastro</SelectItem>
@@ -384,7 +384,7 @@ export default function EditSubscriberPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <Label>Atualizações de Produtos</Label>
+                        <Label>Actualizações de Produtos</Label>
                         <p className="text-xs text-gray-6">Receber notificações de novos produtos</p>
                       </div>
                       <Switch
@@ -394,7 +394,7 @@ export default function EditSubscriberPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <Label>Posts do Blog</Label>
+                        <Label>Publicações de Novidades</Label>
                         <p className="text-xs text-gray-6">Receber notificações de novos posts</p>
                       </div>
                       <Switch
@@ -429,9 +429,9 @@ export default function EditSubscriberPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
-                      {formData.status === 'active' ? 'Ativo' :
+                      {formData.status === 'active' ? 'Activo' :
                        formData.status === 'pending' ? 'Pendente' :
                        formData.status === 'unsubscribed' ? 'Desinscrito' : 'Rejeitado'}
                     </span>
@@ -439,7 +439,7 @@ export default function EditSubscriberPage() {
                   <div className="flex justify-between">
                     <span className="text-gray-6">Origem:</span>
                     <span className="font-medium">
-                      {formData.origin === 'admin' ? 'Admin' :
+                      {formData.origin === 'admin' ? 'Administrador' :
                        formData.origin === 'popup' ? 'Popup' :
                        formData.origin === 'footer' ? 'Rodapé' :
                        formData.origin === 'signup' ? 'Cadastro' : 'Importado'}

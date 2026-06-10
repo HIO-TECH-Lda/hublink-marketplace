@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -266,7 +266,7 @@ export default function AdminCreateCategoryPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label>Ativo</Label>
+                      <Label>Activo</Label>
                       <p className="text-xs text-gray-6">Categoria visível na plataforma</p>
                     </div>
                     <Switch
@@ -367,9 +367,9 @@ export default function AdminCreateCategoryPage() {
                     <span className="font-medium font-mono">{formData.slug || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
-                      {formData.isActive ? 'Ativo' : 'Inativo'}
+                      {formData.isActive ? 'Activo' : 'Inactivo'}
                     </span>
                   </div>
                   <div className="flex justify-between">

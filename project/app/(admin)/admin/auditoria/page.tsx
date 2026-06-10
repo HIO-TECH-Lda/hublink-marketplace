@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { 
@@ -95,8 +95,8 @@ export default function AuditLogsPage() {
     switch (action) {
       case 'create': return 'Criar';
       case 'read': return 'Visualizar';
-      case 'update': return 'Atualizar';
-      case 'delete': return 'Excluir';
+      case 'update': return 'Actualizar';
+      case 'delete': return 'Eliminar';
       default: return action;
     }
   };
@@ -113,13 +113,13 @@ export default function AuditLogsPage() {
 
   const getEntityTypeText = (type: string) => {
     const labels: Record<string, string> = {
-      'user': 'Usuário',
+      'user': 'Utilizador',
       'order': 'Pedido',
       'product': 'Produto',
       'category': 'Categoria',
       'seller': 'Vendedor',
-      'blog': 'Blog',
-      'newsletter_subscriber': 'Assinante',
+      'blog': 'Novidades',
+      'newsletter_subscriber': 'Subscritor',
       'newsletter_campaign': 'Campanha',
       'ticket': 'Ticket',
       'refund': 'Reembolso',
@@ -221,7 +221,7 @@ export default function AuditLogsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Logs de Auditoria</h1>
-            <p className="text-gray-6">Rastreamento completo de todas as ações realizadas na plataforma</p>
+            <p className="text-gray-6">Rastreamento completo de todas as acções realizadas na plataforma</p>
           </div>
         </div>
       </div>
@@ -259,7 +259,7 @@ export default function AuditLogsPage() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-6 mb-1">Atualizações</p>
+                  <p className="text-xs font-medium text-gray-6 mb-1">Actualizações</p>
                   <p className="text-2xl font-bold text-orange-600">{(stats.byAction.update || 0).toLocaleString()}</p>
                 </div>
                 <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -272,7 +272,7 @@ export default function AuditLogsPage() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-6 mb-1">Exclusões</p>
+                  <p className="text-xs font-medium text-gray-6 mb-1">Eliminações</p>
                   <p className="text-2xl font-bold text-red-600">{(stats.byAction.delete || 0).toLocaleString()}</p>
                 </div>
                 <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
@@ -320,13 +320,13 @@ export default function AuditLogsPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos</SelectItem>
-                    <SelectItem value="user">Usuário</SelectItem>
+                    <SelectItem value="user">Utilizador</SelectItem>
                     <SelectItem value="order">Pedido</SelectItem>
                     <SelectItem value="product">Produto</SelectItem>
                     <SelectItem value="category">Categoria</SelectItem>
                     <SelectItem value="seller">Vendedor</SelectItem>
-                    <SelectItem value="blog">Blog</SelectItem>
-                    <SelectItem value="newsletter_subscriber">Assinante</SelectItem>
+                    <SelectItem value="blog">Novidades</SelectItem>
+                    <SelectItem value="newsletter_subscriber">Subscritor</SelectItem>
                     <SelectItem value="newsletter_campaign">Campanha</SelectItem>
                     <SelectItem value="ticket">Ticket</SelectItem>
                     <SelectItem value="refund">Reembolso</SelectItem>
@@ -335,7 +335,7 @@ export default function AuditLogsPage() {
                 </Select>
               </div>
               <div>
-                <Label htmlFor="action" className="text-xs font-medium">Ação</Label>
+                <Label htmlFor="action" className="text-xs font-medium">Acção</Label>
                 <Select value={action} onValueChange={(v) => { setAction(v); setPage(1); }}>
                   <SelectTrigger className="h-9">
                     <SelectValue />
@@ -344,13 +344,13 @@ export default function AuditLogsPage() {
                     <SelectItem value="all">Todas</SelectItem>
                     <SelectItem value="create">Criar</SelectItem>
                     <SelectItem value="read">Visualizar</SelectItem>
-                    <SelectItem value="update">Atualizar</SelectItem>
-                    <SelectItem value="delete">Excluir</SelectItem>
+                    <SelectItem value="update">Actualizar</SelectItem>
+                    <SelectItem value="delete">Eliminar</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label htmlFor="userId" className="text-xs font-medium">ID do Usuário</Label>
+                <Label htmlFor="userId" className="text-xs font-medium">ID do Utilizador</Label>
                 <Input
                   id="userId"
                   value={userId}
@@ -410,7 +410,7 @@ export default function AuditLogsPage() {
                 )}
                 {userId && (
                   <Badge variant="secondary" className="flex items-center gap-1">
-                    Usuário: {userId.substring(0, 8)}...
+                    Utilizador: {userId.substring(0, 8)}...
                     <button onClick={() => setUserId('')} className="ml-1 hover:text-red-600">
                       <X className="w-3 h-3" />
                     </button>
@@ -471,12 +471,12 @@ export default function AuditLogsPage() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b">
                 <tr>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Ação</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Acção</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Entidade</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Usuário</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Utilizador</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Data/Hora</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Alterações</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Ações</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7 text-xs uppercase">Acções</th>
                 </tr>
               </thead>
               <tbody>
@@ -667,7 +667,7 @@ export default function AuditLogsPage() {
                                 )}
                                 {log.metadata.statusCode && (
                                   <div className="flex items-center gap-2 text-xs">
-                                    <span className="text-gray-7">Status:</span>
+                                    <span className="text-gray-7">Estado:</span>
                                     <Badge 
                                       variant={log.metadata.statusCode >= 200 && log.metadata.statusCode < 300 ? 'default' : 'destructive'}
                                       className="text-xs"

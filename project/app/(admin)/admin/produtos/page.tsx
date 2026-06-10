@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -95,8 +95,8 @@ export default function ProductManagementPage() {
   const getStatusText = (status: string) => {
     const statusMap: Record<string, string> = {
       draft: 'Pendente',
-      active: 'Ativo',
-      inactive: 'Inativo',
+      active: 'Activo',
+      inactive: 'Inactivo',
       archived: 'Rejeitado'
     };
     return statusMap[status] || status;
@@ -106,20 +106,20 @@ export default function ProductManagementPage() {
     try {
       await updateStatus.mutateAsync({ productId, status: newStatus });
       toast({
-        title: 'Status atualizado',
-        description: 'O status do produto foi atualizado com sucesso.',
+        title: 'Estado actualizado',
+        description: 'O estado do produto foi actualizado com sucesso.',
       });
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao atualizar status',
+        description: error.response?.data?.message || 'Falha ao actualizar estado',
         variant: 'destructive',
       });
     }
   };
 
   const handleDeleteProduct = async (productId: string) => {
-    if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+    if (!confirm('Tem certeza que deseja eliminar este produto?')) return;
     
     try {
       await deleteProduct.mutateAsync(productId);
@@ -130,7 +130,7 @@ export default function ProductManagementPage() {
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao excluir produto',
+        description: error.response?.data?.message || 'Falha ao eliminar produto',
         variant: 'destructive',
       });
     }
@@ -184,8 +184,8 @@ export default function ProductManagementPage() {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Produtos</h1>
-            <p className="text-gray-6">Gerencie produtos da plataforma</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Produtos</h1>
+            <p className="text-gray-6">Gira todos os produtos publicados na plataforma Txova.</p>
           </div>
           <Button onClick={() => router.push('/admin/produtos/novo')}>
             <Package className="w-4 h-4 mr-2" />
@@ -215,7 +215,7 @@ export default function ProductManagementPage() {
           <CardContent className="p-4 sm:p-5">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div>
-                <p className="text-xs sm:text-sm text-gray-6 mb-1">Ativos</p>
+                <p className="text-xs sm:text-sm text-gray-6 mb-1">Activos</p>
                 <p className="text-xl sm:text-2xl font-bold text-green-600 break-words">
                   {stats?.active.toLocaleString() || 0}
                 </p>
@@ -291,10 +291,10 @@ export default function ProductManagementPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="all">Todos os Estados</SelectItem>
                 <SelectItem value="draft">Pendente</SelectItem>
-                <SelectItem value="active">Ativo</SelectItem>
-                <SelectItem value="inactive">Inativo</SelectItem>
+                <SelectItem value="active">Activo</SelectItem>
+                <SelectItem value="inactive">Inactivo</SelectItem>
                 <SelectItem value="archived">Rejeitado</SelectItem>
               </SelectContent>
             </Select>
@@ -341,10 +341,10 @@ export default function ProductManagementPage() {
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Vendedor</th>
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Categoria</th>
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Preço</th>
-                      <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Estoque</th>
+                      <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Stock</th>
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Avaliação</th>
-                      <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Status</th>
-                      <th className="text-right py-3 px-4 text-xs font-medium text-gray-7">Ações</th>
+                      <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Estado</th>
+                      <th className="text-right py-3 px-4 text-xs font-medium text-gray-7">Acções</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -417,7 +417,7 @@ export default function ProductManagementPage() {
                               <AlertCircle className="w-3 h-3 text-red-600" />
                             )}
                             {product.stock === 0 && (
-                              <Badge variant="destructive" className="text-xs">Sem estoque</Badge>
+                              <Badge variant="destructive" className="text-xs">Sem stock</Badge>
                             )}
                           </div>
                         </td>
@@ -496,7 +496,7 @@ export default function ProductManagementPage() {
                                   className="text-red-600"
                                 >
                                   <XCircle className="w-4 h-4 mr-2" />
-                                  Excluir
+                                  Eliminar
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>

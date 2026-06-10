@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -48,7 +48,7 @@ export default function OrderDetailsPage() {
     const statusMap: Record<string, string> = {
       pending: 'Pendente',
       confirmed: 'Confirmado',
-      processing: 'Processando',
+      processing: 'Em Processamento',
       shipped: 'Enviado',
       delivered: 'Entregue',
       cancelled: 'Cancelado',
@@ -71,7 +71,7 @@ export default function OrderDetailsPage() {
   const getPaymentStatusText = (status: string) => {
     const statusMap: Record<string, string> = {
       pending: 'Pendente',
-      processing: 'Processando',
+      processing: 'Em Processamento',
       completed: 'Pago',
       failed: 'Falhou',
       refunded: 'Reembolsado'
@@ -104,13 +104,13 @@ export default function OrderDetailsPage() {
         status: newStatus
       });
       toast({
-        title: 'Status atualizado',
-        description: 'O status do pedido foi atualizado com sucesso.',
+        title: 'Estado actualizado',
+        description: 'O estado do pedido foi actualizado com sucesso.',
       });
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao atualizar status',
+        description: error.response?.data?.message || 'Falha ao actualizar estado',
         variant: 'destructive',
       });
     }
@@ -187,7 +187,7 @@ export default function OrderDetailsPage() {
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center">
                   <Activity className="w-5 h-5 mr-2" />
-                  Status do Pedido
+                  Estado do Pedido
                 </CardTitle>
                 <Select
                   value={orderData.status}
@@ -200,7 +200,7 @@ export default function OrderDetailsPage() {
                   <SelectContent>
                     <SelectItem value="pending">Pendente</SelectItem>
                     <SelectItem value="confirmed">Confirmado</SelectItem>
-                    <SelectItem value="processing">Processando</SelectItem>
+                    <SelectItem value="processing">Em Processamento</SelectItem>
                     <SelectItem value="shipped">Enviado</SelectItem>
                     <SelectItem value="delivered">Entregue</SelectItem>
                     <SelectItem value="cancelled">Cancelado</SelectItem>
@@ -215,7 +215,7 @@ export default function OrderDetailsPage() {
                   {getStatusText(orderData.status)}
                 </Badge>
                 <p className="text-sm text-gray-6">
-                  Última atualização: {formatDate(orderData.updatedAt)}
+                  Última actualização: {formatDate(orderData.updatedAt)}
                 </p>
               </div>
             </CardContent>
@@ -358,7 +358,7 @@ export default function OrderDetailsPage() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-6">Status</p>
+                    <p className="text-sm text-gray-6">Estado</p>
                     <Badge className={getPaymentStatusColor(orderData.payment.status)}>
                       {orderData.payment.statusLabel || getPaymentStatusText(orderData.payment.status)}
                     </Badge>
@@ -467,7 +467,7 @@ export default function OrderDetailsPage() {
                   <span className="text-gray-7">{formatDate(orderData.createdAt)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-6">Atualizado em:</span>
+                  <span className="text-gray-6">Actualizado em:</span>
                   <span className="text-gray-7">{formatDate(orderData.updatedAt)}</span>
                 </div>
               </div>

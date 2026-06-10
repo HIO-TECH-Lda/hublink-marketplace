@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -139,7 +139,7 @@ export default function SystemSettingsPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-9 mb-2">Configurações do Sistema</h1>
-        <p className="text-gray-6">Gerencie as configurações da plataforma</p>
+        <p className="text-gray-6">Gira as configurações da plataforma Txova.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -230,7 +230,7 @@ export default function SystemSettingsPage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="contactEmail">Email de Contato</Label>
+                    <Label htmlFor="contactEmail">Email de Contacto</Label>
                     <Input
                       id="contactEmail"
                       type="email"
@@ -292,7 +292,7 @@ export default function SystemSettingsPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Label className="text-sm font-medium">Verificação de Email Obrigatória</Label>
-                      <p className="text-sm text-gray-6">Exigir verificação de email para novos usuários</p>
+                      <p className="text-sm text-gray-6">Exigir verificação de email para novos utilizadores</p>
                     </div>
                     <Switch
                       checked={settings.security.requireEmailVerification}
@@ -302,7 +302,7 @@ export default function SystemSettingsPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Label className="text-sm font-medium">Verificação de Telefone</Label>
-                      <p className="text-sm text-gray-6">Exigir verificação de telefone para novos usuários</p>
+                      <p className="text-sm text-gray-6">Exigir verificação de telefone para novos utilizadores</p>
                     </div>
                     <Switch
                       checked={settings.security.requirePhoneVerification}
@@ -312,7 +312,7 @@ export default function SystemSettingsPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Label className="text-sm font-medium">Autenticação de Dois Fatores</Label>
-                      <p className="text-sm text-gray-6">Permitir 2FA para usuários</p>
+                      <p className="text-sm text-gray-6">Permitir 2FA para utilizadores</p>
                     </div>
                     <Switch
                       checked={settings.security.twoFactorAuth}
@@ -465,7 +465,7 @@ export default function SystemSettingsPage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="smtpUser">Usuário SMTP</Label>
+                    <Label htmlFor="smtpUser">Utilizador SMTP</Label>
                     <Input
                       id="smtpUser"
                       value={settings.email.smtpUser}

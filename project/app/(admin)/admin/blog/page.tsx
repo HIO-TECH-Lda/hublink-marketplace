@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -98,7 +98,7 @@ export default function BlogManagementPage() {
   };
 
   const handleDeletePost = (postId: string, postTitle: string) => {
-    if (confirm(`Tem certeza que deseja excluir o post "${postTitle}"?`)) {
+    if (confirm(`Tem certeza que deseja eliminar o post "${postTitle}"?`)) {
       deletePost.mutate(postId);
     }
   };
@@ -114,7 +114,7 @@ export default function BlogManagementPage() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-6">Carregando posts...</p>
+          <p className="text-gray-6">Carregando publicações...</p>
         </div>
       </div>
     );
@@ -125,13 +125,13 @@ export default function BlogManagementPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento do Blog</h1>
-            <p className="text-gray-6">Gerencie os posts do blog da plataforma</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Novidades</h1>
+            <p className="text-gray-6">Gira as publicações de novidades, dicas, histórias de vendedores, oportunidades, promoções e conteúdos informativos da plataforma Txova.</p>
           </div>
           <div className="flex gap-2">
             <Button onClick={() => router.push('/admin/blog/novo')}>
               <Plus className="w-4 h-4 mr-2" />
-              Novo Post
+              Nova Publicação
             </Button>
             <Button onClick={() => router.back()} variant="outline">
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -231,7 +231,7 @@ export default function BlogManagementPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="all">Todos os Estados</SelectItem>
                 <SelectItem value="published">Publicado</SelectItem>
                 <SelectItem value="draft">Rascunho</SelectItem>
                 <SelectItem value="archived">Arquivado</SelectItem>
@@ -289,7 +289,7 @@ export default function BlogManagementPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-9">
-            Posts ({postsData?.total || 0})
+            Publicações ({postsData?.total || 0})
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -297,13 +297,13 @@ export default function BlogManagementPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Post</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Publicação</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Autor</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Categoria</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Estado</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Visualizações</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Publicado em</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Acções</th>
                 </tr>
               </thead>
               <tbody>
@@ -432,7 +432,7 @@ export default function BlogManagementPage() {
                               disabled={deletePost.isPending}
                             >
                               <Trash2 className="w-4 h-4 mr-2" />
-                              Excluir
+                              Eliminar
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

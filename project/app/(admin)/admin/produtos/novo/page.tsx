@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -69,7 +69,7 @@ export default function AdminCreateProductPage() {
       newErrors.price = 'Preço deve ser maior que zero';
     }
     if (!formData.stock.trim() || parseInt(formData.stock) < 0) {
-      newErrors.stock = 'Estoque deve ser zero ou maior';
+      newErrors.stock = 'Stock deve ser zero ou maior';
     }
     if (!formData.categoryId) {
       newErrors.categoryId = 'Categoria é obrigatória';
@@ -235,7 +235,7 @@ export default function AdminCreateProductPage() {
             {/* Pricing */}
             <Card>
               <CardHeader>
-                <CardTitle>Preço e Estoque</CardTitle>
+                <CardTitle>Preço e Stock</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -268,7 +268,7 @@ export default function AdminCreateProductPage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="stock">Estoque *</Label>
+                    <Label htmlFor="stock">Stock *</Label>
                     <Input
                       id="stock"
                       type="number"
@@ -356,12 +356,12 @@ export default function AdminCreateProductPage() {
             {/* Status & Flags */}
             <Card>
               <CardHeader>
-                <CardTitle>Status e Marcadores</CardTitle>
+                <CardTitle>Estado e Marcadores</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status">Estado</Label>
                     <Select
                       value={formData.status}
                       onValueChange={(value) => setFormData({...formData, status: value})}
@@ -371,8 +371,8 @@ export default function AdminCreateProductPage() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="draft">Pendente</SelectItem>
-                        <SelectItem value="active">Ativo</SelectItem>
-                        <SelectItem value="inactive">Inativo</SelectItem>
+                        <SelectItem value="active">Activo</SelectItem>
+                        <SelectItem value="inactive">Inactivo</SelectItem>
                       </SelectContent>
                     </Select>
                     <p className="text-xs text-gray-6 mt-1">
@@ -501,7 +501,7 @@ export default function AdminCreateProductPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Estoque:</span>
+                    <span className="text-gray-6">Stock:</span>
                     <span className="font-medium">{formData.stock || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
@@ -523,10 +523,10 @@ export default function AdminCreateProductPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
                       {formData.status === 'draft' ? 'Pendente' : 
-                       formData.status === 'active' ? 'Ativo' : 'Inativo'}
+                       formData.status === 'active' ? 'Activo' : 'Inactivo'}
                     </span>
                   </div>
                 </div>

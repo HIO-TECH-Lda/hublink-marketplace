@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { 
@@ -117,8 +117,8 @@ export default function ReportsPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Relatórios e Analytics</h1>
-            <p className="text-gray-6">Acompanhe o desempenho da plataforma</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Relatórios e Análises</h1>
+            <p className="text-gray-6">Acompanhe o desempenho da plataforma Txova através de indicadores de vendas, pedidos, clientes, produtos, vendedores e métricas gerais de utilização.</p>
           </div>
         </div>
       </div>
@@ -265,7 +265,7 @@ export default function ReportsPage() {
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-9">Vendas por Dia</CardTitle>
           <CardDescription>
-            Evolução das vendas no período selecionado
+            Evolução das vendas no período seleccionado
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -372,7 +372,7 @@ export default function ReportsPage() {
       {/* Performance Metrics */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-9">Métricas de Performance</CardTitle>
+          <CardTitle className="text-lg font-semibold text-gray-9">Métricas de Desempenho</CardTitle>
           <CardDescription>
             Indicadores de desempenho da plataforma
           </CardDescription>

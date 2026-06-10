@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -129,8 +129,8 @@ export default function CreateSubscriberPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Adicionar Assinante</h1>
-            <p className="text-gray-6">Adicione um novo assinante à newsletter</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Adicionar Subscritor</h1>
+            <p className="text-gray-6">Adicione um novo subscritor à newsletter</p>
           </div>
           <Button onClick={() => router.back()} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -188,7 +188,7 @@ export default function CreateSubscriberPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="status">Status</Label>
+                      <Label htmlFor="status">Estado</Label>
                       <Select 
                         value={formData.status} 
                         onValueChange={(value: any) => setFormData({...formData, status: value})}
@@ -197,7 +197,7 @@ export default function CreateSubscriberPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="active">Ativo</SelectItem>
+                          <SelectItem value="active">Activo</SelectItem>
                           <SelectItem value="pending">Pendente</SelectItem>
                           <SelectItem value="unsubscribed">Desinscrito</SelectItem>
                           <SelectItem value="bounced">Rejeitado</SelectItem>
@@ -214,7 +214,7 @@ export default function CreateSubscriberPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="admin">Admin</SelectItem>
+                          <SelectItem value="admin">Administrador</SelectItem>
                           <SelectItem value="popup">Popup</SelectItem>
                           <SelectItem value="footer">Rodapé</SelectItem>
                           <SelectItem value="signup">Cadastro</SelectItem>
@@ -334,7 +334,7 @@ export default function CreateSubscriberPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <Label>Atualizações de Produtos</Label>
+                        <Label>Actualizações de Produtos</Label>
                         <p className="text-xs text-gray-6">Receber notificações de novos produtos</p>
                       </div>
                       <Switch
@@ -344,7 +344,7 @@ export default function CreateSubscriberPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <Label>Posts do Blog</Label>
+                        <Label>Publicações de Novidades</Label>
                         <p className="text-xs text-gray-6">Receber notificações de novos posts</p>
                       </div>
                       <Switch
@@ -379,9 +379,9 @@ export default function CreateSubscriberPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
-                      {formData.status === 'active' ? 'Ativo' :
+                      {formData.status === 'active' ? 'Activo' :
                        formData.status === 'pending' ? 'Pendente' :
                        formData.status === 'unsubscribed' ? 'Desinscrito' : 'Rejeitado'}
                     </span>
@@ -389,7 +389,7 @@ export default function CreateSubscriberPage() {
                   <div className="flex justify-between">
                     <span className="text-gray-6">Origem:</span>
                     <span className="font-medium">
-                      {formData.origin === 'admin' ? 'Admin' :
+                      {formData.origin === 'admin' ? 'Administrador' :
                        formData.origin === 'popup' ? 'Popup' :
                        formData.origin === 'footer' ? 'Rodapé' :
                        formData.origin === 'signup' ? 'Cadastro' : 'Importado'}
@@ -420,7 +420,7 @@ export default function CreateSubscriberPage() {
                   ) : (
                     <>
                       <Save className="w-4 h-4 mr-2" />
-                      Criar Assinante
+                      Criar Subscritor
                     </>
                   )}
                 </Button>

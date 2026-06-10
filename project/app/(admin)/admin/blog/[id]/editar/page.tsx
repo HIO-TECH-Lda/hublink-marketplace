@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -270,7 +270,7 @@ export default function EditBlogPostPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <FileText className="w-12 h-12 text-gray-4 mx-auto mb-4" />
-            <p className="text-gray-6">Post não encontrado</p>
+            <p className="text-gray-6">Publicação não encontrada</p>
             <Button onClick={() => router.back()} className="mt-4">
               Voltar
             </Button>
@@ -285,7 +285,7 @@ export default function EditBlogPostPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Post</h1>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Publicação</h1>
             <p className="text-gray-6">{post.title}</p>
           </div>
           <Button onClick={() => router.back()} variant="outline">
@@ -303,7 +303,7 @@ export default function EditBlogPostPage() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <FileText className="w-5 h-5 mr-2" />
-                  Informações do Post
+                  Informações da Publicação
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -361,7 +361,7 @@ export default function EditBlogPostPage() {
             {/* Image */}
             <Card>
               <CardHeader>
-                <CardTitle>Imagem do Post</CardTitle>
+                <CardTitle>Imagem da Publicação</CardTitle>
               </CardHeader>
               <CardContent>
                 <SingleImageUpload
@@ -516,7 +516,7 @@ export default function EditBlogPostPage() {
                     )}
                   </div>
                   <div>
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status">Estado</Label>
                     <Select 
                       value={formData.status} 
                       onValueChange={(value: any) => setFormData({...formData, status: value})}
@@ -595,7 +595,7 @@ export default function EditBlogPostPage() {
                     <span className="font-medium">{formData.title || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
                       {formData.status === 'published' ? 'Publicado' : 
                        formData.status === 'draft' ? 'Rascunho' : 'Arquivado'}

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -106,7 +106,7 @@ export default function AdminPaymentsPage() {
       case 'pending':
         return 'Pendente';
       case 'processing':
-        return 'Processando';
+        return 'Em Processamento';
       case 'completed':
         return 'Concluído';
       case 'failed':
@@ -143,7 +143,7 @@ export default function AdminPaymentsPage() {
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-9 mb-2">Pagamentos</h1>
         <p className="text-gray-6">
-          Acompanhe e gerencie os pagamentos processados na plataforma
+          Acompanhe e gira os pagamentos registados na plataforma Txova, incluindo pagamentos por M-Pesa, E-Mola, Imali, cartão, transferência bancária e pagamento no acto da entrega.
         </p>
       </div>
 
@@ -186,7 +186,7 @@ export default function AdminPaymentsPage() {
             <CardContent className="p-4 sm:p-5">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Processando</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Em Processamento</p>
                   <p className="text-xl sm:text-2xl font-bold text-blue-600 break-words">
                     {stats.processing.toLocaleString()}
                   </p>
@@ -271,7 +271,7 @@ export default function AdminPaymentsPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
               <Input
-                placeholder="Filtre por status, método ou gateway usando os seletores ao lado"
+                placeholder="Utilize os filtros abaixo para consultar pagamentos por estado, método ou canal de processamento"
                 className="pl-10"
                 readOnly
               />
@@ -285,12 +285,12 @@ export default function AdminPaymentsPage() {
               }}
             >
               <SelectTrigger className="w-full sm:w-[160px]">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder="Estado" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="all">Todos os Estados</SelectItem>
                 <SelectItem value="pending">Pendente</SelectItem>
-                <SelectItem value="processing">Processando</SelectItem>
+                <SelectItem value="processing">Em Processamento</SelectItem>
                 <SelectItem value="completed">Concluído</SelectItem>
                 <SelectItem value="failed">Falhou</SelectItem>
                 <SelectItem value="refunded">Reembolsado</SelectItem>
@@ -308,15 +308,15 @@ export default function AdminPaymentsPage() {
                 <SelectValue placeholder="Método" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos métodos</SelectItem>
+                <SelectItem value="all">Todos os Métodos</SelectItem>
                 <SelectItem value="credit_card">Cartão de Crédito</SelectItem>
                 <SelectItem value="debit_card">Cartão de Débito</SelectItem>
                 <SelectItem value="paypal">PayPal</SelectItem>
                 <SelectItem value="bank_transfer">Transferência Bancária</SelectItem>
-                <SelectItem value="cash_on_delivery">Pagamento na Entrega</SelectItem>
+                <SelectItem value="cash_on_delivery">Pagamento no Acto da Entrega</SelectItem>
                 <SelectItem value="mpesa">M-Pesa</SelectItem>
                 <SelectItem value="emola">E-Mola</SelectItem>
-                <SelectItem value="imali">iMali</SelectItem>
+                <SelectItem value="imali">Imali</SelectItem>
                 <SelectItem value="stripe">Stripe</SelectItem>
               </SelectContent>
             </Select>
@@ -329,10 +329,10 @@ export default function AdminPaymentsPage() {
               }}
             >
               <SelectTrigger className="w-full sm:w-[160px]">
-                <SelectValue placeholder="Gateway" />
+                <SelectValue placeholder="Canal de Processamento" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos gateways</SelectItem>
+                <SelectItem value="all">Todos os Canais</SelectItem>
                 <SelectItem value="stripe">Stripe</SelectItem>
                 <SelectItem value="manual">Manual</SelectItem>
               </SelectContent>
@@ -356,7 +356,7 @@ export default function AdminPaymentsPage() {
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">Pagamentos</CardTitle>
             <span className="text-sm text-gray-6">
-              {total.toLocaleString()} registros
+              {total.toLocaleString()} registos
             </span>
           </div>
         </CardHeader>
@@ -368,7 +368,7 @@ export default function AdminPaymentsPage() {
                 Nenhum pagamento encontrado
               </h3>
               <p className="text-sm text-gray-6">
-                Ajuste os filtros para visualizar outros resultados.
+                Não existem pagamentos registados com os filtros seleccionados. Ajuste os filtros ou verifique novamente quando existirem novos pedidos pagos ou pagamentos processados na plataforma.
               </p>
             </div>
           ) : (
@@ -393,7 +393,7 @@ export default function AdminPaymentsPage() {
                         Valor
                       </th>
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">
-                        Status
+                        Estado
                       </th>
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">
                         Método / Gateway
@@ -402,7 +402,7 @@ export default function AdminPaymentsPage() {
                         Transação
                       </th>
                       <th className="text-right py-3 px-4 text-xs font-medium text-gray-7">
-                        Ações
+                        Acções
                       </th>
                     </tr>
                   </thead>
@@ -576,7 +576,7 @@ export default function AdminPaymentsPage() {
                         {formatCurrency(selectedPayment.amount, selectedPayment.currency)}
                       </p>
                       <p className="text-xs text-gray-5">
-                        Status:{' '}
+                        Estado:{' '}
                         <span className="font-medium">
                           {getStatusLabel(selectedPayment.status)}
                         </span>

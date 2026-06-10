@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -81,8 +81,8 @@ export default function AdminTicketsPage() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'open': return 'Aberto';
-      case 'in_progress': return 'Em Progresso';
-      case 'waiting_for_user': return 'Aguardando Resposta';
+      case 'in_progress': return 'Em Análise';
+      case 'waiting_for_user': return 'A aguardar resposta';
       case 'waiting_for_third_party': return 'Aguardando Terceiros';
       case 'resolved': return 'Resolvido';
       case 'closed': return 'Fechado';
@@ -121,7 +121,7 @@ export default function AdminTicketsPage() {
       'shipping_problem': 'Problema com Envio',
       'general_inquiry': 'Consulta Geral',
       'feature_request': 'Solicitação de Funcionalidade',
-      'bug_report': 'Reportar Bug'
+      'bug_report': 'Reportar Erro'
     };
     return labels[category] || category;
   };
@@ -141,7 +141,7 @@ export default function AdminTicketsPage() {
   };
 
   const handleDeleteTicket = (ticketId: string, ticketNumber: string) => {
-    if (confirm(`Tem certeza que deseja excluir o ticket "${ticketNumber}"?`)) {
+    if (confirm(`Tem certeza que deseja eliminar o ticket "${ticketNumber}"?`)) {
       deleteTicket.mutate(ticketId);
     }
   };
@@ -172,7 +172,7 @@ export default function AdminTicketsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Tickets</h1>
-            <p className="text-gray-6">Gerencie todas as solicitações de suporte da plataforma</p>
+            <p className="text-gray-6">Gira todas as solicitações de apoio da plataforma Txova.</p>
           </div>
         </div>
       </div>
@@ -214,7 +214,7 @@ export default function AdminTicketsPage() {
             <CardContent className="p-4 sm:p-5">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Em Progresso</p>
+                  <p className="text-xs sm:text-sm text-gray-6 mb-1">Em Análise</p>
                   <p className="text-xl sm:text-2xl font-bold text-blue-600 break-words">
                     {stats.inProgress.toLocaleString()}
                   </p>
@@ -276,10 +276,10 @@ export default function AdminTicketsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="all">Todos os Estados</SelectItem>
                 <SelectItem value="open">Aberto</SelectItem>
-                <SelectItem value="in_progress">Em Progresso</SelectItem>
-                <SelectItem value="waiting_for_user">Aguardando Resposta</SelectItem>
+                <SelectItem value="in_progress">Em Análise</SelectItem>
+                <SelectItem value="waiting_for_user">A aguardar resposta</SelectItem>
                 <SelectItem value="waiting_for_third_party">Aguardando Terceiros</SelectItem>
                 <SelectItem value="resolved">Resolvido</SelectItem>
                 <SelectItem value="closed">Fechado</SelectItem>
@@ -312,7 +312,7 @@ export default function AdminTicketsPage() {
                 <SelectItem value="shipping_problem">Problema com Envio</SelectItem>
                 <SelectItem value="general_inquiry">Consulta Geral</SelectItem>
                 <SelectItem value="feature_request">Solicitação de Funcionalidade</SelectItem>
-                <SelectItem value="bug_report">Reportar Bug</SelectItem>
+                <SelectItem value="bug_report">Reportar Erro</SelectItem>
               </SelectContent>
             </Select>
             {(searchTerm || statusFilter !== 'all' || priorityFilter !== 'all' || categoryFilter !== 'all' || assignedToFilter !== 'all') && (
@@ -351,11 +351,11 @@ export default function AdminTicketsPage() {
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Criado por</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Categoria</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Prioridade</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Estado</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Atribuído a</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Mensagens</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Criado em</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Ações</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Acções</th>
                 </tr>
               </thead>
               <tbody>
@@ -423,7 +423,7 @@ export default function AdminTicketsPage() {
                                 disabled={updateStatus.isPending}
                               >
                                 <Clock className="w-4 h-4 mr-2" />
-                                Marcar como Em Progresso
+                                Marcar como Em Análise
                               </DropdownMenuItem>
                             )}
                             {ticket.status !== 'resolved' && (
@@ -450,7 +450,7 @@ export default function AdminTicketsPage() {
                               disabled={deleteTicket.isPending}
                             >
                               <Trash2 className="w-4 h-4 mr-2" />
-                              Excluir
+                              Eliminar
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

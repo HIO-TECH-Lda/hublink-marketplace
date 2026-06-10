@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -73,8 +73,8 @@ export default function UserManagementPage() {
 
   const getStatusText = (status: string) => {
     const statusMap: Record<string, string> = {
-      active: 'Ativo',
-      inactive: 'Inativo',
+      active: 'Activo',
+      inactive: 'Inactivo',
       suspended: 'Suspenso'
     };
     return statusMap[status] || status;
@@ -91,7 +91,7 @@ export default function UserManagementPage() {
     const roleMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'outline' }> = {
       buyer: { label: 'Cliente', variant: 'secondary' },
       seller: { label: 'Vendedor', variant: 'default' },
-      admin: { label: 'Admin', variant: 'outline' },
+      admin: { label: 'Administrador', variant: 'outline' },
       support: { label: 'Suporte', variant: 'outline' }
     };
     const roleInfo = roleMap[role] || { label: role, variant: 'secondary' };
@@ -120,31 +120,31 @@ export default function UserManagementPage() {
     try {
       await updateStatus.mutateAsync({ userId, status: newStatus });
       toast({
-        title: 'Status atualizado',
-        description: 'O status do usuário foi atualizado com sucesso.',
+        title: 'Estado actualizado',
+        description: 'O estado do utilizador foi actualizado com sucesso.',
       });
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao atualizar status',
+        description: error.response?.data?.message || 'Falha ao actualizar estado',
         variant: 'destructive',
       });
     }
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Tem certeza que deseja excluir este usuário?')) return;
+    if (!confirm('Tem certeza que deseja eliminar este utilizador?')) return;
     
     try {
       await deleteUser.mutateAsync(userId);
       toast({
-        title: 'Usuário excluído',
-        description: 'O usuário foi excluído com sucesso.',
+        title: 'Utilizador eliminado',
+        description: 'O utilizador foi eliminado com sucesso.',
       });
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao excluir usuário',
+        description: error.response?.data?.message || 'Falha ao eliminar utilizador',
         variant: 'destructive',
       });
     }
@@ -161,7 +161,7 @@ export default function UserManagementPage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-gray-6">Carregando usuários...</p>
+            <p className="text-gray-6">Carregando utilizadors...</p>
           </div>
         </div>
       </>
@@ -173,12 +173,12 @@ export default function UserManagementPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gerenciamento de Usuários</h1>
-            <p className="text-gray-6">Gerencie contas de usuários e vendedores</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Gestão de Utilizadores</h1>
+            <p className="text-gray-6">Gira contas de compradores, vendedores, afiliados e administradores registados na plataforma Txova.</p>
           </div>
           <Button onClick={() => router.push('/admin/usuarios/novo')}>
             <Plus className="w-4 h-4 mr-2" />
-            Novo Usuário
+            Novo Utilizador
           </Button>
         </div>
       </div>
@@ -223,7 +223,7 @@ export default function UserManagementPage() {
             <div className="flex items-center">
               <Users className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-6">Ativos</p>
+                <p className="text-sm font-medium text-gray-6">Activos</p>
                 <p className="text-2xl font-bold text-gray-9">{stats?.active.toLocaleString() || 0}</p>
               </div>
             </div>
@@ -248,15 +248,15 @@ export default function UserManagementPage() {
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-7 mb-2 block">Status</label>
+              <label className="text-sm font-medium text-gray-7 mb-2 block">Estado</label>
               <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
                 <SelectTrigger>
                   <SelectValue placeholder="Todos" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos</SelectItem>
-                  <SelectItem value="active">Ativo</SelectItem>
-                  <SelectItem value="inactive">Inativo</SelectItem>
+                  <SelectItem value="active">Activo</SelectItem>
+                  <SelectItem value="inactive">Inactivo</SelectItem>
                   <SelectItem value="suspended">Suspenso</SelectItem>
                 </SelectContent>
               </Select>
@@ -271,7 +271,7 @@ export default function UserManagementPage() {
                   <SelectItem value="all">Todos</SelectItem>
                   <SelectItem value="buyer">Cliente</SelectItem>
                   <SelectItem value="seller">Vendedor</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="admin">Administrador</SelectItem>
                   <SelectItem value="support">Suporte</SelectItem>
                 </SelectContent>
               </Select>
@@ -304,7 +304,7 @@ export default function UserManagementPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-9">
-            Usuários ({pagination.total.toLocaleString()})
+            Utilizadores ({pagination.total.toLocaleString()})
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -312,14 +312,14 @@ export default function UserManagementPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-2">
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Usuário</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Contato</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Utilizador</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Contacto</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Tipo</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Estado</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Pedidos</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-7">Total Gasto</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-7">Último Login</th>
-                  <th className="text-right py-3 px-4 font-medium text-gray-7">Ações</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-7">Último Acesso</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-7">Acções</th>
                 </tr>
               </thead>
               <tbody>
@@ -371,8 +371,8 @@ export default function UserManagementPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="active">Ativo</SelectItem>
-                          <SelectItem value="inactive">Inativo</SelectItem>
+                          <SelectItem value="active">Activo</SelectItem>
+                          <SelectItem value="inactive">Inactivo</SelectItem>
                           <SelectItem value="suspended">Suspenso</SelectItem>
                         </SelectContent>
                       </Select>
@@ -426,7 +426,7 @@ export default function UserManagementPage() {
           {users.length === 0 && (
             <div className="text-center py-12">
               <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum usuário encontrado</h3>
+              <h3 className="text-lg font-medium text-gray-9 mb-2">Nenhum utilizador encontrado</h3>
               <p className="text-gray-6">Tente ajustar os filtros de busca</p>
             </div>
           )}

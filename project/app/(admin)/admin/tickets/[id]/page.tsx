@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -81,8 +81,8 @@ export default function AdminTicketDetailPage() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'open': return 'Aberto';
-      case 'in_progress': return 'Em Progresso';
-      case 'waiting_for_user': return 'Aguardando Resposta';
+      case 'in_progress': return 'Em Análise';
+      case 'waiting_for_user': return 'A aguardar resposta';
       case 'waiting_for_third_party': return 'Aguardando Terceiros';
       case 'resolved': return 'Resolvido';
       case 'closed': return 'Fechado';
@@ -121,7 +121,7 @@ export default function AdminTicketDetailPage() {
       'shipping_problem': 'Problema com Envio',
       'general_inquiry': 'Consulta Geral',
       'feature_request': 'Solicitação de Funcionalidade',
-      'bug_report': 'Reportar Bug'
+      'bug_report': 'Reportar Erro'
     };
     return labels[category] || category;
   };
@@ -206,7 +206,7 @@ export default function AdminTicketDetailPage() {
   };
 
   const handleDelete = () => {
-    if (confirm(`Tem certeza que deseja excluir o ticket "${ticket?.ticketNumber}"?`)) {
+    if (confirm(`Tem certeza que deseja eliminar o ticket "${ticket?.ticketNumber}"?`)) {
       deleteTicket.mutate(ticketId, {
         onSuccess: () => {
           router.push('/admin/tickets');
@@ -276,7 +276,7 @@ export default function AdminTicketDetailPage() {
                 </Button>
                 <Button onClick={handleDelete} variant="outline" className="text-red-600">
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Excluir
+                  Eliminar
                 </Button>
                 <Button onClick={() => router.back()} variant="outline">
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -335,7 +335,7 @@ export default function AdminTicketDetailPage() {
                           <SelectItem value="shipping_problem">Problema com Envio</SelectItem>
                           <SelectItem value="general_inquiry">Consulta Geral</SelectItem>
                           <SelectItem value="feature_request">Solicitação de Funcionalidade</SelectItem>
-                          <SelectItem value="bug_report">Reportar Bug</SelectItem>
+                          <SelectItem value="bug_report">Reportar Erro</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -449,7 +449,7 @@ export default function AdminTicketDetailPage() {
                     checked={isInternal}
                     onCheckedChange={setIsInternal}
                   />
-                  <Label>Nota Interna (não visível para o usuário)</Label>
+                  <Label>Nota Interna (não visível para o utilizador)</Label>
                 </div>
                 <Textarea
                   value={isInternal ? internalNote : newMessage}
@@ -479,11 +479,11 @@ export default function AdminTicketDetailPage() {
           {/* Status & Actions */}
           <Card>
             <CardHeader>
-              <CardTitle>Status e Ações</CardTitle>
+              <CardTitle>Estado e Acções</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>Status</Label>
+                <Label>Estado</Label>
                 <Select 
                   value={ticket.status} 
                   onValueChange={(value) => handleUpdateStatus(value as TicketStatus)}
@@ -494,8 +494,8 @@ export default function AdminTicketDetailPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="open">Aberto</SelectItem>
-                    <SelectItem value="in_progress">Em Progresso</SelectItem>
-                    <SelectItem value="waiting_for_user">Aguardando Resposta</SelectItem>
+                    <SelectItem value="in_progress">Em Análise</SelectItem>
+                    <SelectItem value="waiting_for_user">A aguardar resposta</SelectItem>
                     <SelectItem value="waiting_for_third_party">Aguardando Terceiros</SelectItem>
                     <SelectItem value="resolved">Resolvido</SelectItem>
                     <SelectItem value="closed">Fechado</SelectItem>
@@ -530,7 +530,7 @@ export default function AdminTicketDetailPage() {
                   disabled={updateStatus.isPending || ticket.status === 'in_progress'}
                 >
                   <Clock className="w-4 h-4 mr-1" />
-                  Em Progresso
+                  Em Análise
                 </Button>
                 <Button
                   onClick={() => handleUpdateStatus('resolved')}
@@ -597,7 +597,7 @@ export default function AdminTicketDetailPage() {
                 <span className="font-medium text-xs">{formatDate(ticket.createdAt)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-6">Atualizado em:</span>
+                <span className="text-gray-6">Actualizado em:</span>
                 <span className="font-medium text-xs">{formatDate(ticket.updatedAt)}</span>
               </div>
               {ticket.stats && (

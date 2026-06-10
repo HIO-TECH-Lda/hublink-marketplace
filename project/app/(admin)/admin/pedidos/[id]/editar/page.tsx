@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -156,7 +156,7 @@ export default function OrderEditPage() {
       });
       
       toast({
-        title: 'Pedido atualizado',
+        title: 'Pedido actualizado',
         description: 'As alterações foram salvas com sucesso.',
       });
       
@@ -164,7 +164,7 @@ export default function OrderEditPage() {
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao atualizar pedido',
+        description: error.response?.data?.message || 'Falha ao actualizar pedido',
         variant: 'destructive',
       });
     }
@@ -227,13 +227,13 @@ export default function OrderEditPage() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Shield className="w-5 h-5 mr-2" />
-                  Status do Pedido
+                  Estado do Pedido
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="status">Status do Pedido</Label>
+                    <Label htmlFor="status">Estado do Pedido</Label>
                     <Select
                       value={formData.status}
                       onValueChange={(value) => handleSelectChange('status', value)}
@@ -244,7 +244,7 @@ export default function OrderEditPage() {
                       <SelectContent>
                         <SelectItem value="pending">Pendente</SelectItem>
                         <SelectItem value="confirmed">Confirmado</SelectItem>
-                        <SelectItem value="processing">Processando</SelectItem>
+                        <SelectItem value="processing">Em Processamento</SelectItem>
                         <SelectItem value="shipped">Enviado</SelectItem>
                         <SelectItem value="delivered">Entregue</SelectItem>
                         <SelectItem value="cancelled">Cancelado</SelectItem>
@@ -253,7 +253,7 @@ export default function OrderEditPage() {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="paymentStatus">Status do Pagamento</Label>
+                    <Label htmlFor="paymentStatus">Estado do Pagamento</Label>
                     <Select
                       value={formData.paymentStatus}
                       onValueChange={(value) => handleSelectChange('paymentStatus', value)}
@@ -263,7 +263,7 @@ export default function OrderEditPage() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="pending">Pendente</SelectItem>
-                        <SelectItem value="processing">Processando</SelectItem>
+                        <SelectItem value="processing">Em Processamento</SelectItem>
                         <SelectItem value="completed">Pago</SelectItem>
                         <SelectItem value="failed">Falhou</SelectItem>
                         <SelectItem value="refunded">Reembolsado</SelectItem>

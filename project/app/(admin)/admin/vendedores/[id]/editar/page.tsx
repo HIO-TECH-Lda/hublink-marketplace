@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -371,7 +371,7 @@ export default function EditVendorPage() {
               </CardHeader>
               <CardContent>
                 <div>
-                  <Label htmlFor="status">Status</Label>
+                  <Label htmlFor="status">Estado</Label>
                   <Select 
                     value={formData.status} 
                     onValueChange={(value: 'active' | 'inactive' | 'suspended') => setFormData({...formData, status: value})}
@@ -422,7 +422,7 @@ export default function EditVendorPage() {
                     <span className="font-medium">{formData.storeName || 'Não definido'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Status:</span>
+                    <span className="text-gray-6">Estado:</span>
                     <span className="font-medium">
                       {formData.status === 'active' ? 'Aprovado' : 
                        formData.status === 'inactive' ? 'Pendente' : 'Rejeitado'}

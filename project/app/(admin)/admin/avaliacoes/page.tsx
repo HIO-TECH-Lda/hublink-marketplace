@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { 
@@ -103,8 +103,8 @@ export default function AdminReviewsPage() {
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-9 mb-1">Gerenciar Avaliações</h1>
-        <p className="text-gray-6">Modere e analise avaliações de produtos</p>
+        <h1 className="text-3xl font-bold text-gray-9 mb-1">Gestão de Avaliações</h1>
+        <p className="text-gray-6">Modere, aprove, rejeite e analise avaliações de produtos na plataforma Txova.</p>
       </div>
 
       <div className="space-y-6">
@@ -365,7 +365,7 @@ export default function AdminReviewsPage() {
                     {/* Moderator Notes */}
                     {review.moderatorNotes && (
                       <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-3">
-                        <p className="font-semibold text-sm mb-1">Notas do Admin:</p>
+                        <p className="font-semibold text-sm mb-1">Notas do Administrador:</p>
                         <p className="text-sm">{review.moderatorNotes}</p>
                       </div>
                     )}
@@ -471,7 +471,7 @@ export default function AdminReviewsPage() {
 
             <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
               <p className="text-sm text-blue-800">
-                ℹ️ Ao aprovar, esta avaliação será visível publicamente e a classificação do produto/vendedor será atualizada.
+                ℹ️ Ao aprovar, esta avaliação será visível publicamente e a classificação do produto/vendedor será actualizada.
               </p>
             </div>
 
@@ -518,7 +518,7 @@ export default function AdminReviewsPage() {
             </p>
 
             <div className="space-y-2 mb-4">
-              <label className="text-sm font-medium">Notas do Admin (Opcional)</label>
+              <label className="text-sm font-medium">Notas do Administrador (Opcional)</label>
               <Textarea
                 value={rejectNotes}
                 onChange={(e) => setRejectNotes(e.target.value)}

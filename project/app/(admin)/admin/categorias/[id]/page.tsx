@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -36,7 +36,7 @@ export default function CategoryDetailsPage() {
   };
 
   const getStatusText = (isActive: boolean) => {
-    return isActive ? 'Ativo' : 'Inativo';
+    return isActive ? 'Activo' : 'Inactivo';
   };
 
   const formatDate = (dateString: string) => {
@@ -121,7 +121,7 @@ export default function CategoryDetailsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Status</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-6">Estado</CardTitle>
             <Tag className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -145,7 +145,7 @@ export default function CategoryDetailsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-6">Última Atualização</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-6">Última Actualização</CardTitle>
             <TrendingUp className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
@@ -174,7 +174,7 @@ export default function CategoryDetailsPage() {
                     {getStatusText(category.isActive)}
                   </Badge>
                   <p className="text-sm text-gray-6 mt-2">
-                    Última atualização: {formatDate(category.updatedAt)}
+                    Última actualização: {formatDate(category.updatedAt)}
                   </p>
                 </div>
                 <Button
@@ -350,7 +350,7 @@ export default function CategoryDetailsPage() {
                               </div>
                               <div className="flex items-center">
                                 <Package className="w-4 h-4 mr-1" />
-                                Estoque: {product.stock}
+                                Stock: {product.stock}
                               </div>
                             </div>
                           </div>
@@ -369,7 +369,7 @@ export default function CategoryDetailsPage() {
                           </div>
                           <div className="flex flex-col items-end gap-2">
                             <Badge className={product.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}>
-                              {product.status === 'active' ? 'Ativo' : 'Inativo'}
+                              {product.status === 'active' ? 'Activo' : 'Inactivo'}
                             </Badge>
                             <Button 
                               size="sm" 
@@ -396,7 +396,7 @@ export default function CategoryDetailsPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Ações Rápidas</CardTitle>
+              <CardTitle>Acções Rápidas</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button 

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -218,7 +218,7 @@ export default function AdminRefundsPage() {
     <>
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-9 mb-2">Reembolsos</h1>
-        <p className="text-gray-6">Gerencie solicitações de reembolso</p>
+        <p className="text-gray-6">Gira as solicitações de reembolso da plataforma Txova.</p>
       </div>
 
       {/* Stats Cards */}
@@ -358,7 +358,7 @@ export default function AdminRefundsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="all">Todos os Estados</SelectItem>
                 <SelectItem value="pending">Pendente</SelectItem>
                 <SelectItem value="approved">Aprovado</SelectItem>
                 <SelectItem value="rejected">Rejeitado</SelectItem>
@@ -408,9 +408,9 @@ export default function AdminRefundsPage() {
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Cliente</th>
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Vendedor</th>
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Valor</th>
-                      <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Status</th>
+                      <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Estado</th>
                       <th className="text-left py-3 px-4 text-xs font-medium text-gray-7">Data</th>
-                      <th className="text-right py-3 px-4 text-xs font-medium text-gray-7">Ações</th>
+                      <th className="text-right py-3 px-4 text-xs font-medium text-gray-7">Acções</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -493,7 +493,7 @@ export default function AdminRefundsPage() {
                                 <div className="space-y-4">
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <Label className="text-xs text-gray-6">Status</Label>
+                                      <Label className="text-xs text-gray-6">Estado</Label>
                                       <div className="mt-1">
                                         <Badge className={getRefundStatusColor(refund.status)}>
                                           {getRefundStatusText(refund.status)}

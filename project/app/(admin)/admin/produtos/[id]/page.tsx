@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -66,8 +66,8 @@ export default function ProductDetailPage() {
   const getStatusText = (status: string) => {
     const statusMap: Record<string, string> = {
       draft: 'Pendente',
-      active: 'Ativo',
-      inactive: 'Inativo',
+      active: 'Activo',
+      inactive: 'Inactivo',
       archived: 'Rejeitado'
     };
     return statusMap[status] || status;
@@ -77,13 +77,13 @@ export default function ProductDetailPage() {
     try {
       await updateStatus.mutateAsync({ productId, status: newStatus });
       toast({
-        title: 'Status atualizado',
-        description: 'O status do produto foi atualizado com sucesso.',
+        title: 'Estado actualizado',
+        description: 'O estado do produto foi actualizado com sucesso.',
       });
     } catch (error: any) {
       toast({
         title: 'Erro',
-        description: error.response?.data?.message || 'Falha ao atualizar status',
+        description: error.response?.data?.message || 'Falha ao actualizar estado',
         variant: 'destructive',
       });
     }
@@ -154,7 +154,7 @@ export default function ProductDetailPage() {
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center">
                   <Package className="w-5 h-5 mr-2" />
-                  Status do Produto
+                  Estado do Produto
                 </CardTitle>
                 <Select
                   value={productData.status}
@@ -166,8 +166,8 @@ export default function ProductDetailPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="draft">Pendente</SelectItem>
-                    <SelectItem value="active">Ativo</SelectItem>
-                    <SelectItem value="inactive">Inativo</SelectItem>
+                    <SelectItem value="active">Activo</SelectItem>
+                    <SelectItem value="inactive">Inactivo</SelectItem>
                     <SelectItem value="archived">Rejeitado</SelectItem>
                   </SelectContent>
                 </Select>
@@ -179,7 +179,7 @@ export default function ProductDetailPage() {
                   {getStatusText(productData.status)}
                 </Badge>
                 <p className="text-sm text-gray-6">
-                  Última atualização: {formatDate(productData.updatedAt)}
+                  Última actualização: {formatDate(productData.updatedAt)}
                 </p>
               </div>
             </CardContent>
@@ -250,12 +250,12 @@ export default function ProductDetailPage() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-7">Estoque</label>
+                    <label className="text-sm font-medium text-gray-7">Stock</label>
                     <p className="text-gray-9 font-medium mt-1">
                       {productData.stock || 0} unidades
                     </p>
                     {productData.inStock === false && (
-                      <Badge variant="destructive" className="mt-1">Sem estoque</Badge>
+                      <Badge variant="destructive" className="mt-1">Sem stock</Badge>
                     )}
                   </div>
                 </div>
@@ -503,7 +503,7 @@ export default function ProductDetailPage() {
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                   <div>
-                    <p className="text-sm font-medium text-gray-9">Última Atualização</p>
+                    <p className="text-sm font-medium text-gray-9">Última Actualização</p>
                     <p className="text-xs text-gray-6">{formatDate(productData.updatedAt)}</p>
                   </div>
                 </div>
