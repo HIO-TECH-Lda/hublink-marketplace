@@ -451,10 +451,10 @@ export default function PayoutsPage() {
                                                   {typeof order === 'string' ? order : order.orderNumber || order._id}
                                                 </td>
                                                 <td className="py-2 px-2">
-                                                  {typeof order === 'string' ? '—' : `MT ${(order.total || 0).toFixed(2)}`}
+                                                  {typeof order === 'string' ? '-' : `MT ${(order.total || 0).toFixed(2)}`}
                                                 </td>
                                                 <td className="py-2 px-2">
-                                                  {typeof order === 'string' ? '—' : (
+                                                  {typeof order === 'string' ? '-' : (
                                                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs ${getStatusColor(order.status || 'pending')}`}>
                                                       {getStatusText(order.status || 'pending')}
                                                     </span>

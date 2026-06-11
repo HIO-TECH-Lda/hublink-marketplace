@@ -264,7 +264,7 @@ export default function CategoryManagementPage() {
                           <span className="text-sm text-gray-7">{category.parent.name}</span>
                         </div>
                       ) : (
-                        <span className="text-sm text-gray-5">—</span>
+                        <span className="text-sm text-gray-5">-</span>
                       )}
                     </td>
                     <td className="py-4 px-4">

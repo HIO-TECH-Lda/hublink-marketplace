@@ -212,7 +212,7 @@ export default function SettingsPage() {
                     <div>
                       <h3 className="text-sm font-medium text-gray-900">Foto de Perfil</h3>
                       <p className="text-sm text-gray-500">Carregue uma fotografia para personalizar a sua conta. Formatos permitidos: JPG, PNG ou GIF. Tamanho máximo: 2 MB.</p>
-                      {avatarFile && <p className="text-xs text-primary mt-1">{avatarFile.name} — clique em Guardar Alterações para enviar</p>}
+                      {avatarFile && <p className="text-xs text-primary mt-1">{avatarFile.name} - clique em Guardar Alterações para enviar</p>}
                     </div>
                   </div>
 

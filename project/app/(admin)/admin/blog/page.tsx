@@ -364,7 +364,7 @@ export default function BlogManagementPage() {
                           <span className="text-sm text-gray-6">{formatDate(post.publishedAt)}</span>
                         </div>
                       ) : (
-                        <span className="text-sm text-gray-5">—</span>
+                        <span className="text-sm text-gray-5">-</span>
                       )}
                     </td>
                     <td className="py-4 px-4">

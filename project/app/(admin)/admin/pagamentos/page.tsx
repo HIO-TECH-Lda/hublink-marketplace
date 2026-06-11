@@ -409,7 +409,7 @@ export default function AdminPaymentsPage() {
                   <tbody>
                     {payments.map((payment) => {
                       const firstItem = payment.orderId?.items?.[0];
-                      const sellerName = firstItem?.sellerName || '—';
+                      const sellerName = firstItem?.sellerName || '-';
 
                       return (
                         <tr
@@ -433,7 +433,7 @@ export default function AdminPaymentsPage() {
                                 {payment.orderId.orderNumber}
                               </button>
                             ) : (
-                              <span className="text-sm text-gray-5">—</span>
+                              <span className="text-sm text-gray-5">-</span>
                             )}
                           </td>
                           <td className="py-3 px-4">
@@ -441,7 +441,7 @@ export default function AdminPaymentsPage() {
                               <User className="w-3 h-3 text-gray-4" />
                               <div>
                                 <p className="text-sm font-medium text-gray-9">
-                                  {payment.userId?.name || '—'}
+                                  {payment.userId?.name || '-'}
                                 </p>
                                 <p className="text-xs text-gray-5">
                                   {payment.userId?.email}
@@ -473,16 +473,16 @@ export default function AdminPaymentsPage() {
                             <div className="flex flex-col gap-1">
                               <div className="flex items-center gap-1 text-xs text-gray-7">
                                 <CreditCard className="w-3 h-3 text-gray-4" />
-                                <span>{payment.method || '—'}</span>
+                                <span>{payment.method || '-'}</span>
                               </div>
                               <span className="text-xs text-gray-5">
-                                Gateway: {payment.gateway || '—'}
+                                Gateway: {payment.gateway || '-'}
                               </span>
                             </div>
                           </td>
                           <td className="py-3 px-4">
                             <span className="text-xs font-mono text-gray-7 break-all">
-                              {payment.gatewayTransactionId || '—'}
+                              {payment.gatewayTransactionId || '-'}
                             </span>
                           </td>
                           <td className="py-3 px-4">
@@ -587,7 +587,7 @@ export default function AdminPaymentsPage() {
                     <CardContent className="p-4 space-y-1">
                       <p className="text-xs text-gray-6">Método / Gateway</p>
                       <p className="text-sm text-gray-9">
-                        {selectedPayment.method || '—'} / {selectedPayment.gateway || '—'}
+                        {selectedPayment.method || '-'} / {selectedPayment.gateway || '-'}
                       </p>
                       <p className="text-xs text-gray-5">
                         Criado em {formatDateTime(selectedPayment.createdAt)}
@@ -608,7 +608,7 @@ export default function AdminPaymentsPage() {
                           {selectedPayment.orderId.orderNumber}
                         </button>
                       ) : (
-                        <p className="text-sm text-gray-5">—</p>
+                        <p className="text-sm text-gray-5">-</p>
                       )}
                       {selectedPayment.refundAmount != null && (
                         <p className="text-xs text-gray-5">
@@ -629,7 +629,7 @@ export default function AdminPaymentsPage() {
                       <p className="font-medium text-gray-9">
                         {selectedPayment.userId?.fullName ||
                           selectedPayment.userId?.name ||
-                          '—'}
+                          '-'}
                       </p>
                       <p className="text-gray-6">{selectedPayment.userId?.email}</p>
                       <p className="text-gray-5">{selectedPayment.userId?.phone}</p>
@@ -648,7 +648,7 @@ export default function AdminPaymentsPage() {
                           <div>
                             <p className="font-medium text-gray-9">{item.productName}</p>
                             <p className="text-xs text-gray-6">
-                              Vendedor: {item.sellerName || '—'}
+                              Vendedor: {item.sellerName || '-'}
                             </p>
                             <p className="text-xs text-gray-5">
                               Quantidade: {item.quantity} • Preço:{' '}

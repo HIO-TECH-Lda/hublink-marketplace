@@ -432,7 +432,7 @@ export default function NewsletterManagementPage() {
                           <p className="font-medium text-gray-9">{subscriber.email}</p>
                         </td>
                         <td className="py-4 px-4">
-                          <p className="text-gray-7">{subscriber.fullName || '—'}</p>
+                          <p className="text-gray-7">{subscriber.fullName || '-'}</p>
                         </td>
                         <td className="py-4 px-4">
                           <Badge className={getSubscriberStatusColor(subscriber.status)}>
@@ -455,7 +455,7 @@ export default function NewsletterManagementPage() {
                               </p>
                             </div>
                           ) : (
-                            <span className="text-sm text-gray-5">—</span>
+                            <span className="text-sm text-gray-5">-</span>
                           )}
                         </td>
                         <td className="py-4 px-4">
@@ -667,14 +667,14 @@ export default function NewsletterManagementPage() {
                               </p>
                             </div>
                           ) : (
-                            <span className="text-sm text-gray-5">—</span>
+                            <span className="text-sm text-gray-5">-</span>
                           )}
                         </td>
                         <td className="py-4 px-4">
                           {campaign.sentAt ? (
                             <span className="text-sm text-gray-6">{formatDate(campaign.sentAt)}</span>
                           ) : (
-                            <span className="text-sm text-gray-5">—</span>
+                            <span className="text-sm text-gray-5">-</span>
                           )}
                         </td>
                         <td className="py-4 px-4">

@@ -87,7 +87,7 @@ export default function RecentProductsTable({
                     <div className="text-sm text-gray-500">
                       {(product.description || '').length > 50 
                         ? `${product.description.substring(0, 50)}...` 
-                        : product.description || '—'
+                        : product.description || '-'
                       }
                     </div>
                   </div>
@@ -95,7 +95,7 @@ export default function RecentProductsTable({
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                  {product.category || product.categoryId?.name || '—'}
+                  {product.category || product.categoryId?.name || '-'}
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">

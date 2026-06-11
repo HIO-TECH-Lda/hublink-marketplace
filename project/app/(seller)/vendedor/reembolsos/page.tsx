@@ -295,7 +295,7 @@ export default function SellerRefundsPage() {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm text-gray-900">
-                                {buyer ? `${buyer.firstName} ${buyer.lastName}` : '—'}
+                                {buyer ? `${buyer.firstName} ${buyer.lastName}` : '-'}
                               </div>
                               {buyer?.email && (
                                 <div className="text-xs text-gray-500">{buyer.email}</div>
@@ -370,7 +370,7 @@ export default function SellerRefundsPage() {
                                       <div>
                                         <p className="text-gray-6">Cliente</p>
                                         <p className="font-medium text-gray-9 mt-1">
-                                          {buyer ? `${buyer.firstName} ${buyer.lastName}` : '—'}
+                                          {buyer ? `${buyer.firstName} ${buyer.lastName}` : '-'}
                                         </p>
                                         {buyer?.email && (
                                           <p className="text-gray-6 text-sm mt-1">{buyer.email}</p>

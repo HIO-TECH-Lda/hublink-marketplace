@@ -156,7 +156,7 @@ export default function AuditLogsPage() {
   };
 
   const formatValue = (value: any): string => {
-    if (value === null || value === undefined) return '—';
+    if (value === null || value === undefined) return '-';
     if (typeof value === 'boolean') return value ? 'Sim' : 'Não';
     if (typeof value === 'object') {
       try {
