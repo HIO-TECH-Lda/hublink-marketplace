@@ -124,16 +124,16 @@ export default function Footer() {
 
             {/* Help & Support */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Ajuda & Suporte</h4>
+              <h4 className="font-semibold text-lg mb-6">Ajuda e Suporte</h4>
               <ul className="space-y-3">
-                <li><Link href="/suporte/novo-ticket" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Novo Pedido de Apoio</Link></li>
-                <li><Link href="/suporte/meus-tickets" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Os Meus Tickets</Link></li>
+                <li><Link href="/suporte/novo-ticket" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Criar Pedido de Apoio</Link></li>
+                <li><Link href="/suporte/meus-tickets" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Os Meus Pedidos de Apoio</Link></li>
                 <li><Link href="/ajuda" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Central de Ajuda</Link></li>
-                <li><Link href="/faq" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">FAQ</Link></li>
+                <li><Link href="/faq" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Perguntas Frequentes</Link></li>
                 <li><Link href="/privacidade" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Política de Privacidade</Link></li>
                 <li><Link href="/termos" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Termos de Utilização</Link></li>
                 <li><Link href="/trocas-devolucoes" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Trocas e Devoluções</Link></li>
-                <li><Link href="/seja-vendedor" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Seja um Vendedor</Link></li>
+                <li><Link href="/seja-vendedor" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Seja Vendedor no Txova</Link></li>
               </ul>
             </div>
           </div>

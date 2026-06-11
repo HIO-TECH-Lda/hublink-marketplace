@@ -85,8 +85,8 @@ export default function TicketDetailPage() {
   };
 
   const getUserName = (userId: any): string => {
-    if (typeof userId === 'string') return 'Usuário';
-    return `${userId.firstName || ''} ${userId.lastName || ''}`.trim() || 'Usuário';
+    if (typeof userId === 'string') return 'Utilizador';
+    return `${userId.firstName || ''} ${userId.lastName || ''}`.trim() || 'Utilizador';
   };
 
   const isCurrentUser = (messageUserId: any): boolean => {
@@ -103,7 +103,7 @@ export default function TicketDetailPage() {
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-primary" />
-          <p className="text-gray-6">Carregando ticket...</p>
+          <p className="text-gray-6">A carregar pedido de apoio...</p>
         </div>
         <Footer />
       </div>
@@ -115,10 +115,10 @@ export default function TicketDetailPage() {
       <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Ticket não encontrado</h1>
-          <p className="text-gray-6 mb-8">O ticket que você está procurando não existe ou foi removido.</p>
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Pedido de apoio não encontrado</h1>
+          <p className="text-gray-6 mb-8">O pedido de apoio que procura não existe ou foi removido.</p>
           <Button onClick={() => router.push('/suporte/meus-tickets')} className="bg-primary hover:bg-primary-hard text-white">
-            Voltar aos Tickets
+            Voltar aos Pedidos de Apoio
           </Button>
         </div>
         <Footer />
@@ -137,9 +137,9 @@ export default function TicketDetailPage() {
           </Link>{' '}
           /{' '}
           <Link href="/suporte/meus-tickets" className="hover:text-primary">
-            Os Meus Tickets
+            Os Meus Pedidos de Apoio
           </Link>{' '}
-          / <span className="text-primary">Ticket #{ticket._id.slice(-8)}</span>
+          / <span className="text-primary">Pedido de Apoio #{ticket._id.slice(-8)}</span>
         </nav>
 
         <div className="mb-6">
@@ -149,13 +149,13 @@ export default function TicketDetailPage() {
             className="p-0 h-auto text-gray-6 hover:text-primary mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar aos Tickets
+            Voltar aos Pedidos de Apoio
           </Button>
 
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-9 mb-2">{ticket.title}</h1>
-              <p className="text-gray-6">Ticket #{ticket._id.slice(-8)}</p>
+              <p className="text-gray-6">Pedido de Apoio #{ticket._id.slice(-8)}</p>
             </div>
             <Badge className={getStatusColor(ticket.status)}>{getStatusText(ticket.status)}</Badge>
           </div>
@@ -169,7 +169,7 @@ export default function TicketDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Informações do Ticket</CardTitle>
+                <CardTitle className="text-lg">Informações do Pedido de Apoio</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -235,7 +235,7 @@ export default function TicketDetailPage() {
                         <div className="flex justify-between items-start mb-2">
                           <div className="flex items-center gap-2">
                             <span className="font-medium text-gray-9">
-                              {isCurrentUser(message.userId) ? 'Você' : getUserName(message.userId)}
+                              {isCurrentUser(message.userId) ? 'Si' : getUserName(message.userId)}
                             </span>
                             <Badge variant="outline" className="text-xs">
                               {message.userType === 'admin' || message.userType === 'support'
@@ -269,12 +269,12 @@ export default function TicketDetailPage() {
 
                 {canAddMessage && (
                   <div className="mt-6 p-4 border border-gray-200 rounded-lg">
-                    <h4 className="font-medium text-gray-9 mb-3">Adicionar Mensagem</h4>
+                    <h4 className="font-medium text-gray-9 mb-3">Responder</h4>
                     <div className="space-y-3">
                       <Textarea
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Digite sua mensagem..."
+                        placeholder="Escreva a sua mensagem..."
                         rows={4}
                       />
 
@@ -290,7 +290,7 @@ export default function TicketDetailPage() {
                         <label htmlFor="message-file-upload" className="cursor-pointer">
                           <Button type="button" variant="outline" size="sm">
                             <Upload className="w-4 h-4 mr-2" />
-                            Anexar Arquivos
+                            Anexar Ficheiros
                           </Button>
                         </label>
                       </div>
@@ -321,7 +321,7 @@ export default function TicketDetailPage() {
                           className="bg-primary hover:bg-primary-hard text-white"
                         >
                           <Send className="w-4 h-4 mr-2" />
-                          {addMessage.isPending ? 'Enviando...' : 'Enviar Mensagem'}
+                          {addMessage.isPending ? 'A enviar...' : 'Enviar Resposta'}
                         </Button>
                       </div>
                     </div>
@@ -334,12 +334,12 @@ export default function TicketDetailPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Status do Ticket</CardTitle>
+                <CardTitle className="text-lg">Estado do Pedido de Apoio</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-6">Status:</span>
+                    <span className="text-sm text-gray-6">Estado:</span>
                     <Badge className={getStatusColor(ticket.status)}>{getStatusText(ticket.status)}</Badge>
                   </div>
                   <div className="flex items-center justify-between">

@@ -13,8 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { useCreateTicket, useUploadAttachment } from '@/hooks/useTickets';
 import BuyerSidebar from '@/app/(buyer)/components/BuyerSidebar';
-import { TICKET_CATEGORY, TICKET_PRIORITY, validateFile } from '@/lib/ticket-utils';
-import { getCategoryText, getPriorityText } from '@/lib/ticket-utils';
+import { TICKET_FORM_CATEGORIES, TICKET_PRIORITY, validateFile, getCategoryText, getPriorityText } from '@/lib/ticket-utils';
 import Link from 'next/link';
 
 export default function NewTicketPage() {
@@ -40,15 +39,14 @@ export default function NewTicketPage() {
 
     if (urlOrderId) setOrderId(urlOrderId);
     if (urlProductId) setProductId(urlProductId);
-    if (urlCategory && Object.values(TICKET_CATEGORY).includes(urlCategory as any)) {
+    if (urlCategory && TICKET_FORM_CATEGORIES.includes(urlCategory as (typeof TICKET_FORM_CATEGORIES)[number])) {
       setCategory(urlCategory);
     }
   }, [searchParams]);
 
-  const categoryOptions = Object.values(TICKET_CATEGORY).map((cat) => ({
+  const categoryOptions = TICKET_FORM_CATEGORIES.map((cat) => ({
     value: cat,
     label: getCategoryText(cat),
-    icon: '📋',
   }));
 
   const priorityOptions = Object.values(TICKET_PRIORITY).map((pri) => ({
@@ -65,7 +63,7 @@ export default function NewTicketPage() {
       if (validation.valid) {
         validFiles.push(file);
       } else {
-        setErrors((prev) => ({ ...prev, attachments: validation.error || 'Arquivo inválido' }));
+        setErrors((prev) => ({ ...prev, attachments: validation.error || 'Ficheiro inválido' }));
       }
     });
 
@@ -132,9 +130,9 @@ export default function NewTicketPage() {
           </Link>{' '}
           /{' '}
           <Link href="/suporte/meus-tickets" className="hover:text-primary">
-            Os Meus Tickets
+            Os Meus Pedidos de Apoio
           </Link>{' '}
-          / <span className="text-primary">Novo Ticket</span>
+          / <span className="text-primary">Novo Pedido de Apoio</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -144,29 +142,33 @@ export default function NewTicketPage() {
 
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-9 mb-2">Novo Ticket de Suporte</h1>
-              <p className="text-gray-6">Descreva seu problema ou solicitação para que possamos ajudá-lo.</p>
+              <h1 className="text-3xl font-bold text-gray-9 mb-2">Novo Pedido de Apoio</h1>
+              <p className="text-gray-6">
+                Descreva o seu problema, dúvida ou solicitação para que a equipa do Txova possa ajudá-lo.
+              </p>
             </div>
 
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Plus className="w-5 h-5" />
-                  Criar Novo Ticket
+                  Criar Novo Pedido de Apoio
                 </CardTitle>
-                <CardDescription>Preencha os campos abaixo com as informações do seu problema</CardDescription>
+                <CardDescription>
+                  Preencha os campos abaixo com as informações necessárias para analisarmos o seu pedido.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Título do Ticket *
+                      Título do Pedido *
                     </label>
                     <Input
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      placeholder="Descreva brevemente o problema"
+                      placeholder="Descreva brevemente o assunto"
                       className={errors.title ? 'border-red-500' : ''}
                     />
                     {errors.title && (
@@ -182,7 +184,7 @@ export default function NewTicketPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Categoria *</label>
                       <Select value={category} onValueChange={setCategory}>
                         <SelectTrigger className={errors.category ? 'border-red-500' : ''}>
-                          <SelectValue placeholder="Selecione uma categoria" />
+                          <SelectValue placeholder="Seleccione uma categoria" />
                         </SelectTrigger>
                         <SelectContent>
                           {categoryOptions.map((option) => (
@@ -204,7 +206,7 @@ export default function NewTicketPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Prioridade *</label>
                       <Select value={priority} onValueChange={setPriority}>
                         <SelectTrigger className={errors.priority ? 'border-red-500' : ''}>
-                          <SelectValue placeholder="Selecione a prioridade" />
+                          <SelectValue placeholder="Seleccione a prioridade" />
                         </SelectTrigger>
                         <SelectContent>
                           {priorityOptions.map((option) => (
@@ -256,7 +258,7 @@ export default function NewTicketPage() {
                     <Textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      placeholder="Descreva detalhadamente o problema..."
+                      placeholder="Descreva detalhadamente o problema, indicando o que aconteceu, quando aconteceu e que tipo de apoio pretende receber."
                       rows={6}
                       className={errors.description ? 'border-red-500' : ''}
                     />
@@ -273,9 +275,11 @@ export default function NewTicketPage() {
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                       <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                       <p className="text-sm text-gray-600 mb-2">
-                        Arraste arquivos aqui ou clique para selecionar
+                        Arraste os ficheiros para aqui ou clique para seleccionar.
                       </p>
-                      <p className="text-xs text-gray-500 mb-4">Máximo 5MB por arquivo. Formatos: PDF, JPG, PNG</p>
+                      <p className="text-xs text-gray-500 mb-4">
+                        Tamanho máximo: 5 MB por ficheiro. Formatos permitidos: PDF, JPG e PNG.
+                      </p>
                       <input
                         type="file"
                         multiple
@@ -286,7 +290,7 @@ export default function NewTicketPage() {
                       />
                       <label htmlFor="file-upload" className="cursor-pointer">
                         <Button type="button" variant="outline">
-                          Selecionar Arquivos
+                          Seleccionar Ficheiros
                         </Button>
                       </label>
                     </div>
@@ -321,7 +325,7 @@ export default function NewTicketPage() {
                       Cancelar
                     </Button>
                     <Button type="submit" disabled={createTicket.isPending} className="bg-primary hover:bg-primary-hard text-white">
-                      {createTicket.isPending ? 'Criando Ticket...' : 'Criar Ticket'}
+                      {createTicket.isPending ? 'A criar pedido...' : 'Criar Pedido de Apoio'}
                     </Button>
                   </div>
                 </form>
