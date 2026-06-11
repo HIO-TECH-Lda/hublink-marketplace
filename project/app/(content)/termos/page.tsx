@@ -28,12 +28,12 @@ export default function TermosPage() {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">
             Termos de Utilização
           </h1>
-          <p className="text-base sm:text-lg text-gray-7 max-w-3xl mx-auto px-4">
+          <p className="text-base sm:text-lg text-gray-7 max-w-6xl mx-auto px-4">
             Estes Termos de Utilização regulam o acesso e uso da plataforma Txova, incluindo o
             website, aplicações, serviços digitais e demais funcionalidades disponibilizadas aos
             utilizadores.
           </p>
-          <p className="text-base sm:text-lg text-gray-7 max-w-3xl mx-auto px-4 mt-4">
+          <p className="text-base sm:text-lg text-gray-7 max-w-6xl mx-auto px-4 mt-4">
             Ao aceder, navegar, registar-se ou utilizar a plataforma Txova, o utilizador declara que
             leu, compreendeu e aceita cumprir os presentes Termos de Utilização.
           </p>
@@ -43,7 +43,7 @@ export default function TermosPage() {
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto">
           <div className="bg-white rounded-lg shadow-sm p-6 lg:p-8">
             <div className="prose prose-lg max-w-none">
 
