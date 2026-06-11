@@ -130,7 +130,7 @@ export const seoConfigs = {
   
   faq: {
     title: 'Perguntas Frequentes | Txova',
-    description: 'Encontre respostas para as perguntas mais frequentes sobre a Txova, nossos produtos orgânicos e como fazer compras.',
+    description: 'Encontre respostas às perguntas mais frequentes sobre compras, pagamentos, entregas, produtos, vendedores e funcionamento da plataforma Txova.',
     keywords: [
       'faq',
       'perguntas frequentes',
