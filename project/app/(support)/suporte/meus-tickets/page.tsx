@@ -73,8 +73,8 @@ export default function MyTicketsPage() {
           <div className="lg:col-span-3 space-y-4 sm:space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Os Meus Pedidos de Apoio</h1>
-                <p className="text-gray-6 text-sm sm:text-base">Acompanhe aqui os seus pedidos de apoio, dúvidas, reclamações ou problemas reportados à equipa do Txova.</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Pedidos de Apoio</h1>
+                <p className="text-gray-6 text-sm sm:text-base">Acompanhe aqui as suas solicitações de apoio, dúvidas, reclamações ou pedidos de esclarecimento enviados à equipa do Txova.</p>
               </div>
               <Button
                 onClick={() => router.push('/suporte/novo-ticket')}
@@ -204,7 +204,7 @@ export default function MyTicketsPage() {
                   <p className="text-gray-6 mb-6 text-sm sm:text-base">
                     {searchTerm || statusFilter !== 'all' || categoryFilter !== 'all' || priorityFilter !== 'all'
                       ? 'Tente ajustar os filtros ou criar um novo pedido de apoio.'
-                      : 'Ainda não criou nenhum pedido de apoio.'}
+                      : 'Ainda não criou nenhum pedido de apoio. Sempre que precisar de ajuda com compras, pagamentos, entregas, vendedores, produtos ou serviços, poderá criar um pedido de apoio e acompanhar a resposta nesta área.'}
                   </p>
                   <Button
                     onClick={() => router.push('/suporte/novo-ticket')}

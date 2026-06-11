@@ -126,11 +126,16 @@ export default function ShoppingCartPage() {
             <div className="w-24 h-24 bg-gray-2 rounded-full flex items-center justify-center mx-auto mb-6">
               <X size={32} className="text-gray-6" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-9 mb-4">Seu carrinho está vazio</h1>
-            <p className="text-gray-6 mb-8">Adicione alguns produtos para começar suas compras!</p>
+            <h1 className="text-2xl font-bold text-gray-9 mb-4">Carrinho Vazio</h1>
+            <p className="text-gray-6 mb-4 max-w-lg mx-auto">
+              Ainda não adicionou produtos ou serviços ao seu carrinho.
+            </p>
+            <p className="text-gray-6 mb-8 max-w-lg mx-auto">
+              Explore o Txova e descubra ofertas de vendedores locais, pequenos negócios e prestadores de serviços.
+            </p>
             <Link href="/loja">
               <Button className="bg-primary hover:bg-primary-hard text-white">
-                Continuar Comprando
+                Começar a Comprar
               </Button>
             </Link>
           </div>
@@ -149,7 +154,7 @@ export default function ShoppingCartPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/painel" className="hover:text-primary"> Meu Painel</Link> / 
+          <Link href="/painel" className="hover:text-primary"> Minha Conta</Link> / 
           <span className="text-primary">Carrinho de Compras</span>
         </nav>
 
@@ -411,7 +416,7 @@ export default function ShoppingCartPage() {
                 )}
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-6">Entrega</span>
+                  <span className="text-gray-6">Taxa de Entrega</span>
                   <span className="font-medium">
                     {shipping === 0 ? (
                       <span className="text-primary">Grátis</span>

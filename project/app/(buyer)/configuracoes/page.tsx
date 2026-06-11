@@ -160,7 +160,7 @@ export default function SettingsPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/painel" className="hover:text-primary"> O Meu Painel</Link> / 
+          <Link href="/painel" className="hover:text-primary"> Minha Conta</Link> / 
           <span className="text-primary">Configurações</span>
         </nav>
 
@@ -182,7 +182,7 @@ export default function SettingsPage() {
               <div className="px-6 py-4 border-b border-gray-200">
                 <div className="flex items-center">
                   <User className="w-5 h-5 text-gray-400 mr-3" />
-                  <h2 className="text-lg font-semibold text-gray-900">Informações Pessoais</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">Dados Pessoais</h2>
                 </div>
               </div>
               <div className="p-6">

@@ -29,7 +29,7 @@ export default function UserDashboardPage() {
       <div className="container py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-4 sm:mb-6">
-          <span>Início</span> / <span className="text-primary">O Meu Painel</span>
+          <span>Início</span> / <span className="text-primary">Minha Conta</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
@@ -46,11 +46,13 @@ export default function UserDashboardPage() {
                 Bem-vindo, {user?.firstName}!
               </h1>
               <p className="text-gray-6 text-sm sm:text-base">
-                Aqui pode acompanhar os seus pedidos, gerir os seus dados pessoais, actualizar o endereço de entrega e aceder ao seu Painel do Vendedor para acompanhar produtos, vendas e desempenho da sua loja no Txova.
+                Aqui pode acompanhar os seus pedidos, consultar o histórico de compras, gerir os seus dados
+                pessoais, actualizar o endereço de entrega e acompanhar os seus pedidos de apoio.
               </p>
             </div>
 
             {/* Quick Stats */}
+            <h2 className="text-base sm:text-lg font-semibold text-gray-9">Resumo da Conta</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
               <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
@@ -134,7 +136,7 @@ export default function UserDashboardPage() {
             {/* Recent Order History */}
             <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 space-y-3 sm:space-y-0">
-                <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-9">Os Meus Pedidos Recentes</h2>
+                <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-9">Pedidos Recentes</h2>
                 <Link href="/historico-pedidos">
                   <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs sm:text-sm">Ver Todos</Button>
                 </Link>

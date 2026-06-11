@@ -85,8 +85,8 @@ export default function WishlistPage() {
             <div className="w-24 h-24 bg-gray-2 rounded-full flex items-center justify-center mx-auto mb-6">
               <Heart size={32} className="text-gray-6" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-9 mb-4">Sua lista de desejos está vazia</h1>
-            <p className="text-gray-6 mb-8">Adicione produtos à sua lista de desejos para vê-los aqui!</p>
+            <h1 className="text-2xl font-bold text-gray-9 mb-4">Lista de Desejos</h1>
+            <p className="text-gray-6 mb-8">Ainda não tem itens guardados na sua lista de desejos.</p>
             <Link href="/loja">
               <Button className="bg-primary hover:bg-primary-hard text-white">
                 Explorar Produtos
@@ -108,7 +108,7 @@ export default function WishlistPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/painel" className="hover:text-primary"> Meu Painel</Link> / 
+          <Link href="/painel" className="hover:text-primary"> Minha Conta</Link> / 
           <span className="text-primary">Lista de Desejos</span>
         </nav>
 
@@ -118,7 +118,10 @@ export default function WishlistPage() {
           {/* Desktop Table View */}
           <div className="hidden lg:block bg-white rounded-lg shadow-sm">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h1 className="text-2xl font-bold text-gray-9">Lista de Desejos ({wishlist?.length || 0} itens)</h1>
+              <h1 className="text-2xl font-bold text-gray-9">Lista de Desejos</h1>
+              <p className="text-gray-6 text-sm mt-1">
+                Tem {wishlist?.length || 0} {wishlist?.length === 1 ? 'item guardado' : 'itens guardados'} na sua lista de desejos.
+              </p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full divide-y divide-gray-200">
@@ -126,9 +129,9 @@ export default function WishlistPage() {
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Produto</th>
                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Preço</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Status do Estoque</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Ações</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Compartilhar</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Disponibilidade</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Acções</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-9">Partilhar</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -174,7 +177,7 @@ export default function WishlistPage() {
                         <div className="flex items-center space-x-2">
                           <div className={`w-2 h-2 rounded-full ${product.stock > 0 ? 'bg-primary' : 'bg-danger'}`}></div>
                           <span className="text-sm font-medium">
-                            {product.stock > 0 ? 'Em Estoque' : 'Fora de Estoque'}
+                            {product.stock > 0 ? 'Em stock' : 'Sem stock'}
                           </span>
                         </div>
                       </td>
@@ -278,7 +281,7 @@ export default function WishlistPage() {
                           <div className="flex items-center space-x-1">
                             <div className={`w-2 h-2 rounded-full ${item.product.stock > 0 ? 'bg-primary' : 'bg-danger'}`}></div>
                             <span className="text-xs font-medium">
-                              {item.product.stock > 0 ? 'Em Estoque' : 'Fora de Estoque'}
+                              {item.product.stock > 0 ? 'Em stock' : 'Sem stock'}
                             </span>
                           </div>
                         </div>
@@ -361,7 +364,7 @@ export default function WishlistPage() {
             <Link href="/loja">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
                 <ArrowLeft size={16} className="mr-2" />
-                Voltar para as Compras
+                Voltar às Compras
               </Button>
             </Link>
           </div>

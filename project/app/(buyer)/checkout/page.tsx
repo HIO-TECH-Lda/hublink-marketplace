@@ -168,8 +168,8 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Carrinho vazio</h1>
-          <p className="text-gray-6 mb-8">Adicione produtos ao carrinho para continuar.</p>
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Carrinho Vazio</h1>
+          <p className="text-gray-6 mb-8">Ainda não adicionou produtos ou serviços ao seu carrinho.</p>
           <Link href="/loja">
             <Button className="bg-primary hover:bg-primary-hard text-white">
               Ir para as Compras
@@ -190,7 +190,7 @@ export default function CheckoutPage() {
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
           <Link href="/carrinho" className="hover:text-primary"> Carrinho</Link> / 
-          <span className="text-primary"> Checkout</span>
+          <span className="text-primary"> Finalizar Pedido</span>
         </nav>
 
         <form onSubmit={handleSubmit}>
@@ -199,7 +199,7 @@ export default function CheckoutPage() {
             <div className="lg:col-span-2 space-y-8">
               {/* Billing Information */}
               <div className="bg-white rounded-lg shadow-sm p-6">
-                <h2 className="text-2xl font-bold text-gray-9 mb-6">Informações de Faturamento</h2>
+                <h2 className="text-2xl font-bold text-gray-9 mb-6">Informações de Facturação e Entrega</h2>
                 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -215,7 +215,7 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="lastName">Sobrenome *</Label>
+                    <Label htmlFor="lastName">Apelido *</Label>
                     <Input
                       id="lastName"
                       name="lastName"
@@ -291,7 +291,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="address">Endereço *</Label>
+                    <Label htmlFor="address">Endereço de Entrega *</Label>
                     <Input
                       id="address"
                       name="address"
@@ -353,7 +353,7 @@ export default function CheckoutPage() {
                     name="orderNotes"
                     value={formData.orderNotes}
                     onChange={handleInputChange}
-                    placeholder="Notas sobre seu pedido, por exemplo, instruções especiais para entrega."
+                    placeholder="Indique aqui informações importantes sobre o seu pedido, como ponto de referência, instruções especiais para entrega ou melhor horário para contacto."
                     className="mt-1"
                     rows={4}
                   />
@@ -362,34 +362,55 @@ export default function CheckoutPage() {
 
               {/* Payment Method */}
               <div className="bg-white rounded-lg shadow-sm p-6">
-                <h2 className="text-xl font-bold text-gray-9 mb-6">Método de Pagamento</h2>
+                <h2 className="text-xl font-bold text-gray-9 mb-2">Método de Pagamento</h2>
+                <p className="text-sm text-gray-6 mb-6">Seleccione a forma de pagamento pretendida:</p>
                 
                 <RadioGroup
                   value={formData.paymentMethod}
                   onValueChange={handlePaymentMethodChange}
                   className="space-y-4"
                 >
-                  <div className="flex items-center space-x-2 p-4 border border-gray-2 rounded-lg">
-                    <RadioGroupItem value="mpesa" id="mpesa" />
-                    <Label htmlFor="mpesa" className="flex items-center space-x-2 cursor-pointer">
-                      <Smartphone size={20} className="text-primary" />
-                      <span>M-Pesa</span>
+                  <div className="flex items-start space-x-2 p-4 border border-gray-2 rounded-lg">
+                    <RadioGroupItem value="mpesa" id="mpesa" className="mt-1" />
+                    <Label htmlFor="mpesa" className="flex-1 cursor-pointer">
+                      <span className="flex items-center gap-2 font-medium text-gray-9">
+                        <Smartphone size={20} className="text-primary" />
+                        M-Pesa
+                      </span>
+                      <span className="block text-sm text-gray-6 mt-1">Pagamento no acto da entrega via M-Pesa.</span>
                     </Label>
                   </div>
                   
-                  <div className="flex items-center space-x-2 p-4 border border-gray-2 rounded-lg">
-                    <RadioGroupItem value="emola" id="emola" />
-                    <Label htmlFor="emola" className="flex items-center space-x-2 cursor-pointer">
-                      <Smartphone size={20} className="text-primary" />
-                      <span>E-Mola</span>
+                  <div className="flex items-start space-x-2 p-4 border border-gray-2 rounded-lg">
+                    <RadioGroupItem value="emola" id="emola" className="mt-1" />
+                    <Label htmlFor="emola" className="flex-1 cursor-pointer">
+                      <span className="flex items-center gap-2 font-medium text-gray-9">
+                        <Smartphone size={20} className="text-primary" />
+                        E-Mola
+                      </span>
+                      <span className="block text-sm text-gray-6 mt-1">Pagamento no acto da entrega via E-Mola.</span>
                     </Label>
                   </div>
                   
-                  <div className="flex items-center space-x-2 p-4 border border-gray-2 rounded-lg">
-                    <RadioGroupItem value="debit_card" id="debit_card" />
-                    <Label htmlFor="debit_card" className="flex items-center space-x-2 cursor-pointer">
-                      <CreditCard size={20} className="text-primary" />
-                      <span>Cartão de Débito</span>
+                  <div className="flex items-start space-x-2 p-4 border border-gray-2 rounded-lg">
+                    <RadioGroupItem value="debit_card" id="debit_card" className="mt-1" />
+                    <Label htmlFor="debit_card" className="flex-1 cursor-pointer">
+                      <span className="flex items-center gap-2 font-medium text-gray-9">
+                        <CreditCard size={20} className="text-primary" />
+                        Cartão de Débito
+                      </span>
+                      <span className="block text-sm text-gray-6 mt-1">Pagamento no acto da entrega por cartão de débito, quando disponível.</span>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-start space-x-2 p-4 border border-gray-2 rounded-lg">
+                    <RadioGroupItem value="cash_on_delivery" id="cash_on_delivery" className="mt-1" />
+                    <Label htmlFor="cash_on_delivery" className="flex-1 cursor-pointer">
+                      <span className="flex items-center gap-2 font-medium text-gray-9">
+                        <DollarSign size={20} className="text-primary" />
+                        Numerário
+                      </span>
+                      <span className="block text-sm text-gray-6 mt-1">Pagamento no acto da entrega em dinheiro.</span>
                     </Label>
                   </div>
                 </RadioGroup>
@@ -439,7 +460,7 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div className="flex justify-between">
-                    <span className="text-gray-6">Entrega</span>
+                    <span className="text-gray-6">Taxa de Entrega</span>
                     <span className="font-medium">
                       {shipping === 0 ? (
                         <span className="text-primary">Grátis</span>
@@ -471,16 +492,17 @@ export default function CheckoutPage() {
                   ) : (
                     <>
                       <ShoppingBag size={16} className="mr-2" />
-                      Fazer Pedido
+                      Finalizar Pedido
                     </>
                   )}
                 </Button>
 
                 {/* Terms */}
                 <p className="text-xs text-gray-6 text-center mt-4">
-                  Ao efectuar o pedido, concorda com os nossos{' '}
+                  Ao finalizar o pedido, confirma que os dados apresentados estão correctos e que concorda
+                  com os nossos{' '}
                   <Link href="/termos" className="text-primary hover:text-primary-hard">
-                    Termos de Utilização
+                    Termos e Condições
                   </Link>
                 </p>
               </div>

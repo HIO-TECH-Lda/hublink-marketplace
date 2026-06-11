@@ -118,8 +118,8 @@ export default function SignInPage() {
         <div className="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Entrar</h1>
-            <p className="text-gray-6">Bem-vindo de volta! Inicie sessão na sua conta</p>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Entrar no Txova</h1>
+            <p className="text-gray-6">Aceda à sua conta para comprar, vender, acompanhar pedidos e gerir as suas informações.</p>
           </div>
 
           {/* Form */}
@@ -184,11 +184,11 @@ export default function SignInPage() {
                   }
                 />
                 <label htmlFor="rememberMe" className="text-sm text-gray-7 cursor-pointer">
-                  Lembrar-me
+                  Manter sessão iniciada
                 </label>
               </div>
               <Link href="/esqueci-senha" className="text-sm text-primary hover:text-primary-hard">
-                Esqueceu a palavra-passe?
+                Esqueceu-se da palavra-passe?
               </Link>
             </div>
 
@@ -205,9 +205,9 @@ export default function SignInPage() {
           {/* Sign Up Link */}
           <div className="text-center mt-6">
             <p className="text-gray-6">
-              Não tem uma conta?{' '}
+              Ainda não tem conta?{' '}
               <Link href="/criar-conta" className="text-primary hover:text-primary-hard font-medium">
-                Registe-se
+                Criar Conta
               </Link>
             </p>
           </div>

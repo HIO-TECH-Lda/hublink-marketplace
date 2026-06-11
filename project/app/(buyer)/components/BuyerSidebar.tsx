@@ -17,13 +17,13 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
   const navigationItems = [
     {
       href: '/painel',
-      label: 'Painel',
+      label: 'Minha Conta',
       icon: TrendingUp,
       active: pathname === '/painel'
     },
     {
       href: '/historico-pedidos',
-      label: 'Histórico de Pedidos',
+      label: 'Os Meus Pedidos',
       icon: Package,
       active: pathname === '/historico-pedidos'
     },

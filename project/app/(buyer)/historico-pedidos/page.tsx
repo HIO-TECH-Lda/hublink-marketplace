@@ -40,7 +40,7 @@ export default function OrderHistoryPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/painel" className="hover:text-primary"> O Meu Painel</Link> / 
+          <Link href="/painel" className="hover:text-primary"> Minha Conta</Link> / 
           <span className="text-primary">Os Meus Pedidos</span>
         </nav>
 
@@ -54,10 +54,11 @@ export default function OrderHistoryPage() {
           <div className="lg:col-span-3 space-y-8">
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Os Meus Pedidos</h1>
-              <p className="text-gray-600 text-sm">Acompanhe aqui os pedidos realizados por si no Txova, consulte o estado de cada compra, veja os detalhes dos produtos adquiridos e efectue pagamentos pendentes quando necessário.</p>
+              <p className="text-gray-600 text-sm">Acompanhe todos os seus pedidos realizados no Txova, consulte o estado de cada compra e efectue pagamentos pendentes quando necessário.</p>
             </div>
 
             {/* Stats */}
+            <h2 className="text-lg font-semibold text-gray-900">Resumo dos Pedidos</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-8">
               <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
@@ -100,7 +101,7 @@ export default function OrderHistoryPage() {
                     <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pedido Pendente</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pedidos Pendentes</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {stats?.pending ?? userOrders.filter((order: any) => order.status === 'pending').length}
                     </p>
@@ -114,7 +115,7 @@ export default function OrderHistoryPage() {
                     <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pedido Entregue</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Enviados / Entregues</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {(stats?.shipped ?? userOrders.filter((o: any) => o.status === 'shipped').length) +
                         (stats?.delivered ?? userOrders.filter((o: any) => o.status === 'delivered').length)}
@@ -129,7 +130,7 @@ export default function OrderHistoryPage() {
                     <RotateCcw className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-600">Cancelados / Reembolsados</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Cancelado / Reembolsado</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
                       {(stats?.cancelled ?? userOrders.filter((o: any) => o.status === 'cancelled' || o.status === 'canceled').length) +
                         (stats?.refunded ?? userOrders.filter((o: any) => o.status === 'refunded').length)}
