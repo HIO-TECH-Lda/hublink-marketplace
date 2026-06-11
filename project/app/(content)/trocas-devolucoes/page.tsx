@@ -2,7 +2,19 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { RefreshCw, Clock, CheckCircle, AlertCircle, Truck, CreditCard, Phone, Mail } from 'lucide-react';
+import {
+  RefreshCw,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Phone,
+  Mail,
+  MessageSquare,
+  Calendar,
+  Search,
+  Package,
+  CreditCard,
+} from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -16,13 +28,11 @@ export default function TrocasDevolucoesPage() {
       <Header />
 
       <div className="container py-8 px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
-          <Link href="/" className="hover:text-primary">Início</Link> / 
+          <Link href="/" className="hover:text-primary">Início</Link> /
           <span className="text-primary"> Trocas e Devoluções</span>
         </nav>
 
-        {/* Header */}
         <div className="text-center mb-12">
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <RefreshCw size={32} className="text-primary" />
@@ -31,281 +41,345 @@ export default function TrocasDevolucoesPage() {
             Trocas e Devoluções
           </h1>
           <p className="text-base sm:text-lg text-gray-7 max-w-6xl mx-auto px-4">
-            Garantimos sua satisfação total. Conheça nossa política de trocas e devoluções 
-            e como solicitar uma devolução.
+            Conheça as condições gerais para solicitar troca, devolução ou reembolso de produtos
+            adquiridos através do Txova. As solicitações são analisadas conforme o tipo de produto, o
+            estado da entrega, as condições do vendedor e as regras da plataforma.
           </p>
           <div className="flex items-center justify-center space-x-2 mt-4 text-sm text-gray-6">
-            <Clock size={16} />
-            <span>Última atualização: {lastUpdated}</span>
+            <Calendar size={16} />
+            <span>Última actualização: {lastUpdated}</span>
           </div>
         </div>
 
-        {/* Quick Info Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 mx-auto">
           <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-            <div className="w-12 h-12 bg-primary-lighter rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <Clock size={24} className="text-primary" />
             </div>
-            <h3 className="font-semibold text-gray-9 mb-2">24 Horas</h3>
-            <p className="text-gray-7 text-sm">Prazo para solicitar devolução</p>
+            <h3 className="font-semibold text-gray-9 mb-2">24 horas</h3>
+            <p className="text-gray-7 text-sm">
+              Prazo recomendado para comunicar problemas após a entrega
+            </p>
           </div>
-          
+
           <div className="bg-white rounded-lg p-6 shadow-sm text-center">
             <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle size={24} className="text-blue-600" />
+              <Search size={24} className="text-blue-600" />
             </div>
-            <h3 className="font-semibold text-gray-9 mb-2">100% Garantido</h3>
-            <p className="text-gray-7 text-sm">Satisfação ou seu dinheiro de volta</p>
+            <h3 className="font-semibold text-gray-9 mb-2">Análise do Pedido</h3>
+            <p className="text-gray-7 text-sm">
+              Cada solicitação é avaliada conforme o produto, o vendedor e o motivo apresentado
+            </p>
           </div>
-          
+
           <div className="bg-white rounded-lg p-6 shadow-sm text-center">
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Truck size={24} className="text-purple-600" />
+              <Package size={24} className="text-purple-600" />
             </div>
-            <h3 className="font-semibold text-gray-9 mb-2">Coleta Gratuita</h3>
-            <p className="text-gray-7 text-sm">Retiramos o produto em sua casa</p>
+            <h3 className="font-semibold text-gray-9 mb-2">Produto em Boas Condições</h3>
+            <p className="text-gray-7 text-sm">
+              Sempre que aplicável, o produto deve ser devolvido sem uso indevido e com embalagem
+              original
+            </p>
           </div>
-          
+
           <div className="bg-white rounded-lg p-6 shadow-sm text-center">
             <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CreditCard size={24} className="text-orange-600" />
             </div>
-            <h3 className="font-semibold text-gray-9 mb-2">5 Dias Úteis</h3>
-            <p className="text-gray-7 text-sm">Prazo para processar reembolso</p>
+            <h3 className="font-semibold text-gray-9 mb-2">Reembolso ou Troca</h3>
+            <p className="text-gray-7 text-sm">
+              Quando aprovado, o caso poderá resultar em troca, crédito ou reembolso
+            </p>
           </div>
         </div>
 
-        {/* Content */}
         <div className="mx-auto">
           <div className="bg-white rounded-lg shadow-sm p-6 lg:p-8">
             <div className="prose prose-lg max-w-none">
-              
-              {/* Policy Overview */}
+
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">Nossa Política</h2>
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">A Nossa Política</h2>
                 <p className="text-gray-7 mb-4">
-                  Na Txova, sua satisfação é nossa prioridade. Oferecemos uma política 
-                  de devolução generosa para garantir que você sempre receba produtos de 
-                  qualidade e fique satisfeito com sua compra.
+                  O Txova procura promover uma experiência de compra transparente e segura,
+                  aproximando compradores e vendedores locais. Como marketplace, o Txova não é
+                  necessariamente o proprietário dos produtos vendidos, mas poderá apoiar na
+                  mediação de situações relacionadas com trocas, devoluções, reembolsos ou problemas na
+                  entrega.
                 </p>
-                <p className="text-gray-7">
-                  Aceitamos devoluções em até 24 horas após a entrega, desde que o produto 
-                  esteja em condições adequadas e na embalagem original.
+                <p className="text-gray-7 mb-4">
+                  As solicitações devem ser feitas, preferencialmente, até 24 horas após a entrega,
+                  especialmente em casos de produtos danificados, errados, perecíveis ou com problemas
+                  evidentes de qualidade.
                 </p>
+                <p className="text-gray-7 mb-4">Cada pedido será analisado de acordo com:</p>
+                <ul className="list-disc list-inside space-y-2 text-gray-7">
+                  <li>Tipo de produto ou serviço;</li>
+                  <li>Estado do produto no momento da entrega;</li>
+                  <li>Motivo apresentado pelo cliente;</li>
+                  <li>Condições definidas pelo vendedor;</li>
+                  <li>Disponibilidade de substituição;</li>
+                  <li>Evidências apresentadas, como fotografias ou mensagens;</li>
+                  <li>Regras gerais da plataforma Txova.</li>
+                </ul>
               </section>
 
-              {/* When You Can Return */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">Quando Você Pode Devolver</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">
+                  Quando Pode Solicitar Troca ou Devolução
+                </h2>
+
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-primary-lighter rounded-lg p-4">
-                    <h3 className="font-medium text-primary-hard mb-3 flex items-center">
-                      <CheckCircle size={16} className="mr-2" />
-                      Motivos Aceitos
+                  <div className="bg-primary/5 rounded-lg p-4">
+                    <h3 className="font-medium text-gray-9 mb-3 flex items-center">
+                      <CheckCircle size={16} className="mr-2 text-primary" />
+                      Motivos Aceites
                     </h3>
-                    <ul className="text-primary text-sm space-y-2">
-                      <li>• Produto danificado na entrega</li>
-                      <li>• Produto diferente do pedido</li>
-                      <li>• Produto fora da validade</li>
-                      <li>• Qualidade inferior ao esperado</li>
-                      <li>• Arrependimento da compra</li>
+                    <p className="text-gray-7 text-sm mb-3">
+                      A solicitação poderá ser considerada quando ocorrer uma das seguintes situações:
+                    </p>
+                    <ul className="text-gray-7 text-sm space-y-2">
+                      <li>• Produto danificado no momento da entrega;</li>
+                      <li>• Produto diferente do pedido;</li>
+                      <li>• Produto com defeito comprovado;</li>
+                      <li>• Produto incompleto ou em quantidade diferente da solicitada;</li>
+                      <li>• Produto fora das condições anunciadas;</li>
+                      <li>• Problema evidente de qualidade;</li>
+                      <li>• Erro no envio ou na preparação do pedido;</li>
+                      <li>• Outro motivo analisado e aceite pelo vendedor ou pela equipa do Txova.</li>
                     </ul>
                   </div>
-                  
+
                   <div className="bg-red-50 rounded-lg p-4">
                     <h3 className="font-medium text-red-800 mb-3 flex items-center">
                       <AlertCircle size={16} className="mr-2" />
-                      Motivos Não Aceitos
+                      Motivos que Podem Não Ser Aceites
                     </h3>
+                    <p className="text-red-800 text-sm mb-3">
+                      A troca ou devolução poderá não ser aceite quando:
+                    </p>
                     <ul className="text-red-700 text-sm space-y-2">
-                      <li>• Produto consumido ou parcialmente usado</li>
-                      <li>• Embalagem violada ou danificada</li>
-                      <li>• Produto fora da validade por negligência</li>
-                      <li>• Produto personalizado ou sob medida</li>
-                      <li>• Produtos perecíveis após 24h</li>
+                      <li>• O produto tiver sido consumido, usado ou alterado pelo cliente;</li>
+                      <li>• A embalagem estiver danificada por uso indevido;</li>
+                      <li>• O problema resultar de má conservação após a entrega;</li>
+                      <li>• O produto for personalizado, feito por encomenda ou sob medida;</li>
+                      <li>• O produto for perecível e a reclamação for feita fora do prazo razoável;</li>
+                      <li>• Não houver evidência suficiente do problema reportado;</li>
+                      <li>• A solicitação contrariar as condições previamente apresentadas pelo vendedor.</li>
                     </ul>
                   </div>
                 </div>
               </section>
 
-              {/* Return Process */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">Como Solicitar uma Devolução</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">
+                  Como Solicitar uma Troca ou Devolução
+                </h2>
+
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4">
                     <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
                       1
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-9 mb-2">Entre em Contato</h3>
+                      <h3 className="font-medium text-gray-9 mb-2">Crie um Pedido de Apoio</h3>
                       <p className="text-gray-7 text-sm">
-                        Ligue para (84) 99999-9999 ou envie um e-mail para {siteConfig.supportEmail}{' '}
-                        em até 24 horas após a entrega. Informe o número do pedido e o motivo da devolução.
+                        Aceda à área Ajuda ou ao seu painel de cliente e seleccione Criar Pedido de
+                        Apoio. Indique o número do pedido, o produto em causa e o motivo da
+                        solicitação. Também pode contactar a equipa do Txova através dos canais de
+                        apoio disponíveis.
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start space-x-4">
                     <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
                       2
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-9 mb-2">Aguarde a Aprovação</h3>
-                      <p className="text-gray-7 text-sm">
-                        Nossa equipe analisará sua solicitação e entrará em contato em até 2 horas 
-                        para confirmar a aprovação e agendar a coleta.
-                      </p>
+                      <h3 className="font-medium text-gray-9 mb-2">Apresente as Informações Necessárias</h3>
+                      <p className="text-gray-7 text-sm mb-2">Para facilitar a análise, envie:</p>
+                      <ul className="text-gray-7 text-sm space-y-1 list-disc list-inside">
+                        <li>Número do pedido;</li>
+                        <li>Nome do produto;</li>
+                        <li>Motivo da troca ou devolução;</li>
+                        <li>Fotografias, quando aplicável;</li>
+                        <li>Descrição clara do problema;</li>
+                        <li>Contacto actualizado para seguimento.</li>
+                      </ul>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start space-x-4">
                     <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
                       3
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-9 mb-2">Prepare o Produto</h3>
+                      <h3 className="font-medium text-gray-9 mb-2">Aguarde a Análise</h3>
                       <p className="text-gray-7 text-sm">
-                        Mantenha o produto na embalagem original e em condições adequadas. 
-                        Nossa equipe fará a coleta no endereço de entrega.
+                        A equipa do Txova ou o vendedor analisará a solicitação e poderá entrar em
+                        contacto para confirmar informações, solicitar evidências adicionais ou
+                        propor uma solução.
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start space-x-4">
                     <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
                       4
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-9 mb-2">Receba o Reembolso</h3>
-                      <p className="text-gray-7 text-sm">
-                        Após a análise do produto, processaremos o reembolso em até 5 dias úteis 
-                        no mesmo método de pagamento utilizado.
+                      <h3 className="font-medium text-gray-9 mb-2">Confirmação da Solução</h3>
+                      <p className="text-gray-7 text-sm mb-2">
+                        Quando a solicitação for aprovada, poderá ser definida uma das seguintes
+                        soluções:
                       </p>
+                      <ul className="text-gray-7 text-sm space-y-1 list-disc list-inside">
+                        <li>Troca por produto igual ou equivalente;</li>
+                        <li>Substituição por outro produto;</li>
+                        <li>Crédito para compra futura;</li>
+                        <li>Reembolso parcial ou total;</li>
+                        <li>Outra solução acordada entre comprador, vendedor e plataforma.</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
               </section>
 
-              {/* Refund Information */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">Informações sobre Reembolso</h2>
-                
-                <div className="bg-gray-1 rounded-lg p-6">
-                  <h3 className="font-medium text-gray-9 mb-4">Prazos e Métodos de Reembolso</h3>
-                  
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-medium text-gray-9 mb-2">M-Pesa</h4>
-                      <p className="text-gray-7 text-sm mb-4">
-                        Reembolso processado em até 24 horas após a aprovação da devolução.
-                      </p>
-                      
-                      <h4 className="font-medium text-gray-9 mb-2">Cartão de Crédito</h4>
-                      <p className="text-gray-7 text-sm mb-4">
-                        Reembolso processado em até 2 faturas, dependendo da bandeira.
-                      </p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium text-gray-9 mb-2">Cartão de Débito</h4>
-                      <p className="text-gray-7 text-sm mb-4">
-                        Reembolso processado em até 5 dias úteis.
-                      </p>
-                      
-                      <h4 className="font-medium text-gray-9 mb-2">Dinheiro na Entrega</h4>
-                      <p className="text-gray-7 text-sm">
-                        Reembolso via M-Pesa ou transferência bancária em até 5 dias úteis.
-                      </p>
-                    </div>
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">Informações sobre Reembolsos</h2>
+                <p className="text-gray-7 mb-4">
+                  O reembolso, quando aplicável, dependerá da aprovação da solicitação e do método de
+                  pagamento utilizado.
+                </p>
+
+                <div className="bg-gray-1 rounded-lg p-6 space-y-4">
+                  <div>
+                    <h4 className="font-medium text-gray-9 mb-2">M-Pesa ou E-Mola</h4>
+                    <p className="text-gray-7 text-sm">
+                      O reembolso poderá ser efectuado para o número utilizado no pagamento ou para
+                      outro número confirmado pelo cliente.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-9 mb-2">Cartão de Débito ou Crédito</h4>
+                    <p className="text-gray-7 text-sm">
+                      O prazo poderá depender do banco, emissor do cartão ou provedor de pagamento.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-9 mb-2">Transferência Bancária</h4>
+                    <p className="text-gray-7 text-sm">
+                      O reembolso poderá ser feito para a conta bancária indicada pelo cliente, após
+                      confirmação dos dados.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-9 mb-2">Pagamento no Acto da Entrega</h4>
+                    <p className="text-gray-7 text-sm">
+                      Quando o pagamento tiver sido feito em numerário ou por outro método no momento
+                      da entrega, o reembolso poderá ser feito por M-Pesa, E-Mola, transferência
+                      bancária ou outro meio acordado.
+                    </p>
                   </div>
                 </div>
               </section>
 
-              {/* Exchange Policy */}
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">Política de Trocas</h2>
-                
-                <p className="text-gray-7 mb-4">
-                  Além de devoluções, também oferecemos a opção de troca por outro produto 
-                  de valor equivalente ou superior (com complemento da diferença).
+                <p className="text-gray-7 mb-4">Quando a troca for aprovada, o cliente poderá receber:</p>
+                <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
+                  <li>O mesmo produto, caso esteja disponível;</li>
+                  <li>Produto equivalente;</li>
+                  <li>Produto de valor superior, mediante pagamento da diferença;</li>
+                  <li>Crédito para compra futura, quando aplicável.</li>
+                </ul>
+                <p className="text-gray-7">
+                  Caso o novo produto tenha valor inferior, a diferença poderá ser tratada conforme
+                  acordo entre as partes e regras da plataforma.
                 </p>
-                
-                <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="font-medium text-blue-800 mb-3">Como Funciona a Troca</h3>
-                  <ul className="text-blue-700 text-sm space-y-2">
-                    <li>• Escolha um produto de valor igual ou superior</li>
-                    <li>• Se o valor for superior, pague apenas a diferença</li>
-                    <li>• Se o valor for inferior, receba o crédito na sua conta</li>
-                    <li>• A troca é processada no mesmo dia da coleta</li>
-                    <li>• O novo produto é entregue no próximo dia útil</li>
-                  </ul>
-                </div>
               </section>
 
-              {/* Special Cases */}
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">Casos Especiais</h2>
-                
+
                 <div className="space-y-4">
                   <div className="border-l-4 border-yellow-400 pl-4">
                     <h3 className="font-medium text-gray-9 mb-2">Produtos Perecíveis</h3>
                     <p className="text-gray-7 text-sm">
-                      Para produtos perecíveis (frutas, verduras, laticínios), aceitamos devoluções 
-                      apenas se houver problemas de qualidade evidentes. Nestes casos, a devolução 
-                      deve ser solicitada imediatamente após a entrega.
+                      Produtos perecíveis, como alimentos frescos, produtos agrícolas ou outros itens
+                      sensíveis, devem ser verificados no acto da entrega. Qualquer problema deve ser
+                      comunicado imediatamente ou no prazo mais curto possível.
                     </p>
                   </div>
-                  
+
                   <div className="border-l-4 border-primary pl-4">
                     <h3 className="font-medium text-gray-9 mb-2">Produtos Danificados</h3>
                     <p className="text-gray-7 text-sm">
-                      Se o produto chegar danificado, tire fotos e entre em contato imediatamente. 
-                      Nestes casos, oferecemos reembolso integral e, se possível, reenvio do produto.
+                      Se o produto chegar danificado, o cliente deve tirar fotografias e comunicar a
+                      situação através de um pedido de apoio. Sempre que confirmado o problema,
+                      poderá ser proposta troca, substituição ou reembolso.
                     </p>
                   </div>
-                  
+
                   <div className="border-l-4 border-blue-400 pl-4">
                     <h3 className="font-medium text-gray-9 mb-2">Erro no Pedido</h3>
                     <p className="text-gray-7 text-sm">
-                      Se você receber um produto diferente do pedido, entre em contato imediatamente. 
-                      Oferecemos reenvio do produto correto ou reembolso integral.
+                      Se o cliente receber um produto diferente do pedido, deverá comunicar a
+                      situação o mais rapidamente possível. O caso poderá resultar em substituição,
+                      troca ou reembolso, conforme a disponibilidade e análise do vendedor.
+                    </p>
+                  </div>
+
+                  <div className="border-l-4 border-purple-400 pl-4">
+                    <h3 className="font-medium text-gray-9 mb-2">Serviços Locais</h3>
+                    <p className="text-gray-7 text-sm">
+                      No caso de serviços contratados através do Txova, as reclamações serão
+                      analisadas conforme a natureza do serviço, as condições combinadas, a execução
+                      realizada e as evidências apresentadas.
                     </p>
                   </div>
                 </div>
               </section>
 
-              {/* Contact Information */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">Entre em Contato</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">Contactos de Apoio</h2>
+
                 <div className="grid md:grid-cols-3 gap-6">
-                  <div className="text-center">
+                  <div className="text-center bg-gray-1 rounded-lg p-6">
                     <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Phone size={24} className="text-primary" />
                     </div>
                     <h3 className="font-medium text-gray-9 mb-2">Telefone</h3>
-                    <p className="text-gray-7 text-sm">(84) 99999-9999</p>
-                    <p className="text-gray-6 text-xs">Segunda a Sexta, 8h às 18h</p>
+                    <p className="text-gray-7 text-sm">+258 84 999 9999</p>
+                    <p className="text-gray-6 text-xs mt-1">Segunda a Sexta-feira, das 08h00 às 18h00</p>
                   </div>
-                  
-                  <div className="text-center">
+
+                  <div className="text-center bg-gray-1 rounded-lg p-6">
                     <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Mail size={24} className="text-primary" />
                     </div>
                     <h3 className="font-medium text-gray-9 mb-2">E-mail</h3>
                     <p className="text-gray-7 text-sm">{siteConfig.supportEmail}</p>
-                    <p className="text-gray-6 text-xs">Resposta em até 2 horas</p>
+                    <p className="text-gray-6 text-xs mt-1">
+                      Resposta conforme disponibilidade da equipa de apoio
+                    </p>
                   </div>
-                  
-                  <div className="text-center">
+
+                  <div className="text-center bg-gray-1 rounded-lg p-6">
                     <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <RefreshCw size={24} className="text-primary" />
+                      <MessageSquare size={24} className="text-primary" />
                     </div>
-                    <h3 className="font-medium text-gray-9 mb-2">Chat Online</h3>
-                    <p className="text-gray-7 text-sm">Disponível 24/7</p>
-                    <p className="text-gray-6 text-xs">Atendimento instantâneo</p>
+                    <h3 className="font-medium text-gray-9 mb-2">Pedido de Apoio</h3>
+                    <p className="text-gray-7 text-sm">
+                      Crie um pedido de apoio através da sua conta para acompanhar o estado da
+                      solicitação.
+                    </p>
+                    <Link href="/suporte/novo-ticket" className="inline-block mt-3">
+                      <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white">
+                        Criar Pedido de Apoio
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </section>
@@ -314,65 +388,78 @@ export default function TrocasDevolucoesPage() {
           </div>
         </div>
 
-        {/* FAQ Section */}
-        <div className="mt-12">
+        <div className="mt-12 mx-auto">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-9 mb-6 text-center">
             Perguntas Frequentes
           </h2>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="font-semibold text-gray-9 mb-2">Posso devolver produtos perecíveis?</h3>
               <p className="text-gray-7 text-sm">
-                Sim, desde que haja problemas evidentes de qualidade e a devolução seja solicitada 
-                imediatamente após a entrega.
+                Sim, desde que exista problema evidente de qualidade, erro no pedido ou dano
+                identificado no momento da entrega. A comunicação deve ser feita imediatamente ou no
+                prazo mais curto possível.
               </p>
             </div>
-            
+
             <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="font-semibold text-gray-9 mb-2">Quanto tempo leva para receber o reembolso?</h3>
+              <h3 className="font-semibold text-gray-9 mb-2">Quanto tempo demora o reembolso?</h3>
               <p className="text-gray-7 text-sm">
-                Depende do método de pagamento: M-Pesa (24h), cartão de débito (5 dias), 
-                cartão de crédito (até 2 faturas).
+                O prazo depende do método de pagamento, da confirmação do vendedor e da análise da
+                solicitação. A equipa do Txova informará o cliente sobre o seguimento do caso.
               </p>
             </div>
-            
+
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="font-semibold text-gray-9 mb-2">Posso trocar por outro produto?</h3>
               <p className="text-gray-7 text-sm">
-                Sim! Oferecemos troca por produtos de valor igual ou superior, 
-                com complemento da diferença se necessário.
+                Sim, quando a troca for aprovada e houver disponibilidade do produto. Caso o novo
+                produto tenha valor superior, o cliente poderá pagar a diferença.
               </p>
             </div>
-            
+
             <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="font-semibold text-gray-9 mb-2">A coleta é gratuita?</h3>
+              <h3 className="font-semibold text-gray-9 mb-2">A recolha do produto é gratuita?</h3>
               <p className="text-gray-7 text-sm">
-                Sim! Retiramos o produto em sua casa sem custo adicional, 
-                desde que a devolução seja aprovada.
+                A recolha, quando necessária, poderá depender da localização, do vendedor, da equipa de
+                entrega e do motivo da devolução. Quando houver custos associados, estes deverão ser
+                comunicados antes da confirmação.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-sm md:col-span-2">
+              <h3 className="font-semibold text-gray-9 mb-2">E se o vendedor não responder?</h3>
+              <p className="text-gray-7 text-sm">
+                O cliente poderá criar um pedido de apoio para que a equipa do Txova acompanhe o caso
+                e tente mediar a situação.
               </p>
             </div>
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="mt-12 text-center">
+        <div className="mt-12 text-center mx-auto">
           <div className="bg-primary/5 rounded-lg p-8">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-9 mb-4">
-              Precisa de ajuda com uma devolução?
+              Precisa de Ajuda com uma Troca ou Devolução?
             </h2>
             <p className="text-gray-7 mb-6 max-w-2xl mx-auto">
-              Nossa equipe está pronta para ajudar você com qualquer dúvida sobre 
-              trocas e devoluções.
+              A equipa do Txova está disponível para apoiar compradores e vendedores na resolução de
+              situações relacionadas com trocas, devoluções, reembolsos e problemas na entrega.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contato">
                 <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-                  Fale Conosco
+                  Fale Connosco
+                </Button>
+              </Link>
+              <Link href="/suporte/novo-ticket">
+                <Button className="bg-primary hover:bg-primary-hard text-white">
+                  Criar Pedido de Apoio
                 </Button>
               </Link>
               <Link href="/ajuda">
-                <Button className="bg-primary hover:bg-primary-hard text-white">
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
                   Central de Ajuda
                 </Button>
               </Link>
@@ -384,4 +471,4 @@ export default function TrocasDevolucoesPage() {
       <Footer />
     </div>
   );
-} 
+}
