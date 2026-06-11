@@ -478,9 +478,9 @@ export default function CheckoutPage() {
 
                 {/* Terms */}
                 <p className="text-xs text-gray-6 text-center mt-4">
-                  Ao fazer o pedido, você concorda com nossos{' '}
+                  Ao efectuar o pedido, concorda com os nossos{' '}
                   <Link href="/termos" className="text-primary hover:text-primary-hard">
-                    Termos e Condições
+                    Termos de Utilização
                   </Link>
                 </p>
               </div>

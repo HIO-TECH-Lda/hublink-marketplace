@@ -32,7 +32,7 @@ export default function CreateAccountPage() {
     }
 
     if (!formData.acceptTerms) {
-      alert('Você deve aceitar os termos e condições');
+      alert('Deve aceitar os Termos de Utilização');
       return;
     }
 
@@ -169,9 +169,9 @@ export default function CreateAccountPage() {
                 className="mt-0.5"
               />
               <label htmlFor="acceptTerms" className="text-sm text-gray-7 cursor-pointer leading-5">
-                Aceitar todos os{' '}
+                Aceito os{' '}
                 <Link href="/termos" className="text-primary hover:text-primary-hard">
-                  Termos e Condições
+                  Termos de Utilização
                 </Link>
               </label>
             </div>

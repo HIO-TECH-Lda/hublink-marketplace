@@ -256,7 +256,7 @@ export default function AjudaPage() {
             <ul className="space-y-3">
               <li>
                 <Link href="/termos" className="text-primary hover:text-primary-hard text-sm">
-                  Termos de Uso
+                  Termos de Utilização
                 </Link>
               </li>
               <li>

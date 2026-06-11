@@ -142,10 +142,10 @@ export const seoConfigs = {
   },
   
   terms: {
-    title: 'Termos de Uso | Txova',
-    description: 'Leia os termos de uso da Txova. Conheça nossas políticas e condições para uso do marketplace.',
+    title: 'Termos de Utilização | Txova',
+    description: 'Leia os Termos de Utilização da Txova. Conheça as políticas e condições para utilização do marketplace.',
     keywords: [
-      'termos de uso',
+      'termos de utilização',
       'políticas',
       'condições',
       'legal'
