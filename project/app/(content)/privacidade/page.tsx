@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Shield, Eye, Lock, Users, FileText, Calendar } from 'lucide-react';
+import { Shield, Lock, Calendar } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -16,13 +16,11 @@ export default function PrivacidadePage() {
       <Header />
 
       <div className="container py-8 px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
-          <Link href="/" className="hover:text-primary">Início</Link> / 
+          <Link href="/" className="hover:text-primary">Início</Link> /
           <span className="text-primary"> Política de Privacidade</span>
         </nav>
 
-        {/* Header */}
         <div className="text-center mb-12">
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <Shield size={32} className="text-primary" />
@@ -30,287 +28,373 @@ export default function PrivacidadePage() {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">
             Política de Privacidade
           </h1>
-          <p className="text-base sm:text-lg text-gray-7 max-w-3xl mx-auto px-4">
-            Sua privacidade é importante para nós. Esta política descreve como coletamos, 
-            usamos e protegemos suas informações pessoais.
+          <p className="text-base sm:text-lg text-gray-7 max-w-6xl mx-auto px-4">
+            A sua privacidade é importante para o Txova. Esta Política de Privacidade explica como
+            recolhemos, utilizamos, armazenamos, protegemos e tratamos os seus dados pessoais quando
+            acede ou utiliza a nossa plataforma.
           </p>
           <div className="flex items-center justify-center space-x-2 mt-4 text-sm text-gray-6">
             <Calendar size={16} />
-            <span>Última atualização: {lastUpdated}</span>
+            <span>Última actualização: {lastUpdated}</span>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto">
           <div className="bg-white rounded-lg shadow-sm p-6 lg:p-8">
             <div className="prose prose-lg max-w-none">
-              
-              {/* Introduction */}
+
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">1. Introdução</h2>
                 <p className="text-gray-7 mb-4">
-                  O Txova (&quot;nós&quot;, &quot;nosso&quot;, &quot;a empresa&quot;) está comprometido em proteger sua privacidade. 
-                  Esta Política de Privacidade explica como coletamos, usamos, armazenamos e protegemos 
-                  suas informações pessoais quando você usa nossa plataforma.
+                  O Txova é uma plataforma moçambicana que aproxima compradores, vendedores locais,
+                  pequenos negócios, empreendedores informais, produtores e prestadores de serviços.
+                </p>
+                <p className="text-gray-7 mb-4">
+                  Ao utilizar a plataforma Txova, o utilizador reconhece que leu e compreendeu esta
+                  Política de Privacidade e aceita o tratamento dos seus dados pessoais nos termos aqui
+                  descritos.
                 </p>
                 <p className="text-gray-7">
-                  Ao usar nossos serviços, você concorda com a coleta e uso de informações de acordo 
-                  com esta política.
+                  Esta política aplica-se a compradores, vendedores, visitantes, parceiros e demais
+                  utilizadores da plataforma.
                 </p>
               </section>
 
-              {/* Information We Collect */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">2. Informações que Coletamos</h2>
-                
-                <h3 className="text-lg font-medium text-gray-9 mb-3">2.1 Informações Pessoais</h3>
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">2. Dados que Recolhemos</h2>
+
+                <h3 className="text-lg font-medium text-gray-9 mb-3">2.1 Dados Pessoais</h3>
+                <p className="text-gray-7 mb-4">
+                  Podemos recolher dados pessoais fornecidos directamente pelo utilizador, incluindo:
+                </p>
                 <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
-                  <li>Nome completo e informações de contato</li>
-                  <li>Endereço de e-mail e número de telefone</li>
-                  <li>Endereço de entrega e faturamento</li>
-                  <li>Informações de pagamento (processadas de forma segura)</li>
-                  <li>Data de nascimento (quando necessário)</li>
+                  <li>Nome completo;</li>
+                  <li>E-mail;</li>
+                  <li>Número de telefone;</li>
+                  <li>Endereço de entrega;</li>
+                  <li>Endereço de facturação;</li>
+                  <li>Dados de conta;</li>
+                  <li>Informações necessárias para compras, vendas, entregas, pagamentos e apoio ao cliente.</li>
                 </ul>
 
-                <h3 className="text-lg font-medium text-gray-9 mb-3">2.2 Informações de Uso</h3>
+                <h3 className="text-lg font-medium text-gray-9 mb-3">2.2 Dados de Compras e Utilização</h3>
+                <p className="text-gray-7 mb-4">
+                  Podemos recolher informações relacionadas com a utilização da plataforma, tais como:
+                </p>
                 <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
-                  <li>Histórico de pedidos e preferências</li>
-                  <li>Produtos visualizados e favoritos</li>
-                  <li>Interações com a plataforma</li>
-                  <li>Dados de navegação e cookies</li>
+                  <li>Histórico de pedidos;</li>
+                  <li>Produtos ou serviços visualizados;</li>
+                  <li>Produtos guardados na lista de desejos;</li>
+                  <li>Interacções com vendedores;</li>
+                  <li>Pedidos de apoio;</li>
+                  <li>Preferências de navegação;</li>
+                  <li>Avaliações, comentários ou mensagens enviadas através da plataforma.</li>
                 </ul>
 
-                <h3 className="text-lg font-medium text-gray-9 mb-3">2.3 Informações Técnicas</h3>
+                <h3 className="text-lg font-medium text-gray-9 mb-3">2.3 Dados Técnicos</h3>
+                <p className="text-gray-7 mb-4">
+                  Também podemos recolher dados técnicos necessários para o funcionamento, segurança e
+                  melhoria da plataforma, incluindo:
+                </p>
                 <ul className="list-disc list-inside space-y-2 text-gray-7">
-                  <li>Endereço IP e informações do dispositivo</li>
-                  <li>Tipo de navegador e sistema operacional</li>
-                  <li>Dados de localização (quando permitido)</li>
-                  <li>Logs de acesso e erros</li>
+                  <li>Endereço IP;</li>
+                  <li>Tipo de dispositivo;</li>
+                  <li>Navegador utilizado;</li>
+                  <li>Sistema operativo;</li>
+                  <li>Dados de localização, quando permitidos pelo utilizador;</li>
+                  <li>Registos de acesso;</li>
+                  <li>Erros técnicos;</li>
+                  <li>Cookies e tecnologias semelhantes.</li>
                 </ul>
               </section>
 
-              {/* How We Use Information */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">3. Como Usamos Suas Informações</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">3. Como Utilizamos os Seus Dados</h2>
+                <p className="text-gray-7 mb-4">O Txova utiliza os dados recolhidos para:</p>
+
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-gray-1 rounded-lg p-4">
                     <h4 className="font-medium text-gray-9 mb-2">Processamento de Pedidos</h4>
                     <p className="text-gray-7 text-sm">
-                      Para processar e entregar seus pedidos, processar pagamentos e fornecer 
-                      suporte ao cliente.
+                      Utilizamos os dados para registar pedidos, confirmar compras, facilitar pagamentos,
+                      organizar entregas e permitir a comunicação entre compradores, vendedores e equipa
+                      de apoio.
                     </p>
                   </div>
-                  
+
                   <div className="bg-gray-1 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-9 mb-2">Melhorias do Serviço</h4>
+                    <h4 className="font-medium text-gray-9 mb-2">Gestão da Conta</h4>
                     <p className="text-gray-7 text-sm">
-                      Para melhorar nossa plataforma, personalizar experiências e desenvolver 
-                      novos recursos.
+                      Utilizamos os dados para criar, autenticar, actualizar e proteger a conta do
+                      utilizador.
                     </p>
                   </div>
-                  
+
+                  <div className="bg-gray-1 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-9 mb-2">Apoio ao Cliente</h4>
+                    <p className="text-gray-7 text-sm">
+                      Utilizamos os dados para responder a dúvidas, reclamações, pedidos de apoio,
+                      reembolsos, problemas técnicos e outras solicitações.
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-1 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-9 mb-2">Melhoria da Plataforma</h4>
+                    <p className="text-gray-7 text-sm">
+                      Utilizamos informações de utilização para melhorar funcionalidades, corrigir
+                      erros, optimizar a experiência do utilizador e desenvolver novos recursos.
+                    </p>
+                  </div>
+
                   <div className="bg-gray-1 rounded-lg p-4">
                     <h4 className="font-medium text-gray-9 mb-2">Comunicação</h4>
                     <p className="text-gray-7 text-sm">
-                      Para enviar atualizações de pedidos, newsletters e informações importantes 
-                      sobre nossos serviços.
+                      Podemos utilizar os seus dados para enviar notificações sobre pedidos, pagamentos,
+                      entregas, alterações na conta, novidades da plataforma, campanhas, promoções e
+                      conteúdos úteis, sempre respeitando as opções de comunicação escolhidas pelo
+                      utilizador.
                     </p>
                   </div>
-                  
+
                   <div className="bg-gray-1 rounded-lg p-4">
                     <h4 className="font-medium text-gray-9 mb-2">Segurança</h4>
                     <p className="text-gray-7 text-sm">
-                      Para detectar e prevenir fraudes, proteger contra atividades maliciosas 
-                      e garantir a segurança da plataforma.
+                      Utilizamos dados para prevenir fraudes, detectar acessos indevidos, proteger
+                      contas, investigar actividades suspeitas e garantir a segurança da plataforma.
                     </p>
                   </div>
                 </div>
               </section>
 
-              {/* Information Sharing */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">4. Compartilhamento de Informações</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">4. Partilha de Dados</h2>
                 <p className="text-gray-7 mb-4">
-                  Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros, 
-                  exceto nas seguintes situações:
+                  O Txova não vende os dados pessoais dos utilizadores.
                 </p>
-                
-                <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
-                  <li><strong>Prestadores de serviços:</strong> Parceiros que nos ajudam a operar a plataforma (pagamentos, entregas, etc.)</li>
-                  <li><strong>Vendedores:</strong> Informações necessárias para processar seus pedidos</li>
-                  <li><strong>Obrigação legal:</strong> Quando exigido por lei ou para proteger nossos direitos</li>
-                  <li><strong>Consentimento:</strong> Quando você autoriza explicitamente o compartilhamento</li>
-                </ul>
+                <p className="text-gray-7 mb-4">
+                  Os dados poderão ser partilhados apenas quando necessário para o funcionamento da
+                  plataforma, nomeadamente com:
+                </p>
+
+                <h3 className="text-lg font-medium text-gray-9 mb-3">Vendedores</h3>
+                <p className="text-gray-7 mb-4">
+                  Podemos partilhar com vendedores os dados necessários para processar pedidos,
+                  confirmar produtos, organizar entregas e prestar atendimento ao comprador.
+                </p>
+
+                <h3 className="text-lg font-medium text-gray-9 mb-3">Prestadores de Serviços</h3>
+                <p className="text-gray-7 mb-4">
+                  Podemos partilhar dados com parceiros que apoiam a operação da plataforma, incluindo
+                  serviços de pagamento, entrega, alojamento, suporte técnico, comunicação, segurança e
+                  análise.
+                </p>
+
+                <h3 className="text-lg font-medium text-gray-9 mb-3">Autoridades Competentes</h3>
+                <p className="text-gray-7 mb-4">
+                  Podemos divulgar dados quando tal seja exigido por lei, ordem judicial, autoridade
+                  competente ou para defesa dos direitos e interesses legítimos do Txova.
+                </p>
+
+                <h3 className="text-lg font-medium text-gray-9 mb-3">Com Consentimento do Utilizador</h3>
+                <p className="text-gray-7">
+                  Podemos partilhar dados quando o utilizador autorizar expressamente essa partilha.
+                </p>
               </section>
 
-              {/* Data Security */}
               <section className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-9 mb-4">5. Segurança dos Dados</h2>
-                
+                <p className="text-gray-7 mb-4">
+                  O Txova adopta medidas técnicas e organizacionais para proteger os dados pessoais contra
+                  acesso não autorizado, perda, alteração, divulgação indevida ou utilização abusiva.
+                </p>
+
                 <div className="bg-primary/5 rounded-lg p-6 mb-4">
                   <div className="flex items-start space-x-3">
                     <Lock size={20} className="text-primary mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-medium text-gray-9 mb-2">Medidas de Segurança</h4>
+                      <p className="text-gray-7 text-sm mb-2">
+                        Entre as medidas de segurança poderão incluir-se:
+                      </p>
                       <ul className="text-gray-7 text-sm space-y-1">
-                        <li>• Criptografia SSL/TLS para transmissão de dados</li>
-                        <li>• Armazenamento seguro em servidores protegidos</li>
-                        <li>• Acesso restrito às informações pessoais</li>
-                        <li>• Monitoramento contínuo de segurança</li>
-                        <li>• Atualizações regulares de segurança</li>
+                        <li>• Protecção da transmissão de dados;</li>
+                        <li>• Controlo de acesso às informações;</li>
+                        <li>• Armazenamento seguro;</li>
+                        <li>• Monitorização de segurança;</li>
+                        <li>• Actualizações regulares da plataforma;</li>
+                        <li>• Restrição de acesso apenas a pessoas autorizadas.</li>
                       </ul>
                     </div>
                   </div>
                 </div>
-                
+
                 <p className="text-gray-7">
-                  Implementamos medidas técnicas e organizacionais apropriadas para proteger 
-                  suas informações pessoais contra acesso não autorizado, alteração, divulgação 
-                  ou destruição.
+                  Apesar dos esforços de segurança, nenhum sistema digital é totalmente imune a riscos.
+                  Por isso, o utilizador também deve proteger as suas credenciais de acesso e comunicar
+                  qualquer suspeita de uso indevido da conta.
                 </p>
               </section>
 
-              {/* Cookies */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">6. Cookies e Tecnologias Similares</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">6. Pagamentos e Dados Financeiros</h2>
                 <p className="text-gray-7 mb-4">
-                  Utilizamos cookies e tecnologias similares para:
+                  Os dados relacionados com pagamentos poderão ser tratados por provedores de pagamento,
+                  bancos, carteiras móveis ou outros serviços autorizados.
                 </p>
-                
-                <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
-                  <li>Lembrar suas preferências e configurações</li>
-                  <li>Analisar o uso da plataforma e melhorar nossos serviços</li>
-                  <li>Personalizar conteúdo e anúncios</li>
-                  <li>Garantir a segurança da plataforma</li>
-                </ul>
-                
+                <p className="text-gray-7 mb-4">
+                  O Txova poderá recolher ou processar informações necessárias para confirmar pagamentos,
+                  validar transacções, emitir comprovativos, acompanhar reembolsos e prevenir fraudes.
+                </p>
                 <p className="text-gray-7">
-                  Você pode controlar o uso de cookies através das configurações do seu navegador, 
-                  mas isso pode afetar a funcionalidade da plataforma.
+                  Sempre que o pagamento for feito por M-Pesa, E-Mola, Imali, cartão, transferência
+                  bancária ou pagamento no acto da entrega, poderão aplicar-se também as políticas e
+                  condições dos respectivos provedores.
                 </p>
               </section>
 
-              {/* Your Rights */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">7. Seus Direitos</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">7. Cookies e Tecnologias Semelhantes</h2>
+                <p className="text-gray-7 mb-4">
+                  O Txova poderá utilizar cookies e tecnologias semelhantes para:
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
+                  <li>Guardar preferências do utilizador;</li>
+                  <li>Melhorar a navegação;</li>
+                  <li>Manter sessões iniciadas;</li>
+                  <li>Analisar a utilização da plataforma;</li>
+                  <li>Melhorar conteúdos, funcionalidades e segurança;</li>
+                  <li>Personalizar a experiência do utilizador.</li>
+                </ul>
+                <p className="text-gray-7">
+                  O utilizador pode gerir ou bloquear cookies através das definições do navegador. No
+                  entanto, algumas funcionalidades da plataforma poderão ficar limitadas.
+                </p>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">8. Direitos do Utilizador</h2>
+                <p className="text-gray-7 mb-4">
+                  O utilizador poderá, nos termos aplicáveis, solicitar:
+                </p>
+
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-gray-1 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-9 mb-2">Acesso e Correção</h4>
+                    <h4 className="font-medium text-gray-9 mb-2">Acesso aos Dados</h4>
                     <p className="text-gray-7 text-sm">
-                      Você pode acessar, corrigir ou atualizar suas informações pessoais 
-                      através do seu painel de usuário.
+                      Pode solicitar informação sobre os dados pessoais tratados pelo Txova.
                     </p>
                   </div>
-                  
+
                   <div className="bg-gray-1 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-9 mb-2">Exclusão</h4>
+                    <h4 className="font-medium text-gray-9 mb-2">Correcção de Dados</h4>
                     <p className="text-gray-7 text-sm">
-                      Você pode solicitar a exclusão de suas informações pessoais, 
-                      sujeito a certas exceções legais.
+                      Pode actualizar, corrigir ou completar dados pessoais incorrectos ou
+                      desactualizados.
                     </p>
                   </div>
-                  
+
                   <div className="bg-gray-1 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-9 mb-2">Portabilidade</h4>
+                    <h4 className="font-medium text-gray-9 mb-2">Eliminação de Dados</h4>
                     <p className="text-gray-7 text-sm">
-                      Você pode solicitar uma cópia de seus dados pessoais em formato 
-                      estruturado e legível por máquina.
+                      Pode solicitar a eliminação dos seus dados pessoais, salvo quando a conservação
+                      seja necessária por razões legais, contratuais, fiscais, de segurança ou
+                      resolução de disputas.
                     </p>
                   </div>
-                  
+
                   <div className="bg-gray-1 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-9 mb-2">Oposição</h4>
+                    <h4 className="font-medium text-gray-9 mb-2">Oposição ao Tratamento</h4>
                     <p className="text-gray-7 text-sm">
-                      Você pode se opor ao processamento de seus dados pessoais 
-                      para certas finalidades.
+                      Pode opor-se ao tratamento dos seus dados para determinadas finalidades,
+                      nomeadamente comunicações promocionais.
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-1 rounded-lg p-4 md:col-span-2">
+                    <h4 className="font-medium text-gray-9 mb-2">Cancelamento de Comunicações</h4>
+                    <p className="text-gray-7 text-sm">
+                      Pode cancelar a subscrição de newsletters, campanhas ou comunicações promocionais,
+                      quando aplicável.
                     </p>
                   </div>
                 </div>
               </section>
 
-              {/* Data Retention */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">8. Retenção de Dados</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">9. Conservação dos Dados</h2>
                 <p className="text-gray-7 mb-4">
-                  Mantemos suas informações pessoais apenas pelo tempo necessário para:
+                  O Txova conserva os dados pessoais apenas durante o período necessário para:
                 </p>
-                
                 <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
-                  <li>Fornecer nossos serviços</li>
-                  <li>Cumprir obrigações legais</li>
-                  <li>Resolver disputas</li>
-                  <li>Fazer cumprir nossos acordos</li>
+                  <li>Prestar os serviços da plataforma;</li>
+                  <li>Processar pedidos;</li>
+                  <li>Cumprir obrigações legais;</li>
+                  <li>Resolver reclamações ou disputas;</li>
+                  <li>Prevenir fraudes;</li>
+                  <li>Fazer cumprir os Termos de Utilização;</li>
+                  <li>Melhorar a segurança e funcionamento da plataforma.</li>
                 </ul>
-                
                 <p className="text-gray-7">
-                  Quando não precisarmos mais de suas informações, elas serão excluídas 
-                  ou anonimizadas de forma segura.
+                  Quando os dados deixarem de ser necessários, poderão ser eliminados, anonimizados ou
+                  arquivados de forma segura.
                 </p>
               </section>
 
-              {/* Children's Privacy */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">9. Privacidade de Crianças</h2>
-                
-                <p className="text-gray-7">
-                  Nossos serviços não são destinados a crianças menores de 13 anos. 
-                  Não coletamos intencionalmente informações pessoais de crianças menores de 13 anos. 
-                  Se você é pai ou responsável e acredita que seu filho nos forneceu informações 
-                  pessoais, entre em contato conosco.
-                </p>
-              </section>
-
-              {/* International Transfers */}
-              <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">10. Transferências Internacionais</h2>
-                
-                <p className="text-gray-7">
-                  Suas informações podem ser transferidas e processadas em países diferentes 
-                  do seu país de residência. Garantimos que essas transferências são feitas 
-                  de acordo com as leis de proteção de dados aplicáveis.
-                </p>
-              </section>
-
-              {/* Changes to Policy */}
-              <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">11. Alterações nesta Política</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">10. Dados de Menores</h2>
                 <p className="text-gray-7 mb-4">
-                  Podemos atualizar esta Política de Privacidade periodicamente. 
-                  Notificaremos você sobre mudanças significativas através de:
+                  A plataforma Txova destina-se a utilizadores com capacidade legal para realizar
+                  compras, vender produtos ou celebrar acordos comerciais.
                 </p>
-                
-                <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
-                  <li>E-mail para o endereço registrado</li>
-                  <li>Notificação na plataforma</li>
-                  <li>Atualização da data de &quot;Última atualização&quot;</li>
-                </ul>
-                
                 <p className="text-gray-7">
-                  Recomendamos que você revise esta política regularmente para se manter 
-                  informado sobre como protegemos suas informações.
+                  Caso sejam identificados dados pessoais de menores recolhidos sem autorização
+                  adequada, o Txova poderá proceder à sua eliminação ou solicitar confirmação do
+                  representante legal.
                 </p>
               </section>
 
-              {/* Contact Information */}
               <section className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-9 mb-4">12. Entre em Contato</h2>
-                
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">11. Transferência e Armazenamento de Dados</h2>
+                <p className="text-gray-7 mb-4">
+                  Os dados poderão ser armazenados em servidores próprios ou de terceiros contratados
+                  para apoiar o funcionamento da plataforma.
+                </p>
+                <p className="text-gray-7">
+                  Quando houver transferência ou armazenamento fora de Moçambique, o Txova procurará
+                  assegurar medidas adequadas de protecção, de acordo com as normas aplicáveis e boas
+                  práticas de segurança digital.
+                </p>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">12. Alterações a Esta Política</h2>
+                <p className="text-gray-7 mb-4">
+                  O Txova poderá actualizar esta Política de Privacidade sempre que necessário, por
+                  motivos legais, técnicos, operacionais ou comerciais.
+                </p>
+                <p className="text-gray-7 mb-4">As alterações relevantes poderão ser comunicadas através de:</p>
+                <ul className="list-disc list-inside space-y-2 text-gray-7 mb-4">
+                  <li>Notificação na plataforma;</li>
+                  <li>E-mail enviado ao utilizador;</li>
+                  <li>Actualização da data de revisão desta política.</li>
+                </ul>
+                <p className="text-gray-7">
+                  A continuação da utilização da plataforma após a publicação das alterações constitui
+                  aceitação da versão actualizada.
+                </p>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-9 mb-4">13. Contactos</h2>
                 <div className="bg-gray-1 rounded-lg p-6">
                   <p className="text-gray-7 mb-4">
-                    Se você tiver dúvidas sobre esta Política de Privacidade ou sobre 
-                    como tratamos suas informações pessoais, entre em contato conosco:
+                    Para dúvidas, pedidos de esclarecimento ou solicitações relacionadas com privacidade
+                    e protecção de dados, contacte-nos através de:
                   </p>
-                  
                   <div className="space-y-2 text-gray-7">
                     <p><strong>E-mail:</strong> {siteConfig.privacyEmail}</p>
-                    <p><strong>Telefone:</strong> (84) 99999-9999</p>
-                    <p><strong>Endereço:</strong> Rua das Flores, 123 - Baixa, Beira - 2100</p>
+                    <p><strong>Telefone:</strong> +258 84 999 9999</p>
+                    <p><strong>Endereço:</strong> Beira, Sofala – Moçambique</p>
                   </div>
                 </div>
               </section>
@@ -319,20 +403,19 @@ export default function PrivacidadePage() {
           </div>
         </div>
 
-        {/* CTA Section */}
         <div className="mt-12 text-center">
           <div className="bg-primary/5 rounded-lg p-8">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-9 mb-4">
-              Ainda tem dúvidas?
+              Ainda Tem Dúvidas?
             </h2>
             <p className="text-gray-7 mb-6 max-w-2xl mx-auto">
-              Nossa equipe está pronta para esclarecer qualquer dúvida sobre privacidade 
-              e proteção de dados.
+              A equipa do Txova está disponível para esclarecer questões relacionadas com privacidade,
+              dados pessoais, segurança da conta e utilização da plataforma.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contato">
                 <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-                  Fale Conosco
+                  Fale Connosco
                 </Button>
               </Link>
               <Link href="/ajuda">
@@ -348,4 +431,4 @@ export default function PrivacidadePage() {
       <Footer />
     </div>
   );
-} 
+}

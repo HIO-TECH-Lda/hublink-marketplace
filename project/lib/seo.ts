@@ -155,7 +155,7 @@ export const seoConfigs = {
   
   privacy: {
     title: 'Política de Privacidade | Txova',
-    description: 'Conheça nossa política de privacidade. Saiba como a Txova protege e utiliza seus dados pessoais.',
+    description: 'Conheça a Política de Privacidade da Txova. Saiba como recolhemos, utilizamos e protegemos os seus dados pessoais.',
     keywords: [
       'política de privacidade',
       'proteção de dados',
