@@ -38,7 +38,7 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-green-gray-1 to-green-gray-2 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg')] bg-cover bg-center opacity-10"></div>
+        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/30179958/pexels-photo-30179958.jpeg')] bg-cover bg-center opacity-10"></div>
         <div className="relative container py-12 sm:py-16 lg:py-20">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
@@ -67,8 +67,8 @@ export default function HomePage() {
             <div className="relative order-first lg:order-last">
               <div className="aspect-square rounded-full bg-gradient-to-br from-primary/20 to-primary-soft/20 flex items-center justify-center">
                 <img
-                  src="https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg"
-                  alt="Produtos e serviços locais no Txova"
+                  src="https://images.pexels.com/photos/30179958/pexels-photo-30179958.jpeg"
+                  alt="Mercado local e vendedores no Txova"
                   className="w-4/5 h-4/5 object-cover rounded-full"
                 />
               </div>
@@ -178,8 +178,8 @@ export default function HomePage() {
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
-                alt="Marketplace local Txova"
+                src="https://images.pexels.com/photos/30464933/pexels-photo-30464933.jpeg"
+                alt="Vendedor local no mercado Txova"
                 className="rounded-2xl shadow-2xl"
               />
             </div>
@@ -380,7 +380,7 @@ export default function HomePage() {
                     role: 'Beira, Sofala',
                     content: 'Produtos sempre frescos e de excelente qualidade. A entrega é rápida e o atendimento é impecável!',
                     rating: 5,
-                    image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+                    image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
                   },
                   {
                     id: '2',
@@ -388,7 +388,7 @@ export default function HomePage() {
                     role: 'Beira, Sofala',
                     content: 'Finalmente encontrei um marketplace que aproxima directamente compradores e vendedores locais. Recomendo!',
                     rating: 5,
-                    image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+                    image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
                   },
                   {
                     id: '3',
@@ -396,7 +396,7 @@ export default function HomePage() {
                     role: 'Beira, Sofala',
                     content: 'Encontrei vendedores locais com produtos variados e um processo de compra simples. Recomendo o Txova.',
                     rating: 5,
-                    image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+                    image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg',
                   },
                 ].map((testimonial) => (
                   <CarouselItem key={testimonial.id} className="pl-4 basis-full md:basis-1/2">

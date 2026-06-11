@@ -21,28 +21,28 @@ export default function AboutPage() {
       id: '1',
       name: 'Maria Silva',
       position: 'CEO & Fundadora',
-      image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg',
       bio: 'Especialista em negócios locais e economia comunitária com mais de 15 anos de experiência.'
     },
     {
       id: '2',
       name: 'João Santos',
       position: 'Diretor de Operações',
-      image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       bio: 'Responsável por garantir a qualidade e sustentabilidade de todos os produtos.'
     },
     {
       id: '3',
       name: 'Ana Costa',
       position: 'Chef de Culinária',
-      image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
       bio: 'Especialista em experiência do cliente e comunicação com a comunidade local.'
     },
     {
       id: '4',
       name: 'Carlos Oliveira',
       position: 'Diretor de Tecnologia',
-      image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      image: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
       bio: 'Responsável pela plataforma que aproxima compradores e vendedores locais.'
     }
   ];
@@ -52,26 +52,26 @@ export default function AboutPage() {
     {
       id: '1',
       name: 'Agricultura Verde',
-      logo: 'https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg',
+      logo: 'https://images.pexels.com/photos/30179958/pexels-photo-30179958.jpeg',
       description: 'Parceiro em apoio a negócios locais',
     },
     {
       id: '2',
       name: 'Cooperativa Sul',
-      logo: 'https://images.pexels.com/photos/1268871/pexels-photo-1268871.jpeg',
+      logo: 'https://images.pexels.com/photos/30464933/pexels-photo-30464933.jpeg',
       description: 'Rede de vendedores locais',
     },
     {
       id: '3',
       name: 'Bio Cert',
-      logo: 'https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg',
-      description: 'Auditoria e qualidade',
+      logo: 'https://images.pexels.com/photos/30275079/pexels-photo-30275079.jpeg',
+      description: 'Comércio informal e formal',
     },
     {
       id: '4',
       name: 'Logística Verde',
-      logo: 'https://images.pexels.com/photos/1268871/pexels-photo-1268871.jpeg',
-      description: 'Entrega sustentável',
+      logo: 'https://images.pexels.com/photos/4482900/pexels-photo-4482900.jpeg',
+      description: 'Compras e pagamentos digitais',
     },
   ];
 
@@ -83,7 +83,7 @@ export default function AboutPage() {
       role: 'Cliente Fiel',
       content: 'O Txova facilitou as minhas compras locais! Encontro produtos variados e sei exactamente quem vende.',
       rating: 5,
-      image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
+      image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg'
     },
     {
       id: '2',
@@ -91,15 +91,15 @@ export default function AboutPage() {
       role: 'Vendedor Local',
       content: 'Como vendedor, o Txova deu-me visibilidade para chegar a mais clientes na minha zona. É uma parceria incrível!',
       rating: 5,
-      image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
+      image: 'https://images.pexels.com/photos/30464933/pexels-photo-30464933.jpeg'
     },
     {
       id: '3',
       name: 'Patrícia Mendes',
-      role: 'Nutricionista',
+      role: 'Compradora',
       content: 'Recomendo o Txova para quem procura apoiar negócios locais com um processo de compra simples e transparente.',
       rating: 5,
-      image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
+      image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg'
     }
   ];
 
@@ -136,8 +136,8 @@ export default function AboutPage() {
             </div>
             <div className="relative order-first lg:order-last">
               <img
-                src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
-                alt="Marketplace local Txova"
+                src="https://images.pexels.com/photos/30179958/pexels-photo-30179958.jpeg"
+                alt="Mercado local no Txova"
                 className="w-full h-auto rounded-2xl shadow-2xl"
               />
             </div>
@@ -151,7 +151,7 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="relative order-first lg:order-last">
               <img
-                src="https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg"
+                src="https://images.pexels.com/photos/30275079/pexels-photo-30275079.jpeg"
                 alt="A nossa missão"
                 className="w-full h-auto rounded-2xl shadow-lg"
               />

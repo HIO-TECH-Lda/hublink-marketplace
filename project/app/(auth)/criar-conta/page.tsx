@@ -46,7 +46,7 @@ export default function CreateAccountPage() {
       role: 'buyer' as const,
       status: 'active' as const,
       isSeller: false,
-      profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      profileImage: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
       billingAddress: {
         firstName: 'Novo',
         lastName: 'Utilizador',

@@ -122,7 +122,7 @@ export default function BlogListPage() {
                       <div key={post.id} className="flex space-x-3">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-1 rounded-lg overflow-hidden flex-shrink-0">
                           <img
-                            src={post.image || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'}
+                            src={post.image || 'https://images.pexels.com/photos/4482900/pexels-photo-4482900.jpeg'}
                             alt={post.title}
                             className="w-full h-full object-cover"
                           />
@@ -192,7 +192,7 @@ export default function BlogListPage() {
                   <article key={post.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="aspect-video bg-gray-1 overflow-hidden">
                       <img
-                        src={post.image || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'}
+                        src={post.image || 'https://images.pexels.com/photos/4482900/pexels-photo-4482900.jpeg'}
                         alt={post.title || 'Novidade'}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />

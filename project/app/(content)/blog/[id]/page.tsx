@@ -100,7 +100,7 @@ export default function BlogPostPage() {
           {/* Featured Image */}
           <div className="mb-8">
             <img
-              src={post.image || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'}
+              src={post.image || 'https://images.pexels.com/photos/4482900/pexels-photo-4482900.jpeg'}
               alt={post.title}
               className="w-full h-auto rounded-2xl shadow-lg"
             />
@@ -181,7 +181,7 @@ export default function BlogPostPage() {
                 <article key={relatedPost.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="aspect-video bg-gray-1 overflow-hidden">
                     <img
-                      src={relatedPost.image || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'}
+                      src={relatedPost.image || 'https://images.pexels.com/photos/4482900/pexels-photo-4482900.jpeg'}
                       alt={relatedPost.title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
