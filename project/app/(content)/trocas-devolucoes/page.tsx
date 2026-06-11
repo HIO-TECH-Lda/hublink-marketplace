@@ -30,7 +30,7 @@ export default function TrocasDevolucoesPage() {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">
             Trocas e Devoluções
           </h1>
-          <p className="text-base sm:text-lg text-gray-7 max-w-3xl mx-auto px-4">
+          <p className="text-base sm:text-lg text-gray-7 max-w-6xl mx-auto px-4">
             Garantimos sua satisfação total. Conheça nossa política de trocas e devoluções 
             e como solicitar uma devolução.
           </p>
@@ -76,7 +76,7 @@ export default function TrocasDevolucoesPage() {
         </div>
 
         {/* Content */}
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto">
           <div className="bg-white rounded-lg shadow-sm p-6 lg:p-8">
             <div className="prose prose-lg max-w-none">
               
