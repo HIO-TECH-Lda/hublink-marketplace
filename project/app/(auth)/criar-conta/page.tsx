@@ -210,7 +210,7 @@ export default function CreateAccountPage() {
                   variant="outline"
                   className="w-full border-primary/30 text-primary hover:bg-primary-lighter hover:text-primary-hard"
                 >
-                  Seja um Vendedor
+                  Seja Vendedor no Txova
                 </Button>
               </Link>
             </div>

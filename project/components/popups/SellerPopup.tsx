@@ -43,11 +43,10 @@ export default function SellerPopup() {
         <div className="p-8">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-gray-9 mb-2">
-              Seja um Vendedor
+              Seja Vendedor no Txova
             </h2>
             <p className="text-gray-6">
-              Cadastre a sua banca e comece a vender produtos orgânicos para
-              milhares de clientes na nossa plataforma.
+              Dê mais visibilidade ao seu negócio e alcance novos clientes na sua comunidade.
             </p>
           </div>
 
@@ -60,7 +59,7 @@ export default function SellerPopup() {
 
             <Link href="/seja-vendedor" onClick={handleClose}>
               <Button className="w-full bg-primary hover:bg-primary-hard text-white py-3">
-                Criar minha conta de vendedor
+                Cadastre-se como Vendedor
               </Button>
             </Link>
           </div>

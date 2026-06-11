@@ -59,7 +59,7 @@ export default function HomePage() {
                 </Link>
                 <Link href="/seja-vendedor">
                   <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-white px-6 sm:px-8 py-3 sm:py-4">
-                    Seja um Vendedor
+                    Seja Vendedor no Txova
                   </Button>
                 </Link>
               </div>
