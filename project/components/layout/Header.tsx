@@ -96,7 +96,8 @@ export default function Header() {
               <div className="flex space-x-2">
                 <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">Facebook</Link>
                 <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">Instagram</Link>
-                <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">Twitter</Link>
+                <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">TikTok</Link>
+                <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">WhatsApp Channel</Link>
               </div>
             </div>
           </div>
@@ -119,11 +120,11 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className={`hidden lg:flex items-center ${isAdmin ? 'space-x-6 ml-6' : 'space-x-8 ml-8'}`}>
-              <Link href="/loja" className="hover:text-primary transition-colors">Comprar Agora</Link>
-              <Link href="/sobre" className="hover:text-primary transition-colors">Sobre</Link>
+              <Link href="/loja" className="hover:text-primary transition-colors">Comprar</Link>
+              <Link href="/sobre" className="hover:text-primary transition-colors">Sobre o Txova</Link>
               <Link href="/blog" className="hover:text-primary transition-colors">Novidades</Link>
               <Link href="/contato" className="hover:text-primary transition-colors">Contacto</Link>
-              <Link href="/faq" className="hover:text-primary transition-colors">FAQs</Link>
+              <Link href="/ajuda" className="hover:text-primary transition-colors">Ajuda</Link>
               {isAdmin && (
                 <Link 
                   href="/admin" 
@@ -140,7 +141,7 @@ export default function Header() {
               <div className="relative w-full">
                 <input
                   type="text"
-                  placeholder="Pesquisar produtos..."
+                  placeholder="Pesquisar produtos, serviços ou vendedores..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-3 rounded-l-lg focus:outline-none focus:border-primary"
@@ -239,11 +240,11 @@ export default function Header() {
           {isMobileMenuOpen && (
             <div className="lg:hidden mt-4 pb-4 border-t border-gray-3">
               <nav className="flex flex-col space-y-2 mt-4">
-                <Link href="/loja" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Comprar Agora</Link>
-                <Link href="/sobre" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Sobre</Link>
+                <Link href="/loja" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Comprar</Link>
+                <Link href="/sobre" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Sobre o Txova</Link>
                 <Link href="/blog" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Novidades</Link>
                 <Link href="/contato" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Contacto</Link>
-                <Link href="/faq" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">FAQs</Link>
+                <Link href="/ajuda" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Ajuda</Link>
                 {hasRole('admin') && (
                   <Link 
                     href="/admin" 
@@ -276,7 +277,7 @@ export default function Header() {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Pesquisar produtos ou serviços..."
+                  placeholder="Pesquisar produtos, serviços ou vendedores..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-3 rounded-lg focus:outline-none focus:border-primary"

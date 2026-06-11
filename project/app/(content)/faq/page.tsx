@@ -25,9 +25,9 @@ const faqs = [
       'O Txova funciona como uma montra digital e plataforma de aproximação entre compradores e vendedores. Os produtos e serviços são publicados pelos vendedores registados, que são responsáveis pela disponibilidade, qualidade, preço, entrega e atendimento, conforme as condições apresentadas.',
   },
   {
-    question: 'Como faço um pedido?',
+    question: 'Como posso comprar no Txova?',
     answer:
-      'Pesquise o produto ou serviço que pretende, consulte as informações disponíveis, adicione ao carrinho e finalize o pedido com os seus dados de contacto e entrega. Antes de confirmar, verifique sempre o produto, quantidade, preço, endereço e método de pagamento.',
+      'Pode pesquisar o produto ou serviço pretendido, consultar as informações disponíveis, seleccionar o vendedor e seguir os passos indicados para concluir o pedido.',
   },
   {
     question: 'Quais são as formas de pagamento aceites?',
@@ -128,12 +128,13 @@ export default function FAQPage() {
           <div className="lg:col-span-2">
             <div className="mb-8">
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-9 mb-2">
-                Perguntas Frequentes
+                Ajuda
               </h1>
-              <p className="text-lg font-medium text-gray-8 mb-3">Bem-vindo ao Txova</p>
+              <p className="text-lg font-medium text-gray-8 mb-3">Como podemos ajudar?</p>
               <p className="text-lg text-gray-7">
-                Encontre respostas às perguntas mais frequentes sobre compras, pagamentos,
-                entregas, produtos, serviços, vendedores e funcionamento da plataforma.
+                Encontre respostas sobre compras, vendas, pagamentos, entregas, pedidos, conta de utilizador
+                e funcionamento do Txova. A nossa equipa está disponível para apoiar compradores,
+                vendedores, pequenos negócios e parceiros.
               </p>
             </div>
 

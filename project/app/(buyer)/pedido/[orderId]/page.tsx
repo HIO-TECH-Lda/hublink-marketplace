@@ -634,7 +634,7 @@ export default function OrderTrackingPage() {
                       <span className="text-gray-9">{formatCurrency(order?.subtotal || order?.totalAmount || 0)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-6">Frete:</span>
+                      <span className="text-gray-6">Entrega:</span>
                       <span className="text-gray-9">{formatCurrency(order?.shipping || 0)}</span>
                     </div>
                     <div className="flex justify-between text-sm">

@@ -37,11 +37,11 @@ export default function BuyerLayout({
       <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Restrito</h1>
+          <p className="text-gray-6 mb-8">Deve iniciar sessão para aceder a esta página.</p>
           <Link href="/entrar">
             <Button className="bg-primary hover:bg-primary-hard text-white">
-              Fazer Login
+              Entrar
             </Button>
           </Link>
         </div>

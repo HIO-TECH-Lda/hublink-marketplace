@@ -48,7 +48,7 @@ export default function BlogListPage() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Novidades</h1>
-            <p className="text-gray-6 text-sm sm:text-base">Novidades, conteúdos e actualizações sobre o Txova e negócios locais</p>
+            <p className="text-gray-6 text-sm sm:text-base">Dicas, histórias e oportunidades para quem compra, vende e promove negócios locais no Txova.</p>
           </div>
           
           {/* Mobile Filter Button */}

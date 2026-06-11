@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Filter, Grid, List, ChevronDown, Star } from 'lucide-react';
 import Header from '@/components/layout/Header';
@@ -66,6 +66,23 @@ export default function ShopPage() {
     return priceMatch && ratingMatch && sellerMatch;
   });
 
+  const sortedProducts = useMemo(() => {
+    const list = [...filteredProducts];
+    switch (sortBy) {
+      case 'price-low':
+        return list.sort((a, b) => a.price - b.price);
+      case 'price-high':
+        return list.sort((a, b) => b.price - a.price);
+      case 'rating':
+        return list.sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0));
+      case 'newest':
+        return list.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+      case 'popular':
+      default:
+        return list.sort((a, b) => (b.totalReviews || 0) - (a.totalReviews || 0));
+    }
+  }, [filteredProducts, sortBy]);
+
   const handleCategoryChange = (category: string, checked: boolean) => {
     if (checked) {
       setSelectedCategories([...selectedCategories, category]);
@@ -118,7 +135,7 @@ export default function ShopPage() {
       <div className="container py-8 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
-          <span>Início</span> / <span className="text-primary">Comprar Agora</span>
+          <span>Início</span> / <span className="text-primary">Comprar</span>
           {searchQuery && (
             <>
               <span> / </span>
@@ -131,13 +148,16 @@ export default function ShopPage() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">
-              {searchQuery ? `Resultados para "${searchQuery}"` : 'Comprar Agora'}
+              {searchQuery ? `Resultados para "${searchQuery}"` : 'Comprar no Txova'}
             </h1>
             <p className="text-gray-6 text-sm sm:text-base">
               {searchQuery 
-                ? `Encontramos ${pagination.total} produto${pagination.total !== 1 ? 's' : ''} para "${searchQuery}"`
-                : `Encontrámos ${pagination.total} produtos para si`
+                ? `Encontrámos ${pagination.total} resultado${pagination.total !== 1 ? 's' : ''} para si.`
+                : 'Explore produtos, serviços e negócios locais disponíveis na sua zona.'
               }
+              {!searchQuery && (
+                <span className="block mt-1">Encontrámos {pagination.total} resultados para si.</span>
+              )}
             </p>
           </div>
           
@@ -150,11 +170,11 @@ export default function ShopPage() {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="border border-gray-3 rounded-lg px-2 sm:px-3 py-1 text-sm focus:outline-none focus:border-primary"
               >
-                <option value="popular">Popularidade</option>
-                <option value="price-low">Menor Preço</option>
-                <option value="price-high">Maior Preço</option>
-                <option value="rating">Avaliação</option>
-                <option value="newest">Mais Recentes</option>
+                <option value="popular">Mais comprados</option>
+                <option value="newest">Mais recentes</option>
+                <option value="price-low">Preço: mais baixo primeiro</option>
+                <option value="price-high">Preço: mais alto primeiro</option>
+                <option value="rating">Melhor avaliados</option>
               </select>
             </div>
           </div>
@@ -233,7 +253,7 @@ export default function ShopPage() {
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-gray-7">& acima</span>
+                      <span className="text-sm text-gray-7">ou mais</span>
                     </button>
                   ))}
                 </div>
@@ -262,9 +282,11 @@ export default function ShopPage() {
               <div>
                 <h3 className="font-semibold text-gray-9 mb-4">Tags Populares</h3>
                 <div className="flex flex-wrap gap-2">
-                  {['local', 'artesanal', 'moda', 'alimentação', 'serviços'].map((tag) => (
+                  {['negócio local', 'produto local', 'empreendedor informal', 'mais procurado', 'promoção', 'entrega disponível', 'feito em Moçambique', 'preço acessível'].map((tag) => (
                     <button
                       key={tag}
+                      type="button"
+                      onClick={() => setSearchQuery(tag)}
                       className="px-3 py-1 bg-gray-1 text-gray-7 rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
                     >
                       {tag}
@@ -293,8 +315,8 @@ export default function ShopPage() {
                     <ProductCardSkeleton key={i} />
                   ))}
                 </>
-              ) : filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => (
+              ) : sortedProducts.length > 0 ? (
+                sortedProducts.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))
               ) : (

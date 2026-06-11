@@ -319,7 +319,7 @@ export default function RefundPage() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Frete</span>
+                      <span className="text-gray-600">Entrega</span>
                       <span className="text-gray-900">
                         {formatCurrency(order.shipping || 0)}
                       </span>

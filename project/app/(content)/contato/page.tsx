@@ -38,13 +38,13 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Endereço',
-      content: 'Beira, Sofala\nMoçambique',
+      content: 'Rua Companhia de Moçambique\nCidade da Beira, Sofala – Moçambique',
       color: 'text-primary'
     },
     {
       icon: Phone,
       title: 'Telefones',
-      content: '+258 84 999 9999',
+      content: '+258 84 999 9999\n+258 84 888 8888',
       color: 'text-primary'
     },
     {
@@ -56,7 +56,7 @@ export default function ContactPage() {
     {
       icon: Clock,
       title: 'Horário de Atendimento',
-      content: 'Segunda a Sexta: 8h às 18h\nSábado: 8h às 12h',
+      content: 'Segunda a Sexta-feira: 08h00 às 18h00\nSábado: 08h00 às 12h00',
       color: 'text-primary'
     }
   ];
@@ -76,8 +76,9 @@ export default function ContactPage() {
         <div className="text-center mb-12">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">Entre em Contacto</h1>
           <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-            Tem alguma dúvida, sugestão ou quer fazer um pedido especial? 
-            Estamos aqui para o ajudar!
+            Tem alguma dúvida, sugestão ou pretende saber mais sobre o Txova? Estamos disponíveis
+            para apoiar compradores, vendedores, parceiros e todos os que desejam fazer parte desta
+            montra digital de negócios locais.
           </p>
         </div>
 
@@ -127,24 +128,9 @@ export default function ContactPage() {
                 >
                   <span className="text-primary hover:text-white font-semibold text-sm sm:text-base">f</span>
                 </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
-                >
-                  <span className="text-primary hover:text-white font-semibold text-sm sm:text-base">in</span>
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
-                >
-                  <span className="text-primary hover:text-white font-semibold text-sm sm:text-base">ig</span>
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
-                >
-                  <span className="text-primary hover:text-white font-semibold text-sm sm:text-base">yt</span>
-                </a>
+                <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">Instagram</a>
+                <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">TikTok</a>
+                <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">WhatsApp Channel</a>
               </div>
             </div>
           </div>
@@ -239,10 +225,10 @@ export default function ContactPage() {
             <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-gray-1 rounded-lg">
               <h4 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Informações Importantes</h4>
               <ul className="text-xs sm:text-sm text-gray-7 space-y-1">
-                <li>• Respondemos todas as mensagens em até 24 horas</li>
-                <li>• Para pedidos urgentes, ligue diretamente</li>
-                <li>• Horário de atendimento: Segunda a Sexta, 8h às 18h</li>
-                <li>• Sábados: 8h às 12h</li>
+                <li>• Respondemos às mensagens no prazo máximo de 24 horas.</li>
+                <li>• Para assuntos urgentes, contacte-nos directamente por telefone.</li>
+                <li>• O atendimento decorre de Segunda a Sexta-feira, das 08h00 às 18h00.</li>
+                <li>• Aos Sábados, o atendimento decorre das 08h00 às 12h00.</li>
               </ul>
             </div>
           </div>

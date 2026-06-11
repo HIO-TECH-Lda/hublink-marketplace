@@ -43,17 +43,18 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
               <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-9 leading-tight">
-                O Marketplace Local
-                <span className="text-primary"> da Beira</span>
+                Negócios locais mais visíveis,
+                <span className="text-primary"> clientes mais próximos</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                O Txova aproxima compradores de vendedores locais, pequenos negócios, produtores e
-                prestadores de serviços. Descubra produtos, faça pedidos e apoie a economia da sua comunidade.
+                Descubra produtos e serviços de vendedores, empreendedores informais, pequenos negócios
+                e produtores locais. O Txova promove o comércio local, facilita a divulgação e aproxima
+                quem vende de quem procura.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link href="/loja">
                   <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3 sm:py-4">
-                    Comprar Agora
+                    Comprar
                     <ArrowRight className="ml-2" size={20} />
                   </Button>
                 </Link>
@@ -85,29 +86,29 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <Truck className="text-primary" size={32} />
               </div>
-              <h3 className="font-semibold text-gray-9">Entregas Flexíveis</h3>
-              <p className="text-sm text-gray-6">Condições de entrega conforme vendedor, zona e tipo de pedido</p>
+              <h3 className="font-semibold text-gray-9">Entrega Acessível</h3>
+              <p className="text-sm text-gray-6">Receba os seus produtos no local indicado, com entrega gratuita em pedidos acima de 500 MZN.</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <CreditCard className="text-primary" size={32} />
               </div>
-              <h3 className="font-semibold text-gray-9">Pagamento Seguro</h3>
-              <p className="text-sm text-gray-6">M-Pesa, E-Mola, Imali, cartão e pagamento no acto da entrega</p>
+              <h3 className="font-semibold text-gray-9">Pagamento na Entrega</h3>
+              <p className="text-sm text-gray-6">Pague apenas no momento da entrega, por M-Pesa, E-Mola ou numerário.</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <Headphones className="text-primary" size={32} />
               </div>
-              <h3 className="font-semibold text-gray-9">Apoio ao Cliente</h3>
-              <p className="text-sm text-gray-6">Equipa disponível para dúvidas, pedidos e pedidos de apoio</p>
+              <h3 className="font-semibold text-gray-9">Suporte ao Cliente</h3>
+              <p className="text-sm text-gray-6">Atendimento disponível para apoiar compradores e vendedores sempre que necessário.</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <Trophy className="text-primary" size={32} />
               </div>
-              <h3 className="font-semibold text-gray-9">Vendedores Locais</h3>
-              <p className="text-sm text-gray-6">Negócios, bancas e empreendedores da sua comunidade</p>
+              <h3 className="font-semibold text-gray-9">Confiança e Qualidade</h3>
+              <p className="text-sm text-gray-6">Produtos e serviços divulgados por vendedores locais, com informação clara e contacto directo.</p>
             </div>
           </div>
         </div>
@@ -118,7 +119,7 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos em Destaque</h2>
-            <p className="text-gray-6">Descubra produtos e serviços em destaque na plataforma</p>
+            <p className="text-gray-6">Descubra produtos e serviços promovidos por vendedores locais, pequenos negócios e empreendedores informais no Txova.</p>
           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {featuredLoading ? (
@@ -154,25 +155,26 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
-                Compre e Venda Localmente
-                <span className="block">com o Txova</span>
+                Marketplace Local de Produtos e Serviços
+                <span className="block text-xl lg:text-2xl font-semibold mt-2">Simples, acessível e de confiança</span>
               </h2>
               <p className="text-lg text-green-gray-1">
-                Uma montra digital que aproxima quem vende de quem procura, com pagamentos,
-                entregas e apoio organizados num só lugar.
+                O Txova dá visibilidade a pequenos negócios, vendedores informais, produtores locais e
+                prestadores de serviços, aproximando quem vende de quem procura. Aqui, cada produto ou
+                serviço ganha uma montra digital e cada cliente encontra mais opções locais num só lugar.
               </p>
               <div className="flex items-center space-x-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold">1000+</div>
-                  <div className="text-sm text-green-gray-2">Produtos</div>
+                  <div className="text-sm text-green-gray-2">Produtos e serviços divulgados</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold">50+</div>
-                  <div className="text-sm text-green-gray-2">Vendedores</div>
+                  <div className="text-sm text-green-gray-2">Vendedores locais</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold">10k+</div>
-                  <div className="text-sm text-green-gray-2">Clientes</div>
+                  <div className="text-sm text-green-gray-2">Potenciais clientes alcançados</div>
                 </div>
               </div>
             </div>
@@ -191,8 +193,8 @@ export default function HomePage() {
       <section className="py-16 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos Mais Vendidos</h2>
-            <p className="text-gray-6">Os favoritos dos nossos compradores</p>
+            <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos Mais Procurados</h2>
+            <p className="text-gray-6">Conheça os produtos e serviços que mais despertam interesse entre os clientes do Txova.</p>
           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {bestSellerLoading ? (
@@ -218,8 +220,8 @@ export default function HomePage() {
       <section className="py-16">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">Novidades</h2>
-            <p className="text-gray-6">As novidades mais recentes na plataforma</p>
+            <h2 className="text-3xl font-bold text-gray-9 mb-4">Mais Recentes</h2>
+            <p className="text-gray-6">Descubra os produtos e serviços mais recentes divulgados pelos vendedores locais.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {newArrivalsLoading ? (
@@ -249,8 +251,8 @@ export default function HomePage() {
               <Trophy size={18} />
               Destaque
             </div>
-            <h2 className="text-3xl font-bold text-white mb-4">Melhores Vendedores</h2>
-            <p className="text-white max-w-xl mx-auto">Conheça os vendedores mais confiáveis e bem avaliados</p>
+            <h2 className="text-3xl font-bold text-white mb-4">Vendedores em Evidência</h2>
+            <p className="text-white max-w-xl mx-auto">Conheça os vendedores, pequenos negócios, produtores e prestadores de serviços com maior destaque no Txova.</p>
           </div>
           {sellersLoading ? (
             <div className="flex justify-center py-8">
@@ -289,7 +291,7 @@ export default function HomePage() {
               </div>
             </>
           ) : (
-            <p className="text-center text-white-6">Nenhum vendedor disponível no momento</p>
+            <p className="text-center text-white">Nenhum vendedor disponível neste momento.</p>
           )}
         </div>
       </section>
@@ -298,8 +300,8 @@ export default function HomePage() {
       <section className="py-16 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">Novidades</h2>
-            <p className="text-gray-6">Mantenha-se actualizado com conteúdos e novidades do Txova</p>
+            <h2 className="text-3xl font-bold text-gray-9 mb-4">Últimas Novidades</h2>
+            <p className="text-gray-6">Acompanhe novidades, dicas úteis e conteúdos sobre negócios locais, empreendedorismo, promoções e oportunidades no Txova.</p>
           </div>
           {blogLoading ? (
             <div className="flex justify-center py-8">
@@ -367,7 +369,8 @@ export default function HomePage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">O Que Dizem os Nossos Clientes</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Avaliações reais de clientes satisfeitos
+              Opiniões reais de clientes, vendedores e parceiros que utilizam o Txova para comprar,
+              vender, divulgar produtos e fortalecer negócios locais.
             </p>
           </div>
           <div className="max-w-4xl mx-auto px-4 sm:px-8">

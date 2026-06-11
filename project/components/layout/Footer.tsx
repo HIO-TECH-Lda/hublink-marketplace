@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube, Loader2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNewsletterSubscribe } from '@/hooks/useNewsletter';
@@ -32,8 +32,8 @@ export default function Footer() {
         <div className="container">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="text-center md:text-left">
-              <h3 className="text-xl sm:text-2xl font-semibold mb-2">Fique por Dentro das Novidades do Txova</h3>
-              <p className="text-gray-3 text-sm sm:text-base">Subscreva a nossa newsletter e receba actualizações sobre promoções, novos vendedores, produtos em destaque, serviços locais e oportunidades para compradores e empreendedores.</p>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-2">Subscreva a Nossa Newsletter</h3>
+              <p className="text-gray-3 text-sm sm:text-base">Receba novidades, oportunidades, promoções e conteúdos úteis sobre negócios locais directamente no seu e-mail.</p>
             </div>
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2">
               <Input
@@ -79,7 +79,9 @@ export default function Footer() {
                 />
               </div>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
-              Marketplace moçambicano que aproxima compradores e vendedores locais da Beira
+                Marketplace moçambicano criado para dar visibilidade a negócios locais, vendedores
+                informais, pequenos empreendedores, produtores e prestadores de serviços. Aproximamos
+                quem vende de quem procura, promovendo o comércio local e a economia da Beira.
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
@@ -102,7 +104,7 @@ export default function Footer() {
               <h4 className="font-semibold text-lg mb-6">Links Rápidos</h4>
               <ul className="space-y-3">
                 <li><Link href="/sobre" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Sobre o Txova</Link></li>
-                <li><Link href="/loja" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Comprar Agora</Link></li>
+                <li><Link href="/loja" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Comprar</Link></li>
                 <li><Link href="/contato" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Contacto</Link></li>
                 <li><Link href="/blog" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Novidades</Link></li>
                 <li><Link href="/faq" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Perguntas Frequentes</Link></li>
@@ -111,7 +113,7 @@ export default function Footer() {
 
             {/* Account */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Minha Conta</h4>
+              <h4 className="font-semibold text-lg mb-6">A Minha Conta</h4>
               <ul className="space-y-3">
                 <li><Link href="/painel" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">O Meu Painel</Link></li>
                 <li><Link href="/historico-pedidos" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Os Meus Pedidos</Link></li>
@@ -157,11 +159,11 @@ export default function Footer() {
                 <Link href="#" className="p-2 bg-gray-8 rounded-full hover:bg-primary transition-colors">
                   <Instagram size={16} />
                 </Link>
-                <Link href="#" className="p-2 bg-gray-8 rounded-full hover:bg-primary transition-colors">
-                  <Twitter size={16} />
+                <Link href="#" className="px-2 py-1 bg-gray-8 rounded-full hover:bg-primary transition-colors text-xs">
+                  TikTok
                 </Link>
-                <Link href="#" className="p-2 bg-gray-8 rounded-full hover:bg-primary transition-colors">
-                  <Youtube size={16} />
+                <Link href="#" className="px-2 py-1 bg-gray-8 rounded-full hover:bg-primary transition-colors text-xs">
+                  WhatsApp
                 </Link>
               </div>
             </div>
@@ -173,6 +175,7 @@ export default function Footer() {
                 <div className="px-2 py-1 bg-gray-8 rounded text-xs">M-Pesa</div>
                 <div className="px-2 py-1 bg-gray-8 rounded text-xs">E-Mola</div>
                 <div className="px-2 py-1 bg-gray-8 rounded text-xs">Débito</div>
+                <div className="px-2 py-1 bg-gray-8 rounded text-xs">Númerário</div>
               </div>
             </div>
           </div>

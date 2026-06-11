@@ -113,18 +113,29 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-6">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-9 leading-tight">
-                O Marketplace Local
-                <span className="text-primary block">da Beira</span>
+                Sobre o Txova
               </h1>
+              <p className="text-lg sm:text-xl text-primary font-semibold">
+                O marketplace que dá visibilidade aos negócios locais
+              </p>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                O Txova é uma plataforma moçambicana que aproxima compradores de vendedores locais,
-                pequenos negócios, bancas e prestadores de serviços. A nossa missão é dar visibilidade
-                à economia local e facilitar compras e vendas online.
+                O Txova é uma plataforma moçambicana criada para aproximar consumidores, vendedores
+                informais, pequenos negócios, produtores locais e prestadores de serviços, através de uma
+                montra digital simples, acessível e orientada para a valorização do comércio local.
+              </p>
+              <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
+                No Txova, cada negócio pode divulgar os seus produtos e serviços, alcançar novos clientes e
+                fortalecer a sua presença no mercado. Ao mesmo tempo, os consumidores encontram, num só
+                lugar, uma diversidade de opções locais, desde produtos alimentares, moda, mobília e artigos
+                para casa, até serviços prestados na comunidade.
+              </p>
+              <p className="text-base font-medium text-gray-8">
+                Mais visibilidade para quem vende. Mais opções para quem compra.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/loja">
                   <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3">
-                    Explorar a Plataforma
+                    Conheça os Produtos e Serviços
                   </Button>
                 </Link>
                 <Link href="/contato">
@@ -161,86 +172,58 @@ export default function AboutPage() {
                 A Nossa Missão
               </h2>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Aproximar quem vende de quem compra, promovendo o comércio local, a confiança
-                entre clientes e vendedores e o crescimento de pequenos negócios em Moçambique.
+                Aproximar vendedores locais, pequenos negócios, empreendedores informais, produtores,
+                prestadores de serviços e consumidores através de uma plataforma digital simples, acessível e
+                de confiança, promovendo maior visibilidade, divulgação e oportunidades de negócio no
+                mercado local.
               </p>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Leaf size={24} className="text-primary" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-gray-9 mb-2">Sustentabilidade</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Apoiamos negócios locais com impacto positivo na comunidade.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Heart size={24} className="text-primary" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-gray-9 mb-2">Saúde</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Facilitamos compras com informação clara sobre produtos e vendedores.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Users size={24} className="text-primary" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-gray-9 mb-2">Comunidade</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Fortalecendo vendedores locais e criando ligações genuínas.</p>
-                  </div>
-                </div>
-              </div>
+              <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
+                O Txova contribui para a promoção dos negócios locais, apoiando a transição digital de
+                pequenos empreendedores e reforçando a ligação entre vendedores e consumidores.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
+      {/* Vision Section */}
       <section className="py-16 lg:py-24 bg-gray-1">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9">A Nossa Visão</h2>
+            <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
+              Transformar o Txova numa referência moçambicana em comércio local digital, criando uma
+              plataforma onde pequenos negócios, vendedores informais, produtores e prestadores de
+              serviços possam crescer, ganhar visibilidade e alcançar novos clientes de forma simples,
+              acessível e sustentável.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-16 lg:py-24">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Os Nossos Valores</h2>
-            <p className="text-base sm:text-lg text-gray-7 mx-auto px-4">
-              Acreditamos que o comércio local fortalece comunidades, cria oportunidades
-              e aproxima quem produz ou vende de quem precisa de comprar.
-            </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award size={24} className="sm:w-8 sm:h-8 text-primary" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8">
+            {[
+              { title: 'Proximidade', text: 'Valorizamos a ligação directa entre vendedores e clientes, promovendo relações comerciais mais humanas, simples e próximas da realidade local.', icon: Users },
+              { title: 'Confiança', text: 'Incentivamos informação clara sobre produtos, serviços, preços, contactos, localização e condições de entrega.', icon: Award },
+              { title: 'Inclusão', text: 'Acreditamos que todos os negócios, formais ou informais, pequenos ou em crescimento, devem ter oportunidade de ganhar presença digital.', icon: Heart },
+              { title: 'Valorização Local', text: 'Promovemos o que é produzido, vendido e prestado localmente, contribuindo para fortalecer a economia da comunidade.', icon: Leaf },
+              { title: 'Simplicidade', text: 'Defendemos uma experiência fácil de usar, tanto para quem compra como para quem vende, reduzindo barreiras de acesso ao mercado digital.', icon: Star },
+            ].map((value) => (
+              <div key={value.title} className="bg-gray-1 rounded-lg p-4 sm:p-6 text-center">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <value.icon size={24} className="sm:w-8 sm:h-8 text-primary" />
+                </div>
+                <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">{value.title}</h3>
+                <p className="text-gray-7 text-xs sm:text-sm">{value.text}</p>
               </div>
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Qualidade</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Produtos e serviços apresentados com informação clara</p>
-            </div>
-            
-            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Leaf size={24} className="sm:w-8 sm:h-8 text-primary" />
-              </div>
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Sustentabilidade</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Práticas que preservam o meio ambiente</p>
-            </div>
-            
-            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart size={24} className="sm:w-8 sm:h-8 text-primary" />
-              </div>
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Transparência</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Rastreabilidade completa dos produtos</p>
-            </div>
-            
-            <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users size={24} className="sm:w-8 sm:h-8 text-primary" />
-              </div>
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Comunidade</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Fortalecendo vendedores locais</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -251,7 +234,8 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Os Nossos Parceiros</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Organizações que apoiam e fortalecem o ecossistema Txova.
+              Organizações, empresas e instituições que apoiam o Txova na promoção dos negócios locais,
+              na inclusão económica e na valorização dos empreendedores da nossa comunidade.
             </p>
           </div>
           <div className=" mx-auto px-4 sm:px-8">
@@ -286,7 +270,8 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">A Nossa Equipa</h2>
             <p className="text-base sm:text-lg text-gray-7 mx-auto px-4">
-              Conheça as pessoas apaixonadas que fazem o Txova acontecer todos os dias.
+              Conheça as pessoas comprometidas que trabalham todos os dias para tornar o Txova uma
+              plataforma simples, acessível e útil para vendedores, compradores, parceiros e negócios locais.
             </p>
           </div>
           <div className="mx-auto px-4 sm:px-8">
@@ -320,9 +305,10 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Depoimentos de Clientes</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Testemunhos de Clientes</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Veja o que os nossos clientes e parceiros dizem sobre o Txova.
+              Veja o que compradores, vendedores e parceiros dizem sobre a sua experiência com o Txova
+              e sobre o impacto da plataforma na promoção dos negócios locais.
             </p>
           </div>
 
@@ -369,11 +355,11 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-gradient-to-r from-primary to-primary-hard">
         <div className="container text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 px-4">
-            Compre Localmente com o Txova
+            Nós Aproximamos, Você Escolhe
           </h2>
           <p className="text-base sm:text-lg text-green-gray-1 mb-8 max-w-2xl mx-auto px-4">
-            Junte-se a quem já descobriu uma forma simples de comprar e apoiar negócios locais
-            através do Txova.
+            Junte-se aos clientes que já utilizam o Txova para descobrir produtos, serviços e negócios
+            locais de forma simples, acessível e conveniente.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/loja">
@@ -383,7 +369,7 @@ export default function AboutPage() {
             </Link>
             <Link href="/contato">
               <Button variant="outline" size="lg" className="border-white bg-transparent text-white hover:bg-white hover:text-primary hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-200 px-6 sm:px-8 py-3">
-                Entre em Contacto
+                Fale Connosco
               </Button>
             </Link>
           </div>

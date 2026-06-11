@@ -411,7 +411,7 @@ export default function ShoppingCartPage() {
                 )}
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-6">Frete</span>
+                  <span className="text-gray-6">Entrega</span>
                   <span className="font-medium">
                     {shipping === 0 ? (
                       <span className="text-primary">Grátis</span>
