@@ -53,12 +53,12 @@ export default function ForgotPasswordPage() {
                   Email Enviado!
                 </CardTitle>
                 <CardDescription className="text-gray-6">
-                  Enviamos um link para redefinir sua senha para <strong>{email}</strong>
+                  Enviámos um link para redefinir a sua palavra-passe para <strong>{email}</strong>
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-sm text-gray-6">
-                  Verifique sua caixa de entrada e clique no link para criar uma nova senha. 
+                  Verifique a sua caixa de entrada e clique no link para criar uma nova palavra-passe. 
                   O link expira em 1 hora.
                 </p>
                 <div className="space-y-2">
@@ -99,19 +99,19 @@ export default function ForgotPasswordPage() {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar ao Login
             </Link>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Esqueceu sua senha?</h1>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Esqueceu a palavra-passe?</h1>
             <p className="text-gray-6">
-              Não se preocupe! Digite seu email e enviaremos um link para redefinir sua senha.
+              Não se preocupe! Introduza o seu e-mail e enviaremos um link para redefinir a sua palavra-passe.
             </p>
           </div>
 
           <Card>
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-gray-9">
-                Redefinir Senha
+                Redefinir Palavra-passe
               </CardTitle>
               <CardDescription>
-                Insira o email associado à sua conta
+                Introduza o e-mail associado à sua conta
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -149,7 +149,7 @@ export default function ForgotPasswordPage() {
 
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-6">
-                  Lembrou sua senha?{' '}
+                  Recordou a palavra-passe?{' '}
                   <Link href="/entrar" className="text-primary hover:underline">
                     Fazer login
                   </Link>

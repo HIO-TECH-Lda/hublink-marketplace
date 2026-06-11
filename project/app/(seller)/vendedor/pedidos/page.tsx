@@ -133,7 +133,7 @@ export default function SellerOrdersPage() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Valor Total das Vendas</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      MTn {sellerOrders.reduce(
+                      MT {sellerOrders.reduce(
                         (total: number, order: any) => total + getSellerTotalFromOrder(order),
                         0
                       ).toFixed(2)}

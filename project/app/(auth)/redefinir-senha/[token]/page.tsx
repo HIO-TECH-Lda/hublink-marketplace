@@ -51,13 +51,13 @@ export default function ResetPasswordPage() {
 
     // Mock validation
     if (password.length < 8) {
-      setError('A senha deve ter pelo menos 8 caracteres.');
+      setError('A palavra-passe deve ter pelo menos 8 caracteres.');
       setIsLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('As senhas não coincidem.');
+      setError('As palavras-passe não coincidem.');
       setIsLoading(false);
       return;
     }
@@ -100,12 +100,12 @@ export default function ResetPasswordPage() {
                   Link Inválido
                 </CardTitle>
                 <CardDescription className="text-gray-6">
-                  Este link de redefinição de senha é inválido ou expirou.
+                  Este link de redefinição de palavra-passe é inválido ou expirou.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-gray-6 mb-6">
-                  Solicite um novo link de redefinição de senha.
+                  Solicite um novo link de redefinição de palavra-passe.
                 </p>
                 <Link href="/esqueci-senha">
                   <Button className="w-full bg-primary hover:bg-primary-hard text-white">
@@ -134,15 +134,15 @@ export default function ResetPasswordPage() {
                   <CheckCircle className="w-8 h-8 text-green-600" />
                 </div>
                 <CardTitle className="text-2xl font-bold text-gray-9">
-                  Senha Redefinida!
+                  Palavra-passe Redefinida!
                 </CardTitle>
                 <CardDescription className="text-gray-6">
-                  Sua senha foi alterada com sucesso.
+                  A sua palavra-passe foi alterada com sucesso.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-gray-6 mb-6">
-                  Agora você pode fazer login com sua nova senha.
+                  Agora pode iniciar sessão com a sua nova palavra-passe.
                 </p>
                 <Link href="/entrar">
                   <Button className="w-full bg-primary hover:bg-primary-hard text-white">
@@ -170,19 +170,19 @@ export default function ResetPasswordPage() {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar ao Login
             </Link>
-            <h1 className="text-3xl font-bold text-gray-9 mb-2">Nova Senha</h1>
+            <h1 className="text-3xl font-bold text-gray-9 mb-2">Nova Palavra-passe</h1>
             <p className="text-gray-6">
-              Digite sua nova senha abaixo.
+              Introduza a sua nova palavra-passe abaixo.
             </p>
           </div>
 
           <Card>
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-gray-9">
-                Redefinir Senha
+                Redefinir Palavra-passe
               </CardTitle>
               <CardDescription>
-                Crie uma nova senha segura para sua conta
+                Crie uma nova palavra-passe segura para a sua conta
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -194,13 +194,13 @@ export default function ResetPasswordPage() {
                 )}
                 
                 <div className="space-y-2">
-                  <Label htmlFor="password">Nova Senha</Label>
+                  <Label htmlFor="password">Nova Palavra-passe</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="Digite sua nova senha"
+                      placeholder="Introduza a sua nova palavra-passe"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="pl-10 pr-10"
@@ -219,13 +219,13 @@ export default function ResetPasswordPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirmar Nova Senha</Label>
+                  <Label htmlFor="confirmPassword">Confirmar Nova Palavra-passe</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
                     <Input
                       id="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Confirme sua nova senha"
+                      placeholder="Confirme a sua nova palavra-passe"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="pl-10 pr-10"
@@ -246,13 +246,13 @@ export default function ResetPasswordPage() {
                   className="w-full bg-primary hover:bg-primary-hard text-white"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Redefinindo...' : 'Redefinir Senha'}
+                  {isLoading ? 'A redefinir...' : 'Redefinir Palavra-passe'}
                 </Button>
               </form>
 
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-6">
-                  Lembrou sua senha?{' '}
+                  Recordou a palavra-passe?{' '}
                   <Link href="/entrar" className="text-primary hover:underline">
                     Fazer login
                   </Link>

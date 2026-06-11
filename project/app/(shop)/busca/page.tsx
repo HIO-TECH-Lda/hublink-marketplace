@@ -166,7 +166,7 @@ export default function SearchPage() {
     }
 
     // Organic filter
-    if (filters.organic && !product.tags?.includes('orgânico')) {
+    if (filters.organic && !product.tags?.includes('local')) {
       return false;
     }
 

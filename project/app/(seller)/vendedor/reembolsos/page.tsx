@@ -195,7 +195,7 @@ export default function SellerRefundsPage() {
                   <div>
                     <p className="text-sm text-gray-6">Valor Total em Reembolsos</p>
                     <p className="text-2xl font-bold text-gray-9">
-                      {statsLoading ? '...' : `MTn ${(statistics?.totalValue || 0).toFixed(2)}`}
+                      {statsLoading ? '...' : `MT ${(statistics?.totalValue || 0).toFixed(2)}`}
                     </p>
                   </div>
                   <DollarSign className="w-8 h-8 text-primary" />
@@ -310,7 +310,7 @@ export default function SellerRefundsPage() {
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              MTn {refund.amount.toFixed(2)}
+                              MT {refund.amount.toFixed(2)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(refund.status)}`}>
@@ -346,7 +346,7 @@ export default function SellerRefundsPage() {
                                         </div>
                                         <div>
                                           <p className="text-gray-6">Valor</p>
-                                          <p className="font-medium text-gray-9 mt-1">MTn {refund.amount.toFixed(2)}</p>
+                                          <p className="font-medium text-gray-9 mt-1">MT {refund.amount.toFixed(2)}</p>
                                         </div>
                                         <div>
                                           <p className="text-gray-6">Moeda</p>

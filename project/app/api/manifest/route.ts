@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const manifest = {
-    name: 'Txova - Marketplace Orgânico',
+    name: 'Txova - Marketplace Local',
     short_name: 'Txova',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. Conectamos produtores locais com consumidores conscientes.',
+    description: 'Marketplace moçambicano que aproxima compradores e vendedores locais da Beira.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
@@ -65,9 +65,9 @@ export async function GET() {
     ],
     shortcuts: [
       {
-        name: 'Banca',
-        short_name: 'Banca',
-        description: 'Explorar produtos orgânicos',
+        name: 'Comprar',
+        short_name: 'Comprar',
+        description: 'Explorar produtos e serviços locais',
         url: '/loja',
         icons: [
           {

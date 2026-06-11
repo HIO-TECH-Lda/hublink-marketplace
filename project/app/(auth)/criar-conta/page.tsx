@@ -27,7 +27,7 @@ export default function CreateAccountPage() {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      alert('As senhas não coincidem');
+      alert('As palavras-passe não coincidem');
       return;
     }
 
@@ -40,7 +40,7 @@ export default function CreateAccountPage() {
     const mockUser = {
       id: 'user2',
       firstName: 'Novo',
-      lastName: 'Usuário',
+      lastName: 'Utilizador',
       email: formData.email,
       phone: '',
       role: 'buyer' as const,
@@ -49,7 +49,7 @@ export default function CreateAccountPage() {
       profileImage: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
       billingAddress: {
         firstName: 'Novo',
-        lastName: 'Usuário',
+        lastName: 'Utilizador',
         address: '',
         country: 'Moçambique',
         state: '',
@@ -86,7 +86,7 @@ export default function CreateAccountPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Criar Conta</h1>
-            <p className="text-gray-6">Junte-se ao nosso marketplace orgânico</p>
+            <p className="text-gray-6">Junte-se ao marketplace local Txova</p>
           </div>
 
           {/* Form */}
@@ -101,7 +101,7 @@ export default function CreateAccountPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                placeholder="Digite seu e-mail"
+                placeholder="Introduza o seu e-mail"
                 required
                 className="w-full"
               />
@@ -110,7 +110,7 @@ export default function CreateAccountPage() {
             {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-7 mb-2">
-                Senha
+                Palavra-passe
               </label>
               <div className="relative">
                 <Input
@@ -118,7 +118,7 @@ export default function CreateAccountPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  placeholder="Digite sua senha"
+                  placeholder="Introduza a sua palavra-passe"
                   required
                   className="w-full pr-12"
                 />
@@ -135,7 +135,7 @@ export default function CreateAccountPage() {
             {/* Confirm Password */}
             <div>
               <label className="block text-sm font-medium text-gray-7 mb-2">
-                Confirmar Senha
+                Confirmar Palavra-passe
               </label>
               <div className="relative">
                 <Input
@@ -143,7 +143,7 @@ export default function CreateAccountPage() {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  placeholder="Confirme sua senha"
+                  placeholder="Confirme a sua palavra-passe"
                   required
                   className="w-full pr-12"
                 />
@@ -199,10 +199,10 @@ export default function CreateAccountPage() {
           <div className="mt-8 p-4 bg-primary-lighter border border-primary/20 rounded-lg">
             <div className="text-center">
               <h3 className="text-lg font-semibold text-primary-hard mb-2">
-                Quer vender seus produtos?
+                Quer vender os seus produtos?
               </h3>
               <p className="text-sm text-primary mb-4">
-                Junte-se aos nossos vendedores e comece a vender produtos orgânicos na nossa plataforma
+                Junte-se aos nossos vendedores e comece a divulgar produtos e serviços na plataforma
               </p>
               <Link href="/seja-vendedor">
                 <Button

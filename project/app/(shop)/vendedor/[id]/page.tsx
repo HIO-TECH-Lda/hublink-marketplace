@@ -70,7 +70,7 @@ export default function SellerProfilePage() {
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
           <Building className="w-16 h-16 text-gray-4 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-gray-9 mb-4">Vendedor não encontrado</h1>
-          <p className="text-gray-6 mb-8">O vendedor que você está procurando não existe.</p>
+          <p className="text-gray-6 mb-8">O vendedor que procura não existe.</p>
           <Link href="/loja">
             <Button className="bg-primary hover:bg-primary-hard text-white">
               <ArrowLeft size={16} className="mr-2" />

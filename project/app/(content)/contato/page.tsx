@@ -38,13 +38,13 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Endereço',
-      content: 'Rua das Flores, 123 - Baixa\n Beira - 2100',
+      content: 'Beira, Sofala\nMoçambique',
       color: 'text-primary'
     },
     {
       icon: Phone,
       title: 'Telefones',
-      content: '+258 84 9999-9999\n+258 84 8888-8888',
+      content: '+258 84 999 9999',
       color: 'text-primary'
     },
     {
@@ -55,7 +55,7 @@ export default function ContactPage() {
     },
     {
       icon: Clock,
-      title: 'Horário de Funcionamento',
+      title: 'Horário de Atendimento',
       content: 'Segunda a Sexta: 8h às 18h\nSábado: 8h às 12h',
       color: 'text-primary'
     }
@@ -77,7 +77,7 @@ export default function ContactPage() {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">Entre em Contacto</h1>
           <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
             Tem alguma dúvida, sugestão ou quer fazer um pedido especial? 
-            Estamos aqui para ajudar você!
+            Estamos aqui para o ajudar!
           </p>
         </div>
 
@@ -103,14 +103,14 @@ export default function ContactPage() {
 
             {/* Map */}
             <div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-9 mb-3 sm:mb-4">Nossa Localização</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-9 mb-3 sm:mb-4">A Nossa Localização</h3>
               <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div className="aspect-video bg-gray-2 flex items-center justify-center">
                   <div className="text-center p-4">
                     <MapPin size={32} className="sm:w-12 sm:h-12 text-gray-4 mx-auto mb-3 sm:mb-4" />
                     <p className="text-gray-6 text-sm sm:text-base">Mapa interativo será carregado aqui</p>
                     <p className="text-xs sm:text-sm text-gray-5 mt-2">
-                      Rua das Flores, 123 - Baixa, Beira - 2100
+                      Beira, Sofala – Moçambique
                     </p>
                   </div>
                 </div>
@@ -166,7 +166,7 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    placeholder="Seu nome completo"
+                    placeholder="O seu nome completo"
                   />
                 </div>
                 
@@ -197,7 +197,7 @@ export default function ContactPage() {
                   value={formData.subject}
                   onChange={handleInputChange}
                   required
-                  placeholder="Qual é o assunto da sua mensagem?"
+                  placeholder="Qual é o assunto da mensagem?"
                 />
               </div>
               
@@ -212,7 +212,7 @@ export default function ContactPage() {
                   onChange={handleInputChange}
                   required
                   rows={6}
-                  placeholder="Escreva sua mensagem aqui..."
+                  placeholder="Escreva a sua mensagem aqui..."
                 />
               </div>
               
@@ -261,32 +261,32 @@ export default function ContactPage() {
             <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
               <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Como faço um pedido?</h3>
               <p className="text-gray-7 text-xs sm:text-sm">
-                Navegue pelos produtos, adicione ao carrinho e finalize sua compra. 
-                Aceitamos M-Pesa, cartão de crédito e dinheiro na entrega.
+                Navegue pelos produtos, adicione ao carrinho e finalize a compra. 
+                Aceitamos M-Pesa, E-Mola, Imali, cartão e pagamento no acto da entrega.
               </p>
             </div>
             
             <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
               <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Qual o prazo de entrega?</h3>
               <p className="text-gray-7 text-xs sm:text-sm">
-                Entregamos em até 24 horas na região metropolitana. 
-                Para outras localidades, consulte nossa equipe.
+                O prazo depende do vendedor, da zona e do tipo de pedido. 
+                Para mais detalhes, consulte a nossa equipa ou a página de FAQ.
               </p>
             </div>
             
             <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Os produtos são realmente orgânicos?</h3>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Como contacto um vendedor?</h3>
               <p className="text-gray-7 text-xs sm:text-sm">
-                Sim! Todos os nossos produtores são certificados e passam por 
-                rigorosos controles de qualidade.
+                Pode ver os detalhes do vendedor na página do produto ou pedido.
+                Para apoio adicional, utilize a Central de Ajuda ou abra um pedido de apoio.
               </p>
             </div>
             
             <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Posso cancelar meu pedido?</h3>
+              <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Posso cancelar o meu pedido?</h3>
               <p className="text-gray-7 text-xs sm:text-sm">
-                Pedidos podem ser cancelados até 2 horas antes da entrega. 
-                Entre em contato conosco para solicitar o cancelamento.
+                As condições de cancelamento dependem do estado do pedido e do vendedor. 
+                Entre em contacto connosco ou consulte a página de Trocas e Devoluções.
               </p>
             </div>
           </div>

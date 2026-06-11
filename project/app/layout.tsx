@@ -13,20 +13,17 @@ import { siteConfig } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
+    default: 'Txova - Marketplace Local da Beira',
     template: '%s | Txova'
   },
-  description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes.',
+  description: 'Marketplace moçambicano que aproxima compradores e vendedores locais. Compre e venda produtos e serviços da Beira.',
   keywords: [
-    'alimentos orgânicos',
     'marketplace',
     'Beira',
     'Moçambique',
-    'produtos frescos',
-    'produtores locais',
-    'comida saudável',
-    'vegetais orgânicos',
-    'frutas orgânicas',
+    'produtos locais',
+    'vendedores locais',
+    'serviços locais',
     'txova',
     'ecommerce',
     'compras online'
@@ -48,14 +45,14 @@ export const metadata: Metadata = {
     locale: 'pt_MZ',
     url: siteConfig.appUrl,
     siteName: 'Txova',
-    title: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes.',
+    title: 'Txova - Marketplace Local da Beira',
+    description: 'Marketplace moçambicano que aproxima compradores e vendedores locais. Compre e venda produtos e serviços da Beira.',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Txova - Marketplace de Alimentos Orgânicos',
+        alt: 'Txova - Marketplace Local',
       },
     ],
   },
@@ -63,8 +60,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@txova',
     creator: '@txova',
-    title: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala.',
+    title: 'Txova - Marketplace Local da Beira',
+    description: 'Marketplace moçambicano que aproxima compradores e vendedores locais da Beira, Sofala.',
     images: ['/images/twitter-image.jpg'],
   },
   robots: {
@@ -125,7 +122,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Txova" />
-        <meta name="description" content="Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes." />
+        <meta name="description" content="Marketplace moçambicano que aproxima compradores e vendedores locais. Compre e venda produtos e serviços da Beira." />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/icons/browserconfig.xml" />
@@ -156,16 +153,16 @@ export default function RootLayout({
         <meta name="application/ld+json" content={JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "Txova - Marketplace Orgânico",
+          "name": "Txova - Marketplace Local",
           "url": siteConfig.appUrl,
           "logo": `${siteConfig.appUrl}/icons/icon-512x512.png`,
-          "description": "Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala",
+          "description": "Marketplace moçambicano que aproxima compradores e vendedores locais da Beira, Sofala",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Rua Principal, 123",
+            "streetAddress": "Beira",
             "addressLocality": "Beira",
             "addressRegion": "Sofala",
-            "postalCode": "1100",
+            "postalCode": "",
             "addressCountry": "MZ"
           },
           "contactPoint": {

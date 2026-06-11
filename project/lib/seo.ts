@@ -61,52 +61,52 @@ export function generateMetadata(config: SEOConfig): Metadata {
 // Predefined SEO configurations for common pages
 export const seoConfigs = {
   home: {
-    title: 'Txova - Marketplace de Alimentos Orgânicos em Beira',
-    description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala. Conectamos produtores locais com consumidores conscientes.',
+    title: 'Txova - Marketplace Local da Beira',
+    description: 'Marketplace moçambicano que aproxima compradores e vendedores locais. Compre e venda produtos e serviços da Beira.',
     keywords: [
-      'alimentos orgânicos',
       'marketplace',
       'Beira',
       'Moçambique',
-      'produtos frescos',
-      'produtores locais',
-      'comida saudável'
+      'produtos locais',
+      'vendedores locais',
+      'compras online',
+      'serviços locais'
     ],
     url: '/',
   },
   
   shop: {
-    title: 'Banca de Produtos Orgânicos | Txova',
-    description: 'Explore nossa banca de produtos orgânicos frescos e saudáveis. Encontre vegetais, frutas, grãos e muito mais diretamente dos produtores locais.',
+    title: 'Comprar | Txova',
+    description: 'Explore produtos e serviços divulgados por vendedores locais no Txova. Encontre alimentação, moda, mobília, acessórios e muito mais.',
     keywords: [
-      'produtos orgânicos',
-      'banca',
-      'vegetais',
-      'frutas',
-      'grãos',
+      'comprar',
+      'produtos locais',
+      'loja online',
+      'marketplace',
+      'Beira',
       'compras online'
     ],
     url: '/loja',
   },
   
   about: {
-    title: 'Sobre Nós | Txova',
-    description: 'Conheça a Txova, o marketplace que conecta produtores locais de alimentos orgânicos com consumidores conscientes em Beira, Moçambique.',
+    title: 'Sobre o Txova | Txova',
+    description: 'Conheça o Txova, o marketplace moçambicano que dá visibilidade a negócios locais, vendedores informais e pequenos empreendedores.',
     keywords: [
       'sobre txova',
-      'nossa história',
       'missão',
       'valores',
-      'produtores locais'
+      'vendedores locais',
+      'marketplace moçambicano'
     ],
     url: '/sobre',
   },
   
   contact: {
-    title: 'Contato | Txova',
-    description: 'Entre em contato com a Txova. Estamos aqui para ajudar com suas dúvidas sobre produtos orgânicos e nosso marketplace.',
+    title: 'Contacto | Txova',
+    description: 'Entre em contacto com a Txova. A nossa equipa está disponível para dúvidas sobre compras, vendas, pagamentos e entregas.',
     keywords: [
-      'contato',
+      'contacto',
       'suporte',
       'ajuda',
       'dúvidas',
@@ -116,14 +116,14 @@ export const seoConfigs = {
   },
   
   blog: {
-    title: 'Blog | Txova - Dicas e Notícias sobre Alimentos Orgânicos',
-    description: 'Leia artigos sobre alimentação saudável, dicas de culinária, notícias sobre produtos orgânicos e muito mais no blog da Txova.',
+    title: 'Novidades | Txova',
+    description: 'Leia novidades, conteúdos úteis e actualizações sobre produtos, serviços e negócios locais disponíveis no Txova.',
     keywords: [
-      'blog',
+      'novidades',
       'artigos',
-      'alimentação saudável',
-      'dicas culinárias',
-      'produtos orgânicos'
+      'marketplace',
+      'negócios locais',
+      'txova'
     ],
     url: '/blog',
   },
@@ -170,12 +170,11 @@ export const seoConfigs = {
 export function generateProductSEO(product: any) {
   return generateMetadata({
     title: `${product.name} | Txova`,
-    description: product.description || `Compre ${product.name} orgânico na Txova. Produto fresco e saudável diretamente do produtor.`,
+    description: product.description || `Compre ${product.name} na Txova. Produto disponível de vendedores locais na plataforma.`,
     keywords: [
       product.name,
-      'orgânico',
       product.category,
-      'produto fresco',
+      'produto local',
       'txova',
       'compras online'
     ],
@@ -189,13 +188,13 @@ export function generateProductSEO(product: any) {
 export function generateSellerSEO(seller: any) {
   return generateMetadata({
     title: `${seller.businessName} | Vendedor Txova`,
-    description: `Conheça ${seller.businessName} na Txova. Produtos orgânicos frescos e de qualidade.`,
+    description: `Conheça ${seller.businessName} na Txova. Produtos e serviços de vendedores locais na plataforma.`,
     keywords: [
       seller.businessName,
       'vendedor',
-      'produtos orgânicos',
+      'vendedor local',
       'txova',
-      'produtor local'
+      'negócio local'
     ],
     url: `/vendedor/${seller.id}`,
     type: 'website',
@@ -206,14 +205,14 @@ export function generateSellerSEO(seller: any) {
 // Helper function to generate blog post SEO
 export function generateBlogPostSEO(post: any) {
   return generateMetadata({
-    title: `${post.title} | Blog Txova`,
+    title: `${post.title} | Novidades Txova`,
     description: post.excerpt || post.description,
     keywords: [
       ...(post.tags || []),
       'blog',
       'artigo',
       'txova',
-      'alimentação saudável'
+      'negócios locais'
     ],
     url: `/blog/${post.id}`,
     type: 'article',

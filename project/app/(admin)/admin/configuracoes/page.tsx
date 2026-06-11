@@ -420,7 +420,7 @@ export default function SystemSettingsPage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="minimumPayout">Payout Mínimo (MTn)</Label>
+                    <Label htmlFor="minimumPayout">Payout Mínimo (MT)</Label>
                     <Input
                       id="minimumPayout"
                       type="number"

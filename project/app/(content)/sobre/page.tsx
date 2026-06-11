@@ -22,7 +22,7 @@ export default function AboutPage() {
       name: 'Maria Silva',
       position: 'CEO & Fundadora',
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      bio: 'Especialista em agricultura orgânica com mais de 15 anos de experiência.'
+      bio: 'Especialista em negócios locais e economia comunitária com mais de 15 anos de experiência.'
     },
     {
       id: '2',
@@ -36,14 +36,14 @@ export default function AboutPage() {
       name: 'Ana Costa',
       position: 'Chef de Culinária',
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      bio: 'Especialista em receitas orgânicas e alimentação saudável.'
+      bio: 'Especialista em experiência do cliente e comunicação com a comunidade local.'
     },
     {
       id: '4',
       name: 'Carlos Oliveira',
       position: 'Diretor de Tecnologia',
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      bio: 'Desenvolvedor da plataforma que conecta produtores e consumidores.'
+      bio: 'Responsável pela plataforma que aproxima compradores e vendedores locais.'
     }
   ];
 
@@ -53,13 +53,13 @@ export default function AboutPage() {
       id: '1',
       name: 'Agricultura Verde',
       logo: 'https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg',
-      description: 'Parceiro em certificação orgânica',
+      description: 'Parceiro em apoio a negócios locais',
     },
     {
       id: '2',
       name: 'Cooperativa Sul',
       logo: 'https://images.pexels.com/photos/1268871/pexels-photo-1268871.jpeg',
-      description: 'Rede de produtores locais',
+      description: 'Rede de vendedores locais',
     },
     {
       id: '3',
@@ -81,15 +81,15 @@ export default function AboutPage() {
       id: '1',
       name: 'Fernanda Lima',
       role: 'Cliente Fiel',
-      content: 'O Txova transformou minha alimentação! Os produtos são frescos, saborosos e eu sei exatamente de onde vêm.',
+      content: 'O Txova facilitou as minhas compras locais! Encontro produtos variados e sei exactamente quem vende.',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     },
     {
       id: '2',
       name: 'Roberto Almeida',
-      role: 'Produtor Orgânico',
-      content: 'Como produtor, o Txova me deu a oportunidade de vender diretamente para os consumidores. É uma parceria incrível!',
+      role: 'Vendedor Local',
+      content: 'Como vendedor, o Txova deu-me visibilidade para chegar a mais clientes na minha zona. É uma parceria incrível!',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     },
@@ -97,7 +97,7 @@ export default function AboutPage() {
       id: '3',
       name: 'Patrícia Mendes',
       role: 'Nutricionista',
-      content: 'Recomendo o Txova para todos os meus pacientes. A qualidade dos produtos orgânicos é excepcional.',
+      content: 'Recomendo o Txova para quem procura apoiar negócios locais com um processo de compra simples e transparente.',
       rating: 5,
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg'
     }
@@ -113,18 +113,18 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-6">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-9 leading-tight">
-                Marketplace de Alimentos Orgânicos
-                <span className="text-primary block">100% Confiável</span>
+                O Marketplace Local
+                <span className="text-primary block">da Beira</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Somos uma plataforma que conecta produtores orgânicos certificados com consumidores 
-                que valorizam qualidade, saúde e sustentabilidade. Nossa missão é democratizar o 
-                acesso a alimentos orgânicos frescos e saudáveis.
+                O Txova é uma plataforma moçambicana que aproxima compradores de vendedores locais,
+                pequenos negócios, bancas e prestadores de serviços. A nossa missão é dar visibilidade
+                à economia local e facilitar compras e vendas online.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/loja">
                   <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3">
-                    Conheça Nossos Produtos
+                    Explorar a Plataforma
                   </Button>
                 </Link>
                 <Link href="/contato">
@@ -137,7 +137,7 @@ export default function AboutPage() {
             <div className="relative order-first lg:order-last">
               <img
                 src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
-                alt="Alimentos Orgânicos"
+                alt="Marketplace local Txova"
                 className="w-full h-auto rounded-2xl shadow-2xl"
               />
             </div>
@@ -152,17 +152,17 @@ export default function AboutPage() {
             <div className="relative order-first lg:order-last">
               <img
                 src="https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg"
-                alt="Nossa Missão"
+                alt="A nossa missão"
                 className="w-full h-auto rounded-2xl shadow-lg"
               />
             </div>
             <div className="space-y-6 order-last lg:order-first">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-9">
-                Nossa Missão
+                A Nossa Missão
               </h2>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Conectar produtores orgânicos certificados com consumidores conscientes, 
-                promovendo uma alimentação mais saudável e sustentável para todos.
+                Aproximar quem vende de quem compra, promovendo o comércio local, a confiança
+                entre clientes e vendedores e o crescimento de pequenos negócios em Moçambique.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
@@ -171,7 +171,7 @@ export default function AboutPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-gray-9 mb-2">Sustentabilidade</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Promovemos práticas agrícolas que preservam o meio ambiente.</p>
+                    <p className="text-gray-7 text-sm sm:text-base">Apoiamos negócios locais com impacto positivo na comunidade.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -180,7 +180,7 @@ export default function AboutPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-gray-9 mb-2">Saúde</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Oferecemos produtos livres de agrotóxicos e químicos nocivos.</p>
+                    <p className="text-gray-7 text-sm sm:text-base">Facilitamos compras com informação clara sobre produtos e vendedores.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -189,7 +189,7 @@ export default function AboutPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-gray-9 mb-2">Comunidade</h3>
-                    <p className="text-gray-7 text-sm sm:text-base">Fortalecendo produtores locais e criando conexões genuínas.</p>
+                    <p className="text-gray-7 text-sm sm:text-base">Fortalecendo vendedores locais e criando ligações genuínas.</p>
                   </div>
                 </div>
               </div>
@@ -202,10 +202,10 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossos Valores</h2>
-            <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Acreditamos que a qualidade dos alimentos impacta diretamente na qualidade de vida 
-              das pessoas e na saúde do planeta.
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Os Nossos Valores</h2>
+            <p className="text-base sm:text-lg text-gray-7 mx-auto px-4">
+              Acreditamos que o comércio local fortalece comunidades, cria oportunidades
+              e aproxima quem produz ou vende de quem precisa de comprar.
             </p>
           </div>
           
@@ -215,7 +215,7 @@ export default function AboutPage() {
                 <Award size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
               <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Qualidade</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Produtos certificados e de alta qualidade</p>
+              <p className="text-gray-7 text-xs sm:text-sm">Produtos e serviços apresentados com informação clara</p>
             </div>
             
             <div className="bg-white rounded-lg p-4 sm:p-6 text-center">
@@ -239,7 +239,7 @@ export default function AboutPage() {
                 <Users size={24} className="sm:w-8 sm:h-8 text-primary" />
               </div>
               <h3 className="font-semibold text-gray-9 mb-2 text-sm sm:text-base">Comunidade</h3>
-              <p className="text-gray-7 text-xs sm:text-sm">Fortalecendo produtores locais</p>
+              <p className="text-gray-7 text-xs sm:text-sm">Fortalecendo vendedores locais</p>
             </div>
           </div>
         </div>
@@ -249,12 +249,12 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossos Parceiros</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Os Nossos Parceiros</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
               Organizações que apoiam e fortalecem o ecossistema Txova.
             </p>
           </div>
-          <div className="max-w-4xl mx-auto px-4 sm:px-8">
+          <div className=" mx-auto px-4 sm:px-8">
             <Carousel opts={{ loop: true, align: 'start' }} autoplay={{ delay: 5000 }} className="w-full">
               <CarouselContent className="-ml-4">
                 {partners.map((partner) => (
@@ -284,12 +284,12 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Nossa Equipe Incrível</h2>
-            <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">A Nossa Equipa</h2>
+            <p className="text-base sm:text-lg text-gray-7 mx-auto px-4">
               Conheça as pessoas apaixonadas que fazem o Txova acontecer todos os dias.
             </p>
           </div>
-          <div className="max-w-4xl mx-auto px-4 sm:px-8">
+          <div className="mx-auto px-4 sm:px-8">
             <Carousel opts={{ loop: true, align: 'start' }} className="w-full">
               <CarouselContent className="-ml-4">
                 {teamMembers.map((member) => (
@@ -322,11 +322,11 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">Depoimentos de Clientes</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-              Veja o que nossos clientes e parceiros dizem sobre o Txova.
+              Veja o que os nossos clientes e parceiros dizem sobre o Txova.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto px-4 sm:px-8">
+          <div className=" mx-auto px-4 sm:px-8">
             <Carousel opts={{ loop: true, align: 'start' }} autoplay={{ delay: 5000 }} className="w-full">
               <CarouselContent className="-ml-4">
                 {testimonials.map((testimonial) => (
@@ -369,10 +369,10 @@ export default function AboutPage() {
       <section className="py-16 lg:py-24 bg-gradient-to-r from-primary to-primary-hard">
         <div className="container text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 px-4">
-            Nós Entregamos, Você Aproveita Seu Pedido
+            Compre Localmente com o Txova
           </h2>
           <p className="text-base sm:text-lg text-green-gray-1 mb-8 max-w-2xl mx-auto px-4">
-            Junte-se a milhares de pessoas que já descobriram os benefícios dos alimentos orgânicos 
+            Junte-se a quem já descobriu uma forma simples de comprar e apoiar negócios locais
             através do Txova.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -383,7 +383,7 @@ export default function AboutPage() {
             </Link>
             <Link href="/contato">
               <Button variant="outline" size="lg" className="border-white bg-transparent text-white hover:bg-white hover:text-primary hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-200 px-6 sm:px-8 py-3">
-                Fale Conosco
+                Entre em Contacto
               </Button>
             </Link>
           </div>

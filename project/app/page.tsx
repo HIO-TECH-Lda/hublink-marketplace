@@ -43,17 +43,17 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-4 sm:space-y-6 text-center lg:text-left">
               <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-9 leading-tight">
-                Alimentos Orgânicos
-                <span className="text-primary block">Frescos e Saudáveis</span>
+                O Marketplace Local
+                <span className="text-primary"> da Beira</span>
               </h1>
               <p className="text-base sm:text-lg text-gray-7 leading-relaxed">
-                Conectamos você diretamente com produtores locais de alimentos orgânicos em Beira. 
-                Qualidade garantida, sabor autêntico e nutrição máxima para sua família.
+                O Txova aproxima compradores de vendedores locais, pequenos negócios, produtores e
+                prestadores de serviços. Descubra produtos, faça pedidos e apoie a economia da sua comunidade.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link href="/loja">
                   <Button size="lg" className="bg-primary hover:bg-primary-hard text-white px-6 sm:px-8 py-3 sm:py-4">
-                    Compre Agora
+                    Comprar Agora
                     <ArrowRight className="ml-2" size={20} />
                   </Button>
                 </Link>
@@ -68,7 +68,7 @@ export default function HomePage() {
               <div className="aspect-square rounded-full bg-gradient-to-br from-primary/20 to-primary-soft/20 flex items-center justify-center">
                 <img
                   src="https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg"
-                  alt="Alimentos Orgânicos"
+                  alt="Produtos e serviços locais no Txova"
                   className="w-4/5 h-4/5 object-cover rounded-full"
                 />
               </div>
@@ -85,29 +85,29 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <Truck className="text-primary" size={32} />
               </div>
-              <h3 className="font-semibold text-gray-9">Entrega Grátis</h3>
-              <p className="text-sm text-gray-6">Entrega gratuita em pedidos acima de 500 MZN</p>
+              <h3 className="font-semibold text-gray-9">Entregas Flexíveis</h3>
+              <p className="text-sm text-gray-6">Condições de entrega conforme vendedor, zona e tipo de pedido</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <CreditCard className="text-primary" size={32} />
               </div>
               <h3 className="font-semibold text-gray-9">Pagamento Seguro</h3>
-              <p className="text-sm text-gray-6">M-Pesa, E-Mola e Cartão de Débito</p>
+              <p className="text-sm text-gray-6">M-Pesa, E-Mola, Imali, cartão e pagamento no acto da entrega</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <Headphones className="text-primary" size={32} />
               </div>
-              <h3 className="font-semibold text-gray-9">Suporte 24/7</h3>
-              <p className="text-sm text-gray-6">Atendimento sempre disponível</p>
+              <h3 className="font-semibold text-gray-9">Apoio ao Cliente</h3>
+              <p className="text-sm text-gray-6">Equipa disponível para dúvidas, pedidos e pedidos de apoio</p>
             </div>
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                 <Trophy className="text-primary" size={32} />
               </div>
-              <h3 className="font-semibold text-gray-9">Qualidade Garantida</h3>
-              <p className="text-sm text-gray-6">Produtos certificados e frescos</p>
+              <h3 className="font-semibold text-gray-9">Vendedores Locais</h3>
+              <p className="text-sm text-gray-6">Negócios, bancas e empreendedores da sua comunidade</p>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos em Destaque</h2>
-            <p className="text-gray-6">Descubra nossa seleção especial de produtos orgânicos</p>
+            <p className="text-gray-6">Descubra produtos e serviços em destaque na plataforma</p>
           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {featuredLoading ? (
@@ -154,12 +154,12 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white space-y-6">
               <h2 className="text-3xl lg:text-4xl font-bold">
-                Marketplace de Alimentos Orgânicos
-                <span className="block">100% Confiável</span>
+                Compre e Venda Localmente
+                <span className="block">com o Txova</span>
               </h2>
               <p className="text-lg text-green-gray-1">
-                Nossos produtores são certificados e seguem os mais rigorosos padrões 
-                de qualidade para garantir que você receba apenas o melhor em Beira.
+                Uma montra digital que aproxima quem vende de quem procura, com pagamentos,
+                entregas e apoio organizados num só lugar.
               </p>
               <div className="flex items-center space-x-4">
                 <div className="text-center">
@@ -179,7 +179,7 @@ export default function HomePage() {
             <div className="relative">
               <img
                 src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg"
-                alt="Alimentos Orgânicos Confiáveis"
+                alt="Marketplace local Txova"
                 className="rounded-2xl shadow-2xl"
               />
             </div>
@@ -192,7 +192,7 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Produtos Mais Vendidos</h2>
-            <p className="text-gray-6">Os favoritos dos nossos clientes</p>
+            <p className="text-gray-6">Os favoritos dos nossos compradores</p>
           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {bestSellerLoading ? (
@@ -219,7 +219,7 @@ export default function HomePage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-9 mb-4">Novidades</h2>
-            <p className="text-gray-6">Os produtos mais recentes em nossa loja</p>
+            <p className="text-gray-6">As novidades mais recentes na plataforma</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {newArrivalsLoading ? (
@@ -250,7 +250,7 @@ export default function HomePage() {
               Destaque
             </div>
             <h2 className="text-3xl font-bold text-white mb-4">Melhores Vendedores</h2>
-            <p className="text-white max-w-xl mx-auto">Conheça os produtores mais confiáveis e bem avaliados</p>
+            <p className="text-white max-w-xl mx-auto">Conheça os vendedores mais confiáveis e bem avaliados</p>
           </div>
           {sellersLoading ? (
             <div className="flex justify-center py-8">
@@ -298,8 +298,8 @@ export default function HomePage() {
       <section className="py-16 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-9 mb-4">Últimas Notícias</h2>
-            <p className="text-gray-6">Mantenha-se atualizado com dicas e novidades</p>
+            <h2 className="text-3xl font-bold text-gray-9 mb-4">Novidades</h2>
+            <p className="text-gray-6">Mantenha-se actualizado com conteúdos e novidades do Txova</p>
           </div>
           {blogLoading ? (
             <div className="flex justify-center py-8">
@@ -365,7 +365,7 @@ export default function HomePage() {
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">O Que Nossos Clientes Dizem</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">O Que Dizem os Nossos Clientes</h2>
             <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
               Avaliações reais de clientes satisfeitos
             </p>
@@ -386,7 +386,7 @@ export default function HomePage() {
                     id: '2',
                     name: 'João Santos',
                     role: 'Beira, Sofala',
-                    content: 'Finalmente encontrei um marketplace que conecta diretamente com produtores locais. Recomendo!',
+                    content: 'Finalmente encontrei um marketplace que aproxima directamente compradores e vendedores locais. Recomendo!',
                     rating: 5,
                     image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
                   },
@@ -394,7 +394,7 @@ export default function HomePage() {
                     id: '3',
                     name: 'Ana Costa',
                     role: 'Beira, Sofala',
-                    content: 'A variedade de produtos orgânicos é incrível. Minha família está mais saudável desde que começamos a comprar aqui.',
+                    content: 'Encontrei vendedores locais com produtos variados e um processo de compra simples. Recomendo o Txova.',
                     rating: 5,
                     image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
                   },

@@ -137,9 +137,9 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
         return {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: 'Txova - Marketplace Orgânico',
+          name: 'Txova - Marketplace Local',
           url: baseUrl,
-          description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
+          description: 'Marketplace moçambicano que aproxima compradores e vendedores locais da Beira, Sofala',
           potentialAction: {
             '@type': 'SearchAction',
             target: {
@@ -172,15 +172,15 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
 
 // Helper functions for common structured data (use siteConfig at call site for env-based values)
 export const getOrganizationData = (): OrganizationData => ({
-  name: 'Txova - Marketplace Orgânico',
+  name: 'Txova - Marketplace Local',
   url: siteConfig.appUrl,
   logo: `${siteConfig.appUrl}/icons/icon-512x512.png`,
-  description: 'Marketplace moçambicano de alimentos orgânicos frescos e saudáveis em Beira, Sofala',
+  description: 'Marketplace moçambicano que aproxima compradores e vendedores locais da Beira, Sofala',
   address: {
-    streetAddress: 'Rua Principal, 123',
+    streetAddress: 'Beira',
     addressLocality: 'Beira',
     addressRegion: 'Sofala',
-    postalCode: '1100',
+    postalCode: '',
     addressCountry: 'MZ',
   },
   contactPoint: {

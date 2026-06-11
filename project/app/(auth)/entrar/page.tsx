@@ -119,7 +119,7 @@ export default function SignInPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Entrar</h1>
-            <p className="text-gray-6">Bem-vindo de volta! Faça login em sua conta</p>
+            <p className="text-gray-6">Bem-vindo de volta! Inicie sessão na sua conta</p>
           </div>
 
           {/* Form */}
@@ -134,7 +134,7 @@ export default function SignInPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                placeholder="Digite seu e-mail"
+                placeholder="Introduza o seu e-mail"
                 required
                 className="w-full"
               />
@@ -143,7 +143,7 @@ export default function SignInPage() {
             {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-7 mb-2">
-                Senha
+                Palavra-passe
               </label>
               <div className="relative">
                 <Input
@@ -151,7 +151,7 @@ export default function SignInPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  placeholder="Digite sua senha"
+                  placeholder="Introduza a sua palavra-passe"
                   required
                   className="w-full pr-12"
                 />
@@ -188,7 +188,7 @@ export default function SignInPage() {
                 </label>
               </div>
               <Link href="/esqueci-senha" className="text-sm text-primary hover:text-primary-hard">
-                Esqueceu a Senha?
+                Esqueceu a palavra-passe?
               </Link>
             </div>
 
@@ -207,7 +207,7 @@ export default function SignInPage() {
             <p className="text-gray-6">
               Não tem uma conta?{' '}
               <Link href="/criar-conta" className="text-primary hover:text-primary-hard font-medium">
-                Cadastre-se
+                Registe-se
               </Link>
             </p>
           </div>

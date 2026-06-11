@@ -227,8 +227,8 @@ export default function AdvancedFilters({
                   className="w-full"
                 />
                 <div className="flex justify-between text-sm text-gray-5 mt-2">
-                  <span>MTn {filters.priceRange[0]}</span>
-                  <span>MTn {filters.priceRange[1]}</span>
+                  <span>MT {filters.priceRange[0]}</span>
+                  <span>MT {filters.priceRange[1]}</span>
                 </div>
               </div>
             </div>
@@ -287,7 +287,7 @@ export default function AdvancedFilters({
                     onCheckedChange={(checked) => updateFilters({ organic: checked as boolean })}
                   />
                   <Label htmlFor="organic" className="text-sm text-gray-7">
-                    Apenas orgânicos
+                    Apenas produtos locais
                   </Label>
                 </div>
               </div>

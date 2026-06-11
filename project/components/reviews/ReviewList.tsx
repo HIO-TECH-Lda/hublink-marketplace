@@ -85,8 +85,8 @@ export default function ReviewList({ reviews, onHelpful, onReport }: ReviewListP
   };
 
   const getUserName = (userId: Review['userId']): string => {
-    if (typeof userId === 'string') return 'Usuário';
-    return `${userId.firstName || ''} ${userId.lastName || ''}`.trim() || 'Usuário';
+    if (typeof userId === 'string') return 'Utilizador';
+    return `${userId.firstName || ''} ${userId.lastName || ''}`.trim() || 'Utilizador';
   };
 
   const getUserAvatar = (userId: Review['userId']): string | undefined => {

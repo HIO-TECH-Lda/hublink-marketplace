@@ -4,7 +4,7 @@
  *
  * Add to .env.local:
  *   NEXT_PUBLIC_SITE_NAME=Marketplace
- *   NEXT_PUBLIC_SITE_DESCRIPTION=Marketplace moçambicano em Beira
+ *   NEXT_PUBLIC_SITE_DESCRIPTION=Marketplace moçambicano da Beira
  *   NEXT_PUBLIC_APP_URL=https://marketplace.co.mz
  *   NEXT_PUBLIC_CONTACT_EMAIL=contato@marketplace.co.mz
  *   NEXT_PUBLIC_SUPPORT_EMAIL=suporte@marketplace.co.mz
@@ -16,7 +16,7 @@
 const defaults = {
   siteName: 'Marketplace',
   siteDescription:
-    'Marketplace moçambicano em Beira.',
+    'Marketplace moçambicano da Beira.',
   appUrl: 'https://marketplace.co.mz',
   contactEmail: 'contato@marketplace.co.mz',
   supportEmail: 'suporte@marketplace.co.mz',

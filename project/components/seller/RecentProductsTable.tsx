@@ -102,11 +102,11 @@ export default function RecentProductsTable({
                 <div className="text-sm text-gray-900">
                   {product.originalPrice && (
                     <div className="text-gray-500 line-through">
-                      MTn {Number(product.originalPrice).toFixed(2)}
+                      MT {Number(product.originalPrice).toFixed(2)}
                     </div>
                   )}
                   <div className="font-medium text-green-600">
-                    MTn {Number(product.price || 0).toFixed(2)}
+                    MT {Number(product.price || 0).toFixed(2)}
                   </div>
                 </div>
               </td>

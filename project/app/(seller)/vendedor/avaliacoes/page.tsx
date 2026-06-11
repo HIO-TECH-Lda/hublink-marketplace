@@ -77,8 +77,8 @@ export default function SellerReviewsPage() {
   };
 
   const getUserName = (userId: Review['userId']): string => {
-    if (typeof userId === 'string') return 'Usuário';
-    return `${userId.firstName || ''} ${userId.lastName || ''}`.trim() || 'Usuário';
+    if (typeof userId === 'string') return 'Utilizador';
+    return `${userId.firstName || ''} ${userId.lastName || ''}`.trim() || 'Utilizador';
   };
 
   const getProductName = (productId: Review['productId']): string => {

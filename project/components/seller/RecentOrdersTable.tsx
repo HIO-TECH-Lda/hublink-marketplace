@@ -147,7 +147,7 @@ export default function RecentOrdersTable({
                   {sellerItems.length} {sellerItems.length === 1 ? 'item' : 'itens'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  MTn {Number(sellerTotal).toFixed(2)}
+                  MT {Number(sellerTotal).toFixed(2)}
                 </td>
                 {showDetails && (
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -198,8 +198,8 @@ export default function RecentOrdersTable({
                                   <tr key={it._id} className="border-b border-gray-1">
                                     <td className="py-2 px-2">{it.productName}</td>
                                     <td className="py-2 px-2">{it.quantity}</td>
-                                    <td className="py-2 px-2">MTn {Number(it.unitPrice).toFixed(2)}</td>
-                                    <td className="py-2 px-2 font-medium">MTn {Number(it.totalPrice ?? it.unitPrice * it.quantity).toFixed(2)}</td>
+                                    <td className="py-2 px-2">MT {Number(it.unitPrice).toFixed(2)}</td>
+                                    <td className="py-2 px-2 font-medium">MT {Number(it.totalPrice ?? it.unitPrice * it.quantity).toFixed(2)}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -212,11 +212,11 @@ export default function RecentOrdersTable({
                             </div>
                             <div>
                               <p className="text-gray-6">Subtotal</p>
-                              <p className="font-medium text-gray-9">MTn {Number(order.subtotal).toFixed(2)}</p>
+                              <p className="font-medium text-gray-9">MT {Number(order.subtotal).toFixed(2)}</p>
                             </div>
                             <div>
                               <p className="text-gray-6">Total</p>
-                              <p className="font-semibold text-gray-9">MTn {Number(order.total).toFixed(2)}</p>
+                              <p className="font-semibold text-gray-9">MT {Number(order.total).toFixed(2)}</p>
                             </div>
                           </div>
                         </div>

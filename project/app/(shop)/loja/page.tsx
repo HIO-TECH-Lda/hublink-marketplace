@@ -136,7 +136,7 @@ export default function ShopPage() {
             <p className="text-gray-6 text-sm sm:text-base">
               {searchQuery 
                 ? `Encontramos ${pagination.total} produto${pagination.total !== 1 ? 's' : ''} para "${searchQuery}"`
-                : `Encontramos ${pagination.total} produtos para você`
+                : `Encontrámos ${pagination.total} produtos para si`
               }
             </p>
           </div>
@@ -262,7 +262,7 @@ export default function ShopPage() {
               <div>
                 <h3 className="font-semibold text-gray-9 mb-4">Tags Populares</h3>
                 <div className="flex flex-wrap gap-2">
-                  {['orgânico', 'fresco', 'local', 'doce', 'crocante'].map((tag) => (
+                  {['local', 'artesanal', 'moda', 'alimentação', 'serviços'].map((tag) => (
                     <button
                       key={tag}
                       className="px-3 py-1 bg-gray-1 text-gray-7 rounded-full text-sm hover:bg-primary hover:text-white transition-colors"

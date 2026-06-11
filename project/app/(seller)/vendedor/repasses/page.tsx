@@ -169,7 +169,7 @@ export default function PayoutsPage() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Saldo Disponível</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      {balanceLoading ? '...' : `MTn ${(balance?.available || 0).toFixed(2)}`}
+                      {balanceLoading ? '...' : `MT ${(balance?.available || 0).toFixed(2)}`}
                     </p>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ export default function PayoutsPage() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Saldo Pendente</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      {balanceLoading ? '...' : `MTn ${(balance?.pending || 0).toFixed(2)}`}
+                      {balanceLoading ? '...' : `MT ${(balance?.pending || 0).toFixed(2)}`}
                     </p>
                   </div>
                 </div>
@@ -197,7 +197,7 @@ export default function PayoutsPage() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Total Ganho</p>
                     <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
-                      {balanceLoading ? '...' : `MTn ${(balance?.totalEarned || 0).toFixed(2)}`}
+                      {balanceLoading ? '...' : `MT ${(balance?.totalEarned || 0).toFixed(2)}`}
                     </p>
                   </div>
                 </div>
@@ -219,13 +219,13 @@ export default function PayoutsPage() {
                     <DialogHeader>
                       <DialogTitle>Solicitar Levantamento</DialogTitle>
                       <DialogDescription>
-                        Solicite um repasse do seu saldo disponível: MTn {(balance?.available || 0).toFixed(2)}
+                        Solicite um repasse do seu saldo disponível: MT {(balance?.available || 0).toFixed(2)}
                       </DialogDescription>
                     </DialogHeader>
                     <form onSubmit={handlePayoutRequest} className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-7 mb-2">
-                          Valor do Repasse (MTn) *
+                          Valor do Repasse (MT) *
                         </label>
                         <Input
                           type="number"
@@ -339,7 +339,7 @@ export default function PayoutsPage() {
                             {getMethodText(payout.method)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            MTn {payout.netAmount.toFixed(2)}
+                            MT {payout.netAmount.toFixed(2)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(payout.status)}`}>
@@ -378,7 +378,7 @@ export default function PayoutsPage() {
                                     </div>
                                     <div>
                                       <p className="text-gray-6">Valor</p>
-                                      <p className="font-medium text-gray-9 mt-1">MTn {payout.netAmount.toFixed(2)}</p>
+                                      <p className="font-medium text-gray-9 mt-1">MT {payout.netAmount.toFixed(2)}</p>
                                     </div>
                                   </div>
                                   
@@ -404,7 +404,7 @@ export default function PayoutsPage() {
                                     </div>
                                     <div>
                                       <p className="text-gray-6">Comissão</p>
-                                      <p className="font-medium text-gray-9 mt-1">MTn {payout.commissionAmount.toFixed(2)}</p>
+                                      <p className="font-medium text-gray-9 mt-1">MT {payout.commissionAmount.toFixed(2)}</p>
                                     </div>
                                     <div>
                                       <p className="text-gray-6">Data de Criação</p>
@@ -451,7 +451,7 @@ export default function PayoutsPage() {
                                                   {typeof order === 'string' ? order : order.orderNumber || order._id}
                                                 </td>
                                                 <td className="py-2 px-2">
-                                                  {typeof order === 'string' ? '—' : `MTn ${(order.total || 0).toFixed(2)}`}
+                                                  {typeof order === 'string' ? '—' : `MT ${(order.total || 0).toFixed(2)}`}
                                                 </td>
                                                 <td className="py-2 px-2">
                                                   {typeof order === 'string' ? '—' : (

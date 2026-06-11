@@ -235,7 +235,7 @@ export default function AdminTicketDetailPage() {
           <div className="text-center">
             <AlertCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-9 mb-2">Ticket não encontrado</h3>
-            <p className="text-gray-6 mb-4">O ticket que você está procurando não existe.</p>
+            <p className="text-gray-6 mb-4">O pedido de apoio que procura não existe.</p>
             <Button onClick={() => router.push('/admin/tickets')}>
               Voltar para Tickets
             </Button>

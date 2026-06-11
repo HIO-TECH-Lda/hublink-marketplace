@@ -79,7 +79,7 @@ export default function Footer() {
                 />
               </div>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
-              Marketplace moçambicano que aproxima compradores e vendedores locais em Beira
+              Marketplace moçambicano que aproxima compradores e vendedores locais da Beira
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
