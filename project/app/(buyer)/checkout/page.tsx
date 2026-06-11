@@ -244,7 +244,7 @@ export default function CheckoutPage() {
                     <Input
                       id="phone"
                       name="phone"
-                      placeholder="+258 84 123 4567"
+                      placeholder="+258 84 999 9999"
                       value={formData.phone}
                       onChange={handleInputChange}
                       required

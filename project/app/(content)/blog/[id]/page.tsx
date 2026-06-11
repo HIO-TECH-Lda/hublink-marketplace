@@ -37,7 +37,7 @@ export default function BlogPostPage() {
           <Link href="/blog">
             <Button className="bg-primary hover:bg-primary-hard text-white">
               <ArrowLeft size={16} className="mr-2" />
-              Voltar ao Blog
+              Voltar aos Novidades
             </Button>
           </Link>
         </div>
@@ -57,7 +57,7 @@ export default function BlogPostPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <Link href="/blog" className="hover:text-primary"> Blog</Link> / 
+          <Link href="/blog" className="hover:text-primary">Novidades</Link> / 
           <span className="text-primary">{post.title}</span>
         </nav>
 
@@ -213,7 +213,7 @@ export default function BlogPostPage() {
           <Link href="/blog">
             <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
               <ArrowLeft size={16} className="mr-2" />
-              Voltar ao Blog
+              Voltar as Novidades
             </Button>
           </Link>
         </div>

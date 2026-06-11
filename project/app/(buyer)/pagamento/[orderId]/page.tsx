@@ -467,7 +467,7 @@ export default function PaymentPage() {
                       <Label htmlFor="phoneNumber">Número de Telefone *</Label>
                       <Input
                         id="phoneNumber"
-                        placeholder="+258 84 123 4567"
+                        placeholder="+258 84 999 9999"
                         value={formData.phoneNumber}
                         onChange={(e) => setFormData(prev => ({ ...prev, phoneNumber: e.target.value }))}
                         className="mt-1"

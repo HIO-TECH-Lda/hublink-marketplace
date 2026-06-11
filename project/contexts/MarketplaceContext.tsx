@@ -879,7 +879,7 @@ const mockOrders: Order[] = [
       state: 'Sofala',
       zipCode: '2100',
       email: 'joao@exemplo.com',
-      phone: '+258 84 123 4567'
+      phone: '+258 84 999 9999'
     },
     paymentMethod: 'M-Pesa',
     shippingAddress: {
@@ -1124,7 +1124,7 @@ const mockOrders: Order[] = [
       state: 'Sofala',
       zipCode: '2100',
       email: 'joao@exemplo.com',
-      phone: '+258 84 123 4567'
+      phone: '+258 84 999 9999'
     },
     paymentMethod: 'M-Pesa',
     shippingAddress: {

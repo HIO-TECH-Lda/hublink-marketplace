@@ -69,12 +69,12 @@ export default function ContactPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <a href="/" className="hover:text-primary">Início</a> / 
-          <span className="text-primary"> Contato</span>
+          <span className="text-primary"> Contacto</span>
         </nav>
 
         {/* Page Header */}
         <div className="text-center mb-12">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">Entre em Contato</h1>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">Entre em Contacto</h1>
           <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
             Tem alguma dúvida, sugestão ou quer fazer um pedido especial? 
             Estamos aqui para ajudar você!
@@ -85,7 +85,7 @@ export default function ContactPage() {
           {/* Contact Information */}
           <div className="space-y-6 lg:space-y-8">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-9 mb-4 sm:mb-6">Informações de Contato</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-9 mb-4 sm:mb-6">Informações de Contacto</h2>
               <div className="space-y-4 sm:space-y-6">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-start space-x-3 sm:space-x-4">

@@ -124,7 +124,7 @@ export default function AdvancedFilters({
       {/* Search Input */}
       <div className="space-y-2">
         <Label htmlFor="search" className="text-sm font-medium text-gray-7">
-          Buscar Produtos
+          Pesquisar Produtos
         </Label>
         <Input
           id="search"

@@ -72,7 +72,7 @@ export default function NotFoundPage() {
                 href="/sobre"
                 className="p-4 border border-gray-2 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-left"
               >
-                <h3 className="font-semibold text-gray-9 mb-1">Sobre Nós</h3>
+                <h3 className="font-semibold text-gray-9 mb-1">Sobre o Txova</h3>
                 <p className="text-sm text-gray-6">Conheça nossa história e missão</p>
               </Link>
               
@@ -80,7 +80,7 @@ export default function NotFoundPage() {
                 href="/blog"
                 className="p-4 border border-gray-2 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-left"
               >
-                <h3 className="font-semibold text-gray-9 mb-1">Blog</h3>
+                <h3 className="font-semibold text-gray-9 mb-1">Novidades</h3>
                 <p className="text-sm text-gray-6">Dicas e receitas com alimentos orgânicos</p>
               </Link>
               
@@ -88,7 +88,7 @@ export default function NotFoundPage() {
                 href="/contato"
                 className="p-4 border border-gray-2 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-left"
               >
-                <h3 className="font-semibold text-gray-9 mb-1">Contato</h3>
+                <h3 className="font-semibold text-gray-9 mb-1">Contacto</h3>
                 <p className="text-sm text-gray-6">Entre em contato conosco</p>
               </Link>
             </div>
@@ -105,7 +105,7 @@ export default function NotFoundPage() {
             <Link href="/loja">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
                 <Search size={16} className="mr-2" />
-                Buscar Produtos
+                Pesquisar Produtos
               </Button>
             </Link>
           </div>

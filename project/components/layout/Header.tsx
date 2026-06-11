@@ -82,8 +82,8 @@ export default function Header() {
             <div className="flex items-center space-x-4 sm:space-x-6">
               <div className="flex items-center space-x-2">
                 <Phone size={14} />
-                <span className="hidden md:inline">+258 84 123 4567</span>
-                <span className="md:hidden">+258 84 123 4567</span>
+                <span className="hidden md:inline">+258 84 999 9999</span>
+                <span className="md:hidden">+258 84 999 9999</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={14} />
@@ -121,8 +121,8 @@ export default function Header() {
             <nav className={`hidden lg:flex items-center ${isAdmin ? 'space-x-6 ml-6' : 'space-x-8 ml-8'}`}>
               <Link href="/loja" className="hover:text-primary transition-colors">Comprar Agora</Link>
               <Link href="/sobre" className="hover:text-primary transition-colors">Sobre</Link>
-              <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
-              <Link href="/contato" className="hover:text-primary transition-colors">Contato</Link>
+              <Link href="/blog" className="hover:text-primary transition-colors">Novidades</Link>
+              <Link href="/contato" className="hover:text-primary transition-colors">Contacto</Link>
               <Link href="/faq" className="hover:text-primary transition-colors">FAQs</Link>
               {isAdmin && (
                 <Link 
@@ -140,7 +140,7 @@ export default function Header() {
               <div className="relative w-full">
                 <input
                   type="text"
-                  placeholder="Buscar produtos..."
+                  placeholder="Pesquisar produtos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-3 rounded-l-lg focus:outline-none focus:border-primary"
@@ -241,8 +241,8 @@ export default function Header() {
               <nav className="flex flex-col space-y-2 mt-4">
                 <Link href="/loja" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Comprar Agora</Link>
                 <Link href="/sobre" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Sobre</Link>
-                <Link href="/blog" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Blog</Link>
-                <Link href="/contato" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Contato</Link>
+                <Link href="/blog" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Novidades</Link>
+                <Link href="/contato" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Contacto</Link>
                 <Link href="/faq" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">FAQs</Link>
                 {hasRole('admin') && (
                   <Link 
@@ -264,7 +264,7 @@ export default function Header() {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
           <div className="bg-white p-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Buscar Produtos</h3>
+              <h3 className="text-lg font-semibold">Pesquisar Produtos</h3>
               <button 
                 onClick={handleCloseSearchModal}
                 className="p-2 hover:bg-gray-1 rounded-lg transition-colors"
@@ -276,7 +276,7 @@ export default function Header() {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Digite o que você procura..."
+                  placeholder="Pesquisar produtos ou serviços..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-3 rounded-lg focus:outline-none focus:border-primary"

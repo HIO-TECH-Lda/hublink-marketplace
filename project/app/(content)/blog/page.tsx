@@ -41,13 +41,13 @@ export default function BlogListPage() {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
           <Link href="/" className="hover:text-primary">Início</Link> / 
-          <span className="text-primary"> Blog</span>
+          <span className="text-primary">Novidades</span>
         </nav>
 
         {/* Page Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Nosso Blog</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">Novidades</h1>
             <p className="text-gray-6 text-sm sm:text-base">Dicas, receitas e novidades sobre alimentos orgânicos</p>
           </div>
           
@@ -193,7 +193,7 @@ export default function BlogListPage() {
                     <div className="aspect-video bg-gray-1 overflow-hidden">
                       <img
                         src={post.image || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'}
-                        alt={post.title || 'Blog post'}
+                        alt={post.title || 'Novidade'}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>

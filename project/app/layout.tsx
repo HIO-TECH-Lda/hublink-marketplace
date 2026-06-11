@@ -170,7 +170,7 @@ export default function RootLayout({
           },
           "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+258 84 123 4567",
+            "telephone": "+258 84 999 9999",
             "contactType": "customer service",
             "email": siteConfig.contactEmail
           },

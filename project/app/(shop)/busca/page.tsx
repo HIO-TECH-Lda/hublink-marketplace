@@ -219,7 +219,7 @@ export default function SearchPage() {
         {/* Search Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-9 mb-2">
-            {query ? `Resultados para "${query}"` : 'Buscar Produtos'}
+            {query ? `Resultados para "${query}"` : 'Pesquisar Produtos'}
           </h1>
           <p className="text-gray-6">
             {sortedProducts.length} produto{sortedProducts.length !== 1 ? 's' : ''} encontrado{sortedProducts.length !== 1 ? 's' : ''}
@@ -248,7 +248,7 @@ export default function SearchPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-4 w-4 h-4" />
                 <Input
-                  placeholder="Buscar produtos..."
+                  placeholder="Pesquisar produtos..."
                   value={query}
                   onChange={(e) => {
                     setQuery(e.target.value);

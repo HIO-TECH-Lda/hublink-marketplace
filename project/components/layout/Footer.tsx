@@ -79,8 +79,7 @@ export default function Footer() {
                 />
               </div>
               <p className="text-gray-4 mb-6 text-sm sm:text-base leading-relaxed">
-                Marketplace moçambicano de alimentos orgânicos frescos e saudáveis. 
-                Conectamos produtores locais com consumidores conscientes em Beira.
+              Marketplace moçambicano que aproxima compradores e vendedores locais em Beira
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
@@ -89,7 +88,7 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone size={16} className="flex-shrink-0" />
-                  <span>+258 84 123 4567</span>
+                  <span>+258 84 999 9999</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={16} className="flex-shrink-0" />
@@ -102,11 +101,11 @@ export default function Footer() {
             <div>
               <h4 className="font-semibold text-lg mb-6">Links Rápidos</h4>
               <ul className="space-y-3">
-                <li><Link href="/sobre" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Sobre Nós</Link></li>
+                <li><Link href="/sobre" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Sobre o Txova</Link></li>
                 <li><Link href="/loja" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Comprar Agora</Link></li>
-                <li><Link href="/contato" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Contato</Link></li>
-                <li><Link href="/blog" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Blog</Link></li>
-                <li><Link href="/faq" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">FAQs</Link></li>
+                <li><Link href="/contato" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Contacto</Link></li>
+                <li><Link href="/blog" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Novidades</Link></li>
+                <li><Link href="/faq" className="text-gray-4 hover:text-primary transition-colors text-sm sm:text-base">Perguntas Frequentes</Link></li>
               </ul>
             </div>
 

@@ -208,7 +208,7 @@ export default function SellerProfilePage() {
             {/* Contact Info */}
             <Card>
               <CardHeader>
-                <CardTitle>Informações de Contato</CardTitle>
+                <CardTitle>Informações de Contacto</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {seller.contactEmail && (
