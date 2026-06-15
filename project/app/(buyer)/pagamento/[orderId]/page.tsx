@@ -185,10 +185,10 @@ export default function PaymentPage() {
       <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-16 px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Negado</h1>
-          <p className="text-gray-6 mb-8">Você precisa estar logado para acessar esta página.</p>
+          <h1 className="text-2xl font-bold text-gray-9 mb-4">Acesso Restrito</h1>
+          <p className="text-gray-6 mb-8">Deve iniciar sessão para aceder a esta página.</p>
           <Button onClick={() => router.push('/entrar')} className="bg-primary hover:bg-primary-hard text-white">
-            Fazer Login
+            Entrar
           </Button>
         </div>
         <Footer />
@@ -344,7 +344,7 @@ export default function PaymentPage() {
                 Informações de Pagamento
               </CardTitle>
               <CardDescription>
-                Escolha sua forma de pagamento preferida
+                Escolha a forma de pagamento mais conveniente para concluir o seu pedido no Txova.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -456,13 +456,18 @@ export default function PaymentPage() {
                           className="text-primary"
                         />
                         <CreditCard size={20} className="text-primary" />
-                        <Label htmlFor="cash_on_delivery" className="flex-1 cursor-pointer">Pagamento na Entrega</Label>
+                        <Label htmlFor="cash_on_delivery" className="flex-1 cursor-pointer">
+                          <span className="block font-medium">Pagamento no Acto da Entrega</span>
+                          <span className="block text-sm text-gray-6 font-normal mt-1">
+                            Pague apenas quando receber o seu pedido, por numerário, M-Pesa, E-Mola ou outro método aceite.
+                          </span>
+                        </Label>
                       </div>
                     </div>
                   </div>
 
                   {/* Mobile Money Payment Fields */}
-                  {(formData.paymentMethod === 'mpesa' || formData.paymentMethod === 'emola' || formData.paymentMethod === 'imali') && (
+                  {(formData.paymentMethod === 'mpesa' || formData.paymentMethod === 'emola' || formData.paymentMethod === 'imali' || formData.paymentMethod === 'cash_on_delivery') && (
                     <div>
                       <Label htmlFor="phoneNumber">Número de Telefone *</Label>
                       <Input
@@ -474,10 +479,11 @@ export default function PaymentPage() {
                         required
                       />
                       <p className="text-sm text-gray-6 mt-1">
-                        {formData.paymentMethod === 'imali' 
-                          ? 'Você receberá um link de pagamento via SMS.' 
-                          : 'Você receberá uma notificação no seu telefone para confirmar o pagamento.'
-                        }
+                        {formData.paymentMethod === 'cash_on_delivery'
+                          ? 'Este número poderá ser utilizado para confirmar o pagamento, validar o pedido ou facilitar o contacto no momento da entrega.'
+                          : formData.paymentMethod === 'imali'
+                          ? 'Receberá um link de pagamento via SMS.'
+                          : 'Receberá uma notificação no seu telefone para confirmar o pagamento.'}
                       </p>
                     </div>
                   )}
@@ -560,7 +566,7 @@ export default function PaymentPage() {
                       onCheckedChange={(checked) => setFormData(prev => ({ ...prev, savePaymentMethod: checked as boolean }))}
                     />
                     <Label htmlFor="savePaymentMethod" className="text-sm text-gray-7">
-                      Salvar método de pagamento para futuras compras
+                      Guardar este método de pagamento para compras futuras
                     </Label>
                   </div>
                 </div>
@@ -569,7 +575,7 @@ export default function PaymentPage() {
                   <Shield className="w-5 h-5 text-primary mt-0.5" />
                   <div className="text-sm text-gray-6">
                     <p className="font-medium text-gray-7 mb-1">Pagamento Seguro</p>
-                    <p>Suas informações de pagamento são criptografadas e protegidas.</p>
+                    <p>As suas informações de pagamento são tratadas com segurança e utilizadas apenas para processar o pedido, confirmar a transacção e facilitar a entrega.</p>
                   </div>
                 </div>
 
@@ -586,7 +592,9 @@ export default function PaymentPage() {
                   ) : (
                     <>
                       <Lock className="w-4 h-4 mr-2" />
-                      Pagar {formatCurrency(order.total || 0)}
+                      {formData.paymentMethod === 'cash_on_delivery'
+                        ? 'Confirmar Pedido - Pagar na Entrega'
+                        : `Pagar ${formatCurrency(order.total || 0)}`}
                     </>
                   )}
                 </Button>
@@ -629,7 +637,7 @@ export default function PaymentPage() {
                     <span className="text-gray-9">{formatCurrency(order.total || 0)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-6">Entrega:</span>
+                    <span className="text-gray-6">Taxa de Entrega:</span>
                     <span className="text-gray-9">{formatCurrency(order.shipping || 0)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
