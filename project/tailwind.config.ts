@@ -14,12 +14,12 @@ const config: Config = {
       },
       colors: {
         primary: {
-          DEFAULT: '#2563EB',
+          DEFAULT: '#EE4D2D',
           foreground: '#ffffff',
-          soft: '#60A5FA',
-          hard: '#1D4ED8',
-          light: '#3B82F6',
-          lighter: '#DBEAFE',
+          soft: '#FF6B4A',
+          hard: '#D73211',
+          light: '#F26B4A',
+          lighter: '#FFF4F0',
         },
         warning: '#FF7B40',
         danger: '#EA4B4E',

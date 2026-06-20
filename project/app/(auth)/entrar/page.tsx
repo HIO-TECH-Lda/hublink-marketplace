@@ -231,11 +231,11 @@ export default function SignInPage() {
           <div className="mt-8 p-4 bg-gray-1 rounded-lg">
             <p className="text-sm text-gray-6 mb-3 font-medium">Contas de demonstração:</p>
             <div className="space-y-2">
-              <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex flex-col gap-2">
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  // size="sm"
                   disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('buyer.test@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
@@ -245,7 +245,7 @@ export default function SignInPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  // size="sm"
                   disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('vendedor.update@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
@@ -255,7 +255,17 @@ export default function SignInPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  // size="sm"
+                  disabled={isLoading || authLoading}
+                  onClick={() => handleDemoLogin('afil@test.com')}
+                  className="flex-1 text-xs disabled:opacity-50"
+                >
+                  {isLoading ? 'Entrando...' : 'Login Afiliado'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  // size="sm"
                   disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('helton@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"

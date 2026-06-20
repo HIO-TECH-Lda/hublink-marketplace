@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Star, Package, MapPin, Award, CheckCircle } from 'lucide-react';
+import { Star, MapPin, CheckCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -29,115 +29,103 @@ interface SellerCardProps {
 }
 
 export default function SellerCard({ seller, showStats = true }: SellerCardProps) {
-  // Ensure seller.id is a string
   const sellerId = typeof seller.id === 'string' ? seller.id : String(seller.id);
-  
+
   return (
-    <Link href={`/vendedor/${sellerId}`}>
-      <Card className="group hover:shadow-xl transition-all duration-300 cursor-pointer h-full relative overflow-hidden border-0 shadow-md hover:shadow-xl hover:-translate-y-1 bg-white">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        
-        {/* Featured Badge */}
+    <Link href={`/vendedor/${sellerId}`} className="block h-full min-w-0">
+      <Card className="group hover:shadow-md transition-all duration-200 cursor-pointer h-full relative overflow-hidden border border-gray-2 shadow-sm hover:border-primary/20 bg-white">
         {seller.isFeatured && (
-          <div className="absolute top-3 right-3 z-10">
-            <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs font-semibold shadow-lg">
-              <Star size={12} className="mr-1 fill-white" />
+          <div className="absolute top-2 right-2 z-10">
+            <Badge className="bg-primary text-white text-[10px] sm:text-xs font-semibold px-1.5 py-0">
+              <Star size={10} className="mr-0.5 fill-white hidden sm:inline" />
               Destaque
             </Badge>
           </div>
         )}
 
-        <CardContent className="p-6 h-full flex flex-col relative z-10">
-          {/* Header with Logo and Basic Info */}
-          <div className="flex items-start space-x-4 mb-4">
-            {/* Logo Container */}
-            <div className="relative w-16 h-16 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl flex items-center justify-center flex-shrink-0 border border-primary/20 group-hover:scale-105 transition-transform duration-200">
+        <CardContent className="p-3 sm:p-4 h-full flex flex-col relative z-10">
+          <div className="flex items-start gap-2.5 sm:gap-3 mb-2 sm:mb-3 min-w-0">
+            <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-primary-lighter rounded-lg flex items-center justify-center flex-shrink-0 border border-primary/10">
               {seller.logo ? (
                 <img
                   src={seller.logo}
                   alt={seller.businessName}
-                  className="w-full h-full object-cover rounded-xl"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               ) : (
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-base sm:text-lg font-bold text-primary">
                   {seller.businessName.charAt(0).toUpperCase()}
                 </span>
               )}
-              
-              {/* Verified Badge */}
+
               {seller.isVerified && (
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-                  <CheckCircle size={12} className="text-white" />
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 rounded-full flex items-center justify-center border-2 border-white">
+                  <CheckCircle size={10} className="text-white" />
                 </div>
               )}
             </div>
 
-            {/* Business Info */}
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-9 group-hover:text-primary transition-colors break-words text-lg leading-tight mb-2">
+              <h3 className="font-semibold text-gray-9 group-hover:text-primary transition-colors text-sm sm:text-base leading-tight line-clamp-2 pr-6 sm:pr-8">
                 {seller.businessName}
               </h3>
 
-              {/* Rating with Stars */}
-              <div className="flex items-center gap-1.5 mb-2">
+              <div className="flex items-center gap-1 mt-1 flex-wrap">
                 <div className="flex">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      size={14}
+                      size={10}
                       className={
                         star <= Math.round(seller.rating)
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'fill-gray-300 text-gray-300'
+                          ? 'fill-warning text-warning'
+                          : 'fill-gray-3 text-gray-3'
                       }
                     />
                   ))}
                 </div>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-[10px] sm:text-xs font-medium text-gray-8">
                   {seller.rating.toFixed(1)}
                 </span>
-                <span className="text-xs text-gray-500">
+                <span className="text-[10px] sm:text-xs text-gray-5">
                   ({seller.reviewCount.toLocaleString()})
                 </span>
               </div>
 
-              {/* Location */}
-              <div className="flex items-center space-x-1 text-sm text-gray-600">
-                <MapPin size={14} className="text-gray-500" />
+              <div className="flex items-center gap-1 text-[10px] sm:text-xs text-gray-6 mt-1 min-w-0">
+                <MapPin size={10} className="flex-shrink-0" />
                 <span className="truncate">{seller.location}</span>
               </div>
             </div>
           </div>
 
-          {/* Description */}
-          <div className="flex-1 mb-4">
-            <p className="text-sm text-gray-700 leading-relaxed line-clamp-3">
-              {seller.businessDescription}
-            </p>
-          </div>
+          <p className="text-[11px] sm:text-xs text-gray-6 leading-relaxed line-clamp-2 mb-2 sm:mb-3 flex-1 min-w-0">
+            {seller.businessDescription}
+          </p>
 
-          {/* Stats Section */}
           {showStats && (
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-3 mb-4 border border-gray-200 group-hover:bg-gradient-to-r group-hover:from-primary/5 group-hover:to-primary/10 transition-all duration-200">
-              <div className="grid grid-cols-2 gap-3 text-center">
-                <div>
-                  <div className="text-lg font-bold text-gray-900">{seller.totalProducts.toLocaleString()}</div>
-                  <div className="text-xs text-gray-600">Produtos</div>
+            <div className="bg-gray-1 rounded-md p-2 mb-2 sm:mb-3 border border-gray-2">
+              <div className="grid grid-cols-2 gap-2 text-center">
+                <div className="min-w-0">
+                  <div className="text-sm sm:text-base font-bold text-gray-9 truncate">
+                    {seller.totalProducts.toLocaleString()}
+                  </div>
+                  <div className="text-[10px] text-gray-6">Produtos</div>
                 </div>
-                <div>
-                  <div className="text-lg font-bold text-gray-900">{seller.totalSales.toLocaleString()}</div>
-                  <div className="text-xs text-gray-600">Vendas</div>
+                <div className="min-w-0">
+                  <div className="text-sm sm:text-base font-bold text-gray-9 truncate">
+                    {seller.totalSales.toLocaleString()}
+                  </div>
+                  <div className="text-[10px] text-gray-6">Vendas</div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Action Button */}
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-all duration-200 font-medium group-hover:shadow-md"
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full h-8 text-xs border-primary text-primary hover:bg-primary hover:text-white"
           >
             Ver Produtos
           </Button>
@@ -145,4 +133,4 @@ export default function SellerCard({ seller, showStats = true }: SellerCardProps
       </Card>
     </Link>
   );
-} 
+}
