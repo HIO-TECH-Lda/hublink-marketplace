@@ -61,7 +61,7 @@ export default function Header() {
 
   const handleUserClick = () => {
     if (isAuthenticated) {
-      router.push('/perfil');
+      router.push('/painel');
     } else {
       router.push('/entrar');
     }
