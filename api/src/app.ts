@@ -37,6 +37,8 @@ import adminAuditLogRoutes from './routes/adminAuditLogs';
 import sellerRoutes from './routes/sellers';
 import contactRoutes from './routes/contact';
 import newsletterRoutes from './routes/newsletter';
+import affiliateRoutes from './routes/affiliate';
+import adminAffiliateRoutes from './routes/adminAffiliates';
 
 // Load environment variables
 dotenv.config();
@@ -89,6 +91,7 @@ app.get('/api/v1', (req: Request, res: Response) => {
       sellers: '/api/v1/sellers',
       contact: '/api/v1/contact',
       newsletter: '/api/v1/newsletter',
+      affiliate: '/api/v1/affiliate',
       test: '/api/v1/test'
     },
     authEndpoints: {
@@ -297,6 +300,12 @@ app.use('/api/v1/contact', contactRoutes);
 
 // Newsletter routes (public)
 app.use('/api/v1/newsletter', newsletterRoutes);
+
+// Affiliate routes
+app.use('/api/v1/affiliate', affiliateRoutes);
+
+// Admin affiliate routes
+app.use('/api/v1/admin/affiliates', adminAffiliateRoutes);
 
 // Admin newsletter routes
 app.use('/api/v1/admin/newsletter', adminNewsletterRoutes);

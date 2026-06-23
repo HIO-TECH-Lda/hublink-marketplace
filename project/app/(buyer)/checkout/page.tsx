@@ -18,6 +18,7 @@ import { useCreateOrderFromCart } from '@/hooks/useOrders';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/payment';
+import { getAffiliateCode } from '@/utils/affiliateTracking';
 
 export default function CheckoutPage() {
   const { state, dispatch } = useMarketplace();
@@ -129,12 +130,21 @@ export default function CheckoutPage() {
       phone: formData.phone,
     };
 
+    const affiliateCode = getAffiliateCode();
+
     createOrder.mutate(
       {
         billingAddress,
         shippingAddress,
         payment: {
           method: formData.paymentMethod,
+          ...(affiliateCode
+            ? {
+                paymentDetails: {
+                  affiliateCode,
+                },
+              }
+            : {}),
         },
         notes: formData.orderNotes,
       },

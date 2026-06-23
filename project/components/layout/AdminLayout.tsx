@@ -22,7 +22,8 @@ import {
   Mail,
   FileText,
   FileSearch,
-  Star
+  Star,
+  BadgeDollarSign
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -36,6 +37,7 @@ const navigation = [
   { name: 'Usuários', href: '/admin/usuarios', icon: Users },
   { name: 'Pedidos', href: '/admin/pedidos', icon: ShoppingCart },
   { name: 'Pagamentos', href: '/admin/pagamentos', icon: DollarSign },
+  { name: 'Afiliados', href: '/admin/affiliates', icon: BadgeDollarSign },
   { name: 'Reembolsos', href: '/admin/reembolsos', icon: RotateCcw },
   { name: 'Produtos', href: '/admin/produtos', icon: Package },
   { name: 'Categorias', href: '/admin/categorias', icon: Tag },

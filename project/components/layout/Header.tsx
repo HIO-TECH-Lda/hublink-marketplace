@@ -3,313 +3,235 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, Heart, ShoppingCart, User, Menu, X, Phone, Mail, Shield, LogOut } from 'lucide-react';
+import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
-import { Button } from '@/components/ui/button';
 import Logo from '@/components/common/Logo';
 import { siteConfig } from '@/lib/site-config';
 
+const maisLinks = [
+  { href: '/sobre', label: 'Sobre' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contato', label: 'Contato' },
+  { href: '/faqs', label: 'FAQs' },
+];
+
 export default function Header() {
-  const { state, dispatch } = useMarketplace();
-  const { user, logout, hasRole } = useAuth();
-  const { data: cart, isLoading: cartLoading } = useCart();
-  const { data: wishlist } = useWishlist();
   const router = useRouter();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const { state, dispatch } = useMarketplace();
+  const { user, isAuthenticated } = useAuth();
+  const { data: cartData } = useCart();
+  const { data: wishlistData } = useWishlist();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const cartItemsCount = cart?.totalItems || cart?.items?.length || 0;
-  const wishlistCount = wishlist?.length || 0;
-  const isAdmin = hasRole('admin');
-
-  // Debug cart data
-  React.useEffect(() => {
-    if (cart) {
-      console.log('Cart data:', cart);
-      console.log('Cart totalItems:', cart.totalItems);
-      console.log('Cart items length:', cart.items?.length);
-      console.log('Cart items count:', cartItemsCount);
-    }
-  }, [cart, cartItemsCount]);
+  const cartCount = cartData?.items?.length || state.cart.length;
+  const wishlistCount = wishlistData?.length || state.wishlist.length;
+  const userAvatar = user?.profileImage || user?.avatar;
+  const userInitials = user
+    ? `${user.firstName?.charAt(0) || ''}${user.lastName?.charAt(0) || ''}`.trim() ||
+      user.email?.charAt(0).toUpperCase()
+    : '';
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!searchQuery.trim()) return;
-    
-    // Navigate to shop page with search query
-    const searchParams = new URLSearchParams({ q: searchQuery.trim() });
-    router.push(`/loja?${searchParams.toString()}`);
-    
-    // Close search modal after search
-    setIsSearchModalOpen(false);
-    setSearchQuery('');
-  };
-
-  const handleSearchSuggestion = (suggestion: string) => {
-    // Navigate to shop page with search query
-    const searchParams = new URLSearchParams({ q: suggestion });
-    router.push(`/loja?${searchParams.toString()}`);
-    
-    // Close search modal
-    setIsSearchModalOpen(false);
-    setSearchQuery('');
+    if (searchQuery.trim()) {
+      router.push(`/loja?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsMenuOpen(false);
+    }
   };
 
   const handleCartClick = () => {
     dispatch({ type: 'SHOW_CART_POPUP' });
   };
 
-  const handleSearchIconClick = () => {
-    setIsSearchModalOpen(true);
+  const handleWishlistClick = () => {
+    router.push('/lista-desejos');
   };
 
-  const handleCloseSearchModal = () => {
-    setIsSearchModalOpen(false);
-    setSearchQuery('');
+  const handleUserClick = () => {
+    if (isAuthenticated) {
+      router.push('/perfil');
+    } else {
+      router.push('/entrar');
+    }
   };
 
   return (
-    <div className="w-full">
+    <header className="sticky top-0 z-50">
       {/* Top Bar */}
-      <div className="bg-gray-1 border-b border-gray-3 hidden sm:block">
-        <div className="container py-2">
-          <div className="flex justify-between items-center text-sm text-gray-8">
-            <div className="flex items-center space-x-4 sm:space-x-6">
-              <div className="flex items-center space-x-2">
-                <Phone size={14} />
-                <span className="hidden md:inline">+258 84 123 4567</span>
-                <span className="md:hidden">+258 84 123 4567</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Mail size={14} />
-                <span className="hidden lg:inline">{siteConfig.contactEmail}</span>
-                <span className="lg:hidden">{siteConfig.contactEmail}</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <span className="hidden sm:inline">Siga-nos:</span>
-              <div className="flex space-x-2">
-                <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">Facebook</Link>
-                <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">Instagram</Link>
-                <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">Twitter</Link>
-              </div>
-            </div>
+      <div className="bg-gray-1 border-b border-gray-3">
+        <div className="container flex justify-between items-center py-1.5 px-4 sm:px-6 lg:px-8 text-xs sm:text-sm text-gray-7">
+          <div className="flex items-center gap-4">
+            <span>+244 923 456 789</span>
+            <span className="hidden sm:inline">{siteConfig.contactEmail}</span>
           </div>
         </div>
       </div>
 
       {/* Main Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="container py-4">
-          <div className="flex items-center justify-between">
+      <div className="bg-primary shadow-sm">
+        <div className="container px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3 sm:gap-4 py-2.5 sm:py-3">
             {/* Logo */}
-            <Logo 
-              variant="main" 
-              width={120} 
-              height={40} 
-              clickable={true}
-              className="h-8 sm:h-10 w-auto"
-              priority={true}
-            />
+            <div className="flex-shrink-0">
+              <Logo
+                variant="white"
+                width={100}
+                height={36}
+                className="h-8 sm:h-9 w-auto"
+                brandNameClassName="text-white font-bold text-sm sm:text-base"
+                priority
+              />
+            </div>
 
-            {/* Desktop Navigation */}
-            <nav className={`hidden lg:flex items-center ${isAdmin ? 'space-x-6 ml-6' : 'space-x-8 ml-8'}`}>
-              <Link href="/loja" className="hover:text-primary transition-colors">Comprar Agora</Link>
-              <Link href="/sobre" className="hover:text-primary transition-colors">Sobre</Link>
-              <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
-              <Link href="/contato" className="hover:text-primary transition-colors">Contato</Link>
-              <Link href="/faq" className="hover:text-primary transition-colors">FAQs</Link>
-              {isAdmin && (
-                <Link 
-                  href="/admin" 
-                  className="flex items-center space-x-1 hover:text-primary transition-colors text-primary font-medium whitespace-nowrap"
-                >
-                  <Shield size={16} />
-                  <span>Admin</span>
-                </Link>
-              )}
-            </nav>
+            {/* Home link - desktop */}
+            <Link
+              href="/"
+              className="hidden lg:block text-white/90 hover:text-white text-sm font-medium whitespace-nowrap"
+            >
+              Home
+            </Link>
 
-            {/* Search Bar - Desktop */}
-            <form onSubmit={handleSearch} className="hidden md:flex items-center flex-1 max-w-md mx-4 lg:mx-8">
-              <div className="relative w-full">
-                <input
+            {/* Search */}
+            <form onSubmit={handleSearch} className="flex-1 min-w-0 max-w-3xl mx-auto">
+              <div className="relative flex">
+                <Input
                   type="text"
-                  placeholder="Buscar produtos..."
+                  placeholder="Pesquisar produtos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-3 rounded-l-lg focus:outline-none focus:border-primary"
+                  className="h-9 sm:h-10 rounded-l-md rounded-r-none border-0 bg-white text-gray-9 text-sm pr-3 focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
-                <button
+                <Button
                   type="submit"
-                  className="absolute right-0 top-0 h-full px-4 bg-primary text-white rounded-r-lg hover:bg-primary-hard transition-colors"
+                  className="h-9 sm:h-10 rounded-l-none rounded-r-md bg-primary-hard hover:bg-primary-hard/90 text-white px-4 border-0"
                 >
-                  <Search size={20} />
-                </button>
+                  <Search size={18} />
+                </Button>
               </div>
             </form>
 
-            {/* Action Icons - Tighter spacing when admin is logged in */}
-            <div className={`flex items-center ${isAdmin ? 'space-x-1.5 sm:space-x-2' : 'space-x-2 sm:space-x-4'}`}>
-              {/* Search - Mobile */}
-              <button 
-                onClick={handleSearchIconClick}
-                className="md:hidden p-2 hover:bg-gray-1 rounded-lg transition-colors"
+            {/* Action Icons */}
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+              <button
+                onClick={handleWishlistClick}
+                className="relative p-2 text-white hover:bg-white/10 rounded-md transition-colors"
+                aria-label="Lista de desejos"
               >
-                <Search size={20} />
-              </button>
-
-              {/* Wishlist */}
-              <Link href="/lista-desejos" className="relative p-2 hover:bg-gray-1 rounded-lg transition-colors">
-                <Heart size={20} />
+                <Heart size={22} />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-danger text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-0.5 -right-0.5 bg-white text-primary text-[10px] rounded-full min-w-[16px] h-4 flex items-center justify-center font-bold px-0.5">
                     {wishlistCount}
                   </span>
                 )}
-              </Link>
+              </button>
 
-              {/* Cart */}
-              <button 
+              <button
                 onClick={handleCartClick}
-                className="relative p-2 hover:bg-gray-1 rounded-lg transition-colors"
+                className="relative p-2 text-white hover:bg-white/10 rounded-md transition-colors"
+                aria-label="Carrinho"
               >
-                <ShoppingCart size={20} />
-                {cartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                    {cartItemsCount}
+                <ShoppingCart size={22} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-white text-primary text-[10px] rounded-full min-w-[16px] h-4 flex items-center justify-center font-bold px-0.5">
+                    {cartCount}
                   </span>
                 )}
               </button>
 
-              {/* User Menu */}
-              <div className="relative">
-                {user ? (
-                  <div className="flex items-center space-x-2">
-                    <Link href="/painel" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
-                      {user.avatar ? (
-                        <img 
-                          src={user.avatar} 
-                          alt={user.firstName}
-                          className="w-8 h-8 rounded-full"
-                        />
-                      ) : (
-                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                          <span className="text-primary font-semibold text-sm">
-                            {user.firstName}
-                          </span>
-                        </div>
-                      )}
-                      <span className="hidden sm:inline text-sm font-medium">{user.firstName}</span>
-                    </Link>
-                    <Button 
-                      onClick={logout}
-                      variant="outline"
-                      size="sm"
-                      className="hidden sm:inline-flex rounded-lg hover:text-danger hover:bg-danger/5"
-                    >
-                      <LogOut size={16} className="mr-1.5" />
-                      Sair
-                    </Button>
-                  </div>
+              <button
+                onClick={handleUserClick}
+                className="p-1.5 text-white hover:bg-white/10 rounded-md transition-colors"
+                aria-label="Conta"
+              >
+                {isAuthenticated && userAvatar ? (
+                  <img
+                    src={userAvatar}
+                    alt={user?.firstName ? `${user.firstName} ${user.lastName}` : 'Perfil'}
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-white/80"
+                  />
+                ) : isAuthenticated && user ? (
+                  <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 border-2 border-white/80 flex items-center justify-center text-xs font-bold text-white">
+                    {userInitials}
+                  </span>
                 ) : (
-                  <Link href="/entrar" className="flex items-center space-x-2 p-2 hover:bg-gray-1 rounded-lg transition-colors">
-                    <User size={20} />
-                    <span className="hidden sm:inline text-sm font-medium">Entrar</span>
-                  </Link>
+                  <User size={22} className="m-0.5" />
                 )}
-              </div>
-
-              {/* Mobile Menu Button */}
-              <button 
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-2 hover:bg-gray-1 rounded-lg transition-colors"
-              >
-                {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
-            </div>
-          </div>
 
-          {/* Mobile Navigation */}
-          {isMobileMenuOpen && (
-            <div className="lg:hidden mt-4 pb-4 border-t border-gray-3">
-              <nav className="flex flex-col space-y-2 mt-4">
-                <Link href="/loja" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Comprar Agora</Link>
-                <Link href="/sobre" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Sobre</Link>
-                <Link href="/blog" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Blog</Link>
-                <Link href="/contato" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">Contato</Link>
-                <Link href="/faq" className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors">FAQs</Link>
-                {hasRole('admin') && (
-                  <Link 
-                    href="/admin" 
-                    className="px-4 py-2 hover:bg-gray-1 rounded-lg transition-colors flex items-center space-x-2 text-primary font-medium"
-                  >
-                    <Shield size={16} />
-                    <span>Admin Dashboard</span>
-                  </Link>
-                )}
-              </nav>
-            </div>
-          )}
-        </div>
-      </header>
-
-      {/* Search Modal - Mobile */}
-      {isSearchModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
-          <div className="bg-white p-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Buscar Produtos</h3>
-              <button 
-                onClick={handleCloseSearchModal}
-                className="p-2 hover:bg-gray-1 rounded-lg transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Digite o que você procura..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-3 rounded-lg focus:outline-none focus:border-primary"
-                  autoFocus
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-primary text-white rounded-lg hover:bg-primary-hard transition-colors"
-                >
-                  <Search size={20} />
-                </button>
-              </div>
-              
-              {/* Search Suggestions */}
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium text-gray-7">Sugestões populares:</h4>
-                <div className="flex flex-wrap gap-2">
-                  {['Tomates', 'Cebolas', 'Batatas', 'Cenouras', 'Alface'].map((suggestion) => (
-                    <button
-                      key={suggestion}
-                      type="button"
-                      onClick={() => handleSearchSuggestion(suggestion)}
-                      className="px-3 py-1 bg-gray-1 text-gray-7 rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
-                    >
-                      {suggestion}
-                    </button>
+              {/* Mais dropdown - desktop */}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="hidden lg:flex items-center gap-1 text-white/90 hover:text-white text-sm font-medium px-2 py-1.5 rounded-md hover:bg-white/10 outline-none">
+                  Mais
+                  <ChevronDown size={14} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40">
+                  {maisLinks.map((link) => (
+                    <DropdownMenuItem key={link.href} asChild>
+                      <Link href={link.href}>{link.label}</Link>
+                    </DropdownMenuItem>
                   ))}
-                </div>
-              </div>
-            </form>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Mobile Menu Toggle */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="lg:hidden p-2 text-white hover:bg-white/10 rounded-md"
+                aria-label="Menu"
+              >
+                {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-white border-b border-gray-3 shadow-md">
+          <nav className="container px-4 py-3 space-y-1">
+            <Link
+              href="/"
+              className="block py-2 text-gray-9 hover:text-primary font-medium"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              href="/loja"
+              className="block py-2 text-gray-9 hover:text-primary font-medium"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Comprar Agora
+            </Link>
+            <div className="pt-2 pb-1 text-xs font-semibold text-gray-6 uppercase tracking-wide">
+              Mais
+            </div>
+            {maisLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="block py-2 pl-3 text-gray-8 hover:text-primary"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       )}
-    </div>
+    </header>
   );
 }

@@ -24,7 +24,7 @@ interface UpdateUserData {
   lastName?: string;
   email?: string;
   phone?: string;
-  role?: 'buyer' | 'seller' | 'admin' | 'support';
+  role?: 'buyer' | 'seller' | 'admin' | 'support' | 'affiliate';
   status?: 'active' | 'inactive' | 'suspended';
   emailVerified?: boolean;
   phoneVerified?: boolean;
@@ -268,6 +268,7 @@ export default function UserEditPage() {
                       <SelectContent>
                         <SelectItem value="buyer">Comprador</SelectItem>
                         <SelectItem value="seller">Vendedor</SelectItem>
+                        <SelectItem value="affiliate">Afiliado</SelectItem>
                         <SelectItem value="admin">Administrador</SelectItem>
                         <SelectItem value="support">Suporte</SelectItem>
                       </SelectContent>
@@ -350,6 +351,7 @@ export default function UserEditPage() {
                     <span className="font-medium">
                       {formData.role === 'buyer' ? 'Comprador' : 
                        formData.role === 'seller' ? 'Vendedor' : 
+                       formData.role === 'affiliate' ? 'Afiliado' :
                        formData.role === 'admin' ? 'Administrador' : 'Suporte'}
                     </span>
                   </div>

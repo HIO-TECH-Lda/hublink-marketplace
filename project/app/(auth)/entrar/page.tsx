@@ -18,8 +18,24 @@ function safeReturnUrl(raw: string | null): string {
   return path.startsWith('/') && !path.startsWith('//') ? path : '/';
 }
 
+function getDefaultRouteByRole(role?: string): string {
+  switch (role) {
+    case 'admin':
+      return '/admin';
+    case 'seller':
+      return '/vendedor/painel';
+    case 'affiliate':
+      return '/affiliate/dashboard';
+    case 'support':
+      return '/suporte/meus-tickets';
+    case 'buyer':
+    default:
+      return '/painel';
+  }
+}
+
 export default function SignInPage() {
-  const { login, loading: authLoading, isAuthenticated } = useAuth();
+  const { login, loading: authLoading, isAuthenticated, user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnUrl = safeReturnUrl(searchParams.get('returnUrl'));
@@ -50,9 +66,10 @@ export default function SignInPage() {
     }
     
     if (!authLoading && isAuthenticated) {
-      router.push(returnUrl);
+      const fallbackRoute = getDefaultRouteByRole(user?.role);
+      router.push(returnUrl === '/' ? fallbackRoute : returnUrl);
     }
-  }, [isAuthenticated, authLoading, router, returnUrl]);
+  }, [isAuthenticated, authLoading, router, returnUrl, user?.role]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,7 +78,6 @@ export default function SignInPage() {
 
     try {
       await login(formData.email, formData.password);
-      router.push(returnUrl);
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login. Tente novamente.');
     } finally {
@@ -90,7 +106,6 @@ export default function SignInPage() {
 
     try {
       await login(email, 'H2Furau2711@');
-      router.push(returnUrl);
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login com conta de demonstração.');
     } finally {
@@ -216,11 +231,11 @@ export default function SignInPage() {
           <div className="mt-8 p-4 bg-gray-1 rounded-lg">
             <p className="text-sm text-gray-6 mb-3 font-medium">Contas de demonstração:</p>
             <div className="space-y-2">
-              <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex flex-col gap-2">
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  // size="sm"
                   disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('buyer.test@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
@@ -230,7 +245,7 @@ export default function SignInPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  // size="sm"
                   disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('vendedor.update@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"
@@ -240,7 +255,17 @@ export default function SignInPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  // size="sm"
+                  disabled={isLoading || authLoading}
+                  onClick={() => handleDemoLogin('afil@test.com')}
+                  className="flex-1 text-xs disabled:opacity-50"
+                >
+                  {isLoading ? 'Entrando...' : 'Login Afiliado'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  // size="sm"
                   disabled={isLoading || authLoading}
                   onClick={() => handleDemoLogin('helton@test.com')}
                   className="flex-1 text-xs disabled:opacity-50"

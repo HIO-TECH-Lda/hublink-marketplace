@@ -34,6 +34,10 @@ export default function ShopPage() {
     if (query) {
       setSearchQuery(query);
     }
+    const category = searchParams.get('category');
+    if (category) {
+      setSelectedCategories([category]);
+    }
   }, [searchParams]);
 
   // Reset page when filters change
@@ -85,7 +89,7 @@ export default function ShopPage() {
   // Loading state
   if (productsLoading || categoriesLoading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-8 px-4 sm:px-6 lg:px-8">
           <div className="text-center py-12">
@@ -100,7 +104,7 @@ export default function ShopPage() {
   // Error state
   if (productsError) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-gray-1">
         <Header />
         <div className="container py-8 px-4 sm:px-6 lg:px-8">
           <div className="text-center py-12">
@@ -112,12 +116,12 @@ export default function ShopPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-1">
       <Header />
 
-      <div className="container py-8 px-4 sm:px-6 lg:px-8">
+      <div className="container py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-6 mb-6">
+        <nav className="text-xs text-gray-6 mb-3">
           <span>Início</span> / <span className="text-primary">Comprar Agora</span>
           {searchQuery && (
             <>
@@ -128,39 +132,33 @@ export default function ShopPage() {
         </nav>
 
         {/* Page Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">
+            <h1 className="text-lg sm:text-xl font-bold text-gray-9">
               {searchQuery ? `Resultados para "${searchQuery}"` : 'Comprar Agora'}
             </h1>
-            <p className="text-gray-6 text-sm sm:text-base">
-              {searchQuery 
-                ? `Encontramos ${pagination.total} produto${pagination.total !== 1 ? 's' : ''} para "${searchQuery}"`
-                : `Encontramos ${pagination.total} produtos para você`
-              }
+            <p className="text-gray-6 text-xs sm:text-sm">
+              {pagination.total} produto{pagination.total !== 1 ? 's' : ''} encontrado{pagination.total !== 1 ? 's' : ''}
             </p>
           </div>
-          
-          {/* Sort and View Options */}
-          <div className="flex items-center space-x-2 sm:space-x-4 mt-4 lg:mt-0">
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-6">Ordenar por:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="border border-gray-3 rounded-lg px-2 sm:px-3 py-1 text-sm focus:outline-none focus:border-primary"
-              >
-                <option value="popular">Popularidade</option>
-                <option value="price-low">Menor Preço</option>
-                <option value="price-high">Maior Preço</option>
-                <option value="rating">Avaliação</option>
-                <option value="newest">Mais Recentes</option>
-              </select>
-            </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-6">Ordenar:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="border border-gray-3 rounded px-2 py-1 text-xs sm:text-sm focus:outline-none focus:border-primary bg-white"
+            >
+              <option value="popular">Popularidade</option>
+              <option value="price-low">Menor Preço</option>
+              <option value="price-high">Maior Preço</option>
+              <option value="rating">Avaliação</option>
+              <option value="newest">Mais Recentes</option>
+            </select>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Sidebar - Filters */}
           <div className="lg:col-span-1">
             {/* Mobile Filter Toggle */}
@@ -174,7 +172,7 @@ export default function ShopPage() {
             </Button>
 
             {/* Filters */}
-            <div className={`space-y-6 ${showFilters ? 'block' : 'hidden lg:block'} bg-white lg:bg-transparent p-4 sm:p-6 lg:p-0 rounded-lg lg:rounded-none shadow-lg lg:shadow-none`}>
+            <div className={`space-y-4 ${showFilters ? 'block' : 'hidden lg:block'} bg-white lg:bg-transparent p-3 sm:p-4 lg:p-0 rounded-md lg:rounded-none shadow-sm lg:shadow-none border border-gray-2 lg:border-0`}>
               {/* Categories */}
               <div>
                 <h3 className="font-semibold text-gray-9 mb-4">Categorias</h3>
@@ -286,7 +284,7 @@ export default function ShopPage() {
 
           {/* Products Grid */}
           <div className="lg:col-span-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3">
               {productsLoading ? (
                 <>
                   {[...Array(12)].map((_, i) => (
