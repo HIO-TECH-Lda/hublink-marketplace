@@ -387,9 +387,6 @@ export class OrderService {
           await order.processOrder();
           break;
         case 'shipped':
-          if (!options.trackingNumber) {
-            throw new Error('Tracking number is required for shipped status');
-          }
           await order.shipOrder(options.trackingNumber);
           break;
         case 'delivered':

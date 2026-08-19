@@ -136,7 +136,7 @@ export default function CheckoutPage() {
         payment: {
           method: formData.paymentMethod,
         },
-        notes: formData.orderNotes,
+        ...(formData.orderNotes.trim() && { notes: formData.orderNotes.trim() }),
       },
       {
         onSuccess: (order: any) => {

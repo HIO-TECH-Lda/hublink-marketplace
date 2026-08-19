@@ -93,7 +93,7 @@ export interface IOrder extends Document {
   // Methods
   confirmOrder(): Promise<void>;
   processOrder(): Promise<void>;
-  shipOrder(trackingNumber: string): Promise<void>;
+  shipOrder(trackingNumber?: string): Promise<void>;
   deliverOrder(): Promise<void>;
   cancelOrder(cancelledBy: string, reason: string): Promise<void>;
   refundOrder(refundAmount: number): Promise<void>;
@@ -444,7 +444,7 @@ orderSchema.methods.processOrder = async function(this: IOrder): Promise<void> {
   await this.save();
 };
 
-orderSchema.methods.shipOrder = async function(this: IOrder, trackingNumber: string): Promise<void> {
+orderSchema.methods.shipOrder = async function(this: IOrder, trackingNumber?: string): Promise<void> {
   if (this.status !== 'processing') {
     throw new Error('Order can only be shipped when processing');
   }
@@ -453,7 +453,7 @@ orderSchema.methods.shipOrder = async function(this: IOrder, trackingNumber: str
   this.shippedAt = new Date();
   this.items.forEach(item => {
     item.status = 'shipped';
-    item.trackingNumber = trackingNumber;
+    if (trackingNumber) item.trackingNumber = trackingNumber;
     item.shippedAt = new Date();
   });
   await this.save();
