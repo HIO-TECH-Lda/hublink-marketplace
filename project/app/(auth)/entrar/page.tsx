@@ -25,8 +25,8 @@ export default function SignInPage() {
   const returnUrl = safeReturnUrl(searchParams.get('returnUrl'));
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: 'helton@test.com',
-    password: 'H2Furau2711@',
+    email: '',
+    password: '',
     rememberMe: false
   });
   const [error, setError] = useState('');
@@ -212,7 +212,7 @@ export default function SignInPage() {
             </p>
           </div>
 
-          {/* Demo Accounts */}
+          {/* Demo Accounts
           <div className="mt-8 p-4 bg-gray-1 rounded-lg">
             <p className="text-sm text-gray-6 mb-3 font-medium">Contas de demonstração:</p>
             <div className="space-y-2">
@@ -248,14 +248,15 @@ export default function SignInPage() {
                   {isLoading ? 'Entrando...' : 'Login Admin'}
                 </Button>
               </div>
-              {/* <div className="text-xs text-gray-7 space-y-1">
+              <div className="text-xs text-gray-7 space-y-1">
                 <p><strong>Cliente:</strong> cliente@exemplo.com</p>
                 <p><strong>Vendedor:</strong> vendedor@exemplo.com</p>
                 <p><strong>Admin:</strong> admin@exemplo.com</p>
                 <p><strong>Senha:</strong> H2Furau2711@</p>
-              </div> */}
+              </div>
             </div>
           </div>
+          */}
         </div>
       </div>
 
