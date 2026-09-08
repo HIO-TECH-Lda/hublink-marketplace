@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,9 @@ import {
   CheckCircle2,
   XCircle,
   RotateCcw,
+  Eye,
+  MoreVertical,
+  Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,19 +35,84 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { useAdminPayments } from '@/hooks/useAdmin';
+import { useCompleteManualPayment, useProcessRefund } from '@/hooks/usePayments';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AdminPaymentsPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [methodFilter, setMethodFilter] = useState<string>('all');
   const [gatewayFilter, setGatewayFilter] = useState<string>('all');
   const [page, setPage] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState<any | null>(null);
+  const [refundTarget, setRefundTarget] = useState<any | null>(null);
+  const [refundAmount, setRefundAmount] = useState('');
+  const [refundReason, setRefundReason] = useState('');
   const limit = 20;
+
+  const completeManualPayment = useCompleteManualPayment();
+  const processRefund = useProcessRefund();
+
+  const handleMarkComplete = (payment: any) => {
+    completeManualPayment.mutate(payment._id, {
+      onSuccess: () => {
+        toast({ title: 'Pagamento confirmado', description: 'O pagamento foi marcado como concluído e o pedido foi confirmado.' });
+        setSelectedPayment(null);
+      },
+      onError: (error: any) => {
+        toast({ title: 'Erro', description: error?.response?.data?.message || 'Não foi possível confirmar o pagamento.', variant: 'destructive' });
+      },
+    });
+  };
+
+  const openRefundDialog = (payment: any) => {
+    setRefundTarget(payment);
+    setRefundAmount(String(payment.amount || ''));
+    setRefundReason('');
+  };
+
+  const handleRefund = () => {
+    if (!refundTarget || !refundReason || refundReason.length < 10) {
+      toast({ title: 'Motivo obrigatório', description: 'Indique o motivo do reembolso (mínimo 10 caracteres).', variant: 'destructive' });
+      return;
+    }
+    const amount = parseFloat(refundAmount);
+    if (!amount || amount <= 0 || amount > refundTarget.amount) {
+      toast({ title: 'Valor inválido', description: 'O valor deve ser entre 0 e o total do pagamento.', variant: 'destructive' });
+      return;
+    }
+    processRefund.mutate(
+      { paymentId: refundTarget._id, amount, reason: refundReason },
+      {
+        onSuccess: () => {
+          toast({ title: 'Reembolso processado', description: 'O reembolso foi processado com sucesso.' });
+          setRefundTarget(null);
+          setSelectedPayment(null);
+        },
+        onError: (error: any) => {
+          toast({ title: 'Erro', description: error?.response?.data?.message || 'Não foi possível processar o reembolso.', variant: 'destructive' });
+        },
+      },
+    );
+  };
+
+  const canMarkComplete = (p: any) => p.gateway === 'manual' && p.status === 'pending';
+  const canRefund = (p: any) => p.status === 'completed';
 
   const { data, isLoading } = useAdminPayments({
     page,
@@ -486,14 +554,67 @@ export default function AdminPaymentsPage() {
                             </span>
                           </td>
                           <td className="py-3 px-4">
-                            <div className="flex justify-end">
+                            <div className="flex items-center justify-end gap-1">
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => setSelectedPayment(payment)}
+                                className="h-8 px-2.5 text-xs"
                               >
+                                <Eye className="w-3.5 h-3.5 mr-1" />
                                 Ver
                               </Button>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <MoreVertical className="w-4 h-4 text-gray-500" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-48">
+                                  <DropdownMenuItem onClick={() => setSelectedPayment(payment)}>
+                                    <Eye className="w-4 h-4 mr-2 text-gray-500" />
+                                    Ver Detalhes
+                                  </DropdownMenuItem>
+                                  {payment.orderId && (
+                                    <DropdownMenuItem
+                                      onClick={() =>
+                                        router.push(`/admin/pedidos/${payment.orderId._id}`)
+                                      }
+                                    >
+                                      <ShoppingCart className="w-4 h-4 mr-2 text-primary" />
+                                      Ver Pedido
+                                    </DropdownMenuItem>
+                                  )}
+                                  {canMarkComplete(payment) && (
+                                    <>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem
+                                        onClick={() => handleMarkComplete(payment)}
+                                        disabled={
+                                          completeManualPayment.isPending &&
+                                          (completeManualPayment.variables as any) === payment._id
+                                        }
+                                        className="text-green-600 focus:text-green-700"
+                                      >
+                                        <CheckCircle2 className="w-4 h-4 mr-2 text-green-600" />
+                                        Confirmar Pagamento
+                                      </DropdownMenuItem>
+                                    </>
+                                  )}
+                                  {canRefund(payment) && (
+                                    <>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem
+                                        onClick={() => openRefundDialog(payment)}
+                                        className="text-purple-600 focus:text-purple-700"
+                                      >
+                                        <RotateCcw className="w-4 h-4 mr-2 text-purple-600" />
+                                        Processar Reembolso
+                                      </DropdownMenuItem>
+                                    </>
+                                  )}
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                             </div>
                           </td>
                         </tr>
@@ -760,8 +881,217 @@ export default function AdminPaymentsPage() {
                     </CardContent>
                   </Card>
                 </div>
+
+                <DialogFooter className="flex flex-col sm:flex-row gap-2 pt-4 border-t border-gray-100">
+                  {selectedPayment.orderId && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() =>
+                        router.push(`/admin/pedidos/${selectedPayment.orderId._id}`)
+                      }
+                    >
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      Ver Pedido
+                    </Button>
+                  )}
+
+                  {canMarkComplete(selectedPayment) && (
+                    <Button
+                      type="button"
+                      onClick={() => handleMarkComplete(selectedPayment)}
+                      disabled={completeManualPayment.isPending}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      {completeManualPayment.isPending ? (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      ) : (
+                        <CheckCircle2 className="w-4 h-4 mr-2" />
+                      )}
+                      Confirmar Pagamento Manual
+                    </Button>
+                  )}
+
+                  {canRefund(selectedPayment) && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => openRefundDialog(selectedPayment)}
+                      className="text-purple-700 border-purple-300 hover:bg-purple-50"
+                    >
+                      <RotateCcw className="w-4 h-4 mr-2" />
+                      Processar Reembolso
+                    </Button>
+                  )}
+
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => setSelectedPayment(null)}
+                  >
+                    Fechar
+                  </Button>
+                </DialogFooter>
               </div>
             </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Refund Confirmation Dialog */}
+      <Dialog
+        open={!!refundTarget}
+        onOpenChange={(open) => {
+          if (!open && !processRefund.isPending) {
+            setRefundTarget(null);
+          }
+        }}
+      >
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-lg">
+              <RotateCcw className="w-5 h-5 text-purple-600" />
+              Processar Reembolso
+            </DialogTitle>
+            <DialogDescription>
+              Indique o valor e o motivo para processar o reembolso deste pagamento.
+            </DialogDescription>
+          </DialogHeader>
+
+          {refundTarget && (
+            <div className="space-y-4 py-2">
+              {/* Payment Summary */}
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-500">ID do Pagamento:</span>
+                  <span className="font-mono text-gray-800">
+                    {refundTarget._id}
+                  </span>
+                </div>
+                {refundTarget.orderId && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-500">Número do Pedido:</span>
+                    <span className="font-medium text-gray-800">
+                      {refundTarget.orderId.orderNumber || '-'}
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-500">Cliente:</span>
+                  <span className="font-medium text-gray-800">
+                    {refundTarget.userId?.fullName ||
+                      refundTarget.userId?.name ||
+                      refundTarget.userId?.email ||
+                      '-'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-500">Método / Gateway:</span>
+                  <span className="text-gray-800">
+                    {refundTarget.method || '-'} / {refundTarget.gateway || '-'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between pt-1 border-t border-gray-200">
+                  <span className="text-gray-600 font-medium">Valor Total:</span>
+                  <span className="font-bold text-sm text-gray-900">
+                    {formatCurrency(refundTarget.amount, refundTarget.currency)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Form */}
+              <div className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="refundAmount" className="text-sm font-medium">
+                    Valor a Reembolsar ({refundTarget.currency || 'MZN'})
+                  </Label>
+                  <Input
+                    id="refundAmount"
+                    type="number"
+                    step="any"
+                    min="0.01"
+                    max={refundTarget.amount}
+                    value={refundAmount}
+                    onChange={(e) => setRefundAmount(e.target.value)}
+                    placeholder="0.00"
+                    disabled={processRefund.isPending}
+                  />
+                  <p className="text-xs text-gray-500">
+                    Valor máximo reembolsável:{' '}
+                    <span className="font-medium text-gray-700">
+                      {formatCurrency(refundTarget.amount, refundTarget.currency)}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="refundReason" className="text-sm font-medium">
+                    Motivo do Reembolso <span className="text-red-500">*</span>
+                  </Label>
+                  <Textarea
+                    id="refundReason"
+                    value={refundReason}
+                    onChange={(e) => setRefundReason(e.target.value)}
+                    placeholder="Descreva detalhadamente o motivo do reembolso (mínimo 10 caracteres)..."
+                    rows={3}
+                    disabled={processRefund.isPending}
+                  />
+                  <div className="flex items-center justify-between text-xs">
+                    <span
+                      className={
+                        refundReason.trim().length >= 10
+                          ? 'text-green-600'
+                          : 'text-gray-500'
+                      }
+                    >
+                      {refundReason.trim().length} / 10 caracteres mínimos
+                    </span>
+                    {refundReason.trim().length > 0 &&
+                      refundReason.trim().length < 10 && (
+                        <span className="text-red-500">
+                          Motivo muito curto
+                        </span>
+                      )}
+                  </div>
+                </div>
+              </div>
+
+              <DialogFooter className="pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setRefundTarget(null)}
+                  disabled={processRefund.isPending}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleRefund}
+                  disabled={
+                    processRefund.isPending ||
+                    !refundReason ||
+                    refundReason.trim().length < 10 ||
+                    !parseFloat(refundAmount) ||
+                    parseFloat(refundAmount) <= 0 ||
+                    parseFloat(refundAmount) > refundTarget.amount
+                  }
+                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                >
+                  {processRefund.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processando...
+                    </>
+                  ) : (
+                    <>
+                      <RotateCcw className="w-4 h-4 mr-2" />
+                      Confirmar Reembolso
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </div>
           )}
         </DialogContent>
       </Dialog>

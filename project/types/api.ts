@@ -159,12 +159,15 @@ export interface Address {
   phone: string;
 }
 
-export interface Payment {
+export interface OrderPayment {
   method: string;
+  methodLabel?: string;
   status: 'pending' | 'paid' | 'completed' | 'failed' | 'refunded';
+  statusLabel?: string;
   amount: number;
   currency: string;
   transactionId?: string;
+  paidAt?: string;
 }
 
 export interface RefundParticipant {
@@ -232,7 +235,7 @@ export interface Order {
   items: OrderItem[];
   shippingAddress: Address;
   billingAddress: Address;
-  payment: Payment;
+  payment: OrderPayment;
   paymentMethod?: string;
   paymentStatus?: 'pending' | 'paid' | 'completed' | 'failed' | 'refunded';
   status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
@@ -363,15 +366,129 @@ export interface AuthResponse {
 }
 
 // Payment Types
+
+export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
+export type PaymentMethod = 'credit_card' | 'debit_card' | 'imali' | 'mpesa' | 'emola' | 'bank_transfer' | 'cash_on_delivery';
+export type PaymentGateway = 'stripe' | 'imali' | 'manual';
+
+export interface Payment {
+  _id: string;
+  orderId: string;
+  userId: string;
+  amount: number;
+  currency: string;
+  method: PaymentMethod;
+  status: PaymentStatus;
+  gateway: PaymentGateway;
+  gatewayTransactionId?: string | null;
+  refundAmount?: number;
+  refundReason?: string;
+  refundedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface PaymentIntent {
   clientSecret: string;
+  paymentIntentId: string;
   amount: number;
   currency: string;
 }
 
+export interface StripePaymentResponse {
+  type: 'stripe';
+  clientSecret: string;
+  paymentIntentId: string;
+  amount: number;
+  currency: string;
+}
+
+export interface ManualPaymentResponse {
+  type: 'manual';
+  paymentId: string;
+  method: string;
+  amount: number;
+  currency: string;
+  status: 'pending';
+  message: string;
+}
+
+export interface ImaliLinkResponse {
+  status: 'success';
+  data: {
+    paymentLink: {
+      link_id: string;
+      link_url: string;
+      customer_link_id: string;
+      amount: string;
+      currency: string;
+      status: string;
+      expiration_datetime: string;
+    };
+    order: Record<string, any>;
+  };
+}
+
+export interface ImaliQRResponse {
+  status: 'success';
+  data: {
+    data: {
+      transaction: string;
+      qrcode: string;
+      account_number: string;
+    };
+    order: Record<string, any>;
+  };
+}
+
+export type ProcessPaymentResponse =
+  | StripePaymentResponse
+  | ManualPaymentResponse
+  | ImaliLinkResponse
+  | ImaliQRResponse;
+
+export interface ProcessPaymentRequest {
+  orderId: string;
+  paymentDetails?: {
+    paymentIntentId?: string;
+    title?: string;
+    short_description?: string;
+    send_to_phone?: string;
+    type?: 'DIRECT' | 'RECURRING' | 'DONATION';
+    payment_frequence?: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+    expiration_datetime?: string;
+    customer_link_id?: string;
+    partner_transaction_id?: string;
+    thumbnail_image?: string;
+    transaction_type?: 'C2B' | 'B2C' | 'B2B' | 'C2C';
+    mPesaPhoneNumber?: string;
+    eMolaPhoneNumber?: string;
+    imaliLinkId?: string;
+  };
+}
+
 export interface ManualPaymentData {
   orderId: string;
-  paymentMethod: string;
   amount: number;
-  reference?: string;
+  currency: string;
+  method: 'bank_transfer' | 'cash_on_delivery' | 'mpesa' | 'emola' | 'imali';
+}
+
+export interface ProcessRefundRequest {
+  paymentId: string;
+  amount: number;
+  reason: string;
+}
+
+export interface PaymentStatistics {
+  overview: Record<string, any>;
+}
+
+export interface PaymentAnalytics {
+  period: string;
+  data: Record<string, any>;
+}
+
+export interface PaymentPerformance {
+  data: Record<string, any>;
 }

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Stripe from 'stripe';
 import Payment, { IPayment } from '../models/Payment';
 import Order from '../models/Order';
@@ -39,6 +40,24 @@ export interface AdminPaymentsQuery {
 }
 
 export class PaymentService {
+  /**
+   * Sync the Order's embedded payment fields with the Payment record state.
+   */
+  private static async syncOrderPaymentStatus(
+    orderId: mongoose.Types.ObjectId | string,
+    status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded',
+    extras: { transactionId?: string; refundAmount?: number } = {}
+  ): Promise<void> {
+    const update: any = { 'payment.status': status };
+    if (status === 'completed') update['payment.paidAt'] = new Date();
+    if (status === 'refunded') {
+      update['payment.refundedAt'] = new Date();
+      if (extras.refundAmount != null) update['payment.refundAmount'] = extras.refundAmount;
+    }
+    if (extras.transactionId) update['payment.transactionId'] = extras.transactionId;
+    await Order.findByIdAndUpdate(orderId, update, { runValidators: true });
+  }
+
   /**
    * Unified payment processing - handles all payment methods based on order.payment.method
    */
@@ -392,7 +411,8 @@ export class PaymentService {
       // Update payment status
       await payment.markAsCompleted(paymentIntentId);
 
-      // Update order status to confirmed
+      // Sync order payment fields and confirm order
+      await this.syncOrderPaymentStatus(payment.orderId, 'completed', { transactionId: paymentIntentId });
       const order = await Order.findById(payment.orderId);
       if (order) {
         await order.confirmOrder();
@@ -437,6 +457,7 @@ export class PaymentService {
 
       // Process refund
       await payment.processRefund(data.amount, data.reason);
+      await this.syncOrderPaymentStatus(payment.orderId, 'refunded', { refundAmount: data.amount });
 
       return payment;
     } catch (error) {
@@ -481,7 +502,8 @@ export class PaymentService {
       if (payment) {
         await payment.markAsCompleted(paymentIntent.id);
         
-        // Update order status
+        // Sync order payment fields and confirm order
+        await this.syncOrderPaymentStatus(payment.orderId, 'completed', { transactionId: paymentIntent.id });
         const order = await Order.findById(payment.orderId);
         if (order) {
           await order.confirmOrder();
@@ -501,6 +523,7 @@ export class PaymentService {
       const payment = await Payment.findOne({ gatewayTransactionId: paymentIntent.id });
       if (payment) {
         await payment.markAsFailed(paymentIntent.last_payment_error);
+        // await this.syncOrderPaymentStatus(payment.orderId, 'failed');
       }
     } catch (error) {
       console.error('Error handling payment intent failed:', error);
@@ -642,11 +665,12 @@ export class PaymentService {
 
       await payment.markAsCompleted();
 
-      // Update order status
-      const order = await Order.findById(payment.orderId);
-      if (order) {
-        await order.confirmOrder();
-      }
+      // Sync order payment fields and confirm orderrs
+      await this.syncOrderPaymentStatus(payment.orderId, 'completed');
+      // const order = await Order.findById(payment.orderId);
+      // if (order) {
+      //   await order.confirmOrder();
+      // }
 
       return payment;
     } catch (error) {
