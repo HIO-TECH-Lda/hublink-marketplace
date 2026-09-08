@@ -1,5 +1,5 @@
 # E-Commerce API
-
+ 
 A comprehensive e-commerce API built with Node.js, Express, TypeScript, and MongoDB. This project implements a complete e-commerce platform with user management, product catalog, shopping cart, order management, payment processing, and review system.
 
 ## Current Status
