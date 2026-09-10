@@ -1,6 +1,9 @@
 import * as Joi from 'joi';
 import Messages from './messages';
 
+// Password pattern: at least 1 lowercase, 1 uppercase, 1 digit, and 1 non-alphanumeric character
+export const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+
 // User registration validation schema
 export const registerSchema = Joi.object({
   firstName: Joi.string()
@@ -41,7 +44,7 @@ export const registerSchema = Joi.object({
   
   password: Joi.string()
     .min(8)
-    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .pattern(PASSWORD_PATTERN)
     .required()
     .messages({
       'string.min': 'Password must be at least 8 characters',
@@ -108,7 +111,7 @@ export const changePasswordSchema = Joi.object({
   
   newPassword: Joi.string()
     .min(8)
-    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .pattern(PASSWORD_PATTERN)
     .required()
     .messages({
       'string.min': 'New password must be at least 8 characters',
