@@ -24,6 +24,7 @@ export default function SellerSettingsPage() {
   const [profileForm, setProfileForm] = useState({
     firstName: '',
     lastName: '',
+    email: '',
     phone: '',
     billingAddress: {
       street: '',
@@ -73,6 +74,7 @@ export default function SellerSettingsPage() {
       setProfileForm({
         firstName: user.firstName || '',
         lastName: user.lastName || '',
+        email: user.email || '',
         phone: user.phone || '',
         billingAddress: {
           street: user.billingAddress?.street || user.billingAddress?.address || '',
@@ -115,7 +117,16 @@ export default function SellerSettingsPage() {
 
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile.mutate(profileForm);
+    const cleanPhone = profileForm.phone.trim().replace(/[\s-]/g, '');
+    const cleanEmail = profileForm.email.trim();
+
+    updateProfile.mutate({
+      ...profileForm,
+      firstName: profileForm.firstName.trim(),
+      lastName: profileForm.lastName.trim(),
+      phone: cleanPhone,
+      email: cleanEmail || undefined,
+    });
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -124,6 +135,15 @@ export default function SellerSettingsPage() {
       toast({
         title: 'Erro',
         description: 'As palavras-passe não coincidem.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+    if (passwordForm.newPassword.length < 8 || !passwordRegex.test(passwordForm.newPassword)) {
+      toast({
+        title: 'Erro',
+        description: 'A nova palavra-passe deve ter, no mínimo, 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um carácter especial.',
         variant: 'destructive',
       });
       return;
@@ -362,10 +382,22 @@ export default function SellerSettingsPage() {
                         type="tel"
                         value={profileForm.phone}
                         onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                        placeholder="+258XXXXXXXXX"
-                        pattern="^\+258[0-9]{9}$"
+                        placeholder="ex: 847554622 ou +258847554622"
+                        pattern="^(\+258|258)?[0-9]{9}$"
                         required
                       />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-7 mb-2">E-mail (Opcional)</label>
+                      <Input
+                        type="email"
+                        value={profileForm.email}
+                        onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+                        placeholder="ex: seu@email.com"
+                      />
+                      <p className="text-xs text-gray-5 mt-1">
+                        Permite associar ou atualizar o email da sua conta de vendedor.
+                      </p>
                     </div>
                     <div className="flex justify-end pt-4 border-t border-gray-2">
                       <Button type="submit" disabled={updateProfile.isPending}>
@@ -625,10 +657,10 @@ export default function SellerSettingsPage() {
                         onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
                         required
                         minLength={8}
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$"
                       />
                       <p className="text-xs text-gray-5 mt-1">
-                        A nova palavra-passe deve ter, no mínimo, 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um carácter especial.
+                        A nova palavra-passe deve ter, no mínimo, 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um carácter especial (ex: #, _, !, @).
                       </p>
                     </div>
                     <div>

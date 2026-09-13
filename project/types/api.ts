@@ -3,7 +3,7 @@ export interface User {
   _id: string;
   firstName: string;
   lastName: string;
-  email: string;
+  email?: string;
   phone: string;
   role: 'buyer' | 'seller' | 'admin' | 'support';
   status: 'active' | 'inactive' | 'suspended';
@@ -335,15 +335,17 @@ export interface PaginatedResponse<T> {
 
 // Auth Types
 export interface LoginData {
-  email: string;
+  identifier?: string;
+  email?: string;
+  phone?: string;
   password: string;
 }
 
 export interface RegisterData {
   firstName: string;
   lastName: string;
-  email: string;
-  phone?: string;
+  email?: string;
+  phone: string;
   password: string;
   confirmPassword?: string;
   role?: 'buyer' | 'seller';

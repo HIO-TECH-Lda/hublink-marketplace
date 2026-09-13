@@ -10,7 +10,7 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   refreshToken: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (identifier: string, password: string) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
   logout: () => void;
   refreshAuthToken: () => Promise<boolean>;
@@ -90,9 +90,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     clearUserCache();
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (identifier: string, password: string) => {
     try {
-      const response = await apiClient.post('/auth/login', { email, password });
+      const trimmedIdentifier = identifier.trim();
+      const response = await apiClient.post('/auth/login', {
+        identifier: trimmedIdentifier,
+        email: trimmedIdentifier,
+        password,
+      });
       // Handle both response structures
       const responseData = response.data.data || response.data;
       const { token: newToken, refreshToken: newRefreshToken, user: userData } = responseData;
@@ -127,7 +132,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (userData: RegisterData) => {
     try {
-      const response = await apiClient.post('/auth/register', userData);
+      const payload = {
+        ...userData,
+        email: userData.email && userData.email.trim() ? userData.email.trim() : undefined,
+      };
+      if (!payload.email) {
+        delete payload.email;
+      }
+      const response = await apiClient.post('/auth/register', payload);
       const { token: newToken, refreshToken: newRefreshToken, user: newUser } = response.data.data;
       
       localStorage.setItem('authToken', newToken);

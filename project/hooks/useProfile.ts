@@ -12,6 +12,7 @@ export const useUpdateProfile = () => {
     mutationFn: async (profileData: FormData | {
       firstName?: string;
       lastName?: string;
+      email?: string;
       phone?: string;
       avatar?: File;
       billingAddress?: { street: string; city: string; state: string; postalCode: string; country: string; isDefault: boolean };

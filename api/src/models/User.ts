@@ -44,7 +44,7 @@ const userSchema = new Schema<IUserDocument>({
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    required: false,
     lowercase: true,
     trim: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
@@ -146,7 +146,7 @@ const userSchema = new Schema<IUserDocument>({
 });
 
 // Indexes for performance
-userSchema.index({ email: 1 }, { unique: true });
+userSchema.index({ email: 1 }, { unique: true, sparse: true });
 userSchema.index({ phone: 1 }, { unique: true });
 userSchema.index({ role: 1 });
 userSchema.index({ status: 1 });

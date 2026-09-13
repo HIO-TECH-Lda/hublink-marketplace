@@ -336,6 +336,10 @@ export class EmailService {
    */
   static async sendPasswordReset(user: IUser, resetToken: string): Promise<void> {
     try {
+      if (!user.email) {
+        throw new Error('User does not have an email address');
+      }
+
       const resetData: PasswordResetData = {
         userName: user.firstName || user.email,
         resetLink: `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`,
@@ -359,6 +363,10 @@ export class EmailService {
    */
   static async sendEmailVerification(user: IUser, verificationToken: string): Promise<void> {
     try {
+      if (!user.email) {
+        return;
+      }
+
       const verificationData: EmailVerificationData = {
         userName: user.firstName || user.email,
         verificationLink: `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`,
@@ -382,6 +390,10 @@ export class EmailService {
    */
   static async sendWelcomeEmail(user: IUser): Promise<void> {
     try {
+      if (!user.email) {
+        return;
+      }
+
       await this.sendEmail({
         to: user.email,
         subject: 'Welcome to Txova Marketplace!',

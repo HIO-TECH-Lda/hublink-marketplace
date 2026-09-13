@@ -31,9 +31,17 @@ export class AuthController {
   // Login user
   static async login(req: Request, res: Response) {
     try {
-      const { email, password } = req.body;
+      const { email, phone, identifier, password } = req.body;
+      const loginIdentifier = (identifier || email || phone)?.trim();
+
+      if (!loginIdentifier) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please provide your email or phone number'
+        });
+      }
       
-      const result = await AuthService.loginUser(email, password);
+      const result = await AuthService.loginUser(loginIdentifier, password);
       
       return res.json({
         success: true,

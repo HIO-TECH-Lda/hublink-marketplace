@@ -4,6 +4,9 @@ import Messages from './messages';
 // Password pattern: at least 1 lowercase, 1 uppercase, 1 digit, and 1 non-alphanumeric character
 export const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
 
+// Mozambican phone pattern: accepts +258XXXXXXXXX, 258XXXXXXXXX, or 9-digit XXXXXXXXX
+export const MOZ_PHONE_PATTERN = /^(\+258|258)?[0-9]{9}$/;
+
 // User registration validation schema
 export const registerSchema = Joi.object({
   firstName: Joi.string()
@@ -28,17 +31,17 @@ export const registerSchema = Joi.object({
   
   email: Joi.string()
     .email()
-    .required()
+    .optional()
+    .allow(null, '')
     .messages({
-      'string.email': 'Please enter a valid email address',
-      'any.required': 'Email is required'
+      'string.email': 'Please enter a valid email address'
     }),
   
   phone: Joi.string()
-    .pattern(/^\+258[0-9]{9}$/)
+    .pattern(MOZ_PHONE_PATTERN)
     .required()
     .messages({
-      'string.pattern.base': 'Please enter a valid Mozambican phone number (+258XXXXXXXXX)',
+      'string.pattern.base': 'Please enter a valid Mozambican phone number (e.g. +258847554622 or 847554622)',
       'any.required': 'Phone number is required'
     }),
   
@@ -87,11 +90,22 @@ export const registerSchema = Joi.object({
 // User login validation schema
 export const loginSchema = Joi.object({
   email: Joi.string()
-    .email()
-    .required()
+    .optional()
     .messages({
-      'string.email': 'Please enter a valid email address',
-      'any.required': 'Email is required'
+      'string.base': 'Email must be a valid string'
+    }),
+
+  phone: Joi.string()
+    .pattern(MOZ_PHONE_PATTERN)
+    .optional()
+    .messages({
+      'string.pattern.base': 'Please enter a valid Mozambican phone number (e.g. +258847554622 or 847554622)'
+    }),
+
+  identifier: Joi.string()
+    .optional()
+    .messages({
+      'string.base': 'Identifier must be a valid string'
     }),
   
   password: Joi.string()
@@ -99,6 +113,8 @@ export const loginSchema = Joi.object({
     .messages({
       'any.required': 'Password is required'
     })
+}).or('email', 'phone', 'identifier').messages({
+  'object.missing': 'Please provide your email or phone number to log in'
 });
 
 // Password change validation schema
@@ -281,11 +297,19 @@ export const updateProfileSchema = Joi.object({
   avatar: Joi.string()
     .optional()
     .allow(''),
+
+  email: Joi.string()
+    .email()
+    .optional()
+    .allow(null, '')
+    .messages({
+      'string.email': 'Please enter a valid email address'
+    }),
   
   phone: Joi.string()
-    .pattern(/^\+258[0-9]{9}$/)
+    .pattern(MOZ_PHONE_PATTERN)
     .messages({
-      'string.pattern.base': 'Please enter a valid Mozambican phone number (+258XXXXXXXXX)'
+      'string.pattern.base': 'Please enter a valid Mozambican phone number (e.g. +258847554622 or 847554622)'
     }),
   
   billingAddress: Joi.object({

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -267,12 +267,12 @@ export default function UserDetailsPage() {
                     <div>
                       <label className="text-sm font-medium text-gray-7">Email</label>
                       <div className="flex items-center gap-2">
-                        <p className="text-gray-9">{user.email}</p>
-                        {user.emailVerified ? (
+                        <p className="text-gray-9">{user.email || 'Não associado'}</p>
+                        {user.email && (user.emailVerified ? (
                           <CheckCircle2 className="w-4 h-4 text-green-600" />
                         ) : (
                           <XCircle className="w-4 h-4 text-gray-400" />
-                        )}
+                        ))}
                       </div>
                     </div>
                     <div>

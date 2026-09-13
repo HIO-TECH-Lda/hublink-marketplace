@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -84,7 +84,7 @@ export default function UserManagementPage() {
     const first = (user?.firstName ?? '').trim().charAt(0).toUpperCase();
     const last = (user?.lastName ?? '').trim().charAt(0).toUpperCase();
     if (first || last) return `${first}${last}`;
-    return (user?.email ?? '?').charAt(0).toUpperCase();
+    return (user?.email || user?.phone || '?').charAt(0).toUpperCase();
   };
 
   const getRoleBadge = (role: string) => {
@@ -347,10 +347,16 @@ export default function UserManagementPage() {
                     </td>
                     <td className="py-4 px-4">
                       <div className="space-y-1">
-                        <div className="flex items-center text-sm text-gray-6">
-                          <Mail className="w-3 h-3 mr-1" />
-                          {user.email}
-                        </div>
+                        {user.email ? (
+                          <div className="flex items-center text-sm text-gray-6">
+                            <Mail className="w-3 h-3 mr-1" />
+                            {user.email}
+                          </div>
+                        ) : (
+                          <div className="flex items-center text-xs text-gray-4 italic">
+                            Sem e-mail associado
+                          </div>
+                        )}
                         {user.phone && (
                           <div className="flex items-center text-sm text-gray-6">
                             <Phone className="w-3 h-3 mr-1" />

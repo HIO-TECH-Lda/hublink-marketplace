@@ -227,15 +227,15 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="email">E-mail *</Label>
+                    <Label htmlFor="email">E-mail (Opcional)</Label>
                     <Input
                       id="email"
                       name="email"
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      required
                       className="mt-1"
+                      placeholder="ex: seu@email.com"
                     />
                   </div>
                   
@@ -244,7 +244,7 @@ export default function CheckoutPage() {
                     <Input
                       id="phone"
                       name="phone"
-                      placeholder="+258 84 999 9999"
+                      placeholder="ex: 847554622 ou +258847554622"
                       value={formData.phone}
                       onChange={handleInputChange}
                       required

@@ -25,7 +25,7 @@ export default function SignInPage() {
   const returnUrl = safeReturnUrl(searchParams.get('returnUrl'));
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
+    identifier: '',
     password: '',
     rememberMe: false
   });
@@ -57,10 +57,21 @@ export default function SignInPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    const rawIdentifier = (formData.identifier || '').trim();
+    if (!rawIdentifier) {
+      setError('Insira seu email ou telefone');
+      return;
+    }
+
+    const cleanIdentifier = rawIdentifier.includes('@')
+      ? rawIdentifier
+      : rawIdentifier.replace(/[\s-]/g, '');
+
     setIsLoading(true);
 
     try {
-      await login(formData.email, formData.password);
+      await login(cleanIdentifier, formData.password);
       router.push(returnUrl);
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login. Tente novamente.');
@@ -79,9 +90,9 @@ export default function SignInPage() {
     if (error) setError('');
   };
 
-  const handleDemoLogin = async (email: string) => {
+  const handleDemoLogin = async (identifier: string) => {
     setFormData({
-      email: email,
+      identifier: identifier,
       password: 'H2Furau2711@',
       rememberMe: false
     });
@@ -89,7 +100,7 @@ export default function SignInPage() {
     setIsLoading(true);
 
     try {
-      await login(email, 'H2Furau2711@');
+      await login(identifier, 'H2Furau2711@');
       router.push(returnUrl);
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login com conta de demonstração.');
@@ -124,17 +135,17 @@ export default function SignInPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email */}
+            {/* Email ou Telefone */}
             <div>
               <label className="block text-sm font-medium text-gray-7 mb-2">
-                E-mail
+                Email ou Telefone
               </label>
               <Input
-                type="email"
-                name="email"
-                value={formData.email}
+                type="text"
+                name="identifier"
+                value={formData.identifier}
                 onChange={handleInputChange}
-                placeholder="Introduza o seu e-mail"
+                placeholder="ex: joao@exemplo.com, 847554622 ou +258847554622"
                 required
                 className="w-full"
               />

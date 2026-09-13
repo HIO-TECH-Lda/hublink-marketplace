@@ -11,6 +11,7 @@ export class AuthService {
     const payload: JWTPayload = {
       userId: (user._id as any).toString(),
       email: user.email,
+      phone: user.phone,
       role: user.role,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -27,6 +28,7 @@ export class AuthService {
     const payload: JWTPayload = {
       userId: (user._id as any).toString(),
       email: user.email,
+      phone: user.phone,
       role: user.role,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -38,11 +40,52 @@ export class AuthService {
     } as jwt.SignOptions);
   }
 
-  // Verify user credentials
-  static async verifyCredentials(email: string, password: string): Promise<IUserDocument | null> {
+  // Helper to normalize Mozambican phone numbers to international format +258XXXXXXXXX
+  static normalizePhone(phone: string): string {
+    const clean = phone.trim().replace(/[\s\-]/g, '');
+    if (/^[0-9]{9}$/.test(clean)) {
+      return `+258${clean}`;
+    }
+    if (clean.startsWith('258') && clean.length === 12) {
+      return `+${clean}`;
+    }
+    return clean;
+  }
+
+  // Verify user credentials by email or phone (accepts with or without +258)
+  static async verifyCredentials(identifier: string, password: string): Promise<IUserDocument | null> {
     try {
-      // Find user by email and include password for comparison
-      const user = await User.findOne({ email }).select('+password');
+      const cleanIdentifier = identifier.trim();
+      const isEmail = cleanIdentifier.includes('@');
+
+      const orConditions: any[] = [];
+
+      if (isEmail) {
+        orConditions.push({ email: cleanIdentifier.toLowerCase() });
+      } else {
+        const normalizedDigits = cleanIdentifier.replace(/[\s\-]/g, '');
+        const candidatePhones = new Set<string>([cleanIdentifier, normalizedDigits]);
+
+        if (normalizedDigits.startsWith('+258')) {
+          const local = normalizedDigits.slice(4);
+          candidatePhones.add(local);
+          candidatePhones.add('258' + local);
+        } else if (normalizedDigits.startsWith('258') && normalizedDigits.length === 12) {
+          const local = normalizedDigits.slice(3);
+          candidatePhones.add(local);
+          candidatePhones.add('+258' + local);
+        } else if (/^[0-9]{9}$/.test(normalizedDigits)) {
+          candidatePhones.add('+258' + normalizedDigits);
+          candidatePhones.add('258' + normalizedDigits);
+        }
+
+        orConditions.push({ phone: { $in: Array.from(candidatePhones) } });
+      }
+
+      // Find user by either email (case-insensitive) or any phone representation
+      const user = await User.findOne({
+        $or: orConditions
+      }).select('+password');
       
       if (!user) {
         return null;
@@ -71,7 +114,7 @@ export class AuthService {
   static async registerUser(userData: {
     firstName: string;
     lastName: string;
-    email: string;
+    email?: string;
     phone: string;
     password: string;
     role?: string;
@@ -87,20 +130,39 @@ export class AuthService {
     };
   }): Promise<{ user: IUserDocument; token: string }> {
     try {
+      const cleanEmail = userData.email?.trim().toLowerCase();
+      const cleanPhone = this.normalizePhone(userData.phone);
+
+      const orConditions: any[] = [{ phone: cleanPhone }];
+      if (cleanEmail) {
+        orConditions.push({ email: cleanEmail });
+      }
+
       // Check if user already exists
-      const existingUser = await User.findOne({
-        $or: [{ email: userData.email }, { phone: userData.phone }]
-      });
+      const existingUser = await User.findOne({ $or: orConditions });
 
       if (existingUser) {
-        throw new Error(Messages.AUTH.EMAIL_PHONE_EXISTS);
+        if (cleanEmail && existingUser.email === cleanEmail) {
+          throw new Error(Messages.AUTH.EMAIL_ALREADY_EXISTS);
+        }
+        throw new Error(Messages.AUTH.PHONE_ALREADY_EXISTS);
+      }
+
+      // Prepare user data
+      const userToCreate: any = {
+        ...userData,
+        phone: cleanPhone,
+        role: userData.role || 'buyer'
+      };
+
+      if (cleanEmail) {
+        userToCreate.email = cleanEmail;
+      } else {
+        delete userToCreate.email;
       }
 
       // Create new user
-      const user = new User({
-        ...userData,
-        role: userData.role || 'buyer'
-      });
+      const user = new User(userToCreate);
 
       await user.save();
 
@@ -113,10 +175,10 @@ export class AuthService {
     }
   }
 
-  // Login user
-  static async loginUser(email: string, password: string): Promise<{ user: IUserDocument; token: string; refreshToken: string }> {
+  // Login user with email or phone
+  static async loginUser(identifier: string, password: string): Promise<{ user: IUserDocument; token: string; refreshToken: string }> {
     try {
-      const user = await this.verifyCredentials(email, password);
+      const user = await this.verifyCredentials(identifier, password);
       
       if (!user) {
         throw new Error(Messages.AUTH.INVALID_CREDENTIALS);
@@ -140,7 +202,7 @@ export class AuthService {
       const user = await User.findById(decoded.userId);
       
       if (!user || user.status !== 'active') {
-        throw new Error(Messages.AUTH.INVALID_REFRESH_TOKEN);
+        throw new Error('User not found or inactive');
       }
 
       // Generate new tokens
@@ -163,10 +225,44 @@ export class AuthService {
   }
 
   // Update user profile
-  static async updateUserProfile(userId: string, updateData: Partial<IUserDocument>): Promise<IUserDocument | null> {
+  static async updateUserProfile(userId: string, updateData: Partial<IUserDocument> & { email?: string }): Promise<IUserDocument | null> {
     try {
       // Remove sensitive fields that shouldn't be updated directly
-      const { password, email, role, status, ...safeUpdateData } = updateData as any;
+      const { password, role, status, ...safeUpdateData } = updateData as any;
+
+      // Check and handle email update
+      if ('email' in safeUpdateData) {
+        if (safeUpdateData.email && safeUpdateData.email.trim()) {
+          const cleanEmail = safeUpdateData.email.trim().toLowerCase();
+          const existingUserWithEmail = await User.findOne({
+            email: cleanEmail,
+            _id: { $ne: userId }
+          });
+
+          if (existingUserWithEmail) {
+            throw new Error(Messages.AUTH.EMAIL_ALREADY_EXISTS);
+          }
+          safeUpdateData.email = cleanEmail;
+        } else {
+          // If explicitly set to empty or null, unset email so sparse index doesn't conflict
+          delete safeUpdateData.email;
+          await User.findByIdAndUpdate(userId, { $unset: { email: 1 } });
+        }
+      }
+
+      // Check and handle phone update
+      if ('phone' in safeUpdateData && safeUpdateData.phone) {
+        const cleanPhone = this.normalizePhone(safeUpdateData.phone);
+        const existingUserWithPhone = await User.findOne({
+          phone: cleanPhone,
+          _id: { $ne: userId }
+        });
+
+        if (existingUserWithPhone) {
+          throw new Error(Messages.AUTH.PHONE_ALREADY_EXISTS);
+        }
+        safeUpdateData.phone = cleanPhone;
+      }
 
       // Upload avatar to Cloudinary if provided (base64 or file data)
       if (safeUpdateData.avatar) {

@@ -202,7 +202,9 @@ export class AdminProductService {
 
       const sellerName = seller.sellerProfile?.storeName || 
                         `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || 
-                        seller.email;
+                        seller.email || 
+                        seller.phone || 
+                        'Seller';
 
       // Use ProductService to create product (same as seller flow)
       const product = await ProductService.createProduct(

@@ -3,7 +3,7 @@ export interface IUser {
   _id?: string;
   firstName: string;
   lastName: string;
-  email: string;
+  email?: string;
   phone: string;
   password: string;
   role: 'buyer' | 'seller' | 'admin' | 'support';
@@ -538,7 +538,8 @@ export interface ApiResponse<T = any> {
 // JWT Payload
 export interface JWTPayload {
   userId: string;
-  email: string;
+  email?: string;
+  phone?: string;
   role: string;
   firstName: string;
   lastName: string;

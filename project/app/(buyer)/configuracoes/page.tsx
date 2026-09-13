@@ -31,6 +31,7 @@ export default function SettingsPage() {
   const [profileForm, setProfileForm] = useState({
     firstName: '',
     lastName: '',
+    email: '',
     phone: '',
     billingAddress: {
       street: '',
@@ -65,6 +66,7 @@ export default function SettingsPage() {
       setProfileForm({
         firstName: user.firstName || '',
         lastName: user.lastName || '',
+        email: user.email || '',
         phone: user.phone || '',
         billingAddress: {
           street: user.billingAddress?.street || user.billingAddress?.address || '',
@@ -121,11 +123,17 @@ export default function SettingsPage() {
 
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const cleanPhone = profileForm.phone.trim().replace(/[\s-]/g, '');
+    const cleanEmail = profileForm.email.trim();
+
     if (avatarFile) {
       const formData = new FormData();
-      formData.append('firstName', profileForm.firstName);
-      formData.append('lastName', profileForm.lastName);
-      formData.append('phone', profileForm.phone);
+      formData.append('firstName', profileForm.firstName.trim());
+      formData.append('lastName', profileForm.lastName.trim());
+      formData.append('phone', cleanPhone);
+      if (cleanEmail) {
+        formData.append('email', cleanEmail);
+      }
       formData.append('avatar', avatarFile);
       formData.append('billingAddress', JSON.stringify(profileForm.billingAddress));
       formData.append('shippingAddress', JSON.stringify(profileForm.shippingAddress));
@@ -134,14 +142,33 @@ export default function SettingsPage() {
       setAvatarFile(null);
       setAvatarPreview(null);
     } else {
-      updateProfile.mutate(profileForm);
+      updateProfile.mutate({
+        ...profileForm,
+        firstName: profileForm.firstName.trim(),
+        lastName: profileForm.lastName.trim(),
+        phone: cleanPhone,
+        email: cleanEmail || undefined,
+      });
     }
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (passwordForm.newPassword !== passwordForm.confirmNewPassword) {
-      alert('As palavras-passe não coincidem!');
+      toast({
+        title: 'Erro',
+        description: 'As palavras-passe não coincidem!',
+        variant: 'destructive',
+      });
+      return;
+    }
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+    if (passwordForm.newPassword.length < 8 || !passwordRegex.test(passwordForm.newPassword)) {
+      toast({
+        title: 'Palavra-passe fraca',
+        description: 'A nova palavra-passe deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula, número e símbolo.',
+        variant: 'destructive',
+      });
       return;
     }
     changePassword.mutate(passwordForm);
@@ -247,17 +274,32 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Número de Telefone
+                        Número de Telefone *
                       </label>
                       <input
                         type="tel"
                         value={profileForm.phone}
                         onChange={(e) => setProfileForm({...profileForm, phone: e.target.value})}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="+258XXXXXXXXX"
-                        pattern="^\+258[0-9]{9}$"
+                        placeholder="ex: 847554622 ou +258847554622"
+                        pattern="^(\+258|258)?[0-9]{9}$"
                         required
                       />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        E-mail (Opcional)
+                      </label>
+                      <input
+                        type="email"
+                        value={profileForm.email}
+                        onChange={(e) => setProfileForm({...profileForm, email: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        placeholder="ex: seu@email.com"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Permite associar ou atualizar o email da sua conta.
+                      </p>
                     </div>
                   </div>
 

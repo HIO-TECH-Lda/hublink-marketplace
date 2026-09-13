@@ -113,7 +113,7 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
           <h3 className="font-semibold text-gray-9 text-sm sm:text-base truncate">
             {user?.firstName} {user?.lastName}
           </h3>
-          <p className="text-xs sm:text-sm text-gray-6 truncate">{user?.email}</p>
+          <p className="text-xs sm:text-sm text-gray-6 truncate">{user?.email || user?.phone}</p>
           <p className="text-xs text-primary font-medium">Vendedor</p>
         </div>
       </div>
@@ -124,7 +124,7 @@ export default function SellerSidebar({ className = '' }: SellerSidebarProps) {
           <h4 className="font-medium text-gray-9 text-sm sm:text-base mb-2">A Minha Banca</h4>
           <div className="space-y-1 text-xs sm:text-sm text-gray-6">
             <p className="font-medium text-gray-9">{user.sellerProfile.storeName || 'Minha Loja'}</p>
-            <p className="text-gray-6">{user.email}</p>
+            <p className="text-gray-6">{user.email || user.phone}</p>
           </div>
         </div>
       )}

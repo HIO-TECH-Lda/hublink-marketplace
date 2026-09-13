@@ -60,7 +60,7 @@ export default function BuyerSidebar({ className = '' }: BuyerSidebarProps) {
           <h3 className="font-semibold text-gray-9 text-sm sm:text-base truncate">
             {user?.firstName} {user?.lastName}
           </h3>
-          <p className="text-xs sm:text-sm text-gray-6 truncate">{user?.email}</p>
+          <p className="text-xs sm:text-sm text-gray-6 truncate">{user?.email || user?.phone}</p>
           <p className="text-xs text-primary font-medium">Cliente</p>
         </div>
       </div>

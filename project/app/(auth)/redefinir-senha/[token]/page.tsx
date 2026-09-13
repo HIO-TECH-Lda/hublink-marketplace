@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import apiClient from '@/lib/api-client';
 
 export default function ResetPasswordPage() {
   const params = useParams();
@@ -49,9 +50,9 @@ export default function ResetPasswordPage() {
     setIsLoading(true);
     setError('');
 
-    // Mock validation
-    if (password.length < 8) {
-      setError('A palavra-passe deve ter pelo menos 8 caracteres.');
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+    if (password.length < 8 || !passwordRegex.test(password)) {
+      setError('A palavra-passe deve conter pelo menos 8 caracteres, incluindo maiúscula, minúscula, número e símbolo (ex: #, _, !, @).');
       setIsLoading(false);
       return;
     }
@@ -62,12 +63,15 @@ export default function ResetPasswordPage() {
       return;
     }
 
-    // Mock API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // Mock success
-    setIsSuccess(true);
-    setIsLoading(false);
+    try {
+      await apiClient.post('/auth/reset-password', { token, password, confirmPassword });
+      setIsSuccess(true);
+    } catch (err: any) {
+      const msg = err.response?.data?.message || err.response?.data?.error || err.message || 'Erro ao redefinir a palavra-passe.';
+      setError(msg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isCheckingToken) {

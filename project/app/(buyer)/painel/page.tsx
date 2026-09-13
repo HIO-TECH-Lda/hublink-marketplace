@@ -112,7 +112,7 @@ export default function UserDashboardPage() {
                   <h4 className="font-medium text-gray-9 mb-2 text-sm sm:text-base">Informações Pessoais</h4>
                   <div className="space-y-1 text-xs sm:text-sm text-gray-6">
                     <p><strong>Nome:</strong> {user?.firstName} {user?.lastName}</p>
-                    <p><strong>E-mail:</strong> {user?.email}</p>
+                    <p><strong>E-mail:</strong> {user?.email || 'Não associado'}</p>
                     <p><strong>Telefone:</strong> {user?.phone || 'Não informado'}</p>
                   </div>
                 </div>

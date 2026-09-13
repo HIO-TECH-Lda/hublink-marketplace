@@ -32,7 +32,7 @@ export default function SejaVendedorPage() {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '+258',
+    phone: '',
     password: '',
     confirmPassword: '',
     nomeLoja: '',
@@ -65,13 +65,47 @@ export default function SejaVendedorPage() {
       return;
     }
 
-    try {
-      setIsSubmitting(true);
-      const payload = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
+      const cleanPhone = formData.phone.trim().replace(/[\s-]/g, '');
+      const phoneRegex = /^(\+258|258)?[0-9]{9}$/;
+      if (!phoneRegex.test(cleanPhone)) {
+        toast({
+          title: 'Telefone inválido',
+          description: 'Insira um número moçambicano válido (ex: 847554622 ou +258847554622).',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      const emailTrimmed = formData.email.trim();
+      if (emailTrimmed) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailTrimmed)) {
+          toast({
+            title: 'Email inválido',
+            description: 'Insira um formato de email válido.',
+            variant: 'destructive',
+          });
+          return;
+        }
+      }
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+      if (!passwordRegex.test(formData.password)) {
+        toast({
+          title: 'Palavra-passe fraca',
+          description: 'A palavra-passe deve conter pelo menos 8 caracteres, incluindo maiúscula, minúscula, número e símbolo.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      try {
+        setIsSubmitting(true);
+        const payload = {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        ...(emailTrimmed ? { email: emailTrimmed } : {}),
+        phone: cleanPhone,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
         role: 'seller' as const,
@@ -324,13 +358,12 @@ export default function SejaVendedorPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-9 mb-2">E-mail *</label>
+                    <label className="block text-sm font-medium text-gray-9 mb-2">E-mail (Opcional)</label>
                     <Input
                       name="email"
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      required
                       placeholder="oseuemail@exemplo.com"
                     />
                   </div>
@@ -341,8 +374,8 @@ export default function SejaVendedorPage() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
-                      pattern="^\+258[0-9]{9}$"
-                      placeholder="+258"
+                      pattern="^(\+258|258)?[0-9]{9}$"
+                      placeholder="ex: 847554622 ou +258847554622"
                     />
                   </div>
                   <div>

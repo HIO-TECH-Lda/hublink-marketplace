@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -16,14 +16,24 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const rawIdentifier = identifier.trim();
+    if (!rawIdentifier) {
+      setError('Insira seu email ou telefone');
+      return;
+    }
+
+    const cleanIdentifier = rawIdentifier.includes('@')
+      ? rawIdentifier
+      : rawIdentifier.replace(/[\s-]/g, '');
+
     setLoading(true);
     setError('');
 
     try {
-      await login(email, password);
+      await login(cleanIdentifier, password);
       // Redirect or close modal
-    } catch (err) {
-      setError('Invalid credentials');
+    } catch (err: any) {
+      setError(err.message || 'Credenciais inválidas');
     } finally {
       setLoading(false);
     }
@@ -32,21 +42,23 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="identifier">Email ou Telefone</Label>
         <Input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          id="identifier"
+          placeholder="ex: joao@exemplo.com, 847554622 ou +258847554622"
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
           required
         />
       </div>
       
       <div>
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">Palavra-passe</Label>
         <Input
           type="password"
           id="password"
+          placeholder="A sua palavra-passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -62,7 +74,7 @@ export default function LoginForm() {
         disabled={loading}
         className="w-full"
       >
-        {loading ? 'Signing in...' : 'Sign In'}
+        {loading ? 'A entrar...' : 'Entrar'}
       </Button>
     </form>
   );
