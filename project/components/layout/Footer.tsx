@@ -153,18 +153,29 @@ export default function Footer() {
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <span className="text-gray-4 text-sm">Siga-nos:</span>
               <div className="flex space-x-3">
-                <Link href="#" className="p-2 bg-gray-8 rounded-full hover:bg-primary transition-colors">
+                <a
+                  href={siteConfig.facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-gray-8 rounded-full hover:bg-primary transition-colors"
+                  aria-label="Facebook"
+                >
                   <Facebook size={16} />
-                </Link>
+                </a>
                 <Link href="#" className="p-2 bg-gray-8 rounded-full hover:bg-primary transition-colors">
                   <Instagram size={16} />
                 </Link>
                 <Link href="#" className="px-2 py-1 bg-gray-8 rounded-full hover:bg-primary transition-colors text-xs">
                   TikTok
                 </Link>
-                <Link href="#" className="px-2 py-1 bg-gray-8 rounded-full hover:bg-primary transition-colors text-xs">
+                <a
+                  href={siteConfig.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2 py-1 bg-gray-8 rounded-full hover:bg-primary transition-colors text-xs"
+                >
                   WhatsApp
-                </Link>
+                </a>
               </div>
             </div>
 

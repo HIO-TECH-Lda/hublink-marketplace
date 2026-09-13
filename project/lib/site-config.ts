@@ -28,6 +28,9 @@ const defaults = {
   phone: '+258 862326404',
   secondaryPhone: '847491103',
   phoneList: '+258 862326404 / 847491103',
+  whatsapp: '+258 827528795',
+  whatsappUrl: 'https://wa.me/258827528795',
+  facebookUrl: 'https://web.facebook.com/txovamarket/',
 } as const;
 
 export const siteConfig = {
@@ -58,4 +61,10 @@ export const siteConfig = {
   secondaryPhone: process.env.NEXT_PUBLIC_SECONDARY_PHONE || defaults.secondaryPhone,
   /** Combined phone list */
   phoneList: process.env.NEXT_PUBLIC_PHONE_LIST || defaults.phoneList,
+  /** WhatsApp contact number */
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP || defaults.whatsapp,
+  /** Direct WhatsApp URL */
+  whatsappUrl: process.env.NEXT_PUBLIC_WHATSAPP_URL || defaults.whatsappUrl,
+  /** Official Facebook page URL */
+  facebookUrl: process.env.NEXT_PUBLIC_FACEBOOK_URL || defaults.facebookUrl,
 } as const;

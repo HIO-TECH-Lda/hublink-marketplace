@@ -43,8 +43,8 @@ export default function ContactPage() {
     },
     {
       icon: Phone,
-      title: 'Telefones',
-      content: `${siteConfig.phone}\n${siteConfig.secondaryPhone}`,
+      title: 'Telefones & WhatsApp',
+      content: `${siteConfig.phone}\n${siteConfig.secondaryPhone}\nWhatsApp: ${siteConfig.whatsapp}`,
       color: 'text-primary'
     },
     {
@@ -73,10 +73,12 @@ export default function ContactPage() {
         </nav>
 
         {/* Page Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-4">Entre em Contacto</h1>
-          <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
-            Tem alguma dúvida, sugestão ou pretende saber mais sobre o Txova? Estamos disponíveis
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-9 mb-3 sm:mb-4">
+            Entre em Contacto Connosco
+          </h1>
+          <p className="text-gray-6 text-sm sm:text-base">
+            Tem alguma dúvida, sugestão ou precisa de assistência? A nossa equipa está sempre disponível
             para apoiar compradores, vendedores, parceiros e todos os que desejam fazer parte desta
             montra digital de negócios locais.
           </p>
@@ -123,14 +125,24 @@ export default function ContactPage() {
               <h3 className="text-lg sm:text-xl font-bold text-gray-9 mb-3 sm:mb-4">Redes Sociais</h3>
               <div className="flex flex-wrap gap-3 sm:gap-4">
                 <a
-                  href="#"
+                  href={siteConfig.facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
                   className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
                 >
                   <span className="text-primary hover:text-white font-semibold text-sm sm:text-base">f</span>
                 </a>
                 <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">Instagram</a>
                 <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">TikTok</a>
-                <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">WhatsApp Channel</a>
+                <a
+                  href={siteConfig.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  WhatsApp ({siteConfig.whatsapp})
+                </a>
               </div>
             </div>
           </div>

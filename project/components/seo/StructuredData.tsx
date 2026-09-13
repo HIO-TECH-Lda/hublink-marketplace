@@ -189,7 +189,7 @@ export const getOrganizationData = (): OrganizationData => ({
     email: siteConfig.contactEmail,
   },
   sameAs: [
-    'https://facebook.com/txova',
+    siteConfig.facebookUrl,
     'https://instagram.com/txova',
     'https://twitter.com/txova',
   ],
