@@ -93,10 +93,10 @@ export default function Header() {
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
               <span className="hidden sm:inline">Siga-nos:</span>
-              <div className="flex space-x-2">
+              <div className="flex space-x-3">
                 <a href={siteConfig.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors text-xs sm:text-sm">Facebook</a>
-                <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">Instagram</Link>
-                <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">TikTok</Link>
+                {/* <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">Instagram</Link> */}
+                {/* <Link href="#" className="hover:text-primary transition-colors text-xs sm:text-sm">TikTok</Link> */}
                 <a href={siteConfig.whatsappUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors text-xs sm:text-sm">WhatsApp</a>
               </div>
             </div>

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Heart, ShoppingCart, Share2, Facebook, Twitter, Instagram, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, Heart, ShoppingCart, Share2, Facebook, Twitter, Instagram, MessageCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
@@ -51,13 +51,15 @@ export default function WishlistPage() {
       case 'facebook':
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
         break;
-      case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
         break;
-      case 'instagram':
-        // Instagram doesn't support direct sharing via URL
-        alert('Para compartilhar no Instagram, copie o link do produto e cole na sua história!');
-        return;
+      // case 'twitter':
+      //   shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+      //   break;
+      // case 'instagram':
+      //   alert('Para compartilhar no Instagram, copie o link do produto e cole na sua história!');
+      //   return;
     }
     
     if (shareUrl) {
@@ -211,6 +213,7 @@ export default function WishlistPage() {
                           >
                             <Facebook size={16} />
                           </button>
+                          {/*
                           <button
                             onClick={() => handleShare(product, 'twitter')}
                             className="p-2 text-gray-6 hover:text-blue-400 transition-colors"
@@ -224,6 +227,14 @@ export default function WishlistPage() {
                             title="Compartilhar no Instagram"
                           >
                             <Instagram size={16} />
+                          </button>
+                          */}
+                          <button
+                            onClick={() => handleShare(product, 'whatsapp')}
+                            className="p-2 text-gray-6 hover:text-green-600 transition-colors"
+                            title="Compartilhar no WhatsApp"
+                          >
+                            <MessageCircle size={16} />
                           </button>
                         </div>
                       </td>
@@ -333,20 +344,32 @@ export default function WishlistPage() {
                               <button
                                 onClick={() => handleShare(item.product, 'facebook')}
                                 className="p-2 text-gray-6 hover:text-blue-600 transition-colors bg-white rounded"
+                                title="Compartilhar no Facebook"
                               >
                                 <Facebook size={14} />
                               </button>
+                              {/*
                               <button
                                 onClick={() => handleShare(item.product, 'twitter')}
                                 className="p-2 text-gray-6 hover:text-blue-400 transition-colors bg-white rounded"
+                                title="Compartilhar no Twitter"
                               >
                                 <Twitter size={14} />
                               </button>
                               <button
                                 onClick={() => handleShare(item.product, 'instagram')}
                                 className="p-2 text-gray-6 hover:text-pink-600 transition-colors bg-white rounded"
+                                title="Compartilhar no Instagram"
                               >
                                 <Instagram size={14} />
+                              </button>
+                              */}
+                              <button
+                                onClick={() => handleShare(item.product, 'whatsapp')}
+                                className="p-2 text-gray-6 hover:text-green-600 transition-colors bg-white rounded"
+                                title="Compartilhar no WhatsApp"
+                              >
+                                <MessageCircle size={14} />
                               </button>
                             </div>
                           </div>

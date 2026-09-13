@@ -123,7 +123,7 @@ export default function ContactPage() {
             {/* Social Media */}
             <div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-9 mb-3 sm:mb-4">Redes Sociais</h3>
-              <div className="flex flex-wrap gap-3 sm:gap-4">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                 <a
                   href={siteConfig.facebookUrl}
                   target="_blank"
@@ -133,13 +133,13 @@ export default function ContactPage() {
                 >
                   <span className="text-primary hover:text-white font-semibold text-sm sm:text-base">f</span>
                 </a>
-                <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">Instagram</a>
-                <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">TikTok</a>
+                {/* <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">Instagram</a> */}
+                {/* <a href="#" className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors">TikTok</a> */}
                 <a
                   href={siteConfig.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors"
+                  className="px-4 py-2 bg-primary/10 rounded-lg text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors"
                 >
                   WhatsApp ({siteConfig.whatsapp})
                 </a>

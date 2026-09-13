@@ -190,8 +190,9 @@ export const getOrganizationData = (): OrganizationData => ({
   },
   sameAs: [
     siteConfig.facebookUrl,
-    'https://instagram.com/txova',
-    'https://twitter.com/txova',
+    siteConfig.whatsappUrl,
+    // 'https://instagram.com/txova',
+    // 'https://twitter.com/txova',
   ],
 });
 
