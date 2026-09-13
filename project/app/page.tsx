@@ -363,7 +363,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Customer Testimonials - Carousel (same as About page) */}
+      {/* Customer Testimonials - Carousel (Hidden until real data is available) */}
+      {/*
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
@@ -436,6 +437,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      */}
 
       <Footer />
       {/* Popup selection controlled via NEXT_PUBLIC_ACTIVE_POPUP */}

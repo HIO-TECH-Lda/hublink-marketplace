@@ -217,7 +217,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Partners Section - Carousel */}
+      {/* Partners Section - Carousel (Hidden until real data is available) */}
+      {/*
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
@@ -252,6 +253,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Team Section */}
       <section className="py-16 lg:py-24">
@@ -290,7 +292,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Testimonials Section - Carousel */}
+      {/* Testimonials Section - Carousel (Hidden until real data is available) */}
+      {/*
       <section className="py-16 lg:py-24 bg-gray-1">
         <div className="container">
           <div className="text-center mb-12">
@@ -339,6 +342,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      */}
 
       {/* CTA Section */}
       <section className="py-16 lg:py-24 bg-gradient-to-r from-primary to-primary-hard">
