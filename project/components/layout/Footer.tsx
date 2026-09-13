@@ -86,7 +86,7 @@ export default function Footer() {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
                   <MapPin size={16} className="flex-shrink-0" />
-                  <span className="break-words">Beira, Sofala - Moçambique</span>
+                  <span className="break-words">{siteConfig.fullAddress}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone size={16} className="flex-shrink-0" />

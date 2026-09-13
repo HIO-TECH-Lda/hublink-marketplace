@@ -177,7 +177,7 @@ export const getOrganizationData = (): OrganizationData => ({
   logo: `${siteConfig.appUrl}/icons/icon-512x512.png`,
   description: 'Marketplace moçambicano que aproxima compradores e vendedores locais da Beira, Sofala',
   address: {
-    streetAddress: 'Beira',
+    streetAddress: siteConfig.businessAddress,
     addressLocality: 'Beira',
     addressRegion: 'Sofala',
     postalCode: '',

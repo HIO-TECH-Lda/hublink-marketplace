@@ -38,7 +38,7 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Endereço',
-      content: 'Rua Companhia de Moçambique\nCidade da Beira, Sofala – Moçambique',
+      content: `${siteConfig.businessAddress}\nBeira, Sofala – Moçambique`,
       color: 'text-primary'
     },
     {
@@ -111,7 +111,7 @@ export default function ContactPage() {
                     <MapPin size={32} className="sm:w-12 sm:h-12 text-gray-4 mx-auto mb-3 sm:mb-4" />
                     <p className="text-gray-6 text-sm sm:text-base">Mapa interativo será carregado aqui</p>
                     <p className="text-xs sm:text-sm text-gray-5 mt-2">
-                      Beira, Sofala – Moçambique
+                      {siteConfig.fullAddress}
                     </p>
                   </div>
                 </div>

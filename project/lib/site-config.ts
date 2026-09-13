@@ -23,6 +23,8 @@ const defaults = {
   privacyEmail: 'privacidade@marketplace.co.mz',
   legalEmail: 'juridico@marketplace.co.mz',
   noReplyEmail: 'noreply@marketplace.co.mz',
+  businessAddress: 'Rua Companhia de Moçambique, Baixa da Cidade',
+  fullAddress: 'Rua Companhia de Moçambique, Baixa da Cidade, Beira - Moçambique',
 } as const;
 
 export const siteConfig = {
@@ -43,4 +45,8 @@ export const siteConfig = {
   legalEmail: process.env.NEXT_PUBLIC_LEGAL_EMAIL || defaults.legalEmail,
   /** No-reply / system sender email */
   noReplyEmail: process.env.NEXT_PUBLIC_NO_REPLY_EMAIL || defaults.noReplyEmail,
+  /** Business address / headquarters */
+  businessAddress: process.env.NEXT_PUBLIC_BUSINESS_ADDRESS || defaults.businessAddress,
+  /** Full formatted address with city and country */
+  fullAddress: process.env.NEXT_PUBLIC_FULL_ADDRESS || defaults.fullAddress,
 } as const;

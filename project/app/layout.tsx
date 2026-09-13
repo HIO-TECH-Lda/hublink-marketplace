@@ -159,7 +159,7 @@ export default function RootLayout({
           "description": "Marketplace moçambicano que aproxima compradores e vendedores locais da Beira, Sofala",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Beira",
+            "streetAddress": siteConfig.businessAddress,
             "addressLocality": "Beira",
             "addressRegion": "Sofala",
             "postalCode": "",
