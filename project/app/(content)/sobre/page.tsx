@@ -6,6 +6,7 @@ import { Users, Award, Heart, Leaf, Star, Quote } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import {
   Carousel,
   CarouselContent,
@@ -15,35 +16,23 @@ import {
 } from '@/components/ui/carousel';
 
 export default function AboutPage() {
-  // Mock team data
+  // Team data
   const teamMembers = [
     {
       id: '1',
-      name: 'Maria Silva',
-      position: 'CEO & Fundadora',
-      image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg',
-      bio: 'Especialista em negócios locais e economia comunitária com mais de 15 anos de experiência.'
+      name: 'David Franco',
+      position: 'Coordenador',
+      initials: 'DF',
+      image: 'https://ui-avatars.com/api/?name=David+Franco&background=097019&color=ffffff&size=256&bold=true',
+      bio: 'Coordenação geral da plataforma, parcerias estratégicas e desenvolvimento do marketplace.'
     },
     {
       id: '2',
-      name: 'João Santos',
-      position: 'Diretor de Operações',
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
-      bio: 'Responsável por garantir a qualidade e sustentabilidade de todos os produtos.'
-    },
-    {
-      id: '3',
-      name: 'Ana Costa',
-      position: 'Chef de Culinária',
-      image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
-      bio: 'Especialista em experiência do cliente e comunicação com a comunidade local.'
-    },
-    {
-      id: '4',
-      name: 'Carlos Oliveira',
-      position: 'Diretor de Tecnologia',
-      image: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
-      bio: 'Responsável pela plataforma que aproxima compradores e vendedores locais.'
+      name: 'Jerminío de Melo',
+      position: 'Administração e Finanças',
+      initials: 'JM',
+      image: 'https://ui-avatars.com/api/?name=Jerminio+de+Melo&background=097019&color=ffffff&size=256&bold=true',
+      bio: 'Gestão administrativa, planeamento financeiro e supervisão operacional da iniciativa.'
     }
   ];
 
@@ -264,39 +253,39 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section - Carousel */}
+      {/* Team Section */}
       <section className="py-16 lg:py-24">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-4">A Nossa Equipa</h2>
-            <p className="text-base sm:text-lg text-gray-7 mx-auto px-4">
+            <p className="text-base sm:text-lg text-gray-7 max-w-2xl mx-auto px-4">
               Conheça as pessoas comprometidas que trabalham todos os dias para tornar o Txova uma
               plataforma simples, acessível e útil para vendedores, compradores, parceiros e negócios locais.
             </p>
           </div>
-          <div className="mx-auto px-4 sm:px-8">
-            <Carousel opts={{ loop: true, align: 'start' }} className="w-full">
-              <CarouselContent className="-ml-4">
-                {teamMembers.map((member) => (
-                  <CarouselItem key={member.id} className="pl-4 basis-full md:basis-1/2">
-                    <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm h-full text-center md:border md:border-gray-2">
-                      <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full overflow-hidden">
-                        <img
-                          src={member.image}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h3 className="font-semibold text-gray-9 mb-1 text-sm sm:text-base">{member.name}</h3>
-                      <p className="text-primary font-medium mb-3 text-xs sm:text-sm">{member.position}</p>
-                      <p className="text-gray-7 text-xs sm:text-sm px-2">{member.bio}</p>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="-left-2 sm:-left-12" />
-              <CarouselNext className="-right-2 sm:-right-12" />
-            </Carousel>
+          <div className="max-w-3xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              {teamMembers.map((member) => (
+                <div
+                  key={member.id}
+                  className="bg-white rounded-lg p-6 sm:p-8 shadow-sm h-full text-center border border-gray-2 flex flex-col items-center hover:shadow-md transition-shadow"
+                >
+                  <Avatar className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4 border-2 border-primary/20 shadow-sm">
+                    <AvatarImage
+                      src={member.image}
+                      alt={member.name}
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl sm:text-2xl">
+                      {member.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <h3 className="font-semibold text-gray-9 mb-1 text-base sm:text-lg">{member.name}</h3>
+                  <p className="text-primary font-medium mb-3 text-xs sm:text-sm">{member.position}</p>
+                  <p className="text-gray-7 text-xs sm:text-sm px-2 leading-relaxed">{member.bio}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
