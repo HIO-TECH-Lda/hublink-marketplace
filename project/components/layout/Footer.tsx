@@ -90,7 +90,7 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone size={16} className="flex-shrink-0" />
-                  <span>+258 84 999 9999</span>
+                  <span>{siteConfig.phoneList}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={16} className="flex-shrink-0" />

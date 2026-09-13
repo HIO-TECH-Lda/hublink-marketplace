@@ -25,6 +25,9 @@ const defaults = {
   noReplyEmail: 'noreply@marketplace.co.mz',
   businessAddress: 'Rua Companhia de Moçambique, Baixa da Cidade',
   fullAddress: 'Rua Companhia de Moçambique, Baixa da Cidade, Beira - Moçambique',
+  phone: '+258 862326404',
+  secondaryPhone: '847491103',
+  phoneList: '+258 862326404 / 847491103',
 } as const;
 
 export const siteConfig = {
@@ -49,4 +52,10 @@ export const siteConfig = {
   businessAddress: process.env.NEXT_PUBLIC_BUSINESS_ADDRESS || defaults.businessAddress,
   /** Full formatted address with city and country */
   fullAddress: process.env.NEXT_PUBLIC_FULL_ADDRESS || defaults.fullAddress,
+  /** Primary contact phone */
+  phone: process.env.NEXT_PUBLIC_PHONE || defaults.phone,
+  /** Secondary contact phone */
+  secondaryPhone: process.env.NEXT_PUBLIC_SECONDARY_PHONE || defaults.secondaryPhone,
+  /** Combined phone list */
+  phoneList: process.env.NEXT_PUBLIC_PHONE_LIST || defaults.phoneList,
 } as const;

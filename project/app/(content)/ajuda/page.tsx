@@ -273,9 +273,9 @@ export default function AjudaPage() {
       icon: Phone,
       title: 'Telefone',
       description: 'Fale directamente com a nossa equipa de apoio.',
-      contact: '+258 84 999 9999',
+      contact: siteConfig.phoneList,
       action: 'Ligar Agora',
-      href: 'tel:+258849999999',
+      href: `tel:${siteConfig.phone.replace(/[\s-]/g, '')}`,
     },
     {
       icon: Mail,

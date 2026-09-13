@@ -351,7 +351,7 @@ export default function TrocasDevolucoesPage() {
                       <Phone size={24} className="text-primary" />
                     </div>
                     <h3 className="font-medium text-gray-9 mb-2">Telefone</h3>
-                    <p className="text-gray-7 text-sm">+258 84 999 9999</p>
+                    <p className="text-gray-7 text-sm">{siteConfig.phoneList}</p>
                     <p className="text-gray-6 text-xs mt-1">Segunda a Sexta-feira, das 08h00 às 18h00</p>
                   </div>
 

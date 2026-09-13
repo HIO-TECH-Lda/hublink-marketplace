@@ -82,8 +82,8 @@ export default function Header() {
             <div className="flex items-center space-x-4 sm:space-x-6">
               <div className="flex items-center space-x-2">
                 <Phone size={14} />
-                <span className="hidden md:inline">+258 84 999 9999</span>
-                <span className="md:hidden">+258 84 999 9999</span>
+                <span className="hidden md:inline">{siteConfig.phoneList}</span>
+                <span className="md:hidden">{siteConfig.phone}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={14} />

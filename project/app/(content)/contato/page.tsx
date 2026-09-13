@@ -44,7 +44,7 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: 'Telefones',
-      content: '+258 84 999 9999\n+258 84 888 8888',
+      content: `${siteConfig.phone}\n${siteConfig.secondaryPhone}`,
       color: 'text-primary'
     },
     {

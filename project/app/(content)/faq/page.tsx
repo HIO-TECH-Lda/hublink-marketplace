@@ -235,7 +235,7 @@ export default function FAQPage() {
                 <div className="space-y-3 text-sm">
                   <div>
                     <p className="font-medium text-gray-9">Telefone</p>
-                    <p className="text-gray-7">+258 84 999 9999</p>
+                    <p className="text-gray-7">{siteConfig.phoneList}</p>
                   </div>
                   <div>
                     <p className="font-medium text-gray-9">E-mail</p>
