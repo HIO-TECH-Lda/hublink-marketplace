@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Filter, Grid, List, ChevronDown, Star } from 'lucide-react';
+import { Filter, Grid, List, ChevronDown, Star, Store } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/common/ProductCard';
@@ -135,7 +136,7 @@ export default function ShopPage() {
       <div className="container py-8 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-6 mb-6">
-          <span>Início</span> / <span className="text-primary">Comprar</span>
+          <Link href="/" className="hover:text-primary">Início</Link> / <span className="text-primary">Comprar</span>
           {searchQuery && (
             <>
               <span> / </span>
@@ -145,7 +146,7 @@ export default function ShopPage() {
         </nav>
 
         {/* Page Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-9 mb-2">
               {searchQuery ? `Resultados para "${searchQuery}"` : 'Comprar no Txova'}
@@ -161,14 +162,24 @@ export default function ShopPage() {
             </p>
           </div>
           
-          {/* Sort and View Options */}
-          <div className="flex items-center space-x-2 sm:space-x-4 mt-4 lg:mt-0">
+          {/* Actions & Sort Options */}
+          <div className="flex flex-wrap items-center gap-3 mt-4 lg:mt-0">
+            <Link href="/vendedores">
+              <Button 
+                variant="outline"
+                className="border-primary/40 text-primary hover:bg-primary hover:text-white transition-colors text-sm font-medium flex items-center space-x-2"
+              >
+                <Store size={16} />
+                <span>Ver Vendedores</span>
+              </Button>
+            </Link>
+
             <div className="flex items-center space-x-2">
               <span className="text-sm text-gray-6">Ordenar por:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="border border-gray-3 rounded-lg px-2 sm:px-3 py-1 text-sm focus:outline-none focus:border-primary"
+                className="border border-gray-3 rounded-lg px-2 sm:px-3 py-2 text-sm focus:outline-none focus:border-primary bg-white"
               >
                 <option value="popular">Mais comprados</option>
                 <option value="newest">Mais recentes</option>
@@ -261,7 +272,12 @@ export default function ShopPage() {
 
               {/* Sellers */}
               <div>
-                <h3 className="font-semibold text-gray-9 mb-4">Vendedores</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-gray-9">Vendedores</h3>
+                  <Link href="/vendedores" className="text-xs text-primary hover:underline font-medium">
+                    Ver todos
+                  </Link>
+                </div>
                 <div className="space-y-3">
                   {sellers.map((seller) => (
                     <div key={seller} className="flex items-center space-x-2">
