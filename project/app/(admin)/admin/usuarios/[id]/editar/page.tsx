@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -8,7 +8,10 @@ import {
   Mail,
   Phone,
   Shield,
-  AlertCircle
+  AlertCircle,
+  Lock,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +27,7 @@ interface UpdateUserData {
   lastName?: string;
   email?: string;
   phone?: string;
+  password?: string;
   role?: 'buyer' | 'seller' | 'admin' | 'support';
   status?: 'active' | 'inactive' | 'suspended';
   emailVerified?: boolean;
@@ -49,6 +53,11 @@ export default function UserEditPage() {
     emailVerified: false,
     phoneVerified: false
   });
+
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -76,15 +85,31 @@ export default function UserEditPage() {
     if (!formData.lastName?.trim()) {
       newErrors.lastName = 'Sobrenome é obrigatório';
     }
-    if (!formData.email?.trim()) {
-      newErrors.email = 'Email é obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (formData.email?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
       newErrors.email = 'Email inválido';
     }
     if (!formData.phone?.trim()) {
       newErrors.phone = 'Telefone é obrigatório';
     } else if (!/^\+258\d{9}$/.test(formData.phone.replace(/\s/g, ''))) {
       newErrors.phone = 'Telefone deve estar no formato +258XXXXXXXXX';
+    }
+
+    // Password validation (only if admin entered a new password)
+    const trimmedPassword = password.trim();
+    const trimmedConfirm = confirmPassword.trim();
+
+    if (trimmedPassword || trimmedConfirm) {
+      if (!trimmedPassword) {
+        newErrors.password = 'Insira a nova palavra-passe';
+      } else if (password.length < 8) {
+        newErrors.password = 'A palavra-passe deve ter pelo menos 8 caracteres';
+      }
+
+      if (!trimmedConfirm) {
+        newErrors.confirmPassword = 'Confirme a nova palavra-passe';
+      } else if (password !== confirmPassword) {
+        newErrors.confirmPassword = 'As palavras-passe não coincidem';
+      }
     }
 
     setErrors(newErrors);
@@ -98,10 +123,26 @@ export default function UserEditPage() {
       return;
     }
 
+    const dataToSend: UpdateUserData = {
+      firstName: formData.firstName?.trim(),
+      lastName: formData.lastName?.trim(),
+      email: formData.email?.trim() || undefined,
+      phone: formData.phone?.trim()?.replace(/\s/g, ''),
+      role: formData.role,
+      status: formData.status,
+      emailVerified: formData.emailVerified,
+      phoneVerified: formData.phoneVerified,
+    };
+
+    // Ensure the frontend only includes the password field if the admin actually typed a new password
+    if (password.trim()) {
+      dataToSend.password = password;
+    }
+
     try {
       await updateUser.mutateAsync({
         userId,
-        data: formData
+        data: dataToSend
       });
       
       toast({
@@ -199,11 +240,11 @@ export default function UserEditPage() {
                     )}
                   </div>
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
                       type="email"
-                      value={formData.email}
+                      value={formData.email || ''}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       placeholder="email@exemplo.com"
                       className={errors.email ? 'border-red-500' : ''}
@@ -225,6 +266,92 @@ export default function UserEditPage() {
                       <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
                     )}
                     <p className="text-xs text-gray-5 mt-1">Formato: +258XXXXXXXXX</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Password Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Lock className="w-5 h-5 mr-2" />
+                  Palavra-passe de Acesso
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-gray-5 mb-4">
+                  Deixe os campos abaixo em branco para manter a palavra-passe actual do utilizador.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="password">Nova Palavra-passe</Label>
+                    <div className="relative mt-1">
+                      <Input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                          if (errors.password) {
+                            setErrors((prev) => ({ ...prev, password: '' }));
+                          }
+                        }}
+                        placeholder="Mínimo 8 caracteres"
+                        className={`pr-10 ${errors.password ? 'border-red-500' : ''}`}
+                        autoComplete="new-password"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent text-gray-4 hover:text-gray-7"
+                        onClick={() => setShowPassword(!showPassword)}
+                        tabIndex={-1}
+                        aria-label={showPassword ? 'Ocultar palavra-passe' : 'Mostrar palavra-passe'}
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </Button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                    )}
+                    <p className="text-xs text-gray-5 mt-1">Mínimo de 8 caracteres</p>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="confirmPassword">Confirmar Nova Palavra-passe</Label>
+                    <div className="relative mt-1">
+                      <Input
+                        id="confirmPassword"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        value={confirmPassword}
+                        onChange={(e) => {
+                          setConfirmPassword(e.target.value);
+                          if (errors.confirmPassword) {
+                            setErrors((prev) => ({ ...prev, confirmPassword: '' }));
+                          }
+                        }}
+                        placeholder="Repita a palavra-passe"
+                        className={`pr-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                        autoComplete="new-password"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent text-gray-4 hover:text-gray-7"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        tabIndex={-1}
+                        aria-label={showConfirmPassword ? 'Ocultar confirmação' : 'Mostrar confirmação'}
+                      >
+                        {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </Button>
+                    </div>
+                    {errors.confirmPassword && (
+                      <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+                    )}
+                    <p className="text-xs text-gray-5 mt-1">Deve coincidir com a nova palavra-passe</p>
                   </div>
                 </div>
               </CardContent>
@@ -351,6 +478,16 @@ export default function UserEditPage() {
                       {formData.role === 'buyer' ? 'Comprador' : 
                        formData.role === 'seller' ? 'Vendedor' : 
                        formData.role === 'admin' ? 'Administrador' : 'Suporte'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-6">Palavra-passe:</span>
+                    <span className="font-medium text-xs">
+                      {password.trim() ? (
+                        <span className="text-primary font-semibold">Será actualizada</span>
+                      ) : (
+                        'Inalterada'
+                      )}
                     </span>
                   </div>
                 </div>

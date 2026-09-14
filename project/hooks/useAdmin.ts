@@ -138,7 +138,7 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ userId, data }: { userId: string; data: Partial<User> }) => {
+    mutationFn: async ({ userId, data }: { userId: string; data: Partial<User> & { password?: string } }) => {
       const response = await apiClient.put(`/admin/users/${userId}`, data);
       return response.data.data as User;
     },

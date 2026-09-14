@@ -4,6 +4,8 @@ import Payment from '../models/Payment';
 import Review from '../models/Review';
 import mongoose, { Types } from 'mongoose';
 import Messages from '../utils/messages';
+import { AuthService } from './authService';
+import { PASSWORD_PATTERN } from '../utils/validation';
 
 export interface UserListFilters {
   search?: string;
@@ -352,35 +354,61 @@ export class AdminUserService {
   static async createUser(userData: {
     firstName: string;
     lastName: string;
-    email: string;
+    email?: string;
     phone: string;
     password: string;
     role?: 'buyer' | 'seller' | 'admin' | 'support';
     status?: 'active' | 'inactive' | 'suspended';
   }): Promise<IUserDocument> {
     try {
+      const cleanEmail = userData.email?.trim().toLowerCase();
+      const cleanPhone = AuthService.normalizePhone(userData.phone);
+
+      // Validate password
+      const trimmedPassword = userData.password?.trim();
+      if (!trimmedPassword || trimmedPassword.length < 8) {
+        throw new Error('A senha deve ter pelo menos 8 caracteres');
+      }
+      if (!PASSWORD_PATTERN.test(trimmedPassword)) {
+        throw new Error(
+          'A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial'
+        );
+      }
+
       // Check if user already exists
-      const existingUser = await User.findOne({
-        $or: [{ email: userData.email }, { phone: userData.phone }]
-      });
+      const orConditions: any[] = [{ phone: cleanPhone }];
+      if (cleanEmail) {
+        orConditions.push({ email: cleanEmail });
+      }
+
+      const existingUser = await User.findOne({ $or: orConditions });
 
       if (existingUser) {
-        if (existingUser.email === userData.email) {
+        if (cleanEmail && existingUser.email === cleanEmail) {
           throw new Error(Messages.ADMIN_USER.EMAIL_EXISTS);
         }
-        if (existingUser.phone === userData.phone) {
+        if (existingUser.phone === cleanPhone) {
           throw new Error(Messages.ADMIN_USER.PHONE_EXISTS);
         }
         throw new Error(Messages.AUTH.EMAIL_PHONE_EXISTS);
       }
 
       // Create user
-      const user = new User({
+      const userToCreate: any = {
         ...userData,
+        phone: cleanPhone,
+        password: trimmedPassword,
         role: userData.role || 'buyer',
         status: userData.status || 'active'
-      });
+      };
 
+      if (cleanEmail) {
+        userToCreate.email = cleanEmail;
+      } else {
+        delete userToCreate.email;
+      }
+
+      const user = new User(userToCreate);
       await user.save();
 
       return user;
@@ -397,8 +425,9 @@ export class AdminUserService {
     updateData: {
       firstName?: string;
       lastName?: string;
-      email?: string;
+      email?: string | null;
       phone?: string;
+      password?: string;
       role?: 'buyer' | 'seller' | 'admin' | 'support';
       status?: 'active' | 'inactive' | 'suspended';
       emailVerified?: boolean;
@@ -412,23 +441,65 @@ export class AdminUserService {
         throw new Error('User not found');
       }
 
-      // Check if email/phone is being changed and already exists
-      if (updateData.email && updateData.email !== user.email) {
-        const existingUser = await User.findOne({ email: updateData.email });
-        if (existingUser) {
-          throw new Error(Messages.ADMIN_USER.EMAIL_EXISTS);
+      const safeData = { ...updateData } as any;
+
+      // Handle password update & sanitization
+      if ('password' in safeData) {
+        if (typeof safeData.password === 'string' && safeData.password.trim() !== '') {
+          const trimmedPassword = safeData.password.trim();
+          if (trimmedPassword.length < 8) {
+            throw new Error('A senha deve ter pelo menos 8 caracteres');
+          }
+          if (!PASSWORD_PATTERN.test(trimmedPassword)) {
+            throw new Error(
+              'A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial'
+            );
+          }
+          user.password = trimmedPassword;
+        }
+        // Remove password from safeData so Object.assign does not overwrite with raw or blank string
+        delete safeData.password;
+      }
+
+      // Check and normalize email update
+      if ('email' in safeData) {
+        if (typeof safeData.email === 'string' && safeData.email.trim() !== '') {
+          const cleanEmail = safeData.email.trim().toLowerCase();
+          if (cleanEmail !== user.email) {
+            const existingUser = await User.findOne({
+              email: cleanEmail,
+              _id: { $ne: userId }
+            });
+            if (existingUser) {
+              throw new Error(Messages.ADMIN_USER.EMAIL_EXISTS);
+            }
+            safeData.email = cleanEmail;
+          }
+        } else {
+          // If explicitly set to empty or null, unset email so sparse index doesn't conflict
+          delete safeData.email;
+          user.email = undefined;
+          await User.updateOne({ _id: userId }, { $unset: { email: 1 } });
         }
       }
 
-      if (updateData.phone && updateData.phone !== user.phone) {
-        const existingUser = await User.findOne({ phone: updateData.phone });
-        if (existingUser) {
-          throw new Error(Messages.ADMIN_USER.PHONE_EXISTS);
+      // Check and normalize phone update
+      if ('phone' in safeData && safeData.phone) {
+        const cleanPhone = AuthService.normalizePhone(safeData.phone);
+        if (cleanPhone !== user.phone) {
+          const existingUser = await User.findOne({
+            phone: cleanPhone,
+            _id: { $ne: userId }
+          });
+          if (existingUser) {
+            throw new Error(Messages.ADMIN_USER.PHONE_EXISTS);
+          }
+          safeData.phone = cleanPhone;
         }
       }
 
-      // Update user
-      Object.assign(user, updateData);
+      // Update remaining user fields
+      Object.assign(user, safeData);
       await user.save();
 
       return user;

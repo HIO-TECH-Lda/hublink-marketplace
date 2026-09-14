@@ -98,7 +98,7 @@ export class AdminUserController {
     try {
       const { firstName, lastName, email, phone, password, role, status } = req.body;
 
-      if (!firstName || !lastName || !email || !phone || !password) {
+      if (!firstName || !lastName || !phone || !password) {
         res.status(400).json({
           success: false,
           message: Messages.ADMIN_USER.REQUIRED_FIELDS
@@ -127,7 +127,7 @@ export class AdminUserController {
       });
     } catch (error) {
       const statusCode =
-        error instanceof Error && error.message.includes('already exists') ? 409 : 500;
+        error instanceof Error && error.message.includes('already exists') ? 409 : 400;
       res.status(statusCode).json({
         success: false,
         message: error instanceof Error ? error.message : Messages.ADMIN_USER.CREATE_FAILED
@@ -153,7 +153,7 @@ export class AdminUserController {
         data: userResponse
       });
     } catch (error) {
-      const statusCode = error instanceof Error && error.message === 'User not found' ? 404 : 500;
+      const statusCode = error instanceof Error && error.message.includes('not found') ? 404 : 400;
       res.status(statusCode).json({
         success: false,
         message: error instanceof Error ? error.message : 'Failed to update user'
