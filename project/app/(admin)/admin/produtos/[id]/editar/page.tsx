@@ -1,6 +1,6 @@
-﻿'use client';
+'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { 
   Save, 
@@ -34,8 +34,48 @@ export default function EditProductPage() {
   const { data: sellersData } = useAdminSellers({ limit: 100 });
   const updateProduct = useUpdateProduct();
 
-  // API returns array directly: {success: true, data: [...]}
-  const sellers: any[] = Array.isArray(sellersData) ? sellersData : (sellersData ? [sellersData] : []);
+  // Normalize product data from API
+  const productData = useMemo(() => {
+    if (!product) return null;
+    return (product as any)?.product || (product as any)?.data?.product || (product as any)?.data || product;
+  }, [product]);
+
+  // Sellers list: API returns { sellers: [...], total, page, limit, totalPages } or an array
+  const sellers: any[] = useMemo(() => {
+    return sellersData?.sellers ?? (Array.isArray(sellersData) ? sellersData : []);
+  }, [sellersData]);
+
+  // Ensure current product's category is available even if categories list is still loading or paginated
+  const allCategories = useMemo(() => {
+    const list: any[] = Array.isArray(categories) ? [...categories] : ((categories as any)?.categories ? [...(categories as any).categories] : []);
+    if (productData) {
+      const cId = (typeof productData.category === 'object' && (productData.category?.id || productData.category?._id)) ||
+                  (typeof productData.categoryId === 'object' && (productData.categoryId?._id || productData.categoryId?.id)) ||
+                  (typeof productData.categoryId === 'string' && productData.categoryId) ||
+                  (typeof productData.category === 'string' && productData.category);
+      const cName = productData.category?.name || productData.categoryId?.name;
+      if (cId && !list.some((c: any) => (c._id || c.id) === cId)) {
+        list.unshift({ id: cId, _id: cId, name: cName || 'Categoria actual' });
+      }
+    }
+    return list;
+  }, [categories, productData]);
+
+  // Ensure current product's seller is available even if sellers list is still loading or paginated
+  const allSellers = useMemo(() => {
+    const list: any[] = [...sellers];
+    if (productData) {
+      const sId = (typeof productData.seller === 'object' && (productData.seller?.id || productData.seller?._id)) ||
+                  (typeof productData.sellerId === 'object' && (productData.sellerId?._id || productData.sellerId?.id)) ||
+                  (typeof productData.sellerId === 'string' && productData.sellerId) ||
+                  (typeof productData.seller === 'string' && productData.seller);
+      const sName = productData.seller?.storeName || productData.seller?.name || productData.sellerId?.sellerProfile?.storeName || productData.sellerName;
+      if (sId && !list.some((s: any) => (s._id || s.id) === sId)) {
+        list.unshift({ id: sId, _id: sId, storeName: sName || 'Vendedor actual' });
+      }
+    }
+    return list;
+  }, [sellers, productData]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -61,18 +101,19 @@ export default function EditProductPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (product) {
-      const productData = product as any;
-      
+    if (productData) {
       // Convert existing images to ImageFile format for preview
       const existingImages: ImageFile[] = [];
       if (productData.images && Array.isArray(productData.images)) {
         productData.images.forEach((img: any, index: number) => {
-          // If it's already a URL, create a placeholder ImageFile
-          if (typeof img === 'string' || img.url) {
+          if (typeof img === 'string' || img?.url) {
             const url = typeof img === 'string' ? img : img.url;
-            // Create a dummy file object for existing images
-            const dummyFile = new File([], `image-${index}.jpg`, { type: 'image/jpeg' });
+            let dummyFile: File;
+            try {
+              dummyFile = new File([], `image-${index}.jpg`, { type: 'image/jpeg' });
+            } catch {
+              dummyFile = new Blob([], { type: 'image/jpeg' }) as File;
+            }
             existingImages.push({
               file: dummyFile,
               preview: url,
@@ -81,29 +122,65 @@ export default function EditProductPage() {
           }
         });
       }
+
+      // Safe category ID extraction (always string)
+      const categoryIdVal = 
+        (typeof productData.category === 'object' && (productData.category?.id || productData.category?._id)) ||
+        (typeof productData.categoryId === 'object' && (productData.categoryId?._id || productData.categoryId?.id)) ||
+        (typeof productData.categoryId === 'string' && productData.categoryId) ||
+        (typeof productData.category === 'string' && productData.category) ||
+        '';
+
+      // Safe subcategory ID extraction (always string)
+      const subcategoryIdVal = 
+        (typeof productData.subcategory === 'object' && (productData.subcategory?.id || productData.subcategory?._id)) ||
+        (typeof productData.subcategoryId === 'object' && (productData.subcategoryId?._id || productData.subcategoryId?.id)) ||
+        (typeof productData.subcategoryId === 'string' && productData.subcategoryId) ||
+        (typeof productData.subcategory === 'string' && productData.subcategory) ||
+        '';
+
+      // Safe seller ID extraction (always string)
+      const sellerIdVal = 
+        (typeof productData.seller === 'object' && (productData.seller?.id || productData.seller?._id)) ||
+        (typeof productData.sellerId === 'object' && (productData.sellerId?._id || productData.sellerId?.id)) ||
+        (typeof productData.sellerId === 'string' && productData.sellerId) ||
+        (typeof productData.seller === 'string' && productData.seller) ||
+        '';
+
+      // Safe primary image URL extraction
+      const primaryImagePreviewVal = 
+        (typeof productData.primaryImage === 'string' && productData.primaryImage) ||
+        productData.primaryImage?.url ||
+        (typeof productData.images?.[0] === 'string' ? productData.images[0] : productData.images?.[0]?.url) ||
+        '';
+
+      // Safe tags extraction
+      const tagsVal = Array.isArray(productData.tags)
+        ? productData.tags.map((t: any) => typeof t === 'string' ? t : t?.name || t?.tag || '').filter(Boolean)
+        : [];
       
       setFormData({
         name: productData.name || '',
         description: productData.description || '',
         shortDescription: productData.shortDescription || '',
-        price: productData.price?.toString() || '',
-        originalPrice: productData.originalPrice?.toString() || '',
-        stock: productData.stock?.toString() || '',
+        price: productData.price !== undefined && productData.price !== null ? productData.price.toString() : '',
+        originalPrice: productData.originalPrice !== undefined && productData.originalPrice !== null ? productData.originalPrice.toString() : '',
+        stock: productData.stock !== undefined && productData.stock !== null ? productData.stock.toString() : '',
         status: productData.status || 'draft',
-        categoryId: productData.category?.id || productData.categoryId || '',
-        subcategoryId: productData.subcategory?.id || productData.subcategoryId || '',
-        sellerId: productData.seller?.id || productData.sellerId || '',
+        categoryId: categoryIdVal,
+        subcategoryId: subcategoryIdVal,
+        sellerId: sellerIdVal,
         sku: productData.sku || '',
         primaryImage: null,
-        primaryImagePreview: productData.primaryImage || '',
+        primaryImagePreview: primaryImagePreviewVal,
         images: existingImages,
-        isFeatured: productData.isFeatured || false,
-        isBestSeller: productData.isBestSeller || false,
-        tags: productData.tags || [],
+        isFeatured: Boolean(productData.isFeatured),
+        isBestSeller: Boolean(productData.isBestSeller),
+        tags: tagsVal,
         newTag: ''
       });
     }
-  }, [product]);
+  }, [productData]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -232,7 +309,7 @@ export default function EditProductPage() {
     );
   }
 
-  if (!product) {
+  if (!product || !productData) {
     return (
       <>
         <div className="flex items-center justify-center min-h-[400px]">
@@ -248,15 +325,13 @@ export default function EditProductPage() {
     );
   }
 
-  const productData = product as any;
-
   return (
     <>
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-9 mb-2">Editar Produto</h1>
-            <p className="text-gray-6">{productData.name}</p>
+            <p className="text-gray-6">{productData.name || formData.name}</p>
           </div>
           <Button onClick={() => router.push(`/admin/produtos/${productId}`)} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -375,18 +450,22 @@ export default function EditProductPage() {
                   <div>
                     <Label htmlFor="categoryId">Categoria *</Label>
                     <Select
-                      value={formData.categoryId}
+                      value={formData.categoryId || undefined}
                       onValueChange={(value) => setFormData({...formData, categoryId: value})}
                     >
                       <SelectTrigger className={errors.categoryId ? 'border-red-500' : ''}>
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories?.map((category: any) => (
-                          <SelectItem key={category._id || category.id} value={category._id || category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
+                        {allCategories?.map((category: any) => {
+                          const catId = category._id || category.id;
+                          if (!catId) return null;
+                          return (
+                            <SelectItem key={catId} value={catId}>
+                              {category.name}
+                            </SelectItem>
+                          );
+                        })}
                       </SelectContent>
                     </Select>
                     {errors.categoryId && (
@@ -396,23 +475,29 @@ export default function EditProductPage() {
                   <div>
                     <Label htmlFor="sellerId">Vendedor *</Label>
                     <Select
-                      value={formData.sellerId}
+                      value={formData.sellerId || undefined}
                       onValueChange={(value) => setFormData({...formData, sellerId: value})}
                     >
                       <SelectTrigger className={errors.sellerId ? 'border-red-500' : ''}>
                         <SelectValue placeholder={
-                          sellers.length === 0 
+                          allSellers.length === 0 
                             ? "Nenhum vendedor encontrado"
                             : "Selecione um vendedor"
                         } />
                       </SelectTrigger>
-                      {sellers.length > 0 && (
+                      {allSellers.length > 0 && (
                         <SelectContent>
-                          {sellers.map((seller: any) => (
-                            <SelectItem key={seller._id || seller.id} value={seller._id || seller.id}>
-                              {seller.storeName || seller.businessName || seller.name || seller.fullName || seller.email || 'Vendedor sem nome'}
-                            </SelectItem>
-                          ))}
+                          {allSellers
+                            .filter((seller: any) => seller && (seller._id || seller.id))
+                            .map((seller: any) => {
+                              const sId = seller._id || seller.id;
+                              const sName = seller.sellerProfile?.storeName || seller.storeName || seller.businessName || seller.name || `${seller.firstName || ''} ${seller.lastName || ''}`.trim() || seller.email || 'Vendedor sem nome';
+                              return (
+                                <SelectItem key={sId} value={sId}>
+                                  {sName}
+                                </SelectItem>
+                              );
+                            })}
                         </SelectContent>
                       )}
                     </Select>
@@ -434,7 +519,7 @@ export default function EditProductPage() {
                   <div>
                     <Label htmlFor="status">Estado</Label>
                     <Select
-                      value={formData.status}
+                      value={formData.status || 'draft'}
                       onValueChange={(value) => setFormData({...formData, status: value})}
                     >
                       <SelectTrigger>

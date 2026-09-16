@@ -252,7 +252,8 @@ export const useAdminProduct = (productId: string) => {
     queryKey: ['admin', 'product', productId],
     queryFn: async () => {
       const response = await apiClient.get(`/admin/products/${productId}`);
-      return response.data.data as Product;
+      const raw = response.data;
+      return (raw?.data?.product || raw?.data || raw?.product || raw) as Product;
     },
     enabled: !!productId,
   });
