@@ -205,38 +205,38 @@ export class PaymentService {
       };
 
       // Create pay-by-link for Imali/M-pesa/E-Mola
-      // const payByLinkData = {
-      //   title: `Pedido #${order.orderNumber || order._id.toString().slice(-8)}`.slice(0, 30),
-      //   short_description: order.items.map((item: any) => `${item.quantity}x ${item.productName || 'Item'}`).join(', ').slice(0, 255),
-      //   amount: order.total.toFixed(2),
-      //   type: paymentDetails?.type || 'DIRECT',
-      //   payment_frequence: paymentDetails?.payment_frequence,
-      //   store_account_number: process.env.IMALI_STORE_ACCOUNT_NUMBER_DEV,
-      //   expiration_datetime: paymentDetails?.expiration_datetime,
-      //   customer_link_id: (paymentDetails?.customer_link_id || `ORDER_${String(order._id).slice(-8)}_${Date.now()}`).toString().slice(0, 30),
-      //   send_to_phone: normalizeImaliPhone(paymentDetails?.send_to_phone),
-      //   partner_transaction_id: paymentDetails?.partner_transaction_id || uuidv4(),
-      //   thumbnail_image: paymentDetails?.thumbnail_image,
-      //   payment_method: 'imali',
-      //   payment_type: 'link',
-      //   transaction_type: paymentDetails?.transaction_type || 'C2B'
-      // };
+      const payByLinkData = {
+        title: `Pedido #${order.orderNumber || order._id.toString().slice(-8)}`.slice(0, 30),
+        short_description: order.items.map((item: any) => `${item.quantity}x ${item.productName || 'Item'}`).join(', ').slice(0, 255),
+        amount: order.total.toFixed(2),
+        type: paymentDetails?.type || 'DIRECT',
+        payment_frequence: paymentDetails?.payment_frequence,
+        store_account_number: process.env.IMALI_STORE_ACCOUNT_NUMBER_DEV,
+        expiration_datetime: paymentDetails?.expiration_datetime,
+        customer_link_id: (paymentDetails?.customer_link_id || `ORDER_${String(order._id).slice(-8)}_${Date.now()}`).toString().slice(0, 30),
+        send_to_phone: normalizeImaliPhone(paymentDetails?.send_to_phone),
+        partner_transaction_id: paymentDetails?.partner_transaction_id || uuidv4(),
+        thumbnail_image: paymentDetails?.thumbnail_image,
+        payment_method: 'imali',
+        payment_type: 'link',
+        transaction_type: paymentDetails?.transaction_type || 'C2B'
+      };
 
 
-      // const response = await imaliAxios.post(
-      //   `${process.env.IMALI_API_URL_DEV}/partners/imaliway/v2/payments`,
-      //   payByLinkData
-      // );
+      const response = await imaliAxios.post(
+        `${process.env.IMALI_API_URL_DEV}/partners/imaliway/v2/payments`,
+        payByLinkData
+      );
 
       // Check if response has the expected structure
-      // if (!response.data || !response.data.data) {
-      //   throw new Error(Messages.PAYMENT.IMALI_INVALID_RESPONSE);
-      // }
+      if (!response.data || !response.data.data) {
+        throw new Error(Messages.PAYMENT.IMALI_INVALID_RESPONSE);
+      }
 
-      // const linkData = response.data.data;
-      // if (!linkData.link_id) {
-      //   throw new Error(Messages.PAYMENT.IMALI_MISSING_LINK);
-      // }
+      const linkData = response.data.data;
+      if (!linkData.link_id) {
+        throw new Error(Messages.PAYMENT.IMALI_MISSING_LINK);
+      }
 
       // For now we are using test IDs; once the real
       // Imali integration is enabled, replace these
